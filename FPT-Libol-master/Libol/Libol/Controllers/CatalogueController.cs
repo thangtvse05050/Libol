@@ -163,9 +163,9 @@ namespace Libol.Controllers
         }
 
         [HttpPost]
-        public JsonResult SearchCode(string strCode, string strCN, string strTT)
+        public JsonResult SearchCode(string strCode, string strCN, string strTT,string ISBN)
         {
-            List<FPT_SP_CATA_GET_DETAILINFOR_OF_ITEM_Result> inforList = catalogueBusiness.SearchCode(strCode, strCN, strTT);
+            List<FPT_SP_CATA_GET_DETAILINFOR_OF_ITEM_Result> inforList = catalogueBusiness.SearchCode(strCode, strCN, strTT,ISBN);
             return Json(inforList, JsonRequestBehavior.AllowGet);
         }
 
