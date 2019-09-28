@@ -308,7 +308,8 @@ namespace Libol.Models
             }
             if (!string.IsNullOrEmpty(isbn))
             {
-                List<int> itemList = db.CAT_DIC_NUMBER.Where(it => it.Number.Contains(isbn.Trim()) && it.FieldCode.Equals("020")).Select(i => i.ItemID).ToList();
+                //List<int> itemList = db.CAT_DIC_NUMBER.Where(it => it.Number.Contains(isbn.Trim()) && it.FieldCode.Equals("020")).Select(i => i.ItemID).ToList();
+                List<int> itemList = db.CAT_DIC_NUMBER.Where(it => it.Number.Contains(isbn.Trim())).Select(i => i.ItemID).ToList();
                 if (itemList.Count > 0)
                 {
                     querry = querry + " AND ITEM.ID IN (" + string.Join(",", itemList) + ")";
