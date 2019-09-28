@@ -76,9 +76,9 @@ namespace Libol.Models
 
 
         //Seach Code for Update Catalogue
-        public List<FPT_SP_CATA_GET_DETAILINFOR_OF_ITEM_Result> SearchCode(string strCode, string strCN, string strTT)
+        public List<FPT_SP_CATA_GET_DETAILINFOR_OF_ITEM_Result> SearchCode(string strCode, string strCN, string strTT, string ISBN)
         {
-            List<int> ItemId = SearchIDByCondition(strCode, strCN, strTT, "");
+            List<int> ItemId = SearchIDByCondition(strCode, strCN, strTT, ISBN);
 
             //get List Infor detail
             List<FPT_SP_CATA_GET_DETAILINFOR_OF_ITEM_Result> inforList = new List<FPT_SP_CATA_GET_DETAILINFOR_OF_ITEM_Result>();
