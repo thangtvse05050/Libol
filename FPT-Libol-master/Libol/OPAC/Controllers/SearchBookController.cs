@@ -1,4 +1,6 @@
-﻿using System;
+﻿using OPAC.Dao;
+using OPAC.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -8,15 +10,36 @@ namespace OPAC.Controllers
 {
     public class SearchBookController : Controller
     {
-        // GET: SearchBook
-        public ActionResult DetailBook()
+        private SearchDao dao = new SearchDao();
+
+        // GET: DetailBook
+        public ActionResult DetailBook(int itemID)
         {
-            return View();
+            ViewBag.OnHoldingBook = dao.GetOnHoldingBook(itemID);
+            ViewBag.TotalBook = dao.GetTotalBook(itemID);
+            ViewBag.FreeBook = dao.GetFreeBook(itemID);
+            ViewBag.InforCopyNumber = dao.GetInforCopyNumberList(itemID);
+
+            return View(dao.SP_CATA_GET_CONTENTS_OF_ITEMS_LIST(itemID, 0));
         }
 
-        public ActionResult SearchBook()
+        [HttpPost]
+        public ActionResult GetKeyword(string searchKeyword)
         {
-            return View();
+            Session["searchKey"] = searchKeyword;
+
+            return RedirectToAction("SearchBook", new { page = 1 });
+        }
+
+        public ActionResult SearchBook(int page)
+        {
+            string key = Session["searchKey"].ToString();
+            int maxItemInOnePage = 10;
+            ViewBag.NumberResult = dao.GetNumberResult(key, page, maxItemInOnePage);
+            ViewBag.ItemInOnePage = maxItemInOnePage;
+            Session["pageNo"] = page;
+
+            return View(dao.GetSearchingBook(key, page, maxItemInOnePage));
         }
 
         public ActionResult AdvancedSearchBook()

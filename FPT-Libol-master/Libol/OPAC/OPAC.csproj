@@ -53,6 +53,12 @@
       <HintPath>..\packages\EntityFramework.6.3.0\lib\net45\EntityFramework.SqlServer.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.CSharp" />
+    <Reference Include="PagedList, Version=1.17.0.0, Culture=neutral, PublicKeyToken=abbb863e9397c5e1, processorArchitecture=MSIL">
+      <HintPath>..\packages\PagedList.1.17.0.0\lib\net40\PagedList.dll</HintPath>
+    </Reference>
+    <Reference Include="PagedList.Mvc, Version=4.5.0.0, Culture=neutral, PublicKeyToken=abbb863e9397c5e1, processorArchitecture=MSIL">
+      <HintPath>..\packages\PagedList.Mvc.4.5.0.0\lib\net40\PagedList.Mvc.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
@@ -133,6 +139,7 @@
     <Compile Include="Controllers\InformationPatronController.cs" />
     <Compile Include="Controllers\LoginController.cs" />
     <Compile Include="Controllers\SearchBookController.cs" />
+    <Compile Include="Dao\SearchDao.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -844,6 +851,7 @@
     <Compile Include="Models\ILL_Z3950_SERVERS.cs">
       <DependentUpon>Opac.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\InfoCopyNumber.cs" />
     <Compile Include="Models\INIT_INVENTORY.cs">
       <DependentUpon>Opac.tt</DependentUpon>
     </Compile>
@@ -1033,6 +1041,7 @@
     <Compile Include="Models\REGULARITY_OUT.cs">
       <DependentUpon>Opac.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\SearchingResult.cs" />
     <Compile Include="Models\SER_ARTICLE.cs">
       <DependentUpon>Opac.tt</DependentUpon>
     </Compile>
@@ -3815,6 +3824,7 @@
     <Content Include="Content\bootstrap-theme.min.css" />
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
+    <Content Include="Content\PagedList.css" />
     <Content Include="favicon.ico" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
@@ -3880,12 +3890,12 @@
     <Content Include="Views\Shared\_Layout.cshtml" />
     <Content Include="Views\Home\Home.cshtml" />
     <Content Include="Views\SearchBook\DetailBook.cshtml" />
-    <Content Include="Views\SearchBook\SearchBook.cshtml" />
     <Content Include="Views\SearchBook\AdvancedSearchBook.cshtml" />
     <Content Include="Views\InformationPatron\PatronPage.cshtml" />
     <Content Include="Views\InformationPatron\PatronAfterLoginPage.cshtml" />
     <Content Include="Views\InformationPatron\BookBorrowingPage.cshtml" />
     <Content Include="Views\Login\Login.cshtml" />
+    <Content Include="Views\SearchBook\SearchBook.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
