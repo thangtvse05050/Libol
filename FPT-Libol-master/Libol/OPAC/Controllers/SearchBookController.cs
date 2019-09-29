@@ -36,7 +36,7 @@ namespace OPAC.Controllers
             {
                 Session["searchKey"] = searchKeyword.Trim();
             }
-            
+
             return RedirectToAction("SearchBook", new { page = 1 });
         }
 

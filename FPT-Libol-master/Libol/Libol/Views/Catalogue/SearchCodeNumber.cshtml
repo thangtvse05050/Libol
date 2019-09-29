@@ -28,9 +28,7 @@
                     <div class="form-group">
                         <input type="text" class="form-control" id="txtCN" placeholder="Mã ĐKCB">
                     </div>
-                    <div class="form-group">
-                        <input type="text" class="form-control" id="txtISBN" placeholder="ISBN">
-                    </div>
+
                     <button type="button" class="btn btn-success " onclick="Search()">Tìm Kiếm</button>
                 </form>
             </div>
@@ -60,11 +58,10 @@
         var strCode = $('#txtCode').val().trim();
         var strCN = $('#txtCN').val().trim();
         var strTT = $('#txtTT').val().trim();
-        var ISBN = $('#txtISBN').val().trim();
         $.ajax({
             url: "/Catalogue/SearchCode",
             type: "POST",
-            data: JSON.stringify({ strCode: strCode, strCN: strCN, strTT: strTT, ISBN: ISBN }),
+            data: JSON.stringify({ strCode: strCode, strCN: strCN, strTT: strTT }),
             contentType: "application/json;charset=utf-8",
             dataType: "json",
             success: function (inforList) {

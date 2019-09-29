@@ -39,7 +39,6 @@ namespace OPAC.Dao
                                       Year = e.Year,
                                       Author = f.DisplayEntry
                                   }).Distinct().OrderBy(x => x.Title).ToPagedList(page, pageSize);
-
                 return listResult;
             }
         }
