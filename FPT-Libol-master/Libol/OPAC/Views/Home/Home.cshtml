@@ -59,6 +59,10 @@
     <!-- End: Slider Section -->
     <div class="inline">&nbsp;&nbsp;&nbsp;&nbsp;</div>
     <!-- Start search bar and book statistics -->
+    @{
+        string data = (string)ViewBag.EmptyKeword;
+        string message = (string)TempData["errorMessage"];
+    }
     <div>
         <table style="width: 535px; height: 115px">
             <tr class="searching">
@@ -76,23 +80,33 @@
                 </th>
                 @using (Html.BeginForm("GetKeyword", "SearchBook", FormMethod.Post))
                 {
-                <td>
-                    <input class="form-control" name="searchKeyword" type="text" placeholder="Từ khóa tìm kiếm..."
-                           style="width: 122%; height: 55%; position: relative; left: 147px; top: 1px" />
-                </td>
-                <td>
-                    <button class="form-control" id="search-icon"><i class="fa fa-search"></i></button>
-                </td>
+                    <td>
+                        <input class="form-control" name="searchKeyword" type="text" placeholder="Từ khóa tìm kiếm..."
+                               style="width: 122%; height: 55%; position: relative; left: 147px; top: 1px" />
+                    </td>
+                    <td>
+                        <button class="form-control" id="search-icon"><i class="fa fa-search"></i></button>
+                    </td>
                 }
             </tr>
             <tr>
                 <td></td>
-                <td></td>
+                @{
+                    if (string.IsNullOrEmpty(data))
+                    {
+                        <td class="message"><div id="hide">@message</div></td>
+                    }
+                    else
+                    {
+                        <td></td>
+                    }
+                }
                 <td><a href="@Url.Action("AdvancedSearchBook", "SearchBook")" class="up">Tìm kiếm nâng cao</a></td>
             </tr>
         </table>
     </div>
     <br>
+
     <!-- End search bar and book statistics -->
 
     <div class="inline" style="position: relative; bottom: 50px">&nbsp;&nbsp;&nbsp;&nbsp;</div>
@@ -256,7 +270,7 @@
                     </tr>
                     <tr>
                         <td class="fornews">
-                            <i class="fa fa-angle-double-right" style="font-size:18px"></i> 
+                            <i class="fa fa-angle-double-right" style="font-size:18px"></i>
                             <a href="#" class="news">
                                 Khởi sự doanh nghiệp : Trọn bộ 4 cuốn: Sách hướng dẫn lập kế
                                 hoạch kinh
@@ -266,8 +280,8 @@
                     </tr>
                     <tr>
                         <td class="fornews">
-                            <i class="fa fa-angle-double-right" style="font-size:18px"></i> 
-                            <a href="#" class="news">Working in groups / Isa N Engleberg; Dianna Wynn</a> 
+                            <i class="fa fa-angle-double-right" style="font-size:18px"></i>
+                            <a href="#" class="news">Working in groups / Isa N Engleberg; Dianna Wynn</a>
                             <img alt="new" src="~/AllContent/images/new.gif" />
                         </td>
                     </tr>
@@ -369,7 +383,7 @@
                     </tr>
                     <tr>
                         <td class="fornews">
-                            <i class="fa fa-angle-double-right" style="font-size:18px"></i> 
+                            <i class="fa fa-angle-double-right" style="font-size:18px"></i>
                             <a href="#" class="news">Tổng hành dinh trong mùa xuân đại thắng : Hồi ức</a> <img alt="new" src="~/AllContent/images/new.gif" />
                         </td>
                     </tr>
@@ -384,9 +398,9 @@
                     </tr>
                     <tr>
                         <td class="fornews">
-                            <i class="fa fa-angle-double-right" style="font-size:18px"></i> 
+                            <i class="fa fa-angle-double-right" style="font-size:18px"></i>
                             <a href="#" class="news">Du học ký : vạn dặm có chi / Spiderum</a> <img alt="new"
-                                                                                                                                                                    src="~/AllContent/images/new.gif" />
+                                                                                                    src="~/AllContent/images/new.gif" />
                         </td>
                     </tr>
                     <tr>
@@ -428,20 +442,20 @@
             </tr>
             <tr>
                 <td class="fornews">
-                    <i class="fa fa-angle-double-right" style="font-size:18px"></i> 
+                    <i class="fa fa-angle-double-right" style="font-size:18px"></i>
                     <a href="#" class="news">Thông báo đóng cửa Thư viện nghỉ Quốc khánh</a>
                 </td>
             </tr>
             <tr>
                 <td class="fornews">
-                    <i class="fa fa-angle-double-right" style="font-size:18px"></i> 
+                    <i class="fa fa-angle-double-right" style="font-size:18px"></i>
                     <a href="#" class="news">Thông báo mở cửa Thư viện</a>
                 </td>
             </tr>
             <tr>
                 <td class="fornews">
-                    <i class="fa fa-angle-double-right" style="font-size:18px"></i> 
-                    <a href="#"class ="news">Thông báo đóng cửa thư viện để Reset kho sách</a>
+                    <i class="fa fa-angle-double-right" style="font-size:18px"></i>
+                    <a href="#" class="news">Thông báo đóng cửa thư viện để Reset kho sách</a>
                 </td>
             </tr>
             <tr>
@@ -457,8 +471,8 @@
             </tr>
             <tr>
                 <td class="fornews">
-                    <i class="fa fa-angle-double-right" style="font-size:18px"></i> 
-                    <a href="#" class="news">Hấp dẫn đêm đại nhạc hội – Cóc 1 nhà</a> 
+                    <i class="fa fa-angle-double-right" style="font-size:18px"></i>
+                    <a href="#" class="news">Hấp dẫn đêm đại nhạc hội – Cóc 1 nhà</a>
                     <img alt="new" src="~/AllContent/images/new.gif" />
                 </td>
             </tr>

@@ -26,8 +26,17 @@ namespace OPAC.Controllers
         [HttpPost]
         public ActionResult GetKeyword(string searchKeyword)
         {
-            Session["searchKey"] = searchKeyword;
-
+            if (string.IsNullOrEmpty(searchKeyword.Trim()))
+            {
+                ViewBag.EmptyKeword = searchKeyword.Trim();
+                TempData["errorMessage"] = "Ô tìm kiếm không được để trống";
+                return RedirectToAction("Home", "Home");
+            }
+            else
+            {
+                Session["searchKey"] = searchKeyword.Trim();
+            }
+            
             return RedirectToAction("SearchBook", new { page = 1 });
         }
 

@@ -20,48 +20,27 @@ namespace OPAC.Dao
         {
             using (var dbContext = new OpacEntities())
             {
-                if (string.IsNullOrEmpty(searchKeyword))
-                {
-                    var listResult = (from r in dbContext.ITEMs
-                                      join a in dbContext.ITEM_TITLE on r.ID equals a.ItemID
-                                      join b in dbContext.ITEM_AUTHOR on r.ID equals b.ItemID
-                                      join c in dbContext.ITEM_PUBLISHER on r.ID equals c.ItemID
-                                      join d in dbContext.CAT_DIC_PUBLISHER on c.PublisherID equals d.ID
-                                      join e in dbContext.CAT_DIC_YEAR on r.ID equals e.ItemID
-                                      join f in dbContext.CAT_DIC_AUTHOR on b.AuthorID equals f.ID
-                                      select new SearchingResult
-                                      {
-                                          ItemID = r.ID,
-                                          Title = a.Title,
-                                          Publisher = d.DisplayEntry,
-                                          Year = e.Year,
-                                          Author = f.DisplayEntry
-                                      }).Distinct().OrderBy(x => x.Title).ToPagedList(page, pageSize);
-                    return listResult;
-                }
-                else
-                {
-                    var listResult = (from r in dbContext.ITEMs
-                                      join a in dbContext.ITEM_TITLE on r.ID equals a.ItemID
-                                      join b in dbContext.ITEM_AUTHOR on r.ID equals b.ItemID
-                                      join c in dbContext.ITEM_PUBLISHER on r.ID equals c.ItemID
-                                      join d in dbContext.CAT_DIC_PUBLISHER on c.PublisherID equals d.ID
-                                      join e in dbContext.CAT_DIC_YEAR on r.ID equals e.ItemID
-                                      join f in dbContext.CAT_DIC_AUTHOR on b.AuthorID equals f.ID
-                                      where a.Title.Contains(searchKeyword) ||
-                                            d.DisplayEntry.Contains(searchKeyword) ||
-                                            e.Year.Contains(searchKeyword) ||
-                                            f.DisplayEntry.Contains(searchKeyword)
-                                      select new SearchingResult
-                                      {
-                                          ItemID = r.ID,
-                                          Title = a.Title,
-                                          Publisher = d.DisplayEntry,
-                                          Year = e.Year,
-                                          Author = f.DisplayEntry
-                                      }).Distinct().OrderBy(x => x.Title).ToPagedList(page, pageSize);
-                    return listResult;
-                }
+                var listResult = (from r in dbContext.ITEMs
+                                  join a in dbContext.ITEM_TITLE on r.ID equals a.ItemID
+                                  join b in dbContext.ITEM_AUTHOR on r.ID equals b.ItemID
+                                  join c in dbContext.ITEM_PUBLISHER on r.ID equals c.ItemID
+                                  join d in dbContext.CAT_DIC_PUBLISHER on c.PublisherID equals d.ID
+                                  join e in dbContext.CAT_DIC_YEAR on r.ID equals e.ItemID
+                                  join f in dbContext.CAT_DIC_AUTHOR on b.AuthorID equals f.ID
+                                  where a.Title.Contains(searchKeyword) ||
+                                        d.DisplayEntry.Contains(searchKeyword) ||
+                                        e.Year.Contains(searchKeyword) ||
+                                        f.DisplayEntry.Contains(searchKeyword)
+                                  select new SearchingResult
+                                  {
+                                      ItemID = r.ID,
+                                      Title = a.Title,
+                                      Publisher = d.DisplayEntry,
+                                      Year = e.Year,
+                                      Author = f.DisplayEntry
+                                  }).Distinct().OrderBy(x => x.Title).ToPagedList(page, pageSize);
+
+                return listResult;
             }
         }
 
