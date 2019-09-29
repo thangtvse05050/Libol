@@ -7334,3 +7334,56 @@ CREATE PROCEDURE [dbo].[FPT_SP_ACQ_GETMAXID_HINT]
 AS  
    SELECT ISNULL(MAX(InventoryTime),0)  FROM HOLDING_INVENTORY   
 
+   /*==========================TuanND==========================*/
+
+   USE [Libol]
+GO
+/****** Object:  StoredProcedure [dbo].[FPT_SPECIALIZED_REPORT_GET_YEAR_PUBLISHNUM]    Script Date: 9/29/2019 6:58:06 PM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE PROCEDURE [dbo].[FPT_SPECIALIZED_REPORT_GET_YEAR_PUBLISHNUM] 
+	-- Add the parameters for the stored procedure here
+	(@itemId int,@type int)
+
+AS
+BEGIN
+	-- SET NOCOUNT ON added to prevent extra result sets from
+	-- interfering with SELECT statements.
+	IF @type=0
+
+	Begin
+    -- Insert statements for procedure here
+	select ItemID as ITEMID,Content as CONTENT,FieldCode from FIELD200S where   FieldCode='250' and ItemID=@itemId
+	end
+	ELSE IF @type = 1
+	begin
+	select ItemID as ITEMID,Content as CONTENT,FieldCode  from FIELD200S where   FieldCode='260' and ItemID=@itemId
+	end
+END
+--get number gt gk
+CREATE PROCEDURE FPT_SPECIALIZED_REPORT_GET_GTTK
+	-- Add the parameters for the stored procedure here
+	@itemid int, @type int
+AS
+BEGIN
+	-- SET NOCOUNT ON added to prevent extra result sets from
+	-- interfering with SELECT statements.
+	SET NOCOUNT ON;
+
+    -- Insert statements for procedure here
+	if @type=0
+	begin
+	select count(Holding.CopyNumber)as total,ItemID from HOLDING where LoanTypeID  in (13,22,23) and ItemID=@itemid
+group by ItemID
+end
+else if @type=1
+begin 
+	select count(Holding.CopyNumber)as total,ItemID from HOLDING where LoanTypeID  not in (13,22,23) and ItemID=@itemid
+	group by ItemID
+end
+END
+GO
+
+/*TuanND END*/
