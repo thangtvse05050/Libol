@@ -23330,5 +23330,18 @@ namespace Libol.Models
     
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("FPT_SP_ACQ_NEW_INVENTORY", strInventoryNameParameter, strInventoryDateParameter, strInputerParameter);
         }
+    
+        public virtual ObjectResult<FPT_SP_CATA_GET_CONTENTS_OF_ITEMS_Newest_Result> FPT_SP_CATA_GET_CONTENTS_OF_ITEMS_Newest(string strItemIDs, Nullable<int> intIsAuthority)
+        {
+            var strItemIDsParameter = strItemIDs != null ?
+                new ObjectParameter("strItemIDs", strItemIDs) :
+                new ObjectParameter("strItemIDs", typeof(string));
+    
+            var intIsAuthorityParameter = intIsAuthority.HasValue ?
+                new ObjectParameter("intIsAuthority", intIsAuthority) :
+                new ObjectParameter("intIsAuthority", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<FPT_SP_CATA_GET_CONTENTS_OF_ITEMS_Newest_Result>("FPT_SP_CATA_GET_CONTENTS_OF_ITEMS_Newest", strItemIDsParameter, intIsAuthorityParameter);
+        }
     }
 }
