@@ -7191,7 +7191,7 @@ GO
 SET QUOTED_IDENTIFIER ON
 GO
 /*Update Store */
-CREATE PROCEDURE [dbo].[FPT_SPECIALIZED_REPORT]
+ALTER PROCEDURE [dbo].[FPT_SPECIALIZED_REPORT]
 	@intLibID int,
 	@strSubCode varchar(5000),
 	@intUserID int
@@ -7239,6 +7239,7 @@ BEGIN
 		ORDER BY S.Content ASC
 	END	
 END
+/*TuanND END*/
 GO
 /****** Object:  StoredProcedure [dbo].[FPT_SP_CATA_GET_CONTENTS_OF_ITEMS]    Script Date: 7/9/2019 3:16:48 PM ******/
 SET ANSI_NULLS ON
@@ -7445,4 +7446,3 @@ ELSE
 	END
 	
 
-/*TuanND END*/
