@@ -13,7 +13,7 @@
     <script>
         $(document).ready(function () {
             var title = document.getElementById("title").innerText;
-            var len = 6;
+            var len = 4;
             var general_tbl = $("#general_tbl").DataTable({
                 paging: false,
                 searching: false,
@@ -48,6 +48,18 @@
                     {
                         "targets": [7],
                         "visible": false
+                    },
+                    {
+                        "targets": [8],
+                        "visible": false
+                    },
+                    {
+                        "targets": [9],
+                        "visible": false
+                    },
+                    {
+                        "targets": [10],
+                        "visible": false
                     }
                 ]
             });
@@ -75,10 +87,11 @@
                     table.cell(cell).invalidate('dom');
                 });
             }).draw();
+            //ong them 3 cot phai k? uk them 3
 
             var data = [
-                ["", "", "", "", "", "", "", ""],
-                ["STT", "Mã môn", "Tên sách", "Mã tài liệu", "ISBN", "", "", "Tác giả", "Nhà xuất bản", "",""],
+                ["", "", "", "", "", "", "", "", "", "", ""],
+                ["STT", "Mã môn", "Tên sách", "Mã tài liệu", "ISBN", "Năm xuất bản", "Lần xuất bản", "Tác giả", "Nhà xuất bản", "Số lượng sách giáo trình","Số lượng sách tham khảo"],
             ];
 
             general_tbl.rows.add(data).draw()
@@ -117,6 +130,9 @@
                     <th></th>
                     <th></th>
                     <th></th>
+                    <th></th>
+                    <th></th>
+                    <th></th>
                 </tr>
             </thead>
             <tbody>
@@ -134,7 +150,7 @@
                     <td>Tổng Tham khảo</td>
                     <td>@ViewBag.TKItem</td>
                     <td>@ViewBag.TK</td>
-                    <td></td>
+                    <td></td> 
                     <td></td>
                     <td></td>
                     <td></td>
@@ -144,6 +160,9 @@
                     <td>Tổng</td>
                     <td>@ViewBag.TTItem</td>
                     <td>@ViewBag.TT</td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
                     <td></td>
                     <td></td>
                     <td></td>
