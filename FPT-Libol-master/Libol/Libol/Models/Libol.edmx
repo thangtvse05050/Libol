@@ -2928,7 +2928,7 @@ warning 6002: The table/view 'Libol.dbo.MARC_BIB_WS_DETAIL' does not have a prim
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__FPT_CATA___ItemI__4A149BFC">
+        <Association Name="FK__FPT_CATA___ItemI__2E2268C4">
           <End Role="ITEM" Type="Self.ITEM" Multiplicity="1" />
           <End Role="FPT_CATA_FILE_NEW" Type="Self.FPT_CATA_FILE_NEW" Multiplicity="*" />
           <ReferentialConstraint>
@@ -2940,7 +2940,7 @@ warning 6002: The table/view 'Libol.dbo.MARC_BIB_WS_DETAIL' does not have a prim
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__FPT_SYS_U__Right__64097829">
+        <Association Name="FK__FPT_SYS_U__Right__50AC8AF2">
           <End Role="FPT_SYS_USER_RIGHT" Type="Self.FPT_SYS_USER_RIGHT" Multiplicity="1" />
           <End Role="FPT_SYS_USER_RIGHT_DETAIL" Type="Self.FPT_SYS_USER_RIGHT_DETAIL" Multiplicity="*" />
           <ReferentialConstraint>
@@ -5827,6 +5827,10 @@ warning 6002: The table/view 'Libol.dbo.MARC_BIB_WS_DETAIL' does not have a prim
           <Parameter Name="strItemType" Type="varchar" Mode="In" />
         </Function>
         <Function Name="FPT_SP_CATA_GET_CONTENTS_OF_ITEMS" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="strItemIDs" Type="varchar" Mode="In" />
+          <Parameter Name="intIsAuthority" Type="int" Mode="In" />
+        </Function>
+        <Function Name="FPT_SP_CATA_GET_CONTENTS_OF_ITEMS_Newest" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="strItemIDs" Type="varchar" Mode="In" />
           <Parameter Name="intIsAuthority" Type="int" Mode="In" />
         </Function>
@@ -12471,11 +12475,11 @@ warning 6002: The table/view 'Libol.dbo.MARC_BIB_WS_DETAIL' does not have a prim
             <End Role="CAT_DIC_MEDIUM" EntitySet="CAT_DIC_MEDIUM" />
             <End Role="ITEM" EntitySet="ITEM" />
           </AssociationSet>
-          <AssociationSet Name="FK__FPT_CATA___ItemI__4A149BFC" Association="Self.FK__FPT_CATA___ItemI__4A149BFC">
+          <AssociationSet Name="FK__FPT_CATA___ItemI__2E2268C4" Association="Self.FK__FPT_CATA___ItemI__2E2268C4">
             <End Role="ITEM" EntitySet="ITEM" />
             <End Role="FPT_CATA_FILE_NEW" EntitySet="FPT_CATA_FILE_NEW" />
           </AssociationSet>
-          <AssociationSet Name="FK__FPT_SYS_U__Right__64097829" Association="Self.FK__FPT_SYS_U__Right__64097829">
+          <AssociationSet Name="FK__FPT_SYS_U__Right__50AC8AF2" Association="Self.FK__FPT_SYS_U__Right__50AC8AF2">
             <End Role="FPT_SYS_USER_RIGHT" EntitySet="FPT_SYS_USER_RIGHT" />
             <End Role="FPT_SYS_USER_RIGHT_DETAIL" EntitySet="FPT_SYS_USER_RIGHT_DETAIL" />
           </AssociationSet>
@@ -26184,6 +26188,10 @@ warning 6002: The table/view 'Libol.dbo.MARC_BIB_WS_DETAIL' does not have a prim
             <Parameter Name="strInventoryDate" Mode="In" Type="String" />
             <Parameter Name="strInputer" Mode="In" Type="String" />
           </FunctionImport>
+          <FunctionImport Name="FPT_SP_CATA_GET_CONTENTS_OF_ITEMS_Newest" ReturnType="Collection(LibolModel.FPT_SP_CATA_GET_CONTENTS_OF_ITEMS_Newest_Result)">
+            <Parameter Name="strItemIDs" Mode="In" Type="String" />
+            <Parameter Name="intIsAuthority" Mode="In" Type="Int32" />
+          </FunctionImport>
         </EntityContainer>
         <ComplexType Name="CAT_DIC_LIST_SEL_Result">
           <Property Type="String" Name="BrowseFile" Nullable="true" MaxLength="50" />
@@ -31276,6 +31284,12 @@ warning 6002: The table/view 'Libol.dbo.MARC_BIB_WS_DETAIL' does not have a prim
         <ComplexType Name="FPT_SPECIALIZED_REPORT_GET_PUBLISHER_Result">
           <Property Type="Int32" Name="ItemID" Nullable="false" />
           <Property Type="String" Name="PUBLISHER" Nullable="false" MaxLength="256" />
+        </ComplexType>
+        <ComplexType Name="FPT_SP_CATA_GET_CONTENTS_OF_ITEMS_Newest_Result">
+          <Property Type="String" Name="IDSort" Nullable="false" MaxLength="10" />
+          <Property Type="String" Name="FieldCode" Nullable="false" MaxLength="10" />
+          <Property Type="String" Name="Ind" Nullable="true" MaxLength="8000" />
+          <Property Type="String" Name="Content" Nullable="true" MaxLength="1000" />
         </ComplexType>
       </Schema>
     </edmx:ConceptualModels>
@@ -41803,6 +41817,16 @@ warning 6002: The table/view 'Libol.dbo.MARC_BIB_WS_DETAIL' does not have a prim
           <FunctionImportMapping FunctionImportName="FPT_CATA_GETCONTENT_BY_INDEX" FunctionName="LibolModel.Store.FPT_CATA_GETCONTENT_BY_INDEX" />
           <FunctionImportMapping FunctionImportName="FPT_SP_ACQ_GETMAXID_HINT" FunctionName="LibolModel.Store.FPT_SP_ACQ_GETMAXID_HINT" />
           <FunctionImportMapping FunctionImportName="FPT_SP_ACQ_NEW_INVENTORY" FunctionName="LibolModel.Store.FPT_SP_ACQ_NEW_INVENTORY" />
+          <FunctionImportMapping FunctionImportName="FPT_SP_CATA_GET_CONTENTS_OF_ITEMS_Newest" FunctionName="LibolModel.Store.FPT_SP_CATA_GET_CONTENTS_OF_ITEMS_Newest">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="LibolModel.FPT_SP_CATA_GET_CONTENTS_OF_ITEMS_Newest_Result">
+                <ScalarProperty Name="IDSort" ColumnName="IDSort" />
+                <ScalarProperty Name="FieldCode" ColumnName="FieldCode" />
+                <ScalarProperty Name="Ind" ColumnName="Ind" />
+                <ScalarProperty Name="Content" ColumnName="Content" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
         </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>
