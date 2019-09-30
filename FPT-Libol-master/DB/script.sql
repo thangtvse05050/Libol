@@ -7336,14 +7336,14 @@ AS
 
    /*==========================TuanND==========================*/
 
-   USE [Libol]
+   
 GO
 /****** Object:  StoredProcedure [dbo].[FPT_SPECIALIZED_REPORT_GET_YEAR_PUBLISHNUM]    Script Date: 9/29/2019 6:58:06 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
 GO
-CREATE PROCEDURE [dbo].[FPT_SPECIALIZED_REPORT_GET_YEAR_PUBLISHNUM] 
+CREATE PROCEDURE [FPT_SPECIALIZED_REPORT_GET_YEAR_PUBLISHNUM] 
 	-- Add the parameters for the stored procedure here
 	(@itemId int,@type int)
 
@@ -7365,7 +7365,7 @@ END
 --get number gt gk
 CREATE PROCEDURE FPT_SPECIALIZED_REPORT_GET_GTTK
 	-- Add the parameters for the stored procedure here
-	@itemid int, @type int
+	(@itemid int, @type int)
 AS
 BEGIN
 	-- SET NOCOUNT ON added to prevent extra result sets from
@@ -7385,5 +7385,54 @@ begin
 end
 END
 GO
+/*Update Store */
+ALTER PROCEDURE [dbo].[FPT_SPECIALIZED_REPORT]
+	@intLibID int,
+	@strSubCode varchar(5000),
+	@intUserID int
+AS
+BEGIN 
+	IF @intLibID = 81
+	BEGIN
+		SELECT S.ItemID, S.Content AS SUBJECTCODE, F2.Content AS ITEMNAME, I.Code AS ITEMCODE, '' AS ISBN,''AS [YEAR],''AS PUBLISHNUM,'' AS GTNUMBER,'' AS TKNUMBER, F1.Content AS AUTHOR, '' AS PUBLISHER, H.Total AS TOTAL
+		FROM (SELECT DISTINCT ItemID, Content FROM FIELD600S WHERE FieldCode like '650' and @strSubCode like '%;'+cast(Content AS VARCHAR(20))+';%') S,
+			ITEM I, FIELD200S F2, FIELD100S F1, 
+			(SELECT count(Holding.ItemID) AS Total, Holding.ItemID FROM Holding, Item WHERE Holding.ItemID = Item.ID 
+			and Holding.LocationID in (SELECT B.ID FROM HOLDING_LIBRARY A, HOLDING_LOCATION B, SYS_USER_LOCATION C 
+										WHERE A.LocalLib = 1 AND A.ID = B.LibID AND B.ID = C.LocID AND C.UserID = @intUserID AND B.LibID = @intLibID
+										UNION SELECT ID FROM HOLDING_LOCATION	WHERE ID in (13,15,16,27)) 
+			GROUP BY Holding.ItemID) H
+		WHERE S.ItemID = I.ID and S.ItemID = F2.ItemID and S.ItemID = F1.ItemID and S.ItemID = H.ItemID
+			and F2.FieldCode = '245' and F1.FieldCode = '100'
+		ORDER BY S.Content ASC
+	END
+	ELSE IF @intLibID = 20
+	BEGIN
+		SELECT S.ItemID, S.Content AS SUBJECTCODE, F2.Content AS ITEMNAME, I.Code AS ITEMCODE, '' AS ISBN,''AS [YEAR],''AS PUBLISHNUM,'' AS GTNUMBER,'' AS TKNUMBER, F1.Content AS AUTHOR, '' AS PUBLISHER, H.Total AS TOTAL
+		FROM (SELECT DISTINCT ItemID, Content FROM FIELD600S WHERE FieldCode like '650' and @strSubCode like '%;'+cast(Content AS VARCHAR(20))+';%') S,
+			ITEM I, FIELD200S F2, FIELD100S F1, 
+			(SELECT count(Holding.ItemID) AS Total, Holding.ItemID FROM Holding, Item WHERE Holding.ItemID = Item.ID 
+			and Holding.LocationID in (SELECT B.ID FROM HOLDING_LIBRARY A, HOLDING_LOCATION B, SYS_USER_LOCATION C 
+										WHERE A.LocalLib = 1 AND A.ID = B.LibID AND B.ID = C.LocID AND C.UserID = @intUserID AND B.LibID = @intLibID
+										EXCEPT SELECT ID FROM HOLDING_LOCATION	WHERE ID in (13,15,16,27)) 
+			GROUP BY Holding.ItemID) H
+		WHERE S.ItemID = I.ID and S.ItemID = F2.ItemID and S.ItemID = F1.ItemID and S.ItemID = H.ItemID
+			and F2.FieldCode = '245' and F1.FieldCode = '100'
+		ORDER BY S.Content ASC
+	END
+	ELSE
+	BEGIN
+		SELECT S.ItemID, S.Content AS SUBJECTCODE, F2.Content AS ITEMNAME, I.Code AS ITEMCODE, '' AS ISBN,''AS [YEAR],''AS PUBLISHNUM,'' AS GTNUMBER,'' AS TKNUMBER, F1.Content AS AUTHOR, '' AS PUBLISHER, H.Total AS TOTAL
+		FROM (SELECT DISTINCT ItemID, Content FROM FIELD600S WHERE FieldCode like '650' and @strSubCode like '%;'+cast(Content AS VARCHAR(20))+';%') S,
+			ITEM I, FIELD200S F2, FIELD100S F1, 
+			(SELECT count(Holding.ItemID) AS Total, Holding.ItemID FROM Holding, Item WHERE Holding.ItemID = Item.ID 
+			and Holding.LocationID in (SELECT B.ID FROM HOLDING_LIBRARY A, HOLDING_LOCATION B, SYS_USER_LOCATION C 
+										WHERE A.LocalLib = 1 AND A.ID = B.LibID AND B.ID = C.LocID AND C.UserID = @intUserID AND B.LibID = @intLibID) 
+			GROUP BY Holding.ItemID) H
+		WHERE S.ItemID = I.ID and S.ItemID = F2.ItemID and S.ItemID = F1.ItemID and S.ItemID = H.ItemID
+			and F2.FieldCode = '245' and F1.FieldCode = '100'
+		ORDER BY S.Content ASC
+	END	
+END
 
 /*TuanND END*/
