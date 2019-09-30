@@ -110,9 +110,9 @@ namespace Libol.Models
 
 
 
-        public List<FPT_SP_CATA_GET_CONTENTS_OF_ITEMS_Newest_Result> GetContentByID(string Id)
+        public List<FPT_SP_CATA_GET_CONTENTS_OF_ITEMS_Result> GetContentByID(string Id)
         {
-            List<FPT_SP_CATA_GET_CONTENTS_OF_ITEMS_Newest_Result> list = db.FPT_SP_CATA_GET_CONTENTS_OF_ITEMS_Newest(Id, 0).ToList();
+            List<FPT_SP_CATA_GET_CONTENTS_OF_ITEMS_Result> list = db.FPT_SP_CATA_GET_CONTENTS_OF_ITEMS(Id, 0).ToList();
 
             //Ghep Cac truong trung nhau thanh 1 dong
             List<int> index = new List<int>();
