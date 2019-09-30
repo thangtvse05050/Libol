@@ -11,11 +11,10 @@ namespace Libol.Models
 {
     using System;
     
-    public partial class FPT_SP_CATA_GET_CONTENTS_OF_ITEMS_Newest_Result
+    public partial class FPT_SPECIALIZED_REPORT_GET_YEAR_PUBLISHNUM_Result
     {
-        public string IDSort { get; set; }
+        public int ITEMID { get; set; }
+        public string CONTENT { get; set; }
         public string FieldCode { get; set; }
-        public string Ind { get; set; }
-        public string Content { get; set; }
     }
 }
