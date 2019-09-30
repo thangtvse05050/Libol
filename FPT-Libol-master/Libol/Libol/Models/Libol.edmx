@@ -26192,6 +26192,10 @@ warning 6002: The table/view 'Libol.dbo.MARC_BIB_WS_DETAIL' does not have a prim
             <Parameter Name="strItemIDs" Mode="In" Type="String" />
             <Parameter Name="intIsAuthority" Mode="In" Type="Int32" />
           </FunctionImport>
+          <FunctionImport Name="FPT_SP_CATA_GET_CONTENTS_OF_ITEMS_Newest" ReturnType="Collection(LibolModel.FPT_SP_CATA_GET_CONTENTS_OF_ITEMS_Newest_Result)">
+            <Parameter Name="strItemIDs" Mode="In" Type="String" />
+            <Parameter Name="intIsAuthority" Mode="In" Type="Int32" />
+          </FunctionImport>
         </EntityContainer>
         <ComplexType Name="CAT_DIC_LIST_SEL_Result">
           <Property Type="String" Name="BrowseFile" Nullable="true" MaxLength="50" />
@@ -31284,6 +31288,12 @@ warning 6002: The table/view 'Libol.dbo.MARC_BIB_WS_DETAIL' does not have a prim
         <ComplexType Name="FPT_SPECIALIZED_REPORT_GET_PUBLISHER_Result">
           <Property Type="Int32" Name="ItemID" Nullable="false" />
           <Property Type="String" Name="PUBLISHER" Nullable="false" MaxLength="256" />
+        </ComplexType>
+        <ComplexType Name="FPT_SP_CATA_GET_CONTENTS_OF_ITEMS_Newest_Result">
+          <Property Type="String" Name="IDSort" Nullable="false" MaxLength="10" />
+          <Property Type="String" Name="FieldCode" Nullable="false" MaxLength="10" />
+          <Property Type="String" Name="Ind" Nullable="true" MaxLength="8000" />
+          <Property Type="String" Name="Content" Nullable="true" MaxLength="1000" />
         </ComplexType>
         <ComplexType Name="FPT_SP_CATA_GET_CONTENTS_OF_ITEMS_Newest_Result">
           <Property Type="String" Name="IDSort" Nullable="false" MaxLength="10" />
@@ -41827,7 +41837,11 @@ warning 6002: The table/view 'Libol.dbo.MARC_BIB_WS_DETAIL' does not have a prim
               </ComplexTypeMapping>
             </ResultMapping>
           </FunctionImportMapping>
+<<<<<<< Updated upstream
         </EntityContainerMapping>
+=======
+          </EntityContainerMapping>
+>>>>>>> Stashed changes
       </Mapping>
     </edmx:Mappings>
   </edmx:Runtime>

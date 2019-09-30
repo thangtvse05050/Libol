@@ -260,6 +260,9 @@
     <Compile Include="Models\FPT_SP_CATA_GET_CONTENTS_OF_ITEMS_Newest_Result.cs">
       <DependentUpon>Libol.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\FPT_SP_CATA_GET_CONTENTS_OF_ITEMS_Newest_Result.cs">
+      <DependentUpon>Libol.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\FPT_SP_CATA_GET_CONTENTS_OF_ITEMS_Result.cs">
       <DependentUpon>Libol.tt</DependentUpon>
     </Compile>
