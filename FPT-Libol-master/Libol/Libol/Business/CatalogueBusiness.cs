@@ -108,7 +108,22 @@ namespace Libol.Models
             return inforList;
         }
 
+        //Search Code View
+        public List<FPT_SP_CATA_GET_CONTENTS_OF_ITEMS_Result> SearchViewCode(string strCode,string strCN, string strTT,string ISBN)
+        {
+            List<int> ItemId = SearchIDByCondition(strCode, strCN, strTT, ISBN).Distinct().ToList();
+            List<FPT_SP_CATA_GET_CONTENTS_OF_ITEMS_Result> inforList = new List<FPT_SP_CATA_GET_CONTENTS_OF_ITEMS_Result>();
+            foreach(int item in ItemId)
+            {
+                List<FPT_SP_CATA_GET_CONTENTS_OF_ITEMS_Result> inforListTemp = db.FPT_SP_CATA_GET_CONTENTS_OF_ITEMS(item.ToString(), 0).ToList();
+                for (int i = 0; i < inforListTemp.Count; i++)
+                {
+                    inforList.Add(inforListTemp[i]);
+                }
 
+                }
+            return inforList;
+        }
 
         public List<FPT_SP_CATA_GET_CONTENTS_OF_ITEMS_Result> GetContentByID(string Id)
         {
