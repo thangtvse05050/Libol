@@ -2989,6 +2989,8 @@ namespace Libol.Controllers
 			//;$aPRJ101;$aPRJ201;
 			strSubjects = strSubjects.Trim().ToUpper().Replace(" ", ";$a");
 			strSubjects = ";$a" + strSubjects + ';';
+			int GTTOTAL = 0;
+			int TKTOTAL = 0;
 			string ItemIDs = "";
 			ViewBag.Result = le.FPT_SPECIALIZED_REPORT(LibID, strSubjects, (int)Session["UserID"]).ToList();
 			//int count = le.FPT_SPECIALIZED_REPORT(LibID, strSubjects).Select(a => a.ITEMCODE).Distinct().Count();
@@ -3014,6 +3016,7 @@ namespace Libol.Controllers
 				i.PUBLISHER = publisher;
 				//get publish number
 				int itemCheck = (int)i.ItemID;
+				
 				List<FPT_SPECIALIZED_REPORT_GET_YEAR_PUBLISHNUM_Result> x = le.FPT_SPECIALIZED_REPORT_GET_YEAR_PUBLISHNUM(itemCheck, 0).ToList();
 				if (x.Count > 0)
 				{
@@ -3045,10 +3048,15 @@ namespace Libol.Controllers
 					}
 				}
 				List<FPT_SPECIALIZED_REPORT_GET_GTTK_Result> gtlst = le.FPT_SPECIALIZED_REPORT_GET_GTTK(itemCheck, 0).ToList();
-				if (gtlst.Count > 0) { i.GTNUMBER = gtlst.First().total.ToString(); }
+				if (gtlst.Count > 0) {
+					i.GTNUMBER = gtlst.First().total.ToString();
+					GTTOTAL += Int32.Parse( i.GTNUMBER);
+				}
 				List<FPT_SPECIALIZED_REPORT_GET_GTTK_Result> tklst = le.FPT_SPECIALIZED_REPORT_GET_GTTK(itemCheck, 1).ToList();
-				if (tklst.Count > 0) { i.TKNUMBER = tklst.First().total.ToString(); }
-
+				if (tklst.Count > 0) {
+					i.TKNUMBER = tklst.First().total.ToString();
+					TKTOTAL += Int32.Parse( i.TKNUMBER);
+				}
 			}
 			ItemIDs = ItemIDs.Trim().Replace(" ", ";");
 			ItemIDs = ";" + ItemIDs + ';';
@@ -3058,6 +3066,8 @@ namespace Libol.Controllers
 			ViewBag.TKItem = le.FPT_SPECIALIZED_REPORT_TOTAL_ITEM(LibID, ItemIDs, 0, (int)Session["UserID"]).First();
 			ViewBag.TT = ViewBag.GT + ViewBag.TK;
 			ViewBag.TTItem = ViewBag.GTItem + ViewBag.TKItem;
+			ViewBag.GTTOTAL = GTTOTAL;
+			ViewBag.TKTOTAL = TKTOTAL;
 			ViewBag.Spec = strSpec;
 			return PartialView("GetSpecializedReport");
 		}

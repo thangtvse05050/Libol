@@ -87,7 +87,6 @@
                     table.cell(cell).invalidate('dom');
                 });
             }).draw();
-            //ong them 3 cot phai k? uk them 3
 
             var data = [
                 ["", "", "", "", "", "", "", "", "", "", ""],
@@ -192,21 +191,27 @@
             <tbody>
                 @foreach (var i in ViewBag.Result)
                 {
-                <tr>
-                    <td style="text-align:center;"></td>
-                    <td>@i.SUBJECTCODE</td>
-                    <td>@i.ITEMNAME</td>
-                    <td>@i.ITEMCODE</td>
-                    <td>@i.ISBN.ToString()</td>
-                    <td>@i.YEAR</td>
-                    <td>@i.PUBLISHNUM</td>
-                    <td>@i.AUTHOR</td>
-                    <td>@i.PUBLISHER</td>
-                    <td>@i.GTNUMBER</td>
-                    <td>@i.TKNUMBER</td>
-                </tr>
+                    <tr>
+                        <td style="text-align:center;"></td>
+                        <td>@i.SUBJECTCODE</td>
+                        <td>@i.ITEMNAME</td>
+                        <td>@i.ITEMCODE</td>
+                        <td>@i.ISBN.ToString()</td>
+                        <td style="text-align:center">@i.YEAR</td>
+                        <td>@i.PUBLISHNUM</td>
+                        <td>@i.AUTHOR</td>
+                        <td>@i.PUBLISHER</td>
+                        <td style="text-align:center">@i.GTNUMBER</td>
+                        <td style="text-align:center">@i.TKNUMBER</td>
+                    </tr>
                 }
+
             </tbody>
+            <tr>
+                <th style="text-align:center" colspan="9">Tổng sách</th>
+                <th style="text-align:center">@ViewBag.GTTOTAL</th>
+                <th style="text-align:center">@ViewBag.TKTOTAL</th>
+            </tr>
         </table>
         <div class="row">
             <div class="col-md-12 text-center">

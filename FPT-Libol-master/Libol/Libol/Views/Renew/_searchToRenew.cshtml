@@ -126,8 +126,12 @@
     }
 
     function ShowPatronLock() {
+        var object= {
+            strCodeVal: @ViewBag.CodePatron
+        };
         $.ajax({
             url: "/Renew/GetLockPatronInfo",
+            data: JSON.stringify(object),
             type: "POST",
             contentType: "application/json;charset=utf-8",
             dataType: "json",
