@@ -9,8 +9,6 @@
 
 <!-- Start body -->
 <div class="container">
-    <a href="#" title="Lên đầu trang" class="scrollPage top"><i class="fa fa-arrow-up" aria-hidden="true" style="font-size: 46px"></i></a>
-    <a href="#end" title="Xuống cuối trang" class="scrollPage bottom"><i class="fa fa-arrow-down" aria-hidden="true" style="font-size: 46px"></i></a>
     <figure>
         <img class="pic-header" alt="Home Slide" src="~/AllContent/images/white-background.png" />
     </figure>
@@ -33,7 +31,11 @@
         int totalBook = (int)ViewBag.TotalBook;
         int onholdingBook = (int)ViewBag.OnHoldingBook;
         int freeBook = (int)ViewBag.FreeBook;
-        var inforCopyNumber = (List<InfoCopyNumber>)ViewBag.InforCopyNumber;
+        var fullBookInfo = (FullInforBook)ViewBag.FullBookInfo;
+        var inforCopyNumber = (List<FPT_SP_GET_CODE_AND_SYMBOL_BY_ITEMID_Result>)ViewBag.InforCopyNumber;
+        var relatedTerm = (List<SP_OPAC_RELATED_TERMS_Result>)ViewBag.RelatedTerm;
+        string title = (string)ViewBag.BookTitle;
+        var listDetailBook = new List<FPT_SP_GET_DETAIL_BOOK_WITH_STATUS_Result>();
     }
     <h2 class="searching">Thông tin chi tiết sách</h2>
     <br>
@@ -64,78 +66,130 @@
                     <td class="detail"><b>Loại tài liệu</b></td>
                     <td>Tư liệu ngôn ngữ (Sách)</td>
                 </tr>
-                <tr>
-                    <td class="detail"><b>Mã ngôn ngữ</b></td>
-                    <td>Vie</td>
-                </tr>
+                @if (!string.IsNullOrEmpty(fullBookInfo.ISBN))
+                {
+                    <tr>
+                        <td class="detail"><b>Chỉ số ISBN</b></td>
+                        <td>@fullBookInfo.ISBN</td>
+                    </tr>
+                }
+                @if (!string.IsNullOrEmpty(fullBookInfo.LanguageCode))
+                {
+                    <tr>
+                        <td class="detail"><b>Mã ngôn ngữ</b></td>
+                        <td>@fullBookInfo.LanguageCode</td>
+                    </tr>
+                }
                 <tr>
                     <td class="detail"><b>Phân loại thập phân Dewey</b></td>
-                    <td>005.74,</td>
+                    @{
+                        var getDDCList = relatedTerm.Where(s => s.TermType.Equals("DDC"));
+                        foreach (var item in getDDCList)
+                        {
+                            <td>@item.DisplayEntry</td>
+                        }
+                    }
                 </tr>
+                @{
+                    var authorList = relatedTerm.Where(s => s.TermType.Equals("Author"));
+                    string mainAuthor = "";
+                    string relatedAuthor = "";
+                    int count = 0;
+                    foreach (var item in authorList)
+                    {
+                        count++;
+                        if (count == 1)
+                        {
+                            mainAuthor = item.DisplayEntry;
+                        }
+                        else
+                        {
+                            relatedAuthor += item.DisplayEntry + ", ";
+                        }
+                    }
+                    relatedAuthor = relatedAuthor.TrimEnd(',', ' ');
+
+                }
                 <tr>
                     <td class="detail"><b>Tên tác giả</b></td>
-                    <td>Nguyễn Ngọc Tuấn</td>
+                    <td>@mainAuthor</td>
                 </tr>
-                <tr>
-                    <td class="detail"><b>Tác giả liên quan</b></td>
-                    <td>Hồng Phúc Tác giả</td>
-                </tr>
+                @if (!relatedAuthor.Equals(""))
+                {
+                    <tr>
+                        <td class="detail"><b>Tác giả liên quan</b></td>
+                        <td>@relatedAuthor</td>
+                    </tr>
+                }
                 <tr>
                     <td class="detail"><b>Thông tin nhan đề</b></td>
-                    <td>Phát triển cơ sở dữ liệu Java Oracle / Nguyễn Ngọc Tuấn, Hồng Phúc</td>
+                    <td>@title</td>
                 </tr>
                 <tr>
                     <td class="detail"><b>Xuẩt bản,phát hành</b></td>
-                    <td>H.: Giao thông vận tải, 2005</td>
+                    <td>@fullBookInfo.Publishing</td>
                 </tr>
                 <tr>
                     <td class="detail"><b>Mô tả vật lý</b></td>
-                    <td>434 tr.; 24 cm</td>
+                    <td>@fullBookInfo.PhysicDescription</td>
                 </tr>
-                <tr>
-                    <td class="detail"><b>Từ khóa</b></td>
-                    <td>1. Cơ sở dữ liệu. 2. Công nghệ thông tin. 3. Java. 4. Oracle. 5. Phát triển.</td>
-                </tr>
-            </table>
-            <hr style="height: 3px; width: 900px">
-            <table>
-                <th>
-                    <Label style="font-size: 26px; padding-left: 5px;" class="search-data">
-                        <b>Thông tin đăng ký cá biệt</b>
-                    </Label>
-                </th>
-            </table>
-            <table style="width: 900px">
-                    @foreach (var item in inforCopyNumber)
+                @{
+                    var keywordList = relatedTerm.Where(s => s.TermType.Equals("KeyWord"));
+                    string keyWord = "";
+                    int keywordNo = 0;
+
+                    if (keywordList.Count() != 0)
                     {
-                        var totalCopyNumber = SearchDao.CountTotalCopyNumberBySymbol(item.ItemID, item.Symbol);
-                        var copyNumberFree = SearchDao.CountTotalCopyNumberBySymbol(item.ItemID, item.Symbol);
-                        var copyNumberNotFree = SearchDao.CountTotalCopyNumberNotFreeBySymbol(item.ItemID, item.Symbol);
                         <tr>
-                            <td class="detail">
-                                <b>
-                                    <i class="fa fa-circle" aria-hidden="true" style="color: green">
-                                    </i> @item.Code: @item.Symbol
-                                </b> Tổng: <span><b>@totalCopyNumber</b></span>
-                                Rỗi: <span><b style="color: green"> @copyNumberFree</b></span>
-                                Bận: <span><b style="color: red">@copyNumberNotFree</b></span>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td class="detail">
-                                Những bản rỗi:<br />
-                                @{
-                                    var listCopyNumber = SearchDao.GetListCopyNumberNotBorrowing(item.ItemID, item.Symbol);
-                                    foreach (var copyNumber in listCopyNumber)
-                                    {
-                                        <span><strong>@copyNumber&nbsp;&nbsp;</strong></span>
-                                    }
+                            <td class="detail"><b>Từ khóa</b></td>
+                            <td>
+                                @foreach (var item in keywordList)
+                                {
+                                    keywordNo++;
+                                    keyWord = keywordNo + ". " + item.DisplayEntry;
+                                    <a href="#" style="font-weight: bold; color: blue">
+                                        @keyWord &nbsp;
+                                    </a>
                                 }
+
                             </td>
                         </tr>
                     }
+                }
+            </table>
+            <hr style="height: 3px; width: 900px">
+            <table>
                 <tr>
-                    <td class="detail">Tổng số bản: <b>@totalBook</b></td>
+                    <th>
+                        <Label style="font-size: 26px; padding-left: 5px;" class="search-data">
+                            <b>Thông tin đăng ký cá biệt</b>
+                        </Label>
+                    </th>
+                </tr>
+            </table>
+            <table style="width: 900px">
+                @foreach (var item in inforCopyNumber)
+                {
+                    var totalCopyNumber = SearchDao.CountTotalCopyNumberBySymbol(item.ItemID, item.Symbol);
+                    var copyNumberFree = SearchDao.CountTotalCopyNumberFreeBySymbol(item.ItemID, item.Symbol);
+                    var copyNumberNotFree = totalCopyNumber - copyNumberFree;
+                    listDetailBook.AddRange(SearchDao.GetDetailBookWithStatus(item.ItemID, item.Code));
+                    <tr>
+                        <td class="detail">
+                            <b>
+                                <i class="fa fa-circle" aria-hidden="true" style="color: green">
+                                </i> @item.Code: @item.Symbol
+                            </b> Tổng: <span><b>@totalCopyNumber</b></span>
+                            Rỗi: <span><b style="color: green"> @copyNumberFree</b></span>
+                            Bận: <span><b style="color: red">@copyNumberNotFree</b></span>
+
+                        </td>
+
+                    </tr>
+                }
+                <tr>
+                    <td class="detail">Tổng số bản: <b>@totalBook</b> &nbsp;&nbsp;<i class="fa fa-hand-o-right" aria-hidden="true"></i>
+                    &nbsp;<a href="#detail-modal" style="color: blue; font-weight: bold">Chi tiết</a></td>
                 </tr>
                 <tr>
                     <td class="detail">Số bản rỗi: <b>@freeBook</b> (kể cả các bản được giữ chỗ)</td>
@@ -151,11 +205,13 @@
 
         <div id="MARC-display" class="w3-container thing" style="display: none">
             <table>
-                <th>
-                    <Label style="font-size: 26px; padding-left: 5px;" class="search-data">
-                        <b>Dữ liệu biên mục</b>
-                    </Label>
-                </th>
+                <tr>
+                    <th>
+                        <Label style="font-size: 26px; padding-left: 5px;" class="search-data">
+                            <b>Dữ liệu biên mục</b>
+                        </Label>
+                    </th>
+                </tr>
             </table>
             <table style="width: 0px">
                 @foreach (var item in Model)
@@ -169,19 +225,21 @@
             </table>
             <hr style="height: 3px; width: 900px">
             <table>
-                <th>
-                    <Label style="font-size: 26px; padding-left: 5px;" class="search-data">
-                        <b>Thông tin đăng ký cá biệt</b>
-                    </Label>
-                </th>
+                <tr>
+                    <th>
+                        <Label style="font-size: 26px; padding-left: 5px;" class="search-data">
+                            <b>Thông tin đăng ký cá biệt</b>
+                        </Label>
+                    </th>
+                </tr>
             </table>
-
             <table style="width: 900px">
                 @foreach (var item in inforCopyNumber)
                 {
                     var totalCopyNumber = SearchDao.CountTotalCopyNumberBySymbol(item.ItemID, item.Symbol);
-                    var copyNumberFree = SearchDao.CountTotalCopyNumberBySymbol(item.ItemID, item.Symbol);
-                    var copyNumberNotFree = SearchDao.CountTotalCopyNumberNotFreeBySymbol(item.ItemID, item.Symbol);
+                    var copyNumberFree = SearchDao.CountTotalCopyNumberFreeBySymbol(item.ItemID, item.Symbol);
+                    var copyNumberNotFree = totalCopyNumber - copyNumberFree;
+
                     <tr>
                         <td class="detail">
                             <b>
@@ -192,21 +250,10 @@
                             Bận: <span><b style="color: red">@copyNumberNotFree</b></span>
                         </td>
                     </tr>
-                    <tr>
-                        <td class="detail">
-                            Những bản rỗi:<br />
-                            @{
-                                var listCopyNumber = SearchDao.GetListCopyNumberNotBorrowing(item.ItemID, item.Symbol);
-                                foreach (var copyNumber in listCopyNumber)
-                                {
-                                    <span><strong>@copyNumber&nbsp;&nbsp;</strong></span>
-                                }
-                            }
-                        </td>
-                    </tr>
                 }
                 <tr>
-                    <td class="detail">Tổng số bản: <b>@totalBook</b></td>
+                    <td class="detail">Tổng số bản: <b>@totalBook</b> &nbsp;&nbsp;<i class="fa fa-hand-o-right" aria-hidden="true"></i>
+                    &nbsp;<a href="#detail-modal" style="color: blue; font-weight: bold">Chi tiết</a></td>
                 </tr>
                 <tr>
                     <td class="detail">Số bản rỗi: <b>@freeBook</b> (kể cả các bản được giữ chỗ)</td>
@@ -223,7 +270,7 @@
     </div>
     <hr>
     <div>
-        @{ int pageNo = (int)Session["pageNo"];}
+        @{ int pageNo = (int)Session["PageNo"]; }
         <a href="@Url.Action("SearchBook", "SearchBook", new { page = pageNo })" class="back"><b><i class='fa fa-arrow-left'></i> Quay về trang tìm kiếm</b></a>
     </div>
     <br>
@@ -233,9 +280,9 @@
 <!-- Confirm borrowing book popup-->
 <div id="open-modal" class="modal-window">
     <div>
-        <a href="#end" title="Đóng" class="modal-close">&times;</a>
-        <h1 style="font-family: Arial">Xác nhận mượn sách</h1>
-        <div>Bạn có muốn mượn sách <b>Phát triển cơ sở dữ liệu Java Oracle / Nguyễn Ngọc Tuấn, Hồng Phúc</b>?</div>
+        <a href="javascript:window.history.back()" title="Đóng" class="modal-close">&times;</a>
+        <h1 style="font-family: Arial">Xác nhận đặt mượn sách</h1>
+        <div>Bạn có muốn mượn sách <b>@title</b> ?</div>
         <div>
             <p style="text-align: center; position: relative; top: 28px">
                 <a href="#open-modal2" onclick="redirectLink()" class="btn1 btn-borrow1" style="color: white">Đồng ý</a>
@@ -259,5 +306,42 @@
     </div>
 </div>
 
-<div id="end"></div>
-
+<!-- Show detail copy number -->
+<div id="detail-modal" class="modal-window">
+    <div>
+        <a href="javascript:window.history.back()" title="Đóng" class="modal-close">&times;</a>
+        <h1 style="font-family: Arial">Chi tiết tình trạng sách</h1>
+        <div>
+            <table style="width: 100%">
+                <thead>
+                    <tr>
+                        <th style="padding: 7px">Thư viện</th>
+                        <th style="padding: 7px">Kho</th>
+                        <th style="padding: 7px">ĐKCB</th>
+                        <th style="padding: 7px">Trạng thái</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in listDetailBook)
+                    {
+                    <tr>
+                        <td style="padding: 7px">@item.Code</td>
+                        <td style="padding: 7px">@item.Symbol</td>
+                        <td style="padding: 7px">@item.CopyNumber</td>
+                        @if (item.InUsed)
+                        {
+                            <td style="padding: 7px; color: red; font-weight: bold">Đang cho mượn</td>
+                        }
+                        else
+                        {
+                            <td style="padding: 7px; color: green; font-weight: bold">Đang sẵn sàng</td>
+                        }
+                    </tr>
+                    }
+                </tbody>
+            </table>
+            <br />
+            <button class="submit" onclick="window.history.back()">Đóng</button>
+        </div>
+    </div>
+</div>

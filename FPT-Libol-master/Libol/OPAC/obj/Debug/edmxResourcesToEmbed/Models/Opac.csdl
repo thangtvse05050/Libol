@@ -13328,6 +13328,13 @@
       <Parameter Name="intLocationID" Mode="In" Type="Int32" />
     </FunctionImport>
     <FunctionImport Name="TESTCAI" />
+    <FunctionImport Name="FPT_SP_GET_CODE_AND_SYMBOL_BY_ITEMID" ReturnType="Collection(LibolModel.FPT_SP_GET_CODE_AND_SYMBOL_BY_ITEMID_Result)">
+      <Parameter Name="intItemID" Mode="In" Type="Int32" />
+    </FunctionImport>
+    <FunctionImport Name="FPT_SP_GET_DETAIL_BOOK_WITH_STATUS" ReturnType="Collection(LibolModel.FPT_SP_GET_DETAIL_BOOK_WITH_STATUS_Result)">
+      <Parameter Name="intItemID" Mode="In" Type="Int32" />
+      <Parameter Name="strCode" Mode="In" Type="String" />
+    </FunctionImport>
   </EntityContainer>
   <ComplexType Name="CAT_DIC_LIST_SEL_Result">
     <Property Type="String" Name="BrowseFile" Nullable="true" MaxLength="50" />
@@ -18296,5 +18303,16 @@
     <Property Type="Boolean" Name="X12ENABLE" Nullable="true" />
     <Property Type="String" Name="COUNTRY" Nullable="false" MaxLength="100" />
     <Property Type="String" Name="PROVINCE" Nullable="false" MaxLength="50" />
+  </ComplexType>
+  <ComplexType Name="FPT_SP_GET_CODE_AND_SYMBOL_BY_ITEMID_Result">
+    <Property Type="Int32" Name="ItemID" Nullable="false" />
+    <Property Type="String" Name="Code" Nullable="false" MaxLength="32" />
+    <Property Type="String" Name="Symbol" Nullable="false" MaxLength="50" />
+  </ComplexType>
+  <ComplexType Name="FPT_SP_GET_DETAIL_BOOK_WITH_STATUS_Result">
+    <Property Type="String" Name="Code" Nullable="false" MaxLength="32" />
+    <Property Type="String" Name="Symbol" Nullable="false" MaxLength="50" />
+    <Property Type="String" Name="CopyNumber" Nullable="false" MaxLength="33" />
+    <Property Type="Boolean" Name="InUsed" Nullable="false" />
   </ComplexType>
 </Schema>

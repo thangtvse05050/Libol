@@ -23260,5 +23260,27 @@ namespace OPAC.Models
         {
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("TESTCAI");
         }
+    
+        public virtual ObjectResult<FPT_SP_GET_CODE_AND_SYMBOL_BY_ITEMID_Result> FPT_SP_GET_CODE_AND_SYMBOL_BY_ITEMID(Nullable<int> intItemID)
+        {
+            var intItemIDParameter = intItemID.HasValue ?
+                new ObjectParameter("intItemID", intItemID) :
+                new ObjectParameter("intItemID", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<FPT_SP_GET_CODE_AND_SYMBOL_BY_ITEMID_Result>("FPT_SP_GET_CODE_AND_SYMBOL_BY_ITEMID", intItemIDParameter);
+        }
+    
+        public virtual ObjectResult<FPT_SP_GET_DETAIL_BOOK_WITH_STATUS_Result> FPT_SP_GET_DETAIL_BOOK_WITH_STATUS(Nullable<int> intItemID, string strCode)
+        {
+            var intItemIDParameter = intItemID.HasValue ?
+                new ObjectParameter("intItemID", intItemID) :
+                new ObjectParameter("intItemID", typeof(int));
+    
+            var strCodeParameter = strCode != null ?
+                new ObjectParameter("strCode", strCode) :
+                new ObjectParameter("strCode", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<FPT_SP_GET_DETAIL_BOOK_WITH_STATUS_Result>("FPT_SP_GET_DETAIL_BOOK_WITH_STATUS", intItemIDParameter, strCodeParameter);
+        }
     }
 }

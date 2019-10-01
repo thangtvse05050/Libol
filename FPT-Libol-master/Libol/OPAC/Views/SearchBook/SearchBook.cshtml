@@ -29,7 +29,7 @@
     <br>
     @{
         var numberResult = (int) ViewBag.NumberResult;
-        int pageNo =  (int) Session["pageNo"];
+        int pageNo =  (int) Session["PageNo"];
         int maxItem = (int) ViewBag.ItemInOnePage;
         var keyword = Session["searchKey"].ToString();
         int count = ((pageNo - 1) * maxItem) + 1;
@@ -57,8 +57,8 @@
                     {
                     <tr>
                         <td><b>@count</b></td>
-                        <td>
-                            <a href="@Url.Action("DetailBook", "SearchBook", new { itemID = item.ItemID})" class="news">
+                        <td style="padding: 7px">
+                            <a href="@Url.Action("DetailBook", "SearchBook", new { itemID = item.ItemID })" class="news">
                             <b>@item.Title</b></a> - @item.Publisher, @item.Year - @item.Author<br>
                             &nbsp;&nbsp;<i class="fa fa-angle-double-right" style="font-size:18px"></i>&nbsp;&nbsp;<b>
                                 Mã ĐKCB:

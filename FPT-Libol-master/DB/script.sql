@@ -7334,3 +7334,39 @@ CREATE PROCEDURE [dbo].[FPT_SP_ACQ_GETMAXID_HINT]
 AS  
    SELECT ISNULL(MAX(InventoryTime),0)  FROM HOLDING_INVENTORY   
 
+
+
+-- purpose : Get list information of book after searching
+-- Last Update: 01/10/2019
+-- Creator: Thangnt
+CREATE PROCEDURE [dbo].[FPT_SP_GET_CODE_AND_SYMBOL_BY_ITEMID]
+(
+	@intItemID INT
+)
+AS
+	SELECT DISTINCT H.ItemID, L.Code, C.Symbol FROM [dbo].[HOLDING] AS H
+	INNER JOIN [dbo].[HOLDING_LIBRARY] AS L ON H.LibID = L.ID
+	INNER JOIN [dbo].[HOLDING_LOCATION] AS C ON H.LocationID = C.ID
+	WHERE H.ItemID = @intItemID
+GO
+
+
+-- purpose : Get detail information of book with the borrowing status
+-- Last Update: 01/10/2019
+-- Creator: Thangnt
+CREATE PROCEDURE [dbo].[FPT_SP_GET_DETAIL_BOOK_WITH_STATUS]
+(
+	@intItemID INT,
+	@strCode NVARCHAR(32)
+)
+AS
+	SELECT DISTINCT L.Code, C.Symbol, H.CopyNumber, H.InUsed FROM [dbo].[HOLDING] AS H
+	INNER JOIN [dbo].[HOLDING_LIBRARY] AS L ON H.LibID = L.ID
+	INNER JOIN [dbo].[HOLDING_LOCATION] AS C ON H.LocationID = C.ID
+	WHERE (H.ItemID = @intItemID) AND (L.Code = @strCode)
+GO
+
+
+-- purpose : Get result book after searching
+-- Last Update: 01/10/2019
+-- Creator: Thangnt
