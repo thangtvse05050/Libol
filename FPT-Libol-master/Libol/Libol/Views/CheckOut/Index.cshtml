@@ -63,6 +63,7 @@
         .form-control {
             font-size: 0.8rem !important;
         }
+       
     </style>
 </head>
 <body>
@@ -102,7 +103,7 @@
                             <div class="form-group"><label class="col-form-label">Hạn trả:</label></div>
                         </div>
                         <div class="col-8">
-                            <div class="form-group"><input class="form-control" id="strDueDate" type="date" /></div>
+                            <div class="form-group"><input class="form-control" id="strDueDate" type="text" /><input class="form-control" id="cont" type="date" onchange="changeTime()" /></div>
                         </div>
                     </div>
                     <div class="form-row" style="margin-top: 0px;">
@@ -178,7 +179,17 @@
 
     });
 
-
+    function changeTime() {
+        var x =new Date( document.getElementById("cont").value);
+        var date = x.getDate();
+        var month = x.getMonth();
+        month++;
+        var year = x.getFullYear();
+        document.getElementById("strDueDate").value = date + "/" + month + "/" + year;
+        
+        
+        
+    }
     function checkoutSuccess() {
         var mode = 1;
         if (document.getElementById("checkoutofquota").checked == true) {
@@ -186,7 +197,7 @@
         }
         var empObj = {
             strPatronCode: document.getElementById("strPatronCode").value,
-            strDueDate: document.getElementById("strDueDate").value,
+            strDueDate: document.getElementById("strDueDate").value.split("/").reverse().join("-"),
             intLoanMode: mode,
             intHoldIgnore: 0,
             strCopyNumbers: document.getElementById("strCopyNumber").value,
