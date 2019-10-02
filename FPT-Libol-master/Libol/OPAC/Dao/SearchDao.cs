@@ -17,29 +17,13 @@ namespace OPAC.Dao
         /// <param name="page"></param>
         /// <param name="pageSize"></param>
         /// <returns></returns>
-        public IEnumerable<SearchingResult> GetSearchingBook(string searchKeyword, int page, int pageSize)
+        public IEnumerable<FPT_SP_GET_SEARCHED_INFO_BOOK_Result> GetSearchingBook(string searchKeyword, int page, int pageSize)
         {
             using (var dbContext = new OpacEntities())
             {
-                var listResult = (from r in dbContext.ITEMs
-                                  join a in dbContext.ITEM_TITLE on r.ID equals a.ItemID
-                                  join b in dbContext.ITEM_AUTHOR on r.ID equals b.ItemID
-                                  join c in dbContext.ITEM_PUBLISHER on r.ID equals c.ItemID
-                                  join d in dbContext.CAT_DIC_PUBLISHER on c.PublisherID equals d.ID
-                                  join e in dbContext.CAT_DIC_YEAR on r.ID equals e.ItemID
-                                  join f in dbContext.CAT_DIC_AUTHOR on b.AuthorID equals f.ID
-                                  where a.Title.Contains(searchKeyword) ||
-                                        d.DisplayEntry.Contains(searchKeyword) ||
-                                        e.Year.Contains(searchKeyword) ||
-                                        f.DisplayEntry.Contains(searchKeyword)
-                                  select new SearchingResult
-                                  {
-                                      ItemID = r.ID,
-                                      Title = a.Title,
-                                      Publisher = d.DisplayEntry,
-                                      Year = e.Year,
-                                      Author = f.DisplayEntry,
-                                  }).Distinct().OrderBy(x => x.Title).ToPagedList(page, pageSize);
+                var listResult = dbContext.Database.SqlQuery<FPT_SP_GET_SEARCHED_INFO_BOOK_Result>("FPT_SP_GET_SEARCHED_INFO_BOOK {0}",
+                    new object[] { searchKeyword }).ToPagedList(page, pageSize);
+
                 return listResult;
             }
         }
@@ -55,7 +39,7 @@ namespace OPAC.Dao
             {
                 var copyNum = (from g in dbContext.HOLDINGs
                                where g.ItemID == itemID
-                               select g.CopyNumber).ToList();
+                               select g.CopyNumber).Take(18).ToList();
 
                 return copyNum;
             }
@@ -125,30 +109,13 @@ namespace OPAC.Dao
         /// <returns></returns>
         public int GetNumberResult(string searchKeyword, int page, int pageSize)
         {
-            int total = 0;
             using (var dbContext = new OpacEntities())
             {
-                total = (from r in dbContext.ITEMs
-                         join a in dbContext.ITEM_TITLE on r.ID equals a.ItemID
-                         join b in dbContext.ITEM_AUTHOR on r.ID equals b.ItemID
-                         join c in dbContext.ITEM_PUBLISHER on r.ID equals c.ItemID
-                         join d in dbContext.CAT_DIC_PUBLISHER on c.PublisherID equals d.ID
-                         join e in dbContext.CAT_DIC_YEAR on r.ID equals e.ItemID
-                         join f in dbContext.CAT_DIC_AUTHOR on b.AuthorID equals f.ID
-                         where a.Title.Contains(searchKeyword) ||
-                               d.DisplayEntry.Contains(searchKeyword) ||
-                               e.Year.Contains(searchKeyword) ||
-                               f.DisplayEntry.Contains(searchKeyword)
-                         select new SearchingResult
-                         {
-                             Title = a.Title,
-                             Publisher = d.DisplayEntry,
-                             Year = e.Year,
-                             Author = f.DisplayEntry
-                         }).Distinct().OrderBy(x => x.Title).ToList().Count;
-            }
+                var numberResult = dbContext.Database.SqlQuery<FPT_SP_GET_SEARCHED_INFO_BOOK_Result>("FPT_SP_GET_SEARCHED_INFO_BOOK {0}",
+                    new object[] { searchKeyword }).ToList().Count();
 
-            return total;
+                return numberResult;
+            }
         }
 
         /// <summary>
@@ -217,6 +184,11 @@ namespace OPAC.Dao
             }
         }
 
+        /// <summary>
+        /// Get full information of book after searching (Lấy thông tin sách hiển thị đầy đủ)
+        /// </summary>
+        /// <param name="itemID"></param>
+        /// <returns></returns>
         public FullInforBook GetFullInforBook(int itemID)
         {
             StringBuilder getDocumentType = new StringBuilder("");

@@ -13335,6 +13335,18 @@
       <Parameter Name="intItemID" Mode="In" Type="Int32" />
       <Parameter Name="strCode" Mode="In" Type="String" />
     </FunctionImport>
+    <FunctionImport Name="FPT_SP_GET_INFO_SEARCHING_BOOK" ReturnType="Collection(String)">
+      <Parameter Name="strKeyWord" Mode="In" Type="String" />
+    </FunctionImport>
+    <FunctionImport Name="FPT_SP_GET_SEARCHED_BOOK" ReturnType="Collection(LibolModel.FPT_SP_GET_SEARCHED_BOOK_Result)">
+      <Parameter Name="strCode" Mode="In" Type="String" />
+    </FunctionImport>
+    <FunctionImport Name="FPT_SP_GET_SEARCHED_ITEM" ReturnType="Collection(LibolModel.FPT_SP_GET_SEARCHED_ITEM_Result)">
+      <Parameter Name="strCode" Mode="In" Type="String" />
+    </FunctionImport>
+    <FunctionImport Name="FPT_SP_GET_SEARCHED_INFO_BOOK" ReturnType="Collection(LibolModel.FPT_SP_GET_SEARCHED_INFO_BOOK_Result)">
+      <Parameter Name="strCode" Mode="In" Type="String" />
+    </FunctionImport>
   </EntityContainer>
   <ComplexType Name="CAT_DIC_LIST_SEL_Result">
     <Property Type="String" Name="BrowseFile" Nullable="true" MaxLength="50" />
@@ -18314,5 +18326,26 @@
     <Property Type="String" Name="Symbol" Nullable="false" MaxLength="50" />
     <Property Type="String" Name="CopyNumber" Nullable="false" MaxLength="33" />
     <Property Type="Boolean" Name="InUsed" Nullable="false" />
+  </ComplexType>
+  <ComplexType Name="FPT_SP_GET_SEARCHED_BOOK_Result">
+    <Property Type="Int32" Name="ID" Nullable="false" />
+    <Property Type="String" Name="Title" Nullable="false" MaxLength="2000" />
+    <Property Type="String" Name="DisplayEntry" Nullable="false" MaxLength="256" />
+    <Property Type="String" Name="Year" Nullable="false" MaxLength="16" />
+    <Property Type="String" Name="DisplayEntry1" Nullable="false" MaxLength="250" />
+  </ComplexType>
+  <ComplexType Name="FPT_SP_GET_SEARCHED_ITEM_Result">
+    <Property Type="Int32" Name="ID" Nullable="false" />
+    <Property Type="String" Name="Title" Nullable="false" MaxLength="2000" />
+    <Property Type="String" Name="DisplayEntry" Nullable="false" MaxLength="256" />
+    <Property Type="String" Name="Year" Nullable="false" MaxLength="16" />
+    <Property Type="String" Name="DisplayEntry1" Nullable="false" MaxLength="250" />
+  </ComplexType>
+  <ComplexType Name="FPT_SP_GET_SEARCHED_INFO_BOOK_Result">
+    <Property Type="Int32" Name="ID" Nullable="false" />
+    <Property Type="String" Name="Title" Nullable="false" MaxLength="2000" />
+    <Property Type="String" Name="Publisher" Nullable="false" MaxLength="256" />
+    <Property Type="String" Name="Year" Nullable="false" MaxLength="16" />
+    <Property Type="String" Name="Author" Nullable="false" MaxLength="250" />
   </ComplexType>
 </Schema>

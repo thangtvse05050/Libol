@@ -6333,6 +6333,9 @@ warning 6002: The table/view 'Libol.dbo.VIEW1' does not have a primary key defin
         <Function Name="FPT_SP_GET_HOLDING_REMOVED_WITH_ID" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="strID" Type="nvarchar" Mode="In" />
         </Function>
+        <Function Name="FPT_SP_GET_INFO_SEARCHING_BOOK" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="strKeyWord" Type="nvarchar" Mode="In" />
+        </Function>
         <Function Name="FPT_SP_GET_ITEM" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="strFromDate" Type="varchar" Mode="In" />
           <Parameter Name="strToDate" Type="varchar" Mode="In" />
@@ -6343,6 +6346,9 @@ warning 6002: The table/view 'Libol.dbo.VIEW1' does not have a primary key defin
           <Parameter Name="intItemID" Type="int" Mode="In" />
           <Parameter Name="intLocationID" Type="int" Mode="In" />
           <Parameter Name="intLibraryID" Type="int" Mode="In" />
+        </Function>
+        <Function Name="FPT_SP_GET_SEARCHED_INFO_BOOK" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="strCode" Type="nvarchar" Mode="In" />
         </Function>
         <Function Name="FPT_SP_GET_STAT_BOOK" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="strIDs" Type="nvarchar" Mode="In" />
@@ -27141,6 +27147,18 @@ warning 6002: The table/view 'Libol.dbo.VIEW1' does not have a primary key defin
             <Parameter Name="intItemID" Mode="In" Type="Int32" />
             <Parameter Name="strCode" Mode="In" Type="String" />
           </FunctionImport>
+          <FunctionImport Name="FPT_SP_GET_INFO_SEARCHING_BOOK" ReturnType="Collection(String)">
+          <Parameter Name="strKeyWord" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="FPT_SP_GET_SEARCHED_BOOK" ReturnType="Collection(LibolModel.FPT_SP_GET_SEARCHED_BOOK_Result)">
+          <Parameter Name="strCode" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="FPT_SP_GET_SEARCHED_ITEM" ReturnType="Collection(LibolModel.FPT_SP_GET_SEARCHED_ITEM_Result)">
+          <Parameter Name="strCode" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="FPT_SP_GET_SEARCHED_INFO_BOOK" ReturnType="Collection(LibolModel.FPT_SP_GET_SEARCHED_INFO_BOOK_Result)">
+            <Parameter Name="strCode" Mode="In" Type="String" />
+          </FunctionImport>
         </EntityContainer>
         <ComplexType Name="CAT_DIC_LIST_SEL_Result">
           <Property Type="String" Name="BrowseFile" Nullable="true" MaxLength="50" />
@@ -32120,6 +32138,27 @@ warning 6002: The table/view 'Libol.dbo.VIEW1' does not have a primary key defin
           <Property Type="String" Name="Symbol" Nullable="false" MaxLength="50" />
           <Property Type="String" Name="CopyNumber" Nullable="false" MaxLength="33" />
           <Property Type="Boolean" Name="InUsed" Nullable="false" />
+        </ComplexType>
+        <ComplexType Name="FPT_SP_GET_SEARCHED_BOOK_Result">
+          <Property Type="Int32" Name="ID" Nullable="false" />
+          <Property Type="String" Name="Title" Nullable="false" MaxLength="2000" />
+          <Property Type="String" Name="DisplayEntry" Nullable="false" MaxLength="256" />
+          <Property Type="String" Name="Year" Nullable="false" MaxLength="16" />
+          <Property Type="String" Name="DisplayEntry1" Nullable="false" MaxLength="250" />
+        </ComplexType>
+        <ComplexType Name="FPT_SP_GET_SEARCHED_ITEM_Result">
+          <Property Type="Int32" Name="ID" Nullable="false" />
+          <Property Type="String" Name="Title" Nullable="false" MaxLength="2000" />
+          <Property Type="String" Name="DisplayEntry" Nullable="false" MaxLength="256" />
+          <Property Type="String" Name="Year" Nullable="false" MaxLength="16" />
+          <Property Type="String" Name="DisplayEntry1" Nullable="false" MaxLength="250" />
+        </ComplexType>
+        <ComplexType Name="FPT_SP_GET_SEARCHED_INFO_BOOK_Result">
+          <Property Type="Int32" Name="ID" Nullable="false" />
+          <Property Type="String" Name="Title" Nullable="false" MaxLength="2000" />
+          <Property Type="String" Name="Publisher" Nullable="false" MaxLength="256" />
+          <Property Type="String" Name="Year" Nullable="false" MaxLength="16" />
+          <Property Type="String" Name="Author" Nullable="false" MaxLength="250" />
         </ComplexType>
       </Schema>
     </edmx:ConceptualModels>
@@ -42938,6 +42977,18 @@ warning 6002: The table/view 'Libol.dbo.VIEW1' does not have a primary key defin
                 <ScalarProperty Name="Symbol" ColumnName="Symbol" />
                 <ScalarProperty Name="CopyNumber" ColumnName="CopyNumber" />
                 <ScalarProperty Name="InUsed" ColumnName="InUsed" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="FPT_SP_GET_INFO_SEARCHING_BOOK" FunctionName="LibolModel.Store.FPT_SP_GET_INFO_SEARCHING_BOOK" />
+          <FunctionImportMapping FunctionImportName="FPT_SP_GET_SEARCHED_INFO_BOOK" FunctionName="LibolModel.Store.FPT_SP_GET_SEARCHED_INFO_BOOK">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="LibolModel.FPT_SP_GET_SEARCHED_INFO_BOOK_Result">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="Title" ColumnName="Title" />
+                <ScalarProperty Name="Publisher" ColumnName="Publisher" />
+                <ScalarProperty Name="Year" ColumnName="Year" />
+                <ScalarProperty Name="Author" ColumnName="Author" />
               </ComplexTypeMapping>
             </ResultMapping>
           </FunctionImportMapping>

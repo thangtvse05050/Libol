@@ -10815,5 +10815,17 @@
         </ComplexTypeMapping>
       </ResultMapping>
     </FunctionImportMapping>
+    <FunctionImportMapping FunctionImportName="FPT_SP_GET_INFO_SEARCHING_BOOK" FunctionName="LibolModel.Store.FPT_SP_GET_INFO_SEARCHING_BOOK" />
+    <FunctionImportMapping FunctionImportName="FPT_SP_GET_SEARCHED_INFO_BOOK" FunctionName="LibolModel.Store.FPT_SP_GET_SEARCHED_INFO_BOOK">
+      <ResultMapping>
+        <ComplexTypeMapping TypeName="LibolModel.FPT_SP_GET_SEARCHED_INFO_BOOK_Result">
+          <ScalarProperty Name="ID" ColumnName="ID" />
+          <ScalarProperty Name="Title" ColumnName="Title" />
+          <ScalarProperty Name="Publisher" ColumnName="Publisher" />
+          <ScalarProperty Name="Year" ColumnName="Year" />
+          <ScalarProperty Name="Author" ColumnName="Author" />
+        </ComplexTypeMapping>
+      </ResultMapping>
+    </FunctionImportMapping>
   </EntityContainerMapping>
 </Mapping>

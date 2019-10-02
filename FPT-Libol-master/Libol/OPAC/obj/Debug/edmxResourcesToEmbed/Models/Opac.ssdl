@@ -6328,6 +6328,9 @@ warning 6002: The table/view 'Libol.dbo.VIEW1' does not have a primary key defin
   <Function Name="FPT_SP_GET_HOLDING_REMOVED_WITH_ID" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
     <Parameter Name="strID" Type="nvarchar" Mode="In" />
   </Function>
+  <Function Name="FPT_SP_GET_INFO_SEARCHING_BOOK" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="strKeyWord" Type="nvarchar" Mode="In" />
+  </Function>
   <Function Name="FPT_SP_GET_ITEM" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
     <Parameter Name="strFromDate" Type="varchar" Mode="In" />
     <Parameter Name="strToDate" Type="varchar" Mode="In" />
@@ -6338,6 +6341,9 @@ warning 6002: The table/view 'Libol.dbo.VIEW1' does not have a primary key defin
     <Parameter Name="intItemID" Type="int" Mode="In" />
     <Parameter Name="intLocationID" Type="int" Mode="In" />
     <Parameter Name="intLibraryID" Type="int" Mode="In" />
+  </Function>
+  <Function Name="FPT_SP_GET_SEARCHED_INFO_BOOK" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="strCode" Type="nvarchar" Mode="In" />
   </Function>
   <Function Name="FPT_SP_GET_STAT_BOOK" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
     <Parameter Name="strIDs" Type="nvarchar" Mode="In" />

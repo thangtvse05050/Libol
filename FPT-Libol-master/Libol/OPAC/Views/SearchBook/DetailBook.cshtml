@@ -147,7 +147,7 @@
                                 {
                                     keywordNo++;
                                     keyWord = keywordNo + ". " + item.DisplayEntry;
-                                    <a href="#" style="font-weight: bold; color: blue">
+                                    <a href="@Url.Action("SearchByKeyWord", "SearchBook", new { keyWord = item.DisplayEntry })" style="font-weight: bold; color: blue">
                                         @keyWord &nbsp;
                                     </a>
                                 }
@@ -188,16 +188,25 @@
                     </tr>
                 }
                 <tr>
-                    <td class="detail">Tổng số bản: <b>@totalBook</b> &nbsp;&nbsp;<i class="fa fa-hand-o-right" aria-hidden="true"></i>
-                    &nbsp;<a href="#detail-modal" style="color: blue; font-weight: bold">Chi tiết</a></td>
+                    <td class="detail">
+                        Tổng số bản: <b>@totalBook</b>&nbsp;&nbsp;
+                        @if (totalBook != 0)
+                        {
+                            <i class="fa fa-hand-o-right" aria-hidden="true"></i>
+                            <span>&nbsp;<a href="#detail-modal" style="color: blue; font-weight: bold">Chi tiết</a></span>
+                        }
+                    </td>
                 </tr>
                 <tr>
-                    <td class="detail">Số bản rỗi: <b>@freeBook</b> (kể cả các bản được giữ chỗ)</td>
+                    <td class="detail">Số bản rỗi: <b style="color: green">@freeBook</b> (kể cả các bản được giữ chỗ)</td>
                 </tr>
                 <tr>
                     <td class="detail">
                         Số bản được giữ chỗ: <b>@onholdingBook</b>&nbsp;&nbsp;
-                        <a href="#open-modal" class="borrow">Đặt mượn sách</a>
+                        @if (totalBook != 0)
+                        {
+                            <a href="#open-modal" class="borrow">Đặt mượn sách</a>
+                        }
                     </td>
                 </tr>
             </table>
@@ -252,16 +261,25 @@
                     </tr>
                 }
                 <tr>
-                    <td class="detail">Tổng số bản: <b>@totalBook</b> &nbsp;&nbsp;<i class="fa fa-hand-o-right" aria-hidden="true"></i>
-                    &nbsp;<a href="#detail-modal" style="color: blue; font-weight: bold">Chi tiết</a></td>
+                    <td class="detail">
+                        Tổng số bản: <b>@totalBook</b>&nbsp;&nbsp;
+                        @if (totalBook != 0)
+                        {
+                            <i class="fa fa-hand-o-right" aria-hidden="true"></i>
+                            <span>&nbsp;<a href="#detail-modal" style="color: blue; font-weight: bold">Chi tiết</a></span>
+                        }
+                    </td>
                 </tr>
                 <tr>
-                    <td class="detail">Số bản rỗi: <b>@freeBook</b> (kể cả các bản được giữ chỗ)</td>
+                    <td class="detail">Số bản rỗi: <b style="color: green">@freeBook</b> (kể cả các bản được giữ chỗ)</td>
                 </tr>
                 <tr>
                     <td class="detail">
                         Số bản được giữ chỗ: <b>@onholdingBook</b>&nbsp;&nbsp;
-                        <a href="#open-modal" class="borrow">Đặt mượn sách</a>
+                        @if (totalBook != 0)
+                        {
+                            <a href="#open-modal" class="borrow">Đặt mượn sách</a>
+                        }
                     </td>
                 </tr>
             </table>

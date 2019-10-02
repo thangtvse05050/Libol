@@ -30,7 +30,7 @@ namespace OPAC.Controllers
         }
 
         [HttpPost]
-        public ActionResult GetKeyword(string searchKeyword)
+        public ActionResult GetKeySearch(string searchKeyword)
         {
             if (string.IsNullOrEmpty(searchKeyword.Trim()))
             {
@@ -40,20 +40,37 @@ namespace OPAC.Controllers
             }
             else
             {
-                Session["searchKey"] = searchKeyword.Trim();
+                Session["flag"] = false;
+                Session["key"] = searchKeyword.Trim();
             }
 
             return RedirectToAction("SearchBook", new { page = 1 });
         }
 
         [OutputCache(NoStore = true, Duration = 0, VaryByParam = "*")]
+        public ActionResult SearchByKeyWord(string keyWord)
+        {
+            Session["flag"] = true;
+            Session["key"] = keyWord.Trim();
+            return RedirectToAction("SearchBook", new { page = 1 });
+        }
+
+        [OutputCache(NoStore = true, Duration = 0, VaryByParam = "*")]
         public ActionResult SearchBook(int page)
         {
-            string key = Session["searchKey"].ToString();
-            int maxItemInOnePage = 10;
+            string key = Session["key"].ToString();
+            int maxItemInOnePage = 30;
             ViewBag.NumberResult = dao.GetNumberResult(key, page, maxItemInOnePage);
             ViewBag.ItemInOnePage = maxItemInOnePage;
             Session["PageNo"] = page;
+
+            if ((bool)Session["flag"])
+            {
+                string keyWord = Session["key"].ToString();
+                ViewBag.NumberResult = dao.GetNumberResult(keyWord, page, maxItemInOnePage);
+                Session["PageNo"] = page;
+                return View(dao.GetSearchingBook(keyWord, page, maxItemInOnePage));
+            }
 
             return View(dao.GetSearchingBook(key, page, maxItemInOnePage));
         }

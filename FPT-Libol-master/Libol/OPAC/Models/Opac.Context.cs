@@ -23282,5 +23282,41 @@ namespace OPAC.Models
     
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<FPT_SP_GET_DETAIL_BOOK_WITH_STATUS_Result>("FPT_SP_GET_DETAIL_BOOK_WITH_STATUS", intItemIDParameter, strCodeParameter);
         }
+    
+        public virtual ObjectResult<string> FPT_SP_GET_INFO_SEARCHING_BOOK(string strKeyWord)
+        {
+            var strKeyWordParameter = strKeyWord != null ?
+                new ObjectParameter("strKeyWord", strKeyWord) :
+                new ObjectParameter("strKeyWord", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<string>("FPT_SP_GET_INFO_SEARCHING_BOOK", strKeyWordParameter);
+        }
+    
+        public virtual ObjectResult<FPT_SP_GET_SEARCHED_BOOK_Result> FPT_SP_GET_SEARCHED_BOOK(string strCode)
+        {
+            var strCodeParameter = strCode != null ?
+                new ObjectParameter("strCode", strCode) :
+                new ObjectParameter("strCode", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<FPT_SP_GET_SEARCHED_BOOK_Result>("FPT_SP_GET_SEARCHED_BOOK", strCodeParameter);
+        }
+    
+        public virtual ObjectResult<FPT_SP_GET_SEARCHED_ITEM_Result> FPT_SP_GET_SEARCHED_ITEM(string strCode)
+        {
+            var strCodeParameter = strCode != null ?
+                new ObjectParameter("strCode", strCode) :
+                new ObjectParameter("strCode", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<FPT_SP_GET_SEARCHED_ITEM_Result>("FPT_SP_GET_SEARCHED_ITEM", strCodeParameter);
+        }
+    
+        public virtual ObjectResult<FPT_SP_GET_SEARCHED_INFO_BOOK_Result> FPT_SP_GET_SEARCHED_INFO_BOOK(string strCode)
+        {
+            var strCodeParameter = strCode != null ?
+                new ObjectParameter("strCode", strCode) :
+                new ObjectParameter("strCode", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<FPT_SP_GET_SEARCHED_INFO_BOOK_Result>("FPT_SP_GET_SEARCHED_INFO_BOOK", strCodeParameter);
+        }
     }
 }
