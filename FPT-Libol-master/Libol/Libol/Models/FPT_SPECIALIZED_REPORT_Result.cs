@@ -21,5 +21,9 @@ namespace Libol.Models
         public string AUTHOR { get; set; }
         public string PUBLISHER { get; set; }
         public Nullable<int> TOTAL { get; set; }
+        public string YEAR { get; set; }
+        public string PUBLISHNUM { get; set; }
+        public string GTNUMBER { get; set; }
+        public string TKNUMBER { get; set; }
     }
 }

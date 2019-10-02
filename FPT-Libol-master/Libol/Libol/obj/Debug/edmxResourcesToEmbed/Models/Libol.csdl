@@ -12964,6 +12964,14 @@
       <Parameter Name="strInventoryDate" Mode="In" Type="String" />
       <Parameter Name="strInputer" Mode="In" Type="String" />
     </FunctionImport>
+    <FunctionImport Name="FPT_SPECIALIZED_REPORT_GET_YEAR_PUBLISHNUM" ReturnType="Collection(LibolModel.FPT_SPECIALIZED_REPORT_GET_YEAR_PUBLISHNUM_Result)">
+      <Parameter Name="itemId" Mode="In" Type="Int32" />
+      <Parameter Name="type" Mode="In" Type="Int32" />
+    </FunctionImport>
+    <FunctionImport Name="FPT_SPECIALIZED_REPORT_GET_GTTK" ReturnType="Collection(LibolModel.FPT_SPECIALIZED_REPORT_GET_GTTK_Result)">
+      <Parameter Name="itemid" Mode="In" Type="Int32" />
+      <Parameter Name="type" Mode="In" Type="Int32" />
+    </FunctionImport>
   </EntityContainer>
   <ComplexType Name="CAT_DIC_LIST_SEL_Result">
     <Property Type="String" Name="BrowseFile" Nullable="true" MaxLength="50" />
@@ -18052,9 +18060,22 @@
     <Property Type="String" Name="AUTHOR" Nullable="false" MaxLength="800" />
     <Property Type="String" Name="PUBLISHER" Nullable="false" MaxLength="1" />
     <Property Type="Int32" Name="TOTAL" Nullable="true" />
+    <Property Type="String" Name="YEAR" Nullable="false" MaxLength="1" />
+    <Property Type="String" Name="PUBLISHNUM" Nullable="false" MaxLength="1" />
+    <Property Type="String" Name="GTNUMBER" Nullable="false" MaxLength="1" />
+    <Property Type="String" Name="TKNUMBER" Nullable="false" MaxLength="1" />
   </ComplexType>
   <ComplexType Name="FPT_SPECIALIZED_REPORT_GET_PUBLISHER_Result">
     <Property Type="Int32" Name="ItemID" Nullable="false" />
     <Property Type="String" Name="PUBLISHER" Nullable="false" MaxLength="256" />
+  </ComplexType>
+  <ComplexType Name="FPT_SPECIALIZED_REPORT_GET_YEAR_PUBLISHNUM_Result">
+    <Property Type="Int32" Name="ITEMID" Nullable="false" />
+    <Property Type="String" Name="CONTENT" Nullable="false" MaxLength="800" />
+    <Property Type="String" Name="FieldCode" Nullable="false" MaxLength="5" />
+  </ComplexType>
+  <ComplexType Name="FPT_SPECIALIZED_REPORT_GET_GTTK_Result">
+    <Property Type="Int32" Name="total" Nullable="true" />
+    <Property Type="Int32" Name="ItemID" Nullable="false" />
   </ComplexType>
 </Schema>
