@@ -10796,36 +10796,5 @@
     <FunctionImportMapping FunctionImportName="SQ_CIR_PATRON_GROUP_LOC_INSERT" FunctionName="LibolModel.Store.SQ_CIR_PATRON_GROUP_LOC_INSERT" />
     <FunctionImportMapping FunctionImportName="SQ_CIR_PATRON_GROUP_LOC_UPDATE" FunctionName="LibolModel.Store.SQ_CIR_PATRON_GROUP_LOC_UPDATE" />
     <FunctionImportMapping FunctionImportName="TESTCAI" FunctionName="LibolModel.Store.TESTCAI" />
-    <FunctionImportMapping FunctionImportName="FPT_SP_GET_CODE_AND_SYMBOL_BY_ITEMID" FunctionName="LibolModel.Store.FPT_SP_GET_CODE_AND_SYMBOL_BY_ITEMID">
-      <ResultMapping>
-        <ComplexTypeMapping TypeName="LibolModel.FPT_SP_GET_CODE_AND_SYMBOL_BY_ITEMID_Result">
-          <ScalarProperty Name="ItemID" ColumnName="ItemID" />
-          <ScalarProperty Name="Code" ColumnName="Code" />
-          <ScalarProperty Name="Symbol" ColumnName="Symbol" />
-        </ComplexTypeMapping>
-      </ResultMapping>
-    </FunctionImportMapping>
-    <FunctionImportMapping FunctionImportName="FPT_SP_GET_DETAIL_BOOK_WITH_STATUS" FunctionName="LibolModel.Store.FPT_SP_GET_DETAIL_BOOK_WITH_STATUS">
-      <ResultMapping>
-        <ComplexTypeMapping TypeName="LibolModel.FPT_SP_GET_DETAIL_BOOK_WITH_STATUS_Result">
-          <ScalarProperty Name="Code" ColumnName="Code" />
-          <ScalarProperty Name="Symbol" ColumnName="Symbol" />
-          <ScalarProperty Name="CopyNumber" ColumnName="CopyNumber" />
-          <ScalarProperty Name="InUsed" ColumnName="InUsed" />
-        </ComplexTypeMapping>
-      </ResultMapping>
-    </FunctionImportMapping>
-    <FunctionImportMapping FunctionImportName="FPT_SP_GET_INFO_SEARCHING_BOOK" FunctionName="LibolModel.Store.FPT_SP_GET_INFO_SEARCHING_BOOK" />
-    <FunctionImportMapping FunctionImportName="FPT_SP_GET_SEARCHED_INFO_BOOK" FunctionName="LibolModel.Store.FPT_SP_GET_SEARCHED_INFO_BOOK">
-      <ResultMapping>
-        <ComplexTypeMapping TypeName="LibolModel.FPT_SP_GET_SEARCHED_INFO_BOOK_Result">
-          <ScalarProperty Name="ID" ColumnName="ID" />
-          <ScalarProperty Name="Title" ColumnName="Title" />
-          <ScalarProperty Name="Publisher" ColumnName="Publisher" />
-          <ScalarProperty Name="Year" ColumnName="Year" />
-          <ScalarProperty Name="Author" ColumnName="Author" />
-        </ComplexTypeMapping>
-      </ResultMapping>
-    </FunctionImportMapping>
   </EntityContainerMapping>
 </Mapping>
