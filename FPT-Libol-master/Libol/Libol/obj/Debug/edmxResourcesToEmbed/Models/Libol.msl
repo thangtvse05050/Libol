@@ -10505,6 +10505,10 @@
           <ScalarProperty Name="AUTHOR" ColumnName="AUTHOR" />
           <ScalarProperty Name="PUBLISHER" ColumnName="PUBLISHER" />
           <ScalarProperty Name="TOTAL" ColumnName="TOTAL" />
+          <ScalarProperty Name="YEAR" ColumnName="YEAR" />
+          <ScalarProperty Name="PUBLISHNUM" ColumnName="PUBLISHNUM" />
+          <ScalarProperty Name="GTNUMBER" ColumnName="GTNUMBER" />
+          <ScalarProperty Name="TKNUMBER" ColumnName="TKNUMBER" />
         </ComplexTypeMapping>
       </ResultMapping>
     </FunctionImportMapping>
@@ -10521,5 +10525,22 @@
     <FunctionImportMapping FunctionImportName="FPT_CATA_GETCONTENT_BY_INDEX" FunctionName="LibolModel.Store.FPT_CATA_GETCONTENT_BY_INDEX" />
     <FunctionImportMapping FunctionImportName="FPT_SP_ACQ_GETMAXID_HINT" FunctionName="LibolModel.Store.FPT_SP_ACQ_GETMAXID_HINT" />
     <FunctionImportMapping FunctionImportName="FPT_SP_ACQ_NEW_INVENTORY" FunctionName="LibolModel.Store.FPT_SP_ACQ_NEW_INVENTORY" />
+    <FunctionImportMapping FunctionImportName="FPT_SPECIALIZED_REPORT_GET_YEAR_PUBLISHNUM" FunctionName="LibolModel.Store.FPT_SPECIALIZED_REPORT_GET_YEAR_PUBLISHNUM">
+      <ResultMapping>
+        <ComplexTypeMapping TypeName="LibolModel.FPT_SPECIALIZED_REPORT_GET_YEAR_PUBLISHNUM_Result">
+          <ScalarProperty Name="ITEMID" ColumnName="ITEMID" />
+          <ScalarProperty Name="CONTENT" ColumnName="CONTENT" />
+          <ScalarProperty Name="FieldCode" ColumnName="FieldCode" />
+        </ComplexTypeMapping>
+      </ResultMapping>
+    </FunctionImportMapping>
+    <FunctionImportMapping FunctionImportName="FPT_SPECIALIZED_REPORT_GET_GTTK" FunctionName="LibolModel.Store.FPT_SPECIALIZED_REPORT_GET_GTTK">
+      <ResultMapping>
+        <ComplexTypeMapping TypeName="LibolModel.FPT_SPECIALIZED_REPORT_GET_GTTK_Result">
+          <ScalarProperty Name="total" ColumnName="total" />
+          <ScalarProperty Name="ItemID" ColumnName="ItemID" />
+        </ComplexTypeMapping>
+      </ResultMapping>
+    </FunctionImportMapping>
   </EntityContainerMapping>
 </Mapping>
