@@ -3230,7 +3230,211 @@ END
 
 
 
+GO
+/****** Object:  StoredProcedure [dbo].[FPT_SP_CATA_GET_CONTENTS_OF_ITEMS]    Script Date: 7/9/2019 3:16:48 PM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER OFF
+GO
+--FPT_SP_CATA_GET_CONTENTS_OF_ITEMS'1090',0
+--Doanhdq created
+--use to display all property by  Record
+--Fixed : 852 khong lay thong tin ma dang ky ca biet
+CREATE        PROCEDURE [dbo].[FPT_SP_CATA_GET_CONTENTS_OF_ITEMS]
+	@strItemIDs varchar(1000),
+	@intIsAuthority INT
+AS
 
+IF @intIsAuthority = 0 
+	BEGIN
+		--Ldr
+		SELECT '000' as IDSort,'Ldr' as FieldCode, '' as Ind, Leader as Content
+		FROM ITEM I , CAT_DIC_MEDIUM M, CAT_DIC_ITEM_TYPE D 
+		WHERE 
+		I.MediumID=M.ID 
+		AND I.TypeID = D.ID
+		AND I.ID IN (@strItemIDs)
+		
+		--Code
+		UNION
+		SELECT '001' as IDSort,'001' as FieldCode, '' as Ind, I.Code as Content
+		FROM ITEM I , CAT_DIC_MEDIUM M, CAT_DIC_ITEM_TYPE D 
+		WHERE 
+		I.MediumID=M.ID 
+		AND I.TypeID = D.ID
+		AND I.ID IN (@strItemIDs)
+		
+		--Field000s
+		UNION 
+		SELECT M.FieldCode as IDSort, M.FieldCode,REPLACE(F.Ind1,' ','#')  + REPLACE(F.Ind2,' ','#')  as Ind, F.Content as Content
+		FROM Field000s F, MARC_BIB_FIELD M
+		WHERE M.FieldCode=F.FieldCode AND F.ItemID IN (@strItemIDs)  
+		
+		--Field100s
+		UNION 
+		SELECT M.FieldCode as IDSort, M.FieldCode,REPLACE(F.Ind1,' ','#')  + REPLACE(F.Ind2,' ','#')  as Ind, F.Content as Content 
+		FROM Field100s F, MARC_BIB_FIELD M 
+		WHERE M.FieldCode=F.FieldCode AND F.ItemID IN (@strItemIDs)  
+		
+		--Field200s
+		UNION 
+		SELECT M.FieldCode as IDSort, M.FieldCode,REPLACE(F.Ind1,' ','#')  + REPLACE(F.Ind2,' ','#')  as Ind, F.Content as Content
+		FROM Field200s F, MARC_BIB_FIELD M 
+		WHERE M.FieldCode=F.FieldCode AND F.ItemID IN (@strItemIDs) 
+		
+		--Field300s
+		UNION 
+		SELECT M.FieldCode as IDSort, M.FieldCode,REPLACE(F.Ind1,' ','#')  + REPLACE(F.Ind2,' ','#')  as Ind, F.Content as Content 
+		FROM Field300s F, MARC_BIB_FIELD M 
+		WHERE M.FieldCode=F.FieldCode AND F.ItemID IN (@strItemIDs) 
+		
+		--Field400s
+		UNION 
+		SELECT M.FieldCode as IDSort, M.FieldCode,REPLACE(F.Ind1,' ','#')  + REPLACE(F.Ind2,' ','#')  as Ind, F.Content as Content
+		FROM Field400s F, MARC_BIB_FIELD M 
+		WHERE M.FieldCode=F.FieldCode AND F.ItemID IN (@strItemIDs) 
+		
+		--Field500s
+		UNION 
+		SELECT M.FieldCode as IDSort, M.FieldCode,REPLACE(F.Ind1,' ','#')  + REPLACE(F.Ind2,' ','#')  as Ind, F.Content as Content 
+		FROM Field500s F, MARC_BIB_FIELD M 
+		WHERE M.FieldCode=F.FieldCode AND F.ItemID IN (@strItemIDs) 
+		
+		--Field600s
+		UNION 
+		SELECT M.FieldCode as IDSort, M.FieldCode,REPLACE(F.Ind1,' ','#')  + REPLACE(F.Ind2,' ','#')  as Ind, F.Content as Content
+		FROM Field600s F, MARC_BIB_FIELD M 
+		WHERE M.FieldCode=F.FieldCode AND F.ItemID IN (@strItemIDs) 
+		
+		--Field700s
+		UNION 
+		SELECT M.FieldCode as IDSort, M.FieldCode,REPLACE(F.Ind1,' ','#')  + REPLACE(F.Ind2,' ','#')  as Ind, F.Content as Content 
+		FROM Field700s F, MARC_BIB_FIELD M 
+		WHERE M.FieldCode=F.FieldCode AND F.ItemID IN (@strItemIDs) 
+		
+		--Field800s
+		UNION 
+		SELECT M.FieldCode as IDSort, M.FieldCode,REPLACE(F.Ind1,' ','#')  + REPLACE(F.Ind2,' ','#')  as Ind, F.Content as Content
+		FROM Field800s F, MARC_BIB_FIELD M 
+		WHERE M.FieldCode=F.FieldCode AND F.ItemID IN (@strItemIDs) 
+		
+		--Field900s
+		UNION 
+		SELECT M.FieldCode as IDSort, M.FieldCode,REPLACE(F.Ind1,' ','#')  + REPLACE(F.Ind2,' ','#')  as Ind, F.Content as Content
+		FROM Field900s F, MARC_BIB_FIELD M 
+		WHERE M.FieldCode=F.FieldCode AND F.ItemID IN (@strItemIDs) 
+		
+		--NewRecord
+		UNION
+		SELECT '900' as IDSort,'900' as FieldCode, '' as Ind, CAST(I.NewRecord as varchar(5)) as Content
+		FROM ITEM I , CAT_DIC_MEDIUM M, CAT_DIC_ITEM_TYPE D 
+		WHERE 
+		I.MediumID=M.ID 
+		AND I.TypeID = D.ID
+		AND I.ID IN (@strItemIDs)
+		
+		--CoverPicture
+		UNION
+		SELECT '907' as IDSort,'907' as FieldCode, '' as Ind, I.CoverPicture as Content
+		FROM ITEM I , CAT_DIC_MEDIUM M, CAT_DIC_ITEM_TYPE D 
+		WHERE 
+		I.MediumID=M.ID 
+		AND I.TypeID = D.ID
+		AND I.ID IN (@strItemIDs)
+		AND CoverPicture IS NOT NULL AND CoverPicture <> ''
+		
+		--Reviewer
+		UNION
+		SELECT '912' as IDSort,'912' as FieldCode, '' as Ind, I.Reviewer as Content
+		FROM ITEM I , CAT_DIC_MEDIUM M, CAT_DIC_ITEM_TYPE D 
+		WHERE 
+		I.MediumID=M.ID 
+		AND I.TypeID = D.ID
+		AND I.ID IN (@strItemIDs)
+		AND Reviewer  IS NOT NULL AND Reviewer <>''
+		
+		--Cataloguer
+		UNION
+		SELECT '911' as IDSort,'911' as FieldCode, '' as Ind,  I.Cataloguer as Content
+		FROM ITEM I , CAT_DIC_MEDIUM M, CAT_DIC_ITEM_TYPE D 
+		WHERE 
+		I.MediumID=M.ID 
+		AND I.TypeID = D.ID
+		AND I.ID IN (@strItemIDs)
+		AND Cataloguer  IS NOT NULL AND Cataloguer  <>''
+		
+		--M.Code
+		UNION
+		SELECT '925' as IDSort,'925' as FieldCode, '' as Ind, M.Code as Content
+		FROM ITEM I , CAT_DIC_MEDIUM M, CAT_DIC_ITEM_TYPE D 
+		WHERE 
+		I.MediumID=M.ID 
+		AND I.TypeID = D.ID
+		AND I.ID IN (@strItemIDs)
+		
+		--AccessLevel
+		UNION
+		SELECT '926' as IDSort,'926' as FieldCode, '' as Ind, CAST(I.AccessLevel as varchar(1)) as Content
+		FROM ITEM I , CAT_DIC_MEDIUM M, CAT_DIC_ITEM_TYPE D 
+		WHERE 
+		I.MediumID=M.ID 
+		AND I.TypeID = D.ID
+		AND I.ID IN (@strItemIDs)
+		
+		--D.TypeCode
+		UNION
+		SELECT '927' as IDSort,'927' as FieldCode, '' as Ind, D.TypeCode as Content
+		FROM ITEM I , CAT_DIC_MEDIUM M, CAT_DIC_ITEM_TYPE D 
+		WHERE 
+		I.MediumID=M.ID 
+		AND I.TypeID = D.ID
+		AND I.ID IN (@strItemIDs)
+			-- copynumber : 852$j
+			--Doanhdq
+	    --union
+	    --SELECT distinct '852' as IDSort,'852' as FieldCode, '' as Ind,  '$a' + HLB.code + '$b' + hl.symbol as Content
+     --   FROM HOLDING H, HOLDING_LOCATION HL, HOLDING_LIBRARY HLB WHERE H.ItemID  =@strItemIDs AND H.locationid=HL.ID AND HL.LIBID=HLB.ID
+
+		--ORDER
+		
+		ORDER BY IDSort
+	END
+ELSE
+	BEGIN
+		SELECT '0' as IDSort,'Ldr' as FieldCode, '0' as Ind, Leader as Content
+		FROM CAT_AUTHORITY where
+		ID IN (@strItemIDs)
+		
+		UNION
+		-- 001 : code
+		SELECT '001' as IDSort,'001' as FieldCode, '0' as Ind, Code as Content
+		FROM CAT_AUTHORITY where
+		ID IN (@strItemIDs)
+		
+		UNION	
+		
+		SELECT MA.FieldCode as IDSort,MA.FieldCode, REPLACE(FA.Ind1,' ','#')  + REPLACE(FA.Ind2,' ','#')  as Ind, REPLACE(FA.Content,' ','&nbsp;') as Content
+		FROM Field_Authority FA, MARC_Authority_field MA
+		WHERE MA.FieldCode = FA.FieldCode
+		And AuthorityID IN (@strItemIDs)
+		
+		UNION	
+		-- cataloguer
+		SELECT '911' as IDSort,'911' as FieldCode, '0' as Ind, Cataloguer as Content
+		FROM CAT_AUTHORITY CA 	
+		where CA.ID IN (@strItemIDs)
+		
+		UNION	
+		-- reviewer
+		SELECT '912' as IDSort,'912' as FieldCode, '0' as Ind, Reviewer as Content
+		FROM CAT_AUTHORITY CA 
+		where	
+		CA.ID IN (@strItemIDs)
+		--ORDER
+		
+		ORDER BY IDSort;
+	END
+	
 
 
 go
@@ -7130,319 +7334,39 @@ CREATE PROCEDURE [dbo].[FPT_SP_ACQ_GETMAXID_HINT]
 AS  
    SELECT ISNULL(MAX(InventoryTime),0)  FROM HOLDING_INVENTORY   
 
-   /*==========================TuanND==========================*/
 
-   
-GO
-/****** Object:  StoredProcedure [dbo].[FPT_SPECIALIZED_REPORT_GET_YEAR_PUBLISHNUM]    Script Date: 9/29/2019 6:58:06 PM ******/
-SET ANSI_NULLS ON
-GO
-SET QUOTED_IDENTIFIER ON
-GO
-CREATE PROCEDURE [FPT_SPECIALIZED_REPORT_GET_YEAR_PUBLISHNUM] 
-	-- Add the parameters for the stored procedure here
-	(@itemId int,@type int)
 
+-- purpose : Get list information of book after searching
+-- Last Update: 01/10/2019
+-- Creator: Thangnt
+CREATE PROCEDURE [dbo].[FPT_SP_GET_CODE_AND_SYMBOL_BY_ITEMID]
+(
+	@intItemID INT
+)
 AS
-BEGIN
-	-- SET NOCOUNT ON added to prevent extra result sets from
-	-- interfering with SELECT statements.
-	IF @type=0
+	SELECT DISTINCT H.ItemID, L.Code, C.Symbol FROM [dbo].[HOLDING] AS H
+	INNER JOIN [dbo].[HOLDING_LIBRARY] AS L ON H.LibID = L.ID
+	INNER JOIN [dbo].[HOLDING_LOCATION] AS C ON H.LocationID = C.ID
+	WHERE H.ItemID = @intItemID
+GO
 
-	Begin
-    -- Insert statements for procedure here
-	select ItemID as ITEMID,Content as CONTENT,FieldCode from FIELD200S where   FieldCode='250' and ItemID=@itemId
-	end
-	ELSE IF @type = 1
-	begin
-	select ItemID as ITEMID,Content as CONTENT,FieldCode  from FIELD200S where   FieldCode='260' and ItemID=@itemId
-	end
-END
-GO
-SET ANSI_NULLS ON
-GO
-SET QUOTED_IDENTIFIER ON
-GO
---get number gt gk
-CREATE PROCEDURE [dbo].[FPT_SPECIALIZED_REPORT_GET_GTTK]
-	-- Add the parameters for the stored procedure here
-	(@itemid int, @type int)
+
+-- purpose : Get detail information of book with the borrowing status
+-- Last Update: 01/10/2019
+-- Creator: Thangnt
+CREATE PROCEDURE [dbo].[FPT_SP_GET_DETAIL_BOOK_WITH_STATUS]
+(
+	@intItemID INT,
+	@strCode NVARCHAR(32)
+)
 AS
-BEGIN
-	-- SET NOCOUNT ON added to prevent extra result sets from
-	-- interfering with SELECT statements.
-	SET NOCOUNT ON;
+	SELECT DISTINCT L.Code, C.Symbol, H.CopyNumber, H.InUsed FROM [dbo].[HOLDING] AS H
+	INNER JOIN [dbo].[HOLDING_LIBRARY] AS L ON H.LibID = L.ID
+	INNER JOIN [dbo].[HOLDING_LOCATION] AS C ON H.LocationID = C.ID
+	WHERE (H.ItemID = @intItemID) AND (L.Code = @strCode)
+GO
 
-    -- Insert statements for procedure here
-	if @type=0
-	begin
-	select count(Holding.CopyNumber)as total,ItemID from HOLDING where LoanTypeID  in (13,22,23) and ItemID=@itemid
-group by ItemID
-end
-else if @type=1
-begin 
-	select count(Holding.CopyNumber)as total,ItemID from HOLDING where LoanTypeID  not in (13,22,23) and ItemID=@itemid
-	group by ItemID
-end
-END
-GO
-SET ANSI_NULLS ON
-GO
-SET QUOTED_IDENTIFIER ON
-GO
-/*Update Store */
-ALTER PROCEDURE [dbo].[FPT_SPECIALIZED_REPORT]
-	@intLibID int,
-	@strSubCode varchar(5000),
-	@intUserID int
-AS
-BEGIN 
-	IF @intLibID = 81
-	BEGIN
-		SELECT S.ItemID, S.Content AS SUBJECTCODE, F2.Content AS ITEMNAME, I.Code AS ITEMCODE, '' AS ISBN,''AS [YEAR],''AS PUBLISHNUM,'' AS GTNUMBER,'' AS TKNUMBER, F1.Content AS AUTHOR, '' AS PUBLISHER, H.Total AS TOTAL
-		FROM (SELECT DISTINCT ItemID, Content FROM FIELD600S WHERE FieldCode like '650' and @strSubCode like '%;'+cast(Content AS VARCHAR(20))+';%') S,
-			ITEM I, FIELD200S F2, FIELD100S F1, 
-			(SELECT count(Holding.ItemID) AS Total, Holding.ItemID FROM Holding, Item WHERE Holding.ItemID = Item.ID 
-			and Holding.LocationID in (SELECT B.ID FROM HOLDING_LIBRARY A, HOLDING_LOCATION B, SYS_USER_LOCATION C 
-										WHERE A.LocalLib = 1 AND A.ID = B.LibID AND B.ID = C.LocID AND C.UserID = @intUserID AND B.LibID = @intLibID
-										UNION SELECT ID FROM HOLDING_LOCATION	WHERE ID in (13,15,16,27)) 
-			GROUP BY Holding.ItemID) H
-		WHERE S.ItemID = I.ID and S.ItemID = F2.ItemID and S.ItemID = F1.ItemID and S.ItemID = H.ItemID
-			and F2.FieldCode = '245' and F1.FieldCode = '100'
-		ORDER BY S.Content ASC
-	END
-	ELSE IF @intLibID = 20
-	BEGIN
-		SELECT S.ItemID, S.Content AS SUBJECTCODE, F2.Content AS ITEMNAME, I.Code AS ITEMCODE, '' AS ISBN,''AS [YEAR],''AS PUBLISHNUM,'' AS GTNUMBER,'' AS TKNUMBER, F1.Content AS AUTHOR, '' AS PUBLISHER, H.Total AS TOTAL
-		FROM (SELECT DISTINCT ItemID, Content FROM FIELD600S WHERE FieldCode like '650' and @strSubCode like '%;'+cast(Content AS VARCHAR(20))+';%') S,
-			ITEM I, FIELD200S F2, FIELD100S F1, 
-			(SELECT count(Holding.ItemID) AS Total, Holding.ItemID FROM Holding, Item WHERE Holding.ItemID = Item.ID 
-			and Holding.LocationID in (SELECT B.ID FROM HOLDING_LIBRARY A, HOLDING_LOCATION B, SYS_USER_LOCATION C 
-										WHERE A.LocalLib = 1 AND A.ID = B.LibID AND B.ID = C.LocID AND C.UserID = @intUserID AND B.LibID = @intLibID
-										EXCEPT SELECT ID FROM HOLDING_LOCATION	WHERE ID in (13,15,16,27)) 
-			GROUP BY Holding.ItemID) H
-		WHERE S.ItemID = I.ID and S.ItemID = F2.ItemID and S.ItemID = F1.ItemID and S.ItemID = H.ItemID
-			and F2.FieldCode = '245' and F1.FieldCode = '100'
-		ORDER BY S.Content ASC
-	END
-	ELSE
-	BEGIN
-		SELECT S.ItemID, S.Content AS SUBJECTCODE, F2.Content AS ITEMNAME, I.Code AS ITEMCODE, '' AS ISBN,''AS [YEAR],''AS PUBLISHNUM,'' AS GTNUMBER,'' AS TKNUMBER, F1.Content AS AUTHOR, '' AS PUBLISHER, H.Total AS TOTAL
-		FROM (SELECT DISTINCT ItemID, Content FROM FIELD600S WHERE FieldCode like '650' and @strSubCode like '%;'+cast(Content AS VARCHAR(20))+';%') S,
-			ITEM I, FIELD200S F2, FIELD100S F1, 
-			(SELECT count(Holding.ItemID) AS Total, Holding.ItemID FROM Holding, Item WHERE Holding.ItemID = Item.ID 
-			and Holding.LocationID in (SELECT B.ID FROM HOLDING_LIBRARY A, HOLDING_LOCATION B, SYS_USER_LOCATION C 
-										WHERE A.LocalLib = 1 AND A.ID = B.LibID AND B.ID = C.LocID AND C.UserID = @intUserID AND B.LibID = @intLibID) 
-			GROUP BY Holding.ItemID) H
-		WHERE S.ItemID = I.ID and S.ItemID = F2.ItemID and S.ItemID = F1.ItemID and S.ItemID = H.ItemID
-			and F2.FieldCode = '245' and F1.FieldCode = '100'
-		ORDER BY S.Content ASC
-	END	
-END
-/*TuanND END*/
-GO
-/****** Object:  StoredProcedure [dbo].[FPT_SP_CATA_GET_CONTENTS_OF_ITEMS]    Script Date: 7/9/2019 3:16:48 PM ******/
-SET ANSI_NULLS ON
-GO
-SET QUOTED_IDENTIFIER OFF
-GO
---FPT_SP_CATA_GET_CONTENTS_OF_ITEMS'1090',0
---Doanhdq created, thangtv fixed
---use to display all property by  Record
---Fixed : 852 hien thi ma dkcb
-CREATE        PROCEDURE [dbo].[FPT_SP_CATA_GET_CONTENTS_OF_ITEMS]
-	@strItemIDs varchar(1000),
-	@intIsAuthority INT
-AS
 
-IF @intIsAuthority = 0 
-	BEGIN
-		--Ldr
-		SELECT '000' as IDSort,'Ldr' as FieldCode, '' as Ind, Leader as Content
-		FROM ITEM I , CAT_DIC_MEDIUM M, CAT_DIC_ITEM_TYPE D 
-		WHERE 
-		I.MediumID=M.ID 
-		AND I.TypeID = D.ID
-		AND I.ID IN (@strItemIDs)
-		
-		--Code
-		UNION
-		SELECT '001' as IDSort,'001' as FieldCode, '' as Ind, I.Code as Content
-		FROM ITEM I , CAT_DIC_MEDIUM M, CAT_DIC_ITEM_TYPE D 
-		WHERE 
-		I.MediumID=M.ID 
-		AND I.TypeID = D.ID
-		AND I.ID IN (@strItemIDs)
-		
-		--Field000s
-		UNION 
-		SELECT M.FieldCode as IDSort, M.FieldCode,REPLACE(F.Ind1,' ','#')  + REPLACE(F.Ind2,' ','#')  as Ind, F.Content as Content
-		FROM Field000s F, MARC_BIB_FIELD M
-		WHERE M.FieldCode=F.FieldCode AND F.ItemID IN (@strItemIDs)  
-		
-		--Field100s
-		UNION 
-		SELECT M.FieldCode as IDSort, M.FieldCode,REPLACE(F.Ind1,' ','#')  + REPLACE(F.Ind2,' ','#')  as Ind, F.Content as Content 
-		FROM Field100s F, MARC_BIB_FIELD M 
-		WHERE M.FieldCode=F.FieldCode AND F.ItemID IN (@strItemIDs)  
-		
-		--Field200s
-		UNION 
-		SELECT M.FieldCode as IDSort, M.FieldCode,REPLACE(F.Ind1,' ','#')  + REPLACE(F.Ind2,' ','#')  as Ind, F.Content as Content
-		FROM Field200s F, MARC_BIB_FIELD M 
-		WHERE M.FieldCode=F.FieldCode AND F.ItemID IN (@strItemIDs) 
-		
-		--Field300s
-		UNION 
-		SELECT M.FieldCode as IDSort, M.FieldCode,REPLACE(F.Ind1,' ','#')  + REPLACE(F.Ind2,' ','#')  as Ind, F.Content as Content 
-		FROM Field300s F, MARC_BIB_FIELD M 
-		WHERE M.FieldCode=F.FieldCode AND F.ItemID IN (@strItemIDs) 
-		
-		--Field400s
-		UNION 
-		SELECT M.FieldCode as IDSort, M.FieldCode,REPLACE(F.Ind1,' ','#')  + REPLACE(F.Ind2,' ','#')  as Ind, F.Content as Content
-		FROM Field400s F, MARC_BIB_FIELD M 
-		WHERE M.FieldCode=F.FieldCode AND F.ItemID IN (@strItemIDs) 
-		
-		--Field500s
-		UNION 
-		SELECT M.FieldCode as IDSort, M.FieldCode,REPLACE(F.Ind1,' ','#')  + REPLACE(F.Ind2,' ','#')  as Ind, F.Content as Content 
-		FROM Field500s F, MARC_BIB_FIELD M 
-		WHERE M.FieldCode=F.FieldCode AND F.ItemID IN (@strItemIDs) 
-		
-		--Field600s
-		UNION 
-		SELECT M.FieldCode as IDSort, M.FieldCode,REPLACE(F.Ind1,' ','#')  + REPLACE(F.Ind2,' ','#')  as Ind, F.Content as Content
-		FROM Field600s F, MARC_BIB_FIELD M 
-		WHERE M.FieldCode=F.FieldCode AND F.ItemID IN (@strItemIDs) 
-		
-		--Field700s
-		UNION 
-		SELECT M.FieldCode as IDSort, M.FieldCode,REPLACE(F.Ind1,' ','#')  + REPLACE(F.Ind2,' ','#')  as Ind, F.Content as Content 
-		FROM Field700s F, MARC_BIB_FIELD M 
-		WHERE M.FieldCode=F.FieldCode AND F.ItemID IN (@strItemIDs) 
-		
-		--Field800s
-		UNION 
-		SELECT M.FieldCode as IDSort, M.FieldCode,REPLACE(F.Ind1,' ','#')  + REPLACE(F.Ind2,' ','#')  as Ind, F.Content as Content
-		FROM Field800s F, MARC_BIB_FIELD M 
-		WHERE M.FieldCode=F.FieldCode AND F.ItemID IN (@strItemIDs) 
-		
-		--Field900s
-		UNION 
-		SELECT M.FieldCode as IDSort, M.FieldCode,REPLACE(F.Ind1,' ','#')  + REPLACE(F.Ind2,' ','#')  as Ind, F.Content as Content
-		FROM Field900s F, MARC_BIB_FIELD M 
-		WHERE M.FieldCode=F.FieldCode AND F.ItemID IN (@strItemIDs) 
-		
-		--NewRecord
-		UNION
-		SELECT '900' as IDSort,'900' as FieldCode, '' as Ind, CAST(I.NewRecord as varchar(5)) as Content
-		FROM ITEM I , CAT_DIC_MEDIUM M, CAT_DIC_ITEM_TYPE D 
-		WHERE 
-		I.MediumID=M.ID 
-		AND I.TypeID = D.ID
-		AND I.ID IN (@strItemIDs)
-		
-		--CoverPicture
-		UNION
-		SELECT '907' as IDSort,'907' as FieldCode, '' as Ind, I.CoverPicture as Content
-		FROM ITEM I , CAT_DIC_MEDIUM M, CAT_DIC_ITEM_TYPE D 
-		WHERE 
-		I.MediumID=M.ID 
-		AND I.TypeID = D.ID
-		AND I.ID IN (@strItemIDs)
-		AND CoverPicture IS NOT NULL AND CoverPicture <> ''
-		
-		--Reviewer
-		UNION
-		SELECT '912' as IDSort,'912' as FieldCode, '' as Ind, I.Reviewer as Content
-		FROM ITEM I , CAT_DIC_MEDIUM M, CAT_DIC_ITEM_TYPE D 
-		WHERE 
-		I.MediumID=M.ID 
-		AND I.TypeID = D.ID
-		AND I.ID IN (@strItemIDs)
-		AND Reviewer  IS NOT NULL AND Reviewer <>''
-		
-		--Cataloguer
-		UNION
-		SELECT '911' as IDSort,'911' as FieldCode, '' as Ind,  I.Cataloguer as Content
-		FROM ITEM I , CAT_DIC_MEDIUM M, CAT_DIC_ITEM_TYPE D 
-		WHERE 
-		I.MediumID=M.ID 
-		AND I.TypeID = D.ID
-		AND I.ID IN (@strItemIDs)
-		AND Cataloguer  IS NOT NULL AND Cataloguer  <>''
-		
-		--M.Code
-		UNION
-		SELECT '925' as IDSort,'925' as FieldCode, '' as Ind, M.Code as Content
-		FROM ITEM I , CAT_DIC_MEDIUM M, CAT_DIC_ITEM_TYPE D 
-		WHERE 
-		I.MediumID=M.ID 
-		AND I.TypeID = D.ID
-		AND I.ID IN (@strItemIDs)
-		
-		--AccessLevel
-		UNION
-		SELECT '926' as IDSort,'926' as FieldCode, '' as Ind, CAST(I.AccessLevel as varchar(1)) as Content
-		FROM ITEM I , CAT_DIC_MEDIUM M, CAT_DIC_ITEM_TYPE D 
-		WHERE 
-		I.MediumID=M.ID 
-		AND I.TypeID = D.ID
-		AND I.ID IN (@strItemIDs)
-		
-		--D.TypeCode
-		UNION
-		SELECT '927' as IDSort,'927' as FieldCode, '' as Ind, D.TypeCode as Content
-		FROM ITEM I , CAT_DIC_MEDIUM M, CAT_DIC_ITEM_TYPE D 
-		WHERE 
-		I.MediumID=M.ID 
-		AND I.TypeID = D.ID
-		AND I.ID IN (@strItemIDs)
-			-- copynumber : 852$j
-			--thangtv
-	 UNION
-	 SELECT  '852' as IDSort,'852' as FieldCode, '' as Ind,  '$a' + HLB.code + '$b' + hl.symbol + '$j'+ H.CopyNumber as Content
-     FROM HOLDING H, HOLDING_LOCATION HL, HOLDING_LIBRARY HLB WHERE H.ItemID  =@strItemIDs AND H.locationid=HL.ID AND HL.LIBID=HLB.ID
-
-		
-		
-		ORDER BY IDSort
-	END
-ELSE
-	BEGIN
-		SELECT '0' as IDSort,'Ldr' as FieldCode, '0' as Ind, Leader as Content
-		FROM CAT_AUTHORITY where
-		ID IN (@strItemIDs)
-		
-		UNION
-		-- 001 : code
-		SELECT '001' as IDSort,'001' as FieldCode, '0' as Ind, Code as Content
-		FROM CAT_AUTHORITY where
-		ID IN (@strItemIDs)
-		
-		UNION	
-		
-		SELECT MA.FieldCode as IDSort,MA.FieldCode, REPLACE(FA.Ind1,' ','#')  + REPLACE(FA.Ind2,' ','#')  as Ind, REPLACE(FA.Content,' ','&nbsp;') as Content
-		FROM Field_Authority FA, MARC_Authority_field MA
-		WHERE MA.FieldCode = FA.FieldCode
-		And AuthorityID IN (@strItemIDs)
-		
-		UNION	
-		-- cataloguer
-		SELECT '911' as IDSort,'911' as FieldCode, '0' as Ind, Cataloguer as Content
-		FROM CAT_AUTHORITY CA 	
-		where CA.ID IN (@strItemIDs)
-		
-		UNION	
-		-- reviewer
-		SELECT '912' as IDSort,'912' as FieldCode, '0' as Ind, Reviewer as Content
-		FROM CAT_AUTHORITY CA 
-		where	
-		CA.ID IN (@strItemIDs)
-		--ORDER
-		
-		ORDER BY IDSort;
-	END
-	
-
+-- purpose : Get result book after searching
+-- Last Update: 01/10/2019
+-- Creator: Thangnt
