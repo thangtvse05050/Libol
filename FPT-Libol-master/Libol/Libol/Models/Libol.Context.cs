@@ -23344,7 +23344,7 @@ namespace Libol.Models
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<FPT_SPECIALIZED_REPORT_GET_YEAR_PUBLISHNUM_Result>("FPT_SPECIALIZED_REPORT_GET_YEAR_PUBLISHNUM", itemIdParameter, typeParameter);
         }
     
-        public virtual ObjectResult<FPT_SPECIALIZED_REPORT_GET_GTTK_Result> FPT_SPECIALIZED_REPORT_GET_GTTK(Nullable<int> itemid, Nullable<int> type)
+        public virtual ObjectResult<FPT_SPECIALIZED_REPORT_GET_GTTK_Result> FPT_SPECIALIZED_REPORT_GET_GTTK(Nullable<int> itemid, Nullable<int> type, Nullable<int> intUserID, Nullable<int> intLibID)
         {
             var itemidParameter = itemid.HasValue ?
                 new ObjectParameter("itemid", itemid) :
@@ -23354,7 +23354,15 @@ namespace Libol.Models
                 new ObjectParameter("type", type) :
                 new ObjectParameter("type", typeof(int));
     
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<FPT_SPECIALIZED_REPORT_GET_GTTK_Result>("FPT_SPECIALIZED_REPORT_GET_GTTK", itemidParameter, typeParameter);
+            var intUserIDParameter = intUserID.HasValue ?
+                new ObjectParameter("intUserID", intUserID) :
+                new ObjectParameter("intUserID", typeof(int));
+    
+            var intLibIDParameter = intLibID.HasValue ?
+                new ObjectParameter("intLibID", intLibID) :
+                new ObjectParameter("intLibID", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<FPT_SPECIALIZED_REPORT_GET_GTTK_Result>("FPT_SPECIALIZED_REPORT_GET_GTTK", itemidParameter, typeParameter, intUserIDParameter, intLibIDParameter);
         }
     }
 }

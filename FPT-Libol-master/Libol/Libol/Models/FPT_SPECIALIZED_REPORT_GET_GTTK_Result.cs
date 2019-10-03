@@ -14,6 +14,5 @@ namespace Libol.Models
     public partial class FPT_SPECIALIZED_REPORT_GET_GTTK_Result
     {
         public Nullable<int> total { get; set; }
-        public int ItemID { get; set; }
     }
 }

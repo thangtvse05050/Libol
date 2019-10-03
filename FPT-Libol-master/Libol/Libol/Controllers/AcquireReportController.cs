@@ -3047,12 +3047,12 @@ namespace Libol.Controllers
 						}
 					}
 				}
-				List<FPT_SPECIALIZED_REPORT_GET_GTTK_Result> gtlst = le.FPT_SPECIALIZED_REPORT_GET_GTTK(itemCheck, 0).ToList();
+				List<FPT_SPECIALIZED_REPORT_GET_GTTK_Result> gtlst = le.FPT_SPECIALIZED_REPORT_GET_GTTK(itemCheck, 0, (int)Session["UserID"], LibID).ToList();
 				if (gtlst.Count > 0) {
 					i.GTNUMBER = gtlst.First().total.ToString();
 					GTTOTAL += Int32.Parse( i.GTNUMBER);
 				}
-				List<FPT_SPECIALIZED_REPORT_GET_GTTK_Result> tklst = le.FPT_SPECIALIZED_REPORT_GET_GTTK(itemCheck, 1).ToList();
+				List<FPT_SPECIALIZED_REPORT_GET_GTTK_Result> tklst = le.FPT_SPECIALIZED_REPORT_GET_GTTK(itemCheck, 1, (int)Session["UserID"], LibID).ToList();
 				if (tklst.Count > 0) {
 					i.TKNUMBER = tklst.First().total.ToString();
 					TKTOTAL += Int32.Parse( i.TKNUMBER);
