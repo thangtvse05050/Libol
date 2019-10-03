@@ -251,7 +251,13 @@
     <Compile Include="Models\FPT_RECOMMEND.cs">
       <DependentUpon>Libol.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\FPT_SPECIALIZED_REPORT_GET_GTTK_Result.cs">
+      <DependentUpon>Libol.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\FPT_SPECIALIZED_REPORT_GET_PUBLISHER_Result.cs">
+      <DependentUpon>Libol.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\FPT_SPECIALIZED_REPORT_GET_YEAR_PUBLISHNUM_Result.cs">
       <DependentUpon>Libol.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\FPT_SPECIALIZED_REPORT_Result.cs">
