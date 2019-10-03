@@ -13,7 +13,7 @@
     <script>
         $(document).ready(function () {
             var title = document.getElementById("title").innerText;
-            var len = 4;
+            var len = 6;
             var general_tbl = $("#general_tbl").DataTable({
                 paging: false,
                 searching: false,
@@ -48,18 +48,6 @@
                     {
                         "targets": [7],
                         "visible": false
-                    },
-                    {
-                        "targets": [8],
-                        "visible": false
-                    },
-                    {
-                        "targets": [9],
-                        "visible": false
-                    },
-                    {
-                        "targets": [10],
-                        "visible": false
                     }
                 ]
             });
@@ -89,8 +77,8 @@
             }).draw();
 
             var data = [
-                ["", "", "", "", "", "", "", "", "", "", ""],
-                ["STT", "Mã môn", "Tên sách", "Mã tài liệu", "ISBN", "Năm xuất bản", "Lần xuất bản", "Tác giả", "Nhà xuất bản", "Số lượng sách giáo trình","Số lượng sách tham khảo"],
+                ["", "", "", "", "", "", "", ""],
+                ["STT", "Mã môn", "Tên sách", "Mã tài liệu", "ISBN", "Tác giả", "Nhà xuất bản", "Số lượng"],
             ];
 
             general_tbl.rows.add(data).draw()
@@ -129,13 +117,10 @@
                     <th></th>
                     <th></th>
                     <th></th>
-                    <th></th>
-                    <th></th>
-                    <th></th>
                 </tr>
             </thead>
             <tbody>
-                @*<tr>
+                <tr>
                     <td>Tổng Giáo trình</td>
                     <td>@ViewBag.GTItem</td>
                     <td>@ViewBag.GT</td>
@@ -149,19 +134,16 @@
                     <td>Tổng Tham khảo</td>
                     <td>@ViewBag.TKItem</td>
                     <td>@ViewBag.TK</td>
-                    <td></td> 
                     <td></td>
                     <td></td>
                     <td></td>
                     <td></td>
-                </tr>*@
+                    <td></td>
+                </tr>
                 <tr>
                     <td>Tổng</td>
                     <td>@ViewBag.TTItem</td>
                     <td>@ViewBag.TT</td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
                     <td></td>
                     <td></td>
                     <td></td>
@@ -180,12 +162,9 @@
                     <th>Tên sách</th>
                     <th>Mã tài liệu</th>
                     <th>ISBN</th>
-                    <th>Năm xuất bản</th>
-                    <th>Lần xuất bản</th>
                     <th>Tác giả</th>
                     <th>Nhà xuất bản</th>
-                    <th>Số lượng sách giáo trình </th>
-                    <th>Số lượng sách tham khảo</th>
+                    <th>Số lượng</th>
                 </tr>
             </thead>
             <tbody>
@@ -197,21 +176,12 @@
                         <td>@i.ITEMNAME</td>
                         <td>@i.ITEMCODE</td>
                         <td>@i.ISBN.ToString()</td>
-                        <td style="text-align:center">@i.YEAR</td>
-                        <td>@i.PUBLISHNUM</td>
                         <td>@i.AUTHOR</td>
                         <td>@i.PUBLISHER</td>
-                        <td style="text-align:center">@i.GTNUMBER</td>
-                        <td style="text-align:center">@i.TKNUMBER</td>
+                        <td>@i.TOTAL</td>
                     </tr>
                 }
-
             </tbody>
-            <tr>
-                <th style="text-align:center" colspan="9">Tổng sách</th>
-                <th style="text-align:center">@ViewBag.GTTOTAL</th>
-                <th style="text-align:center">@ViewBag.TKTOTAL</th>
-            </tr>
         </table>
         <div class="row">
             <div class="col-md-12 text-center">

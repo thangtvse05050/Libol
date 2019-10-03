@@ -255,19 +255,14 @@ namespace Libol.Controllers
 
         public PartialViewResult GetInventoryReport(string strInventoryID, string strLibID, string strDKCBID)
         {
-            
             strDKCBID = strDKCBID.Trim();
             string[] myList = strDKCBID.Split('\n');
             int countCN = myList.Length;
             int libid = 0, invenid = 0;
-            if(strDKCBID.Equals(" "))
-            {
-                strDKCBID = strDKCBID.Trim();
-            }
             if (strLibID != "")
             {
                 libid = Convert.ToInt32(strLibID);
-            } 
+            }
             if (strInventoryID != "")
             {
                 invenid = Convert.ToInt32(strInventoryID);

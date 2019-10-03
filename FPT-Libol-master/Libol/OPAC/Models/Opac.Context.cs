@@ -2650,6 +2650,15 @@ namespace OPAC.Models
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("FPT_SP_CIR_OVERDUELIST_GETINFOR", intUserIDParameter, strPatronIDsParameter, whereConditionParameter);
         }
     
+        public virtual ObjectResult<FPT_SP_GET_CODE_AND_SYMBOL_BY_ITEMID_Result> FPT_SP_GET_CODE_AND_SYMBOL_BY_ITEMID(Nullable<int> intItemID)
+        {
+            var intItemIDParameter = intItemID.HasValue ?
+                new ObjectParameter("intItemID", intItemID) :
+                new ObjectParameter("intItemID", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<FPT_SP_GET_CODE_AND_SYMBOL_BY_ITEMID_Result>("FPT_SP_GET_CODE_AND_SYMBOL_BY_ITEMID", intItemIDParameter);
+        }
+    
         public virtual ObjectResult<FPT_SP_GET_COPYNUMBER_STRING_Result> FPT_SP_GET_COPYNUMBER_STRING(Nullable<int> libid, string acqdate, Nullable<float> price, Nullable<int> itemid)
         {
             var libidParameter = libid.HasValue ?
@@ -2669,6 +2678,19 @@ namespace OPAC.Models
                 new ObjectParameter("itemid", typeof(int));
     
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<FPT_SP_GET_COPYNUMBER_STRING_Result>("FPT_SP_GET_COPYNUMBER_STRING", libidParameter, acqdateParameter, priceParameter, itemidParameter);
+        }
+    
+        public virtual ObjectResult<FPT_SP_GET_DETAIL_BOOK_WITH_STATUS_Result> FPT_SP_GET_DETAIL_BOOK_WITH_STATUS(Nullable<int> intItemID, string strCode)
+        {
+            var intItemIDParameter = intItemID.HasValue ?
+                new ObjectParameter("intItemID", intItemID) :
+                new ObjectParameter("intItemID", typeof(int));
+    
+            var strCodeParameter = strCode != null ?
+                new ObjectParameter("strCode", strCode) :
+                new ObjectParameter("strCode", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<FPT_SP_GET_DETAIL_BOOK_WITH_STATUS_Result>("FPT_SP_GET_DETAIL_BOOK_WITH_STATUS", intItemIDParameter, strCodeParameter);
         }
     
         public virtual ObjectResult<FPT_SP_GET_GENERAL_LOC_INFOR_DUCNV_Result> FPT_SP_GET_GENERAL_LOC_INFOR_DUCNV(Nullable<int> intLibID, Nullable<int> intLocID, string strShelf, Nullable<int> intMode)
@@ -3076,6 +3098,15 @@ namespace OPAC.Models
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<FPT_SP_GET_HOLDING_REMOVED_WITH_ID_Result>("FPT_SP_GET_HOLDING_REMOVED_WITH_ID", strIDParameter);
         }
     
+        public virtual ObjectResult<string> FPT_SP_GET_INFO_SEARCHING_BOOK(string strKeyWord)
+        {
+            var strKeyWordParameter = strKeyWord != null ?
+                new ObjectParameter("strKeyWord", strKeyWord) :
+                new ObjectParameter("strKeyWord", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<string>("FPT_SP_GET_INFO_SEARCHING_BOOK", strKeyWordParameter);
+        }
+    
         public virtual int FPT_SP_GET_ITEM(string strFromDate, string strToDate, Nullable<int> intLocationID, Nullable<int> intLibraryID)
         {
             var strFromDateParameter = strFromDate != null ?
@@ -3114,6 +3145,15 @@ namespace OPAC.Models
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<FPT_SP_GET_ITEM_INFOR_Result>("FPT_SP_GET_ITEM_INFOR", intItemIDParameter, intLocationIDParameter, intLibraryIDParameter);
         }
     
+        public virtual ObjectResult<FPT_SP_GET_SEARCHED_INFO_BOOK_Result> FPT_SP_GET_SEARCHED_INFO_BOOK(string strCode)
+        {
+            var strCodeParameter = strCode != null ?
+                new ObjectParameter("strCode", strCode) :
+                new ObjectParameter("strCode", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<FPT_SP_GET_SEARCHED_INFO_BOOK_Result>("FPT_SP_GET_SEARCHED_INFO_BOOK", strCodeParameter);
+        }
+    
         public virtual int FPT_SP_GET_STAT_BOOK(string strIDs, string strLocationID)
         {
             var strIDsParameter = strIDs != null ?
@@ -3125,6 +3165,15 @@ namespace OPAC.Models
                 new ObjectParameter("strLocationID", typeof(string));
     
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("FPT_SP_GET_STAT_BOOK", strIDsParameter, strLocationIDParameter);
+        }
+    
+        public virtual ObjectResult<FPT_SP_GET_TITLE_AND_AUTHOR_INFO_BOOK_Result> FPT_SP_GET_TITLE_AND_AUTHOR_INFO_BOOK(string strCode)
+        {
+            var strCodeParameter = strCode != null ?
+                new ObjectParameter("strCode", strCode) :
+                new ObjectParameter("strCode", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<FPT_SP_GET_TITLE_AND_AUTHOR_INFO_BOOK_Result>("FPT_SP_GET_TITLE_AND_AUTHOR_INFO_BOOK", strCodeParameter);
         }
     
         public virtual int FPT_SP_GETINFOR_EMAIL(string libIDs, Nullable<int> intTime)
@@ -23259,6 +23308,69 @@ namespace OPAC.Models
         public virtual int TESTCAI()
         {
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("TESTCAI");
+        }
+    
+        public virtual ObjectResult<string> FPT_SP_GET_ISBN_ITEM(Nullable<int> intItemID)
+        {
+            var intItemIDParameter = intItemID.HasValue ?
+                new ObjectParameter("intItemID", intItemID) :
+                new ObjectParameter("intItemID", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<string>("FPT_SP_GET_ISBN_ITEM", intItemIDParameter);
+        }
+    
+        public virtual ObjectResult<string> FPT_SP_GET_LANGUAGE_CODE_ITEM(Nullable<int> intItemID)
+        {
+            var intItemIDParameter = intItemID.HasValue ?
+                new ObjectParameter("intItemID", intItemID) :
+                new ObjectParameter("intItemID", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<string>("FPT_SP_GET_LANGUAGE_CODE_ITEM", intItemIDParameter);
+        }
+    
+        public virtual ObjectResult<string> FPT_SP_GET_PHYSICAL_INFO_ITEM(Nullable<int> intItemID)
+        {
+            var intItemIDParameter = intItemID.HasValue ?
+                new ObjectParameter("intItemID", intItemID) :
+                new ObjectParameter("intItemID", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<string>("FPT_SP_GET_PHYSICAL_INFO_ITEM", intItemIDParameter);
+        }
+    
+        public virtual ObjectResult<string> FPT_SP_GET_PUBLISH_INFO_ITEM(Nullable<int> intItemID)
+        {
+            var intItemIDParameter = intItemID.HasValue ?
+                new ObjectParameter("intItemID", intItemID) :
+                new ObjectParameter("intItemID", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<string>("FPT_SP_GET_PUBLISH_INFO_ITEM", intItemIDParameter);
+        }
+    
+        public virtual ObjectResult<string> TEST_TUAN(Nullable<int> intItemID)
+        {
+            var intItemIDParameter = intItemID.HasValue ?
+                new ObjectParameter("intItemID", intItemID) :
+                new ObjectParameter("intItemID", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<string>("TEST_TUAN", intItemIDParameter);
+        }
+    
+        public virtual ObjectResult<Nullable<int>> FPT_SP_GET_ITEMID_BY_KEYWORD(string strKeyWord)
+        {
+            var strKeyWordParameter = strKeyWord != null ?
+                new ObjectParameter("strKeyWord", strKeyWord) :
+                new ObjectParameter("strKeyWord", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Nullable<int>>("FPT_SP_GET_ITEMID_BY_KEYWORD", strKeyWordParameter);
+        }
+    
+        public virtual ObjectResult<FPT_SP_GET_SEARCHED_INFO_BOOK_BY_KEYWORD_Result> FPT_SP_GET_SEARCHED_INFO_BOOK_BY_KEYWORD(Nullable<int> intItemID)
+        {
+            var intItemIDParameter = intItemID.HasValue ?
+                new ObjectParameter("intItemID", intItemID) :
+                new ObjectParameter("intItemID", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<FPT_SP_GET_SEARCHED_INFO_BOOK_BY_KEYWORD_Result>("FPT_SP_GET_SEARCHED_INFO_BOOK_BY_KEYWORD", intItemIDParameter);
         }
     }
 }
