@@ -33,14 +33,14 @@ namespace Libol.Controllers
             CodeVal = strCodeVal.Trim();
             if(intType == 1)
             {
-                CheckLockPatron(strCodeVal);
-                CodetogetLock = strCodeVal;
+                CheckLockPatron(CodeVal);
+                CodetogetLock = CodeVal;
             }
             else if (intType == 3)
             {
-                if(db.CIR_LOAN.Where(a => a.CopyNumber == strCodeVal).Count() != 0)
+                if(db.CIR_LOAN.Where(a => a.CopyNumber == CodeVal).Count() != 0)
                 {
-                    string pccode = db.CIR_LOAN.Where(a => a.CopyNumber == strCodeVal).First().CIR_PATRON.Code;
+                    string pccode = db.CIR_LOAN.Where(a => a.CopyNumber == CodeVal).First().CIR_PATRON.Code;
                     CheckLockPatron(pccode);
                     CodetogetLock = pccode;
                 }
@@ -53,14 +53,14 @@ namespace Libol.Controllers
             {
                 ViewBag.active = 1;
             }
-            GetContentRenew((int)Session["UserID"], intType, strCodeVal);
+            GetContentRenew((int)Session["UserID"], intType, CodeVal);
             Type = intType;
             return PartialView("_searchToRenew");
         }
 
         [HttpPost]
         [AuthAttribute(ModuleID = 3, RightID = "19")]
-        public PartialViewResult Renew(int[] intLoanID, byte intAddTime, byte intTimeUnit, string strFixedDueDate, string[] duedates,string strCodeVal, int[] inttimes, int[] intrange)
+        public PartialViewResult Renew(int[] intLoanID, byte intAddTime, byte intTimeUnit, string strFixedDueDate, string[] duedates, int[] inttimes, int[] intrange)
         {
             int codeErrorCount = 0;
             if (intLoanID is null)
@@ -133,7 +133,7 @@ namespace Libol.Controllers
                     
                 }
             }
-            GetContentRenew((int)Session["UserID"], Type, strCodeVal);
+            GetContentRenew((int)Session["UserID"], Type, CodeVal);
             CheckLockPatron(CodetogetLock);
             return PartialView("_searchToRenew");
         }
@@ -170,18 +170,17 @@ namespace Libol.Controllers
 
 
         [HttpPost]
-        public JsonResult GetLockPatronInfo(string strCodeVal)
+        public JsonResult GetLockPatronInfo()
         {
-            CIR_PATRON patron = db.CIR_PATRON.Where(a => a.Code == strCodeVal).First();
+            CIR_PATRON patron = db.CIR_PATRON.Where(a => a.Code == CodeVal).First();
             string LPatronName = patron.FirstName + " " + patron.MiddleName + " " + patron.LastName;
-            string LPatronCode = strCodeVal;
+            string LPatronCode = CodeVal;
             ViewBag.blackstartdate = db.CIR_PATRON_LOCK.Where(a => a.PatronCode == LPatronCode).First().StartedDate;
             string Lblackstartdate = db.CIR_PATRON_LOCK.Where(a => a.PatronCode == LPatronCode).First().StartedDate.ToString("dd/MM/yyyy");
             string Lblackenddate = ViewBag.blackstartdate.AddDays(db.CIR_PATRON_LOCK.Where(a => a.PatronCode == LPatronCode).First().LockedDays).ToString("dd/MM/yyyy");
             string LlockedDay = db.CIR_PATRON_LOCK.Where(a => a.PatronCode == LPatronCode).First().LockedDays.ToString();
             string LblackNote = db.CIR_PATRON_LOCK.Where(a => a.PatronCode == LPatronCode).First().Note;
             string[] PatronLockInfo = { LPatronName, LPatronCode, Lblackstartdate, Lblackenddate, LlockedDay, LblackNote };
-			CodeVal = "";
             return Json(PatronLockInfo, JsonRequestBehavior.AllowGet);
         }
 
@@ -207,10 +206,7 @@ namespace Libol.Controllers
                 });
             }
             ViewBag.ContentRenew = customRenews;
-			if (customRenews.Count > 0) { ViewBag.CodePatron = customRenews[0].Code; }
-			
-
-		}
+        }
 
 
         private void CheckLockPatron(string code)

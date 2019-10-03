@@ -76,15 +76,12 @@ namespace Libol.Models
 
 
         //Seach Code for Update Catalogue
-        public List<FPT_SP_CATA_GET_DETAILINFOR_OF_ITEM_Result> SearchCode(string strCode, string strCN, string strTT, string ISBN)
+        public List<FPT_SP_CATA_GET_DETAILINFOR_OF_ITEM_Result> SearchCode(string strCode, string strCN, string strTT)
         {
-            List<int> ItemId = SearchIDByCondition(strCode, strCN, strTT, ISBN).Distinct().ToList();
-           
+            List<int> ItemId = SearchIDByCondition(strCode, strCN, strTT, "");
 
             //get List Infor detail
             List<FPT_SP_CATA_GET_DETAILINFOR_OF_ITEM_Result> inforList = new List<FPT_SP_CATA_GET_DETAILINFOR_OF_ITEM_Result>();
-
-            
             foreach (int item in ItemId)
             {
                 //inforList = inforList.Concat(db.FPT_SP_CATA_GET_DETAILINFOR_OF_ITEM(item.ToString(), 0).ToList()).ToList();
@@ -100,30 +97,13 @@ namespace Libol.Models
                         inforListTemp[i].Content = new FormatHoldingTitle().OnFormatHoldingTitle(inforListTemp[i].Content);
                         inforList.Add(inforListTemp[i]);
                     }
-                    
                 }
             }
-            
 
             return inforList;
         }
 
-        //Search Code View
-        public List<FPT_SP_CATA_GET_CONTENTS_OF_ITEMS_Result> SearchViewCode(string strCode,string strCN, string strTT,string ISBN)
-        {
-            List<int> ItemId = SearchIDByCondition(strCode, strCN, strTT, ISBN).Distinct().ToList();
-            List<FPT_SP_CATA_GET_CONTENTS_OF_ITEMS_Result> inforList = new List<FPT_SP_CATA_GET_CONTENTS_OF_ITEMS_Result>();
-            foreach(int item in ItemId)
-            {
-                List<FPT_SP_CATA_GET_CONTENTS_OF_ITEMS_Result> inforListTemp = db.FPT_SP_CATA_GET_CONTENTS_OF_ITEMS(item.ToString(), 0).ToList();
-                for (int i = 0; i < inforListTemp.Count; i++)
-                {
-                    inforList.Add(inforListTemp[i]);
-                }
 
-                }
-            return inforList;
-        }
 
         public List<FPT_SP_CATA_GET_CONTENTS_OF_ITEMS_Result> GetContentByID(string Id)
         {
