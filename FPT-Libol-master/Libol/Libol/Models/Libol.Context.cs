@@ -23330,31 +23330,5 @@ namespace Libol.Models
     
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("FPT_SP_ACQ_NEW_INVENTORY", strInventoryNameParameter, strInventoryDateParameter, strInputerParameter);
         }
-    
-        public virtual ObjectResult<FPT_SPECIALIZED_REPORT_GET_YEAR_PUBLISHNUM_Result> FPT_SPECIALIZED_REPORT_GET_YEAR_PUBLISHNUM(Nullable<int> itemId, Nullable<int> type)
-        {
-            var itemIdParameter = itemId.HasValue ?
-                new ObjectParameter("itemId", itemId) :
-                new ObjectParameter("itemId", typeof(int));
-    
-            var typeParameter = type.HasValue ?
-                new ObjectParameter("type", type) :
-                new ObjectParameter("type", typeof(int));
-    
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<FPT_SPECIALIZED_REPORT_GET_YEAR_PUBLISHNUM_Result>("FPT_SPECIALIZED_REPORT_GET_YEAR_PUBLISHNUM", itemIdParameter, typeParameter);
-        }
-    
-        public virtual ObjectResult<FPT_SPECIALIZED_REPORT_GET_GTTK_Result> FPT_SPECIALIZED_REPORT_GET_GTTK(Nullable<int> itemid, Nullable<int> type)
-        {
-            var itemidParameter = itemid.HasValue ?
-                new ObjectParameter("itemid", itemid) :
-                new ObjectParameter("itemid", typeof(int));
-    
-            var typeParameter = type.HasValue ?
-                new ObjectParameter("type", type) :
-                new ObjectParameter("type", typeof(int));
-    
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<FPT_SPECIALIZED_REPORT_GET_GTTK_Result>("FPT_SPECIALIZED_REPORT_GET_GTTK", itemidParameter, typeParameter);
-        }
     }
 }

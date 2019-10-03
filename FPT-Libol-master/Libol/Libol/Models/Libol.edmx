@@ -2928,7 +2928,7 @@ warning 6002: The table/view 'Libol.dbo.MARC_BIB_WS_DETAIL' does not have a prim
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__FPT_CATA___ItemI__22B0B618">
+        <Association Name="FK__FPT_CATA___ItemI__4A149BFC">
           <End Role="ITEM" Type="Self.ITEM" Multiplicity="1" />
           <End Role="FPT_CATA_FILE_NEW" Type="Self.FPT_CATA_FILE_NEW" Multiplicity="*" />
           <ReferentialConstraint>
@@ -2940,7 +2940,7 @@ warning 6002: The table/view 'Libol.dbo.MARC_BIB_WS_DETAIL' does not have a prim
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__FPT_SYS_U__Right__453AD846">
+        <Association Name="FK__FPT_SYS_U__Right__64097829">
           <End Role="FPT_SYS_USER_RIGHT" Type="Self.FPT_SYS_USER_RIGHT" Multiplicity="1" />
           <End Role="FPT_SYS_USER_RIGHT_DETAIL" Type="Self.FPT_SYS_USER_RIGHT_DETAIL" Multiplicity="*" />
           <ReferentialConstraint>
@@ -6066,16 +6066,8 @@ warning 6002: The table/view 'Libol.dbo.MARC_BIB_WS_DETAIL' does not have a prim
           <Parameter Name="strSubCode" Type="varchar" Mode="In" />
           <Parameter Name="intUserID" Type="int" Mode="In" />
         </Function>
-        <Function Name="FPT_SPECIALIZED_REPORT_GET_GTTK" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
-          <Parameter Name="itemid" Type="int" Mode="In" />
-          <Parameter Name="type" Type="int" Mode="In" />
-        </Function>
         <Function Name="FPT_SPECIALIZED_REPORT_GET_PUBLISHER" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="intItemID" Type="int" Mode="In" />
-        </Function>
-        <Function Name="FPT_SPECIALIZED_REPORT_GET_YEAR_PUBLISHNUM" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
-          <Parameter Name="itemId" Type="int" Mode="In" />
-          <Parameter Name="type" Type="int" Mode="In" />
         </Function>
         <Function Name="FPT_SPECIALIZED_REPORT_TOTAL" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="intLibID" Type="int" Mode="In" />
@@ -12479,11 +12471,11 @@ warning 6002: The table/view 'Libol.dbo.MARC_BIB_WS_DETAIL' does not have a prim
             <End Role="CAT_DIC_MEDIUM" EntitySet="CAT_DIC_MEDIUM" />
             <End Role="ITEM" EntitySet="ITEM" />
           </AssociationSet>
-          <AssociationSet Name="FK__FPT_CATA___ItemI__22B0B618" Association="Self.FK__FPT_CATA___ItemI__22B0B618">
+          <AssociationSet Name="FK__FPT_CATA___ItemI__4A149BFC" Association="Self.FK__FPT_CATA___ItemI__4A149BFC">
             <End Role="ITEM" EntitySet="ITEM" />
             <End Role="FPT_CATA_FILE_NEW" EntitySet="FPT_CATA_FILE_NEW" />
           </AssociationSet>
-          <AssociationSet Name="FK__FPT_SYS_U__Right__453AD846" Association="Self.FK__FPT_SYS_U__Right__453AD846">
+          <AssociationSet Name="FK__FPT_SYS_U__Right__64097829" Association="Self.FK__FPT_SYS_U__Right__64097829">
             <End Role="FPT_SYS_USER_RIGHT" EntitySet="FPT_SYS_USER_RIGHT" />
             <End Role="FPT_SYS_USER_RIGHT_DETAIL" EntitySet="FPT_SYS_USER_RIGHT_DETAIL" />
           </AssociationSet>
@@ -26192,14 +26184,6 @@ warning 6002: The table/view 'Libol.dbo.MARC_BIB_WS_DETAIL' does not have a prim
             <Parameter Name="strInventoryDate" Mode="In" Type="String" />
             <Parameter Name="strInputer" Mode="In" Type="String" />
           </FunctionImport>
-          <FunctionImport Name="FPT_SPECIALIZED_REPORT_GET_YEAR_PUBLISHNUM" ReturnType="Collection(LibolModel.FPT_SPECIALIZED_REPORT_GET_YEAR_PUBLISHNUM_Result)">
-            <Parameter Name="itemId" Mode="In" Type="Int32" />
-            <Parameter Name="type" Mode="In" Type="Int32" />
-          </FunctionImport>
-          <FunctionImport Name="FPT_SPECIALIZED_REPORT_GET_GTTK" ReturnType="Collection(LibolModel.FPT_SPECIALIZED_REPORT_GET_GTTK_Result)">
-            <Parameter Name="itemid" Mode="In" Type="Int32" />
-            <Parameter Name="type" Mode="In" Type="Int32" />
-          </FunctionImport>
         </EntityContainer>
         <ComplexType Name="CAT_DIC_LIST_SEL_Result">
           <Property Type="String" Name="BrowseFile" Nullable="true" MaxLength="50" />
@@ -31288,23 +31272,10 @@ warning 6002: The table/view 'Libol.dbo.MARC_BIB_WS_DETAIL' does not have a prim
           <Property Type="String" Name="AUTHOR" Nullable="false" MaxLength="800" />
           <Property Type="String" Name="PUBLISHER" Nullable="false" MaxLength="1" />
           <Property Type="Int32" Name="TOTAL" Nullable="true" />
-          <Property Type="String" Name="YEAR" Nullable="false" MaxLength="1" />
-          <Property Type="String" Name="PUBLISHNUM" Nullable="false" MaxLength="1" />
-          <Property Type="String" Name="GTNUMBER" Nullable="false" MaxLength="1" />
-          <Property Type="String" Name="TKNUMBER" Nullable="false" MaxLength="1" />
         </ComplexType>
         <ComplexType Name="FPT_SPECIALIZED_REPORT_GET_PUBLISHER_Result">
           <Property Type="Int32" Name="ItemID" Nullable="false" />
           <Property Type="String" Name="PUBLISHER" Nullable="false" MaxLength="256" />
-        </ComplexType>
-        <ComplexType Name="FPT_SPECIALIZED_REPORT_GET_YEAR_PUBLISHNUM_Result">
-          <Property Type="Int32" Name="ITEMID" Nullable="false" />
-          <Property Type="String" Name="CONTENT" Nullable="false" MaxLength="800" />
-          <Property Type="String" Name="FieldCode" Nullable="false" MaxLength="5" />
-        </ComplexType>
-        <ComplexType Name="FPT_SPECIALIZED_REPORT_GET_GTTK_Result">
-          <Property Type="Int32" Name="total" Nullable="true" />
-          <Property Type="Int32" Name="ItemID" Nullable="false" />
         </ComplexType>
       </Schema>
     </edmx:ConceptualModels>
@@ -41816,10 +41787,6 @@ warning 6002: The table/view 'Libol.dbo.MARC_BIB_WS_DETAIL' does not have a prim
                 <ScalarProperty Name="AUTHOR" ColumnName="AUTHOR" />
                 <ScalarProperty Name="PUBLISHER" ColumnName="PUBLISHER" />
                 <ScalarProperty Name="TOTAL" ColumnName="TOTAL" />
-                <ScalarProperty Name="YEAR" ColumnName="YEAR" />
-                <ScalarProperty Name="PUBLISHNUM" ColumnName="PUBLISHNUM" />
-                <ScalarProperty Name="GTNUMBER" ColumnName="GTNUMBER" />
-                <ScalarProperty Name="TKNUMBER" ColumnName="TKNUMBER" />
               </ComplexTypeMapping>
             </ResultMapping>
           </FunctionImportMapping>
@@ -41836,23 +41803,6 @@ warning 6002: The table/view 'Libol.dbo.MARC_BIB_WS_DETAIL' does not have a prim
           <FunctionImportMapping FunctionImportName="FPT_CATA_GETCONTENT_BY_INDEX" FunctionName="LibolModel.Store.FPT_CATA_GETCONTENT_BY_INDEX" />
           <FunctionImportMapping FunctionImportName="FPT_SP_ACQ_GETMAXID_HINT" FunctionName="LibolModel.Store.FPT_SP_ACQ_GETMAXID_HINT" />
           <FunctionImportMapping FunctionImportName="FPT_SP_ACQ_NEW_INVENTORY" FunctionName="LibolModel.Store.FPT_SP_ACQ_NEW_INVENTORY" />
-          <FunctionImportMapping FunctionImportName="FPT_SPECIALIZED_REPORT_GET_YEAR_PUBLISHNUM" FunctionName="LibolModel.Store.FPT_SPECIALIZED_REPORT_GET_YEAR_PUBLISHNUM">
-            <ResultMapping>
-              <ComplexTypeMapping TypeName="LibolModel.FPT_SPECIALIZED_REPORT_GET_YEAR_PUBLISHNUM_Result">
-                <ScalarProperty Name="ITEMID" ColumnName="ITEMID" />
-                <ScalarProperty Name="CONTENT" ColumnName="CONTENT" />
-                <ScalarProperty Name="FieldCode" ColumnName="FieldCode" />
-              </ComplexTypeMapping>
-            </ResultMapping>
-          </FunctionImportMapping>
-          <FunctionImportMapping FunctionImportName="FPT_SPECIALIZED_REPORT_GET_GTTK" FunctionName="LibolModel.Store.FPT_SPECIALIZED_REPORT_GET_GTTK">
-            <ResultMapping>
-              <ComplexTypeMapping TypeName="LibolModel.FPT_SPECIALIZED_REPORT_GET_GTTK_Result">
-                <ScalarProperty Name="total" ColumnName="total" />
-                <ScalarProperty Name="ItemID" ColumnName="ItemID" />
-              </ComplexTypeMapping>
-            </ResultMapping>
-          </FunctionImportMapping>
         </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>

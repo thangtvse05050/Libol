@@ -50,9 +50,8 @@ namespace Libol.Controllers
             int intType,
             int intAutoPaid,
             string strCopyNumbers,
-            string strCheckInDate,
-			string strPatronCode
-		)
+            string strCheckInDate
+        )
         {
             string CopyNumber = strCopyNumbers.Trim();
 			int success = -1;
@@ -110,15 +109,8 @@ namespace Libol.Controllers
 					ViewBag.active = 0;
 				}
 			}
-			if (db.CIR_PATRON_LOCK.Where(a => a.PatronCode == strPatronCode).Count() == 0)
-			{
-				ViewBag.active = 1;
-			}
-			else
-			{
-				ViewBag.active = 0;
-			}
 			
+
 			return PartialView("_checkinByDKCB");
         }
 
@@ -133,16 +125,13 @@ namespace Libol.Controllers
         {
             string pcode = strPatronCode.Trim();
             int success = -1;
-			if (strCopyNumbers != null)
-			{
-				foreach (string CopyNumber in strCopyNumbers)
-				{
-					success = db.SP_CHECKIN((int)Session["UserID"], intType, intAutoPaid, CopyNumber, strCheckInDate,
-					new ObjectParameter("strTransIDs", typeof(string)),
-					new ObjectParameter("strPatronCode", typeof(string)),
-					new ObjectParameter("intError", typeof(int)));
-				}
-			}
+            foreach (string CopyNumber in strCopyNumbers)
+            {
+                success = db.SP_CHECKIN((int)Session["UserID"], intType, intAutoPaid, CopyNumber, strCheckInDate,
+                new ObjectParameter("strTransIDs", typeof(string)),
+                new ObjectParameter("strPatronCode", typeof(string)),
+                new ObjectParameter("intError", typeof(int)));
+            }
             Getpatrondetail(sessionpcode);
 			//FPT_SP_UNLOCK_PATRON_CARD_LIST("'" + strPatronCode + "'");
 			if (db.CIR_PATRON_LOCK.Where(a => a.PatronCode == strPatronCode).Count() == 0)
