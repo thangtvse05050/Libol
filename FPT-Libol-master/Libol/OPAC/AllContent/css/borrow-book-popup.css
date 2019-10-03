@@ -10,6 +10,7 @@
   opacity: 0;
   pointer-events: none;
   transition: all 0.3s;
+  overflow-y: scroll;
 }
 
 .modal-window:target {
@@ -19,11 +20,11 @@
 }
 
 .modal-window > div {
-  width: 700px;
+  width: 800px;
   position: absolute;
-  top: 45%;
+  top: 10%;
   left: 50%;
-  transform: translate(-50%, -50%);
+  transform: translate(-50%, 0);
   padding: 2em;
   background: #ffffff;
   border-radius: 10px;
