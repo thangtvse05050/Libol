@@ -72,10 +72,14 @@
             strLibID: document.getElementById("Library").value,
             strDKCBID: document.getElementById("DKCBID").value,
         };
-        if (document.getElementById("DKCBID").value == "") {
+        if (document.getElementById("DKCBID").value == "" ) {
             alert("Đăng ký cá biệt không được để trống");
 
-        } else {
+
+        } else if (document.getElementById("Library").value == "") {
+            alert("Hãy chọn thư viện")
+        }
+        else {
             $.ajax({
                 url: "GetInventoryReport",
                 data: JSON.stringify(empObj),
