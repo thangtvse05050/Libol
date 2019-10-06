@@ -1,24 +1,26 @@
 ﻿@if (ViewBag.test.Count >= 1)
 {
     <div class="row">
-        <div class="col-md-3">
+        <div class="col-md-6">
             <table class="table table-bordered table-striped" id="123" style="border-collapse: collapse" , border="1">
                 <tr>
                     <th>Số lượt mượn</th>
                     <th>ID mã tài liệu</th>
+                    <th>Tiêu đề</th>
                 </tr>
                 @foreach (var item in ViewBag.test)
                 {
-                    <tr>
-                        <td>@item.TotalLoan</td>
-                        <td>@item.Name</td>
-                    </tr>
+                <tr>
+                    <td>@item.TotalLoan</td>
+                    <td>@item.Code</td>
+                    <td>@item.Name</td>
+                </tr>
                 }
             </table>
 
 
         </div>
-        <div class="col-md-9">
+        <div class="col-md-6">
             <div style="text-align:center; padding-top:20px">
                 <h4 style="font-size:16px">Biểu đồ hình cột</h4>
             </div>
@@ -53,7 +55,7 @@ else
 
             @foreach (var item in ViewBag.test)
             {
-                <text>['@item.Name', @item.TotalLoan, "blue"],</text>
+                <text>['@item.Code', @item.TotalLoan, "blue"],</text>
             }
         ]);
 

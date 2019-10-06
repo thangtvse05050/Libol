@@ -1048,17 +1048,17 @@ namespace Libol.Controllers
             {
                 lib.Add(new SelectListItem { Text = item.Code, Value = item.ID.ToString() });
             }
-            ViewBag.list_lib = lib;
+            ViewData["lib"] = lib;
             return View();
         }
         [HttpPost]
         public PartialViewResult DisplayTopCopy(string strLibID, string strDateFrom, string strDateTo,
-        string strNumPatron, string strHireTimes, string strLocID)
+        string strNumPatron, string strHireTimes, string strLocPrefix, string strLocID)
         {
             string userID = Session["UserID"].ToString();
 
             List<ITEMMAX> result =
-                pb.TOP_COPY(userID, strDateFrom, strDateTo, strNumPatron, strHireTimes, strLibID, strLocID);
+                pb.TOP_COPY(userID, strDateFrom, strDateTo, strNumPatron, strHireTimes, strLibID, strLocPrefix, strLocID);
 
             ViewBag.test = result;
             return PartialView("DisplayTopCopy");
