@@ -233,7 +233,7 @@
                             <tr>
                                 <td>@(++STT1)</td>
                                 <td>@item.RECORDNUMBER</td>
-                                <td>@item.ReceiptedDate</td>
+                                <td>@item.ACQUIREDDATE.ToString("dd/MM/yyyy")</td>
                                 <td>@item.RECOMMENDID</td>
                                 <td>@item.DKCB</td>
                                 <td>@item.ISBN</td>
@@ -241,7 +241,7 @@
                                 <td>@item.NXB</td>
                                 <td>@item.Year</td>
                                 <td>@item.InBookNum</td>
-                                <td>@item.ACQUIREDDATE.ToString("dd/MM/yyyy")</td>
+                                <td>@item.ReceiptedDate</td>
                                 <td>@item.Price</td>
                                 <td>@item.Currency</td>
                                 <td>@item.FullPrice</td>
