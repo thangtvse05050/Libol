@@ -7444,5 +7444,41 @@ ELSE
 		
 		ORDER BY IDSort;
 	END
+	GO
+/****** Object:  StoredProcedure [dbo].[FPT_GET_DATE_SUGGEST_CHECKOUT]    Script Date: 10/6/2019 8:45:37 PM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER OFF
+GO
+--FPT_GET_DATE_SUGGEST_CHECKOUT
+--Thangtv created
+--autocomplete checkout date
+
+CREATE        PROCEDURE [dbo].[FPT_GET_DATE_SUGGEST_CHECKOUT] 
+	@term nvarchar(100)
+	AS
+	BEGIN
+	SELECT CONVERT(VARCHAR, DueDate, 103) as DueDate
+	FROM CIR_LOAN
+	WHERE DueDate> GETDATE() AND CONVERT(VARCHAR, DueDate, 103) LIKE @term +'%'
+	ORDER BY ID DESC
+	END
+/****** Object:  StoredProcedure [dbo].[FPT_GET_DATE_SUGGEST_RENEW]    Script Date: 10/6/2019 8:45:37 PM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER OFF
+GO
+--FPT_GET_DATE_SUGGEST_RENEW
+--Thangtv created
+--autocomplete renew date
+CREATE        PROCEDURE [dbo].[FPT_GET_DATE_SUGGEST_RENEW] 
+	@term nvarchar(100)
+	AS
+	BEGIN
+	SELECT CONVERT(VARCHAR, OverDueDateNew, 103) as OverDueDateNew
+	FROM CIR_RENEW
+	WHERE OverDueDateNew> GETDATE() AND CONVERT(VARCHAR, OverDueDateNew, 103) LIKE @term +'%'
+	ORDER BY ID DESC
+	END
 	
 

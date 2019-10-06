@@ -394,6 +394,17 @@ namespace Libol.Controllers
             public string OverDueDate { get; set; }
             public string Note { get; set; }
         }
+        
+        public JsonResult AutoComplete(string term)
+        {
+            var records = db.FPT_GET_DATE_SUGGEST_CHECKOUT(term).Distinct().ToList();
+
+            //List<string> newstring = new List<string>();
+
+
+            return Json(records);
+
+        }
 
     }
 }
