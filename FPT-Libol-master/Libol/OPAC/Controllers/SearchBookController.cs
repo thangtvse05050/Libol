@@ -1,4 +1,6 @@
-﻿using System;
+﻿using OPAC.Dao;
+using OPAC.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -8,15 +10,82 @@ namespace OPAC.Controllers
 {
     public class SearchBookController : Controller
     {
-        // GET: SearchBook
-        public ActionResult DetailBook()
+        private SearchDao dao = new SearchDao();
+
+        // GET: DetailBook
+        [OutputCache(NoStore = true, Duration = 0, VaryByParam = "*")]
+        public ActionResult DetailBook(int itemID, string code)
         {
-            return View();
+            ViewBag.OnHoldingBook = dao.GetOnHoldingBook(itemID);
+            ViewBag.TotalBook = dao.GetTotalBook(itemID);
+            ViewBag.FreeBook = dao.GetFreeBook(itemID);
+            ViewBag.InforCopyNumber = dao.GetInforCopyNumberList(itemID);
+            ViewBag.RelatedTerm = dao.SP_OPAC_RELATED_TERMS_LIST(itemID);
+            ViewBag.BookTitle = dao.GetItemTitle(itemID);
+            ViewBag.FullBookInfo = dao.GetFullInforBook(itemID);
+            TempData["itemID"] = itemID;
+            TempData["code"] = code;
+
+            return View(dao.SP_CATA_GET_CONTENTS_OF_ITEMS_LIST(itemID, 0));
         }
 
-        public ActionResult SearchBook()
+        [HttpPost]
+        public ActionResult GetKeySearch(OptionModel model, string selectOption)
         {
-            return View();
+            try
+            {
+                if (model.SearchingText.Trim().Equals(""))
+                {
+                    ViewBag.EmptyKeword = "";
+                    TempData["errorMessage"] = "Ô tìm kiếm không được để trống";
+                    return RedirectToAction("Home", "Home");
+                }
+                else
+                {
+                    Session["key"] = model.SearchingText.Trim();
+                    Session["option"] = selectOption;
+                }
+            }
+            catch (NullReferenceException)
+            {
+                ViewBag.EmptyKeword = "";
+                TempData["errorMessage"] = "Ô tìm kiếm không được để trống";
+                return RedirectToAction("Home", "Home");
+            }
+            
+            return RedirectToAction("SearchBook", new { page = 1 });
+        }
+
+
+        public ActionResult SearchByKeyWord(string keyWord)
+        {
+            Session["key"] = keyWord.Trim();
+            return RedirectToAction("SearchBookByKeyWord", new { page = 1 });
+        }
+
+        [OutputCache(NoStore = true, Duration = 0, VaryByParam = "*")]
+        public ActionResult SearchBook(int page)
+        {
+            string key = Session["key"].ToString();
+            string option = Session["option"].ToString();
+            int maxItemInOnePage = 30;
+            ViewBag.NumberResult = dao.GetNumberResult(key, option);
+            ViewBag.ItemInOnePage = maxItemInOnePage;
+            Session["PageNo"] = page;
+
+            return View(dao.GetSearchingBook(key, option, page, maxItemInOnePage));
+        }
+
+        [OutputCache(NoStore = true, Duration = 0, VaryByParam = "*")]
+        public ActionResult SearchBookByKeyWord(int page)
+        {
+            string keyWord = Session["key"].ToString();
+            int maxItemInOnePage = 30;
+            ViewBag.NumberResultKeyWord = dao.GetNumberResultByKeyWord(keyWord, page, maxItemInOnePage);
+            ViewBag.ItemInOnePage = maxItemInOnePage;
+            Session["PageNo"] = page;
+
+            return View(dao.GetSearchingBookByKeyWord(keyWord, page, maxItemInOnePage));
         }
 
         public ActionResult AdvancedSearchBook()
