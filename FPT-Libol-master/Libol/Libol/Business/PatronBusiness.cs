@@ -44,12 +44,12 @@ namespace Libol.Models
         }
 
         public List<ITEMMAX>
-            TOP_COPY(string UserID, string strDateFrom, string strDateTo, string strNumPatron, string strHireTimes, string strLibID, string strLocID)
+            TOP_COPY(string UserID, string strDateFrom, string strDateTo, string strNumPatron, string strHireTimes, string strLibID, string strLocPrefix, string strLocID)
         {
             List<ITEMMAX> list =
                 le.Database.SqlQuery<ITEMMAX>(
-                    "FPT_SP_STAT_ITEMMAX {0},{1},{2},{3},{4},{5},{6}",
-                    new object[] { UserID, strDateFrom, strDateTo, strNumPatron, strHireTimes, strLibID, strLocID }
+                    "FPT_SP_STAT_ITEMMAX {0},{1},{2},{3},{4},{5},{6},{7}",
+                    new object[] { UserID, strDateFrom, strDateTo, strNumPatron, strHireTimes, strLibID, strLocPrefix, strLocID }
                     ).ToList();
             return list;
         }

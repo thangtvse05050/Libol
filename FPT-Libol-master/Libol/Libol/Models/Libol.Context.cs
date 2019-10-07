@@ -23047,7 +23047,7 @@ namespace Libol.Models
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("FPT_SP_ADMIN_UPDATE_USER", intUIDParameter, intISLDAPParameter, strNameParameter, strUserNameParameter, strPasswordParameter, intCatModuleParameter, intPatModuleParameter, intCirModuleParameter, intAcqModuleParameter, intSerModuleParameter, intILLModuleParameter, intDelModuleParameter, intAdmModuleParameter, intParentIDParameter, intOutVal);
         }
     
-        public virtual int FPT_SP_STAT_ITEMMAX(string intUserID, string strCheckOutDateFrom, string strCheckOutDateTo, string intTopNum, string intMinLoan, string libid, string locid)
+        public virtual int FPT_SP_STAT_ITEMMAX(string intUserID, string strCheckOutDateFrom, string strCheckOutDateTo, string intTopNum, string intMinLoan, string libid, string strLocationPrefix, string locid)
         {
             var intUserIDParameter = intUserID != null ?
                 new ObjectParameter("intUserID", intUserID) :
@@ -23073,11 +23073,15 @@ namespace Libol.Models
                 new ObjectParameter("libid", libid) :
                 new ObjectParameter("libid", typeof(string));
     
+            var strLocationPrefixParameter = strLocationPrefix != null ?
+                new ObjectParameter("strLocationPrefix", strLocationPrefix) :
+                new ObjectParameter("strLocationPrefix", typeof(string));
+    
             var locidParameter = locid != null ?
                 new ObjectParameter("locid", locid) :
                 new ObjectParameter("locid", typeof(string));
     
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("FPT_SP_STAT_ITEMMAX", intUserIDParameter, strCheckOutDateFromParameter, strCheckOutDateToParameter, intTopNumParameter, intMinLoanParameter, libidParameter, locidParameter);
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("FPT_SP_STAT_ITEMMAX", intUserIDParameter, strCheckOutDateFromParameter, strCheckOutDateToParameter, intTopNumParameter, intMinLoanParameter, libidParameter, strLocationPrefixParameter, locidParameter);
         }
     
         public virtual int FPT_SP_STAT_PATRONGROUP(string intUserID, string strCheckOutDateFrom, string strCheckOutDateTo, string optItemID, string intHistory, string libID)
