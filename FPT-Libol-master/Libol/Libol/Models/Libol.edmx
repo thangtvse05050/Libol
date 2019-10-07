@@ -5704,6 +5704,12 @@ warning 6002: The table/view 'Libol.dbo.MARC_BIB_WS_DETAIL' does not have a prim
         <Function Name="FPT_EDU_SP_RENEW_ITEM_BY_ALL_ID" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="strFixedID" Type="varchar" Mode="In" />
         </Function>
+        <Function Name="FPT_GET_DATE_SUGGEST_CHECKOUT" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="term" Type="nvarchar" Mode="In" />
+        </Function>
+        <Function Name="FPT_GET_DATE_SUGGEST_RENEW" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="term" Type="nvarchar" Mode="In" />
+        </Function>
         <Function Name="FPT_GET_LIQUIDBOOKS" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="strLiquidCode" Type="varchar" Mode="In" />
           <Parameter Name="intLibraryID" Type="int" Mode="In" />
@@ -6036,6 +6042,7 @@ warning 6002: The table/view 'Libol.dbo.MARC_BIB_WS_DETAIL' does not have a prim
           <Parameter Name="intTopNum" Type="varchar" Mode="In" />
           <Parameter Name="intMinLoan" Type="varchar" Mode="In" />
           <Parameter Name="libid" Type="varchar" Mode="In" />
+          <Parameter Name="strLocationPrefix" Type="varchar" Mode="In" />
           <Parameter Name="locid" Type="varchar" Mode="In" />
         </Function>
         <Function Name="FPT_SP_STAT_PATRONGROUP" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
@@ -26115,6 +26122,7 @@ warning 6002: The table/view 'Libol.dbo.MARC_BIB_WS_DETAIL' does not have a prim
             <Parameter Name="intTopNum" Mode="In" Type="String" />
             <Parameter Name="intMinLoan" Mode="In" Type="String" />
             <Parameter Name="libid" Mode="In" Type="String" />
+            <Parameter Name="strLocationPrefix" Mode="In" Type="String" />
             <Parameter Name="locid" Mode="In" Type="String" />
           </FunctionImport>
           <FunctionImport Name="FPT_SP_STAT_PATRONGROUP">
@@ -26208,6 +26216,12 @@ warning 6002: The table/view 'Libol.dbo.MARC_BIB_WS_DETAIL' does not have a prim
           <Parameter Name="term" Mode="In" Type="String" />
           </FunctionImport>
           <FunctionImport Name="FPT_GET_DATE_SUGGEST_RENEW" ReturnType="Collection(String)">
+            <Parameter Name="term" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="FPT_GET_DATE_SUGGEST_CHECKOUT1" ReturnType="Collection(String)">
+            <Parameter Name="term" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="FPT_GET_DATE_SUGGEST_RENEW1" ReturnType="Collection(String)">
             <Parameter Name="term" Mode="In" Type="String" />
           </FunctionImport>
         </EntityContainer>
@@ -41861,6 +41875,8 @@ warning 6002: The table/view 'Libol.dbo.MARC_BIB_WS_DETAIL' does not have a prim
               </ComplexTypeMapping>
             </ResultMapping>
           </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="FPT_GET_DATE_SUGGEST_CHECKOUT1" FunctionName="LibolModel.Store.FPT_GET_DATE_SUGGEST_CHECKOUT" />
+          <FunctionImportMapping FunctionImportName="FPT_GET_DATE_SUGGEST_RENEW1" FunctionName="LibolModel.Store.FPT_GET_DATE_SUGGEST_RENEW" />
           </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>
