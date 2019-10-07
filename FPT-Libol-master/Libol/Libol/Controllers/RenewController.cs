@@ -224,6 +224,11 @@ namespace Libol.Controllers
                 ViewBag.active = 0;
             }
         }
+        public JsonResult AutoComplete(string term)
+        {
+            var records = db.FPT_GET_DATE_SUGGEST_RENEW(term).Distinct().ToList();
+            return Json(records);
+    }
 
     }
 
@@ -241,5 +246,6 @@ namespace Libol.Controllers
         public string OverDueDates { get; set; }
         public string Note { get; set; }
     }
+   
 
 }

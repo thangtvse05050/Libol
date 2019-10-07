@@ -23364,5 +23364,23 @@ namespace Libol.Models
     
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<FPT_SPECIALIZED_REPORT_GET_GTTK_Result>("FPT_SPECIALIZED_REPORT_GET_GTTK", itemidParameter, typeParameter, intUserIDParameter, intLibIDParameter);
         }
+    
+        public virtual ObjectResult<string> FPT_GET_DATE_SUGGEST_CHECKOUT(string term)
+        {
+            var termParameter = term != null ?
+                new ObjectParameter("term", term) :
+                new ObjectParameter("term", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<string>("FPT_GET_DATE_SUGGEST_CHECKOUT", termParameter);
+        }
+    
+        public virtual ObjectResult<string> FPT_GET_DATE_SUGGEST_RENEW(string term)
+        {
+            var termParameter = term != null ?
+                new ObjectParameter("term", term) :
+                new ObjectParameter("term", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<string>("FPT_GET_DATE_SUGGEST_RENEW", termParameter);
+        }
     }
 }
