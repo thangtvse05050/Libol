@@ -7164,27 +7164,64 @@ GO
 SET QUOTED_IDENTIFIER ON
 GO
 --get number gt gk
-CREATE PROCEDURE [dbo].[FPT_SPECIALIZED_REPORT_GET_GTTK]
-	-- Add the parameters for the stored procedure here
-	(@itemid int, @type int)
+Create PROCEDURE [dbo].[FPT_SPECIALIZED_REPORT_GET_GTTK]
+    -- Add the parameters for the stored procedure here
+    @itemid int, @type int, @intUserID int,@intLibID int
 AS
 BEGIN
-	-- SET NOCOUNT ON added to prevent extra result sets from
-	-- interfering with SELECT statements.
-	SET NOCOUNT ON;
+    -- SET NOCOUNT ON added to prevent extra result sets from
+    -- interfering with SELECT statements.
+    SET NOCOUNT ON;
 
     -- Insert statements for procedure here
-	if @type=0
-	begin
-	select count(Holding.CopyNumber)as total,ItemID from HOLDING where LoanTypeID  in (13,22,23) and ItemID=@itemid
-group by ItemID
+    if @type=0
+    begin
+    if @intLibID=81
+    begin
+    select count(Holding.CopyNumber)as total from HOLDING where LoanTypeID  in (13,22,23) and ItemID=@itemid 
+    and LocationID in (SELECT B.ID FROM HOLDING_LIBRARY A, HOLDING_LOCATION B, SYS_USER_LOCATION C 
+                                        WHERE A.LocalLib = 1 AND A.ID = B.LibID AND B.ID = C.LocID AND C.UserID = @intUserID AND B.LibID = @intLibID
+                                        UNION SELECT ID FROM HOLDING_LOCATION	WHERE ID in (13,15,16,27))
+    group by ItemID
+    end
+    else if @intLibID=20
+    begin
+    select count(Holding.CopyNumber)as total,ItemID from HOLDING where LoanTypeID  in (13,22,23) and ItemID=@itemid 
+    and LocationID in (SELECT B.ID FROM HOLDING_LIBRARY A, HOLDING_LOCATION B, SYS_USER_LOCATION C 
+                                        WHERE A.LocalLib = 1 AND A.ID = B.LibID AND B.ID = C.LocID AND C.UserID = @intUserID AND B.LibID = @intLibID
+                                        UNION SELECT ID FROM HOLDING_LOCATION	WHERE ID in (13,15,16,27))
+    group by ItemID
+    end
+    else
+    begin
+    select count(Holding.CopyNumber)as total,ItemID from HOLDING where LoanTypeID  in (13,22,23) and ItemID=@itemid group by ItemID
+    end
 end
 else if @type=1
 begin 
-	select count(Holding.CopyNumber)as total,ItemID from HOLDING where LoanTypeID  not in (13,22,23) and ItemID=@itemid
-	group by ItemID
+    if @intLibID=81
+    begin
+    select count(Holding.CopyNumber)as total,ItemID from HOLDING where LoanTypeID not in (13,22,23) and ItemID=@itemid 
+    and LocationID in (SELECT B.ID FROM HOLDING_LIBRARY A, HOLDING_LOCATION B, SYS_USER_LOCATION C 
+                                        WHERE A.LocalLib = 1 AND A.ID = B.LibID AND B.ID = C.LocID AND C.UserID = @intUserID AND B.LibID = @intLibID
+                                        UNION SELECT ID FROM HOLDING_LOCATION	WHERE ID in (13,15,16,27))
+    group by ItemID
+    end
+    else if @intLibID=20
+    begin
+    select count(Holding.CopyNumber)as total,ItemID from HOLDING where LoanTypeID  not in (13,22,23) and ItemID=@itemid 
+    and LocationID in (SELECT B.ID FROM HOLDING_LIBRARY A, HOLDING_LOCATION B, SYS_USER_LOCATION C 
+                                        WHERE A.LocalLib = 1 AND A.ID = B.LibID AND B.ID = C.LocID AND C.UserID = @intUserID AND B.LibID = @intLibID
+                                        UNION SELECT ID FROM HOLDING_LOCATION	WHERE ID in (13,15,16,27))
+    group by ItemID
+    end
+    else
+    begin
+    select count(Holding.CopyNumber)as total,ItemID from HOLDING where LoanTypeID  not in (13,22,23) and ItemID=@itemid group by ItemID
+    end
 end
 END
+
 GO
 SET ANSI_NULLS ON
 GO

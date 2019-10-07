@@ -31,19 +31,14 @@
                     { "data": "CopyNumber" },
                     { "data": "FullName" },
                     { "data": "CheckOutDate" },
+                    { "data": "RenewDate" },
                     { "data": "OverDueDateNew" },
                     { "data": "CheckInDate" },
-                    { "data": "RenewDate" },
                     { "data": "OverdueDays" },
                     { "data": "OverdueFine" },
                     { "data": "Price" }
                 ],
                 buttons: [
-                    {
-                        extend: 'print',
-                        title: function () { var printTitle = 'Nhật ký ấn phẩm đã được gia hạn'; return printTitle; },
-                        action: newExportAction
-                    },
                     {
                         extend: 'excel',
                         title: function () { var printTitle = 'Nhật ký ấn phẩm đã được gia hạn'; return printTitle; },
@@ -62,10 +57,6 @@
 
             $("#ExportReporttoExcel").on("click", function () {
                 table.button('.buttons-excel').trigger();
-            });
-
-            $("#Print").on("click", function () {
-                table.button('.buttons-print').trigger();
             });
         });
 
@@ -115,9 +106,9 @@
                     <th>ĐKCB</th>
                     <th>Bạn đọc</th>
                     <th>Ngày mượn</th>
+                    <th>Ngày gia hạn</th>
                     <th>Hạn trả mới</th>
                     <th>Ngày trả</th>
-                    <th>Ngày gia hạn</th>
                     <th>Quá hạn (ngày)</th>
                     <th>Tiền phạt</th>
                     <th>Đơn giá</th>
@@ -130,7 +121,6 @@
 <div class="row">
     <div class="col-md-12 text-center">
         <div class="btn-group btn-group">
-            <button type="button" id="Print" class="btn btn-primary mr-1">In</button>
             <button type="button" id="ExportReporttoExcel" class="btn btn-primary">Lưu vào file excel</button>
         </div>
     </div>
