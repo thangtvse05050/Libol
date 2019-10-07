@@ -2928,7 +2928,7 @@ warning 6002: The table/view 'Libol.dbo.MARC_BIB_WS_DETAIL' does not have a prim
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__FPT_CATA___ItemI__0A0503DF">
+        <Association Name="FK__FPT_CATA___ItemI__22B0B618">
           <End Role="ITEM" Type="Self.ITEM" Multiplicity="1" />
           <End Role="FPT_CATA_FILE_NEW" Type="Self.FPT_CATA_FILE_NEW" Multiplicity="*" />
           <ReferentialConstraint>
@@ -2940,7 +2940,7 @@ warning 6002: The table/view 'Libol.dbo.MARC_BIB_WS_DETAIL' does not have a prim
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__FPT_SYS_U__Right__2C8F260D">
+        <Association Name="FK__FPT_SYS_U__Right__453AD846">
           <End Role="FPT_SYS_USER_RIGHT" Type="Self.FPT_SYS_USER_RIGHT" Multiplicity="1" />
           <End Role="FPT_SYS_USER_RIGHT_DETAIL" Type="Self.FPT_SYS_USER_RIGHT_DETAIL" Multiplicity="*" />
           <ReferentialConstraint>
@@ -5704,12 +5704,6 @@ warning 6002: The table/view 'Libol.dbo.MARC_BIB_WS_DETAIL' does not have a prim
         <Function Name="FPT_EDU_SP_RENEW_ITEM_BY_ALL_ID" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="strFixedID" Type="varchar" Mode="In" />
         </Function>
-        <Function Name="FPT_GET_DATE_SUGGEST_CHECKOUT" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
-          <Parameter Name="term" Type="nvarchar" Mode="In" />
-        </Function>
-        <Function Name="FPT_GET_DATE_SUGGEST_RENEW" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
-          <Parameter Name="term" Type="nvarchar" Mode="In" />
-        </Function>
         <Function Name="FPT_GET_LIQUIDBOOKS" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="strLiquidCode" Type="varchar" Mode="In" />
           <Parameter Name="intLibraryID" Type="int" Mode="In" />
@@ -6075,6 +6069,8 @@ warning 6002: The table/view 'Libol.dbo.MARC_BIB_WS_DETAIL' does not have a prim
         <Function Name="FPT_SPECIALIZED_REPORT_GET_GTTK" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="itemid" Type="int" Mode="In" />
           <Parameter Name="type" Type="int" Mode="In" />
+          <Parameter Name="intUserID" Type="int" Mode="In" />
+          <Parameter Name="intLibID" Type="int" Mode="In" />
         </Function>
         <Function Name="FPT_SPECIALIZED_REPORT_GET_PUBLISHER" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="intItemID" Type="int" Mode="In" />
@@ -12485,11 +12481,11 @@ warning 6002: The table/view 'Libol.dbo.MARC_BIB_WS_DETAIL' does not have a prim
             <End Role="CAT_DIC_MEDIUM" EntitySet="CAT_DIC_MEDIUM" />
             <End Role="ITEM" EntitySet="ITEM" />
           </AssociationSet>
-          <AssociationSet Name="FK__FPT_CATA___ItemI__0A0503DF" Association="Self.FK__FPT_CATA___ItemI__0A0503DF">
+          <AssociationSet Name="FK__FPT_CATA___ItemI__22B0B618" Association="Self.FK__FPT_CATA___ItemI__22B0B618">
             <End Role="ITEM" EntitySet="ITEM" />
             <End Role="FPT_CATA_FILE_NEW" EntitySet="FPT_CATA_FILE_NEW" />
           </AssociationSet>
-          <AssociationSet Name="FK__FPT_SYS_U__Right__2C8F260D" Association="Self.FK__FPT_SYS_U__Right__2C8F260D">
+          <AssociationSet Name="FK__FPT_SYS_U__Right__453AD846" Association="Self.FK__FPT_SYS_U__Right__453AD846">
             <End Role="FPT_SYS_USER_RIGHT" EntitySet="FPT_SYS_USER_RIGHT" />
             <End Role="FPT_SYS_USER_RIGHT_DETAIL" EntitySet="FPT_SYS_USER_RIGHT_DETAIL" />
           </AssociationSet>
@@ -26205,6 +26201,8 @@ warning 6002: The table/view 'Libol.dbo.MARC_BIB_WS_DETAIL' does not have a prim
           <FunctionImport Name="FPT_SPECIALIZED_REPORT_GET_GTTK" ReturnType="Collection(LibolModel.FPT_SPECIALIZED_REPORT_GET_GTTK_Result)">
             <Parameter Name="itemid" Mode="In" Type="Int32" />
             <Parameter Name="type" Mode="In" Type="Int32" />
+            <Parameter Name="intUserID" Mode="In" Type="Int32" />
+            <Parameter Name="intLibID" Mode="In" Type="Int32" />
           </FunctionImport>
           <FunctionImport Name="FPT_GET_DATE_SUGGEST_CHECKOUT" ReturnType="Collection(String)">
           <Parameter Name="term" Mode="In" Type="String" />
@@ -31316,7 +31314,6 @@ warning 6002: The table/view 'Libol.dbo.MARC_BIB_WS_DETAIL' does not have a prim
         </ComplexType>
         <ComplexType Name="FPT_SPECIALIZED_REPORT_GET_GTTK_Result">
           <Property Type="Int32" Name="total" Nullable="true" />
-          <Property Type="Int32" Name="ItemID" Nullable="false" />
         </ComplexType>
       </Schema>
     </edmx:ConceptualModels>
@@ -41861,13 +41858,10 @@ warning 6002: The table/view 'Libol.dbo.MARC_BIB_WS_DETAIL' does not have a prim
             <ResultMapping>
               <ComplexTypeMapping TypeName="LibolModel.FPT_SPECIALIZED_REPORT_GET_GTTK_Result">
                 <ScalarProperty Name="total" ColumnName="total" />
-                <ScalarProperty Name="ItemID" ColumnName="ItemID" />
               </ComplexTypeMapping>
             </ResultMapping>
           </FunctionImportMapping>
-          <FunctionImportMapping FunctionImportName="FPT_GET_DATE_SUGGEST_CHECKOUT" FunctionName="LibolModel.Store.FPT_GET_DATE_SUGGEST_CHECKOUT" />
-          <FunctionImportMapping FunctionImportName="FPT_GET_DATE_SUGGEST_RENEW" FunctionName="LibolModel.Store.FPT_GET_DATE_SUGGEST_RENEW" />
-        </EntityContainerMapping>
+          </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>
   </edmx:Runtime>
