@@ -7574,3 +7574,240 @@ DECLARE @StrSql varchar(1500)
 
 		SET @StrSql = @StrSql + ' GROUP BY I.Code, REPLACE(REPLACE(REPLACE(REPLACE(F.Content,''$a'',''''),''$b'','' ''),''$c'','' ''),''$n'','' '')  HAVING Count (*) >= ' + @intMinLoan + ' ORDER BY TotalLoan DESC'
 	EXEC (@StrSql)
+
+	
+-- purpose : Get code (Thư viện) and symbol (kho) for searching copy number
+-- Last Update: 01/10/2019
+-- Creator: Thangnt
+CREATE PROCEDURE [dbo].[FPT_SP_GET_CODE_AND_SYMBOL_BY_ITEMID]
+(
+	@intItemID INT
+)
+AS
+	SELECT DISTINCT H.ItemID, L.Code, C.Symbol FROM [dbo].[HOLDING] AS H
+	INNER JOIN [dbo].[HOLDING_LIBRARY] AS L ON H.LibID = L.ID
+	INNER JOIN [dbo].[HOLDING_LOCATION] AS C ON H.LocationID = C.ID
+	WHERE H.ItemID = @intItemID
+GO
+
+
+-- purpose : Get detail information of book: code, symbol, copy number with the borrowing status
+-- Last Update: 01/10/2019
+-- Creator: Thangnt
+CREATE PROCEDURE [dbo].[FPT_SP_GET_DETAIL_BOOK_WITH_STATUS]
+(
+	@intItemID INT,
+	@strCode NVARCHAR(32)
+)
+AS
+	SELECT DISTINCT L.Code, C.Symbol, H.CopyNumber, H.InUsed FROM [dbo].[HOLDING] AS H
+	INNER JOIN [dbo].[HOLDING_LIBRARY] AS L ON H.LibID = L.ID
+	INNER JOIN [dbo].[HOLDING_LOCATION] AS C ON H.LocationID = C.ID
+	WHERE (H.ItemID = @intItemID) AND (L.Code = @strCode)
+GO
+
+-- purpose : Get information of book after user use search function
+-- Last Update: 05/10/2019
+-- Creator: Thangnt
+CREATE PROCEDURE [dbo].[FPT_SP_GET_SEARCHED_INFO_BOOK]
+(
+	@strCode NVARCHAR(250),
+	@strOption NVARCHAR(5)
+)
+AS
+	IF @strOption = '0'
+		BEGIN
+			SELECT DISTINCT A.ID, B.Title, E.DisplayEntry AS 'Publisher', F.[Year], G.DisplayEntry AS 'Author' FROM [dbo].ITEM AS A
+			INNER JOIN [dbo].[ITEM_TITLE] AS B ON A.ID = B.ItemID
+			INNER JOIN [dbo].[ITEM_AUTHOR] AS C ON A.ID = C.ItemID
+			INNER JOIN [dbo].[ITEM_PUBLISHER] AS D ON A.ID = D.ItemID
+			INNER JOIN [dbo].[CAT_DIC_PUBLISHER] AS E ON D.PublisherID = E.ID
+			INNER JOIN [dbo].[CAT_DIC_YEAR] AS F ON A.ID = F.ItemID
+			INNER JOIN [dbo].[CAT_DIC_AUTHOR] AS G ON C.AuthorID = G.ID
+			INNER JOIN [dbo].ITEM_KEYWORD AS H ON A.ID = H.ItemID
+			INNER JOIN [dbo].CAT_DIC_KEYWORD AS I ON H.KeyWordID = I.ID
+			INNER JOIN [dbo].ITEM_LANGUAGE AS J ON A.ID = J.ItemID
+			INNER JOIN [dbo].CAT_DIC_LANGUAGE AS K ON J.LanguageID = K.ID
+			INNER JOIN [dbo].ITEM_DDC AS L ON A.ID = L.ItemID
+			INNER JOIN [dbo].CAT_DIC_CLASS_DDC AS M ON L.DDCID = M.ID
+			INNER JOIN [dbo].FIELD600S AS N ON A.ID = N.ItemID
+			WHERE B.Title LIKE '%'+@strCode+'%' OR E.DisplayEntry LIKE '%'+@strCode+'%'
+			OR F.[Year] LIKE '%'+@strCode+'%' OR G.DisplayEntry LIKE '%'+@strCode+'%'
+			OR I.DisplayEntry LIKE '%'+@strCode+'%' OR K.DisplayEntry LIKE '%'+@strCode+'%'
+			OR M.DisplayEntry LIKE '%'+@strCode+'%' OR N.Content LIKE '%'+@strCode+'%'
+			ORDER BY B.Title
+		END
+	ELSE IF @strOption = '1'
+		BEGIN
+			SELECT DISTINCT A.ID, B.Title, E.DisplayEntry AS 'Publisher', F.[Year], G.DisplayEntry AS 'Author' FROM [dbo].ITEM AS A
+			INNER JOIN [dbo].[ITEM_TITLE] AS B ON A.ID = B.ItemID
+			INNER JOIN [dbo].[ITEM_AUTHOR] AS C ON A.ID = C.ItemID
+			INNER JOIN [dbo].[ITEM_PUBLISHER] AS D ON A.ID = D.ItemID
+			INNER JOIN [dbo].[CAT_DIC_PUBLISHER] AS E ON D.PublisherID = E.ID
+			INNER JOIN [dbo].[CAT_DIC_YEAR] AS F ON A.ID = F.ItemID
+			INNER JOIN [dbo].[CAT_DIC_AUTHOR] AS G ON C.AuthorID = G.ID
+			WHERE B.Title LIKE '%'+@strCode+'%'
+			ORDER BY B.Title
+		END
+	ELSE IF @strOption = '2'
+		BEGIN
+			SELECT DISTINCT A.ID, B.Title, E.DisplayEntry AS 'Publisher', F.[Year], G.DisplayEntry AS 'Author' FROM [dbo].ITEM AS A
+			INNER JOIN [dbo].[ITEM_TITLE] AS B ON A.ID = B.ItemID
+			INNER JOIN [dbo].[ITEM_AUTHOR] AS C ON A.ID = C.ItemID
+			INNER JOIN [dbo].[ITEM_PUBLISHER] AS D ON A.ID = D.ItemID
+			INNER JOIN [dbo].[CAT_DIC_PUBLISHER] AS E ON D.PublisherID = E.ID
+			INNER JOIN [dbo].[CAT_DIC_YEAR] AS F ON A.ID = F.ItemID
+			INNER JOIN [dbo].[CAT_DIC_AUTHOR] AS G ON C.AuthorID = G.ID
+			WHERE G.DisplayEntry LIKE '%'+@strCode+'%'
+			ORDER BY B.Title
+		END
+	ELSE IF @strOption = '3'
+		BEGIN
+			SELECT DISTINCT A.ID, B.Title, E.DisplayEntry AS 'Publisher', F.[Year], G.DisplayEntry AS 'Author' FROM [dbo].ITEM AS A
+			INNER JOIN [dbo].[ITEM_TITLE] AS B ON A.ID = B.ItemID
+			INNER JOIN [dbo].[ITEM_AUTHOR] AS C ON A.ID = C.ItemID
+			INNER JOIN [dbo].[ITEM_PUBLISHER] AS D ON A.ID = D.ItemID
+			INNER JOIN [dbo].[CAT_DIC_PUBLISHER] AS E ON D.PublisherID = E.ID
+			INNER JOIN [dbo].[CAT_DIC_YEAR] AS F ON A.ID = F.ItemID
+			INNER JOIN [dbo].[CAT_DIC_AUTHOR] AS G ON C.AuthorID = G.ID
+			WHERE E.DisplayEntry LIKE '%'+@strCode+'%'
+			ORDER BY B.Title
+		END
+	ELSE IF @strOption = '4'
+		BEGIN
+			SELECT DISTINCT A.ID, B.Title, E.DisplayEntry AS 'Publisher', F.[Year], G.DisplayEntry AS 'Author' FROM [dbo].ITEM AS A
+			INNER JOIN [dbo].[ITEM_TITLE] AS B ON A.ID = B.ItemID
+			INNER JOIN [dbo].[ITEM_AUTHOR] AS C ON A.ID = C.ItemID
+			INNER JOIN [dbo].[ITEM_PUBLISHER] AS D ON A.ID = D.ItemID
+			INNER JOIN [dbo].[CAT_DIC_PUBLISHER] AS E ON D.PublisherID = E.ID
+			INNER JOIN [dbo].[CAT_DIC_YEAR] AS F ON A.ID = F.ItemID
+			INNER JOIN [dbo].[CAT_DIC_AUTHOR] AS G ON C.AuthorID = G.ID
+			INNER JOIN [dbo].ITEM_DDC AS H ON A.ID = H.ItemID
+			INNER JOIN [dbo].CAT_DIC_CLASS_DDC AS I ON H.DDCID = I.ID
+			WHERE I.DisplayEntry LIKE '%'+@strCode+'%'
+			ORDER BY B.Title
+		END
+	ELSE IF @strOption = '5'
+		BEGIN
+			SELECT DISTINCT A.ID, B.Title, E.DisplayEntry AS 'Publisher', F.[Year], G.DisplayEntry AS 'Author' FROM [dbo].ITEM AS A
+			INNER JOIN [dbo].[ITEM_TITLE] AS B ON A.ID = B.ItemID
+			INNER JOIN [dbo].[ITEM_AUTHOR] AS C ON A.ID = C.ItemID
+			INNER JOIN [dbo].[ITEM_PUBLISHER] AS D ON A.ID = D.ItemID
+			INNER JOIN [dbo].[CAT_DIC_PUBLISHER] AS E ON D.PublisherID = E.ID
+			INNER JOIN [dbo].[CAT_DIC_YEAR] AS F ON A.ID = F.ItemID
+			INNER JOIN [dbo].[CAT_DIC_AUTHOR] AS G ON C.AuthorID = G.ID
+			INNER JOIN [dbo].ITEM_LANGUAGE AS H ON A.ID = H.ItemID
+			INNER JOIN [dbo].CAT_DIC_LANGUAGE AS I ON H.LanguageID = I.ID
+			WHERE I.DisplayEntry LIKE '%'+@strCode+'%'
+			ORDER BY B.Title
+		END
+	ELSE IF @strOption = '6'
+		BEGIN
+			SELECT DISTINCT A.ID, B.Title, E.DisplayEntry AS 'Publisher', F.[Year], G.DisplayEntry AS 'Author' FROM [dbo].ITEM AS A
+			INNER JOIN [dbo].[ITEM_TITLE] AS B ON A.ID = B.ItemID
+			INNER JOIN [dbo].[ITEM_AUTHOR] AS C ON A.ID = C.ItemID
+			INNER JOIN [dbo].[ITEM_PUBLISHER] AS D ON A.ID = D.ItemID
+			INNER JOIN [dbo].[CAT_DIC_PUBLISHER] AS E ON D.PublisherID = E.ID
+			INNER JOIN [dbo].[CAT_DIC_YEAR] AS F ON A.ID = F.ItemID
+			INNER JOIN [dbo].[CAT_DIC_AUTHOR] AS G ON C.AuthorID = G.ID
+			INNER JOIN [dbo].ITEM_KEYWORD AS H ON A.ID = H.ItemID
+			INNER JOIN [dbo].CAT_DIC_KEYWORD AS I ON H.KeyWordID = I.ID
+			WHERE I.DisplayEntry LIKE '%'+@strCode+'%'
+			ORDER BY B.Title
+		END
+	ELSE IF @strOption = '7'
+		BEGIN
+			SELECT DISTINCT A.ID, B.Title, E.DisplayEntry AS 'Publisher', F.[Year], G.DisplayEntry AS 'Author' FROM [dbo].ITEM AS A
+			INNER JOIN [dbo].[ITEM_TITLE] AS B ON A.ID = B.ItemID
+			INNER JOIN [dbo].[ITEM_AUTHOR] AS C ON A.ID = C.ItemID
+			INNER JOIN [dbo].[ITEM_PUBLISHER] AS D ON A.ID = D.ItemID
+			INNER JOIN [dbo].[CAT_DIC_PUBLISHER] AS E ON D.PublisherID = E.ID
+			INNER JOIN [dbo].[CAT_DIC_YEAR] AS F ON A.ID = F.ItemID
+			INNER JOIN [dbo].[CAT_DIC_AUTHOR] AS G ON C.AuthorID = G.ID
+			INNER JOIN [dbo].FIELD600S AS H ON A.ID = H.ItemID
+			WHERE H.Content LIKE '%'+@strCode+'%'
+			ORDER BY B.Title
+		END
+GO
+
+
+-- purpose : Get ISBN
+-- Last Update: 03/10/2019
+-- Creator: Thangnt
+CREATE PROCEDURE [dbo].[FPT_SP_GET_ISBN_ITEM]
+(
+	@intItemID INT
+)
+AS
+	SELECT DISTINCT [dbo].[FIELD000S].Content FROM [dbo].[ITEM]
+	INNER JOIN [dbo].[FIELD000S] ON [dbo].[FIELD000S].ItemID = [dbo].[ITEM].ID
+	WHERE [dbo].[ITEM].ID = @intItemID AND [dbo].[FIELD000S].FieldCode = '020'
+GO
+
+-- purpose : Get Language Code
+-- Last Update: 03/10/2019
+-- Creator: Thangnt
+CREATE PROCEDURE [dbo].[FPT_SP_GET_LANGUAGE_CODE_ITEM]
+(
+	@intItemID INT
+)
+AS
+	SELECT DISTINCT Content FROM [dbo].[FIELD000S]
+	WHERE [dbo].[FIELD000S].ItemID = @intItemID AND [dbo].[FIELD000S].FieldCode = '041'
+GO
+
+-- purpose : Get publishing information of book
+-- Last Update: 03/10/2019
+-- Creator: Thangnt
+CREATE PROCEDURE [dbo].[FPT_SP_GET_PUBLISH_INFO_ITEM]
+(
+	@intItemID INT
+)
+AS
+	SELECT DISTINCT Content FROM [dbo].[FIELD200S]
+	WHERE ([dbo].[FIELD200S].ItemID = @intItemID AND [dbo].[FIELD200S].FieldCode = '250')
+	   OR ([dbo].[FIELD200S].ItemID = @intItemID AND [dbo].[FIELD200S].FieldCode = '260')
+GO
+
+-- purpose : Get physical information of book
+-- Last Update: 03/10/2019
+-- Creator: Thangnt
+CREATE PROCEDURE [dbo].[FPT_SP_GET_PHYSICAL_INFO_ITEM]
+(
+	@intItemID INT
+)
+AS
+	SELECT DISTINCT Content FROM [dbo].[FIELD300S]
+	WHERE [dbo].[FIELD300S].ItemID = @intItemID AND [dbo].[FIELD300S].FieldCode = '300'
+GO
+
+-- purpose : Get itemID by keyword
+-- Last Update: 03/10/2019
+-- Creator: Thangnt
+CREATE PROCEDURE [dbo].[FPT_SP_GET_ITEMID_BY_KEYWORD]
+( 
+	@strKeyWord NVARCHAR(100)
+)
+AS
+	SELECT A.ItemID FROM ITEM_KEYWORD A ,CAT_DIC_KEYWORD B
+	WHERE A.KeyWordID = B.ID and B.DisplayEntry = @strKeyWord
+GO
+
+-- purpose : Get information of book by keyword
+-- Last Update: 03/10/2019
+-- Creator: Thangnt
+CREATE PROCEDURE [dbo].[FPT_SP_GET_SEARCHED_INFO_BOOK_BY_KEYWORD]
+(
+	@intItemID INT
+)
+AS
+	SELECT DISTINCT A.ID, B.Title, E.DisplayEntry AS 'Publisher', F.[Year], G.DisplayEntry AS 'Author' FROM [dbo].ITEM AS A
+	INNER JOIN [dbo].[ITEM_TITLE] AS B ON A.ID = B.ItemID
+	INNER JOIN [dbo].[ITEM_AUTHOR] AS C ON A.ID = C.ItemID
+	INNER JOIN [dbo].[ITEM_PUBLISHER] AS D ON A.ID = D.ItemID
+	INNER JOIN [dbo].[CAT_DIC_PUBLISHER] AS E ON D.PublisherID = E.ID
+	INNER JOIN [dbo].[CAT_DIC_YEAR] AS F ON A.ID = F.ItemID
+	INNER JOIN [dbo].[CAT_DIC_AUTHOR] AS G ON C.AuthorID = G.ID
+	WHERE A.ID = @intItemID
+	ORDER BY B.Title
+GO
