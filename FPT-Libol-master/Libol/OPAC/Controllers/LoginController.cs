@@ -13,21 +13,22 @@ namespace OPAC.Controllers
         // GET: Login
         public ActionResult Login()
         {
-            if (Session["ID"] != null)
+            /* if (Session["ID"] != null)
             {
                 return RedirectToAction("Home", "Home");
-            }
+            } */
             return View();
         }
         [HttpPost]
         public ActionResult Login(string username, string password)
         {
-            
-            var checkUser = db.SP_OPAC_CHECK_PATRON_CARD(username, password).ToList();
-            if (checkUser.Count > 0)
+            var checkUser = db.SP_OPAC_CHECK_PATRON_CARD(username, password).FirstOrDefault();
+            if (checkUser != null)
             {
-                int UserID = checkUser[0].ID;
-                Session["ID"] = UserID;
+                int userId = checkUser.ID;
+                Session["ID"] = userId;
+                Session["Info"] = checkUser;
+                Session["OnHolding"] = checkUser.Code;
                 
                 return RedirectToAction("PatronAfterLoginPage", "InformationPatron");
             }
@@ -39,5 +40,12 @@ namespace OPAC.Controllers
 
         }
 
+        public ActionResult Logout()
+        {
+            Session.Remove("ID");
+            Session.Remove("Info");
+            
+            return RedirectToAction("Home", "Home");
+        }
     }
 }

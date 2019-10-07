@@ -14,7 +14,7 @@ namespace OPAC.Controllers
 
         // GET: DetailBook
         [OutputCache(NoStore = true, Duration = 0, VaryByParam = "*")]
-        public ActionResult DetailBook(int itemID, string code)
+        public ActionResult DetailBook(int itemID)
         {
             ViewBag.OnHoldingBook = dao.GetOnHoldingBook(itemID);
             ViewBag.TotalBook = dao.GetTotalBook(itemID);
@@ -23,8 +23,8 @@ namespace OPAC.Controllers
             ViewBag.RelatedTerm = dao.SP_OPAC_RELATED_TERMS_LIST(itemID);
             ViewBag.BookTitle = dao.GetItemTitle(itemID);
             ViewBag.FullBookInfo = dao.GetFullInforBook(itemID);
-            TempData["itemID"] = itemID;
-            TempData["code"] = code;
+            //TempData["itemID"] = itemID;
+            //TempData["code"] = code;
 
             return View(dao.SP_CATA_GET_CONTENTS_OF_ITEMS_LIST(itemID, 0));
         }

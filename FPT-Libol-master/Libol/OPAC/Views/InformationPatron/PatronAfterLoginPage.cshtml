@@ -1,4 +1,5 @@
-﻿
+﻿@model OPAC.Models.SP_OPAC_CHECK_PATRON_CARD_Result
+
 @{
     ViewBag.Title = "Thông tin bạn đọc - Thư viện trường đại học FPT";
     Layout = "~/Views/Shared/_Layout.cshtml";
@@ -21,9 +22,17 @@
         </div>
         <a href="#" style="width: 153px">Nội qui thư viện</a>
         <a href="@Url.Action("PatronAfterLoginPage", "InformationPatron")" style="width: 220px; background-color: #D8491F">Thông tin bạn đọc</a>
-        <a href="@Url.Action("Home", "Home")" id="login" class="login"><i class="fa fa-sign-out"></i> Đăng xuất</a>
+        @if (Session["ID"] == null)
+        {
+            <a href="@Url.Action("Login", "Login")" id="login" class="login"><i class="fa fa-sign-in"></i> Đăng nhập</a>
+        }
+        else
+        {
+            <a href="@Url.Action("Logout", "Login")" id="login" class="login"><i class="fa fa-sign-out"></i> Đăng xuất</a>
+        }
     </div>
     <br>
+
     <div class="inline">
         <table border="1" class="personal" id="list-infor">
             <tr>
@@ -44,47 +53,69 @@
         </table>
     </div>
     <div class="inline">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</div>
-    <div>
-        <table border="1" class="personal" id="infor">
-            <tr>
-                <th class="personal">Thông tin bạn đọc</th>
-            </tr>
-            <tr>
-                <td class="personal">
-                    <table id="person-infor">
-                        <tr>
-                            <td class="fornews">Tên bạn đọc:</td>
-                            <td class="fornews">Nguyễn Trọng Thắng</td>
-                        </tr>
-                        <tr>
-                            <td class="fornews">Số thẻ:</td>
-                            <td class="fornews">SE05041</td>
-                        </tr>
-                        <tr>
-                            <td class="fornews">Cấp ngày:</td>
-                            <td class="fornews">25/09/2015</td>
-                        </tr>
-                        <tr>
-                            <td class="fornews">Hết hạn ngày:</td>
-                            <td class="fornews">25/09/2020</td>
-                        </tr>
-                        <tr>
-                            <td class="fornews">Nhóm bạn đọc:</td>
-                            <td class="fornews">Sinh viên FU Hà Nội</td>
-                        </tr>
-                        <tr>
-                            <td class="fornews" colspan="2">
-                                <button class="submit" id="change-info" onclick="alert('OK')">
-                                    Thay đổi thông
-                                    tin
-                                </button>
-                            </td>
-                        </tr>
-                    </table>
-                </td>
-            </tr>
-        </table>
-    </div>
+
+    @if (Session["ID"] == null)
+    {
+        <div>
+            <table border="1" class="personal" id="infor">
+                <tr>
+                    <th class="personal">Thông tin bạn đọc</th>
+                </tr>
+                <tr>
+                    <td class="personal">
+                        <p class="need-to-login">Bạn đọc cần phải đăng nhập vào hệ thống</p>
+                    </td>
+                </tr>
+            </table>
+        </div>
+    }
+    else
+    {
+        <div>
+            <table border="1" class="personal" id="infor">
+                <tr>
+                    <th class="personal">Thông tin bạn đọc</th>
+                </tr>
+                <tr>
+                    <td class="personal">
+                        <table id="person-infor">
+                            @{
+                                string patronName = Model.FirstName + " " + Model.MiddleName + " " + Model.LastName;
+                            }
+                            <tr>
+                                <td class="fornews">Tên bạn đọc:</td>
+                                <td class="fornews">@patronName</td>
+                            </tr>
+                            <tr>
+                                <td class="fornews">Số thẻ:</td>
+                                <td class="fornews">@Model.Code</td>
+                            </tr>
+                            <tr>
+                                <td class="fornews">Cấp ngày:</td>
+                                <td class="fornews">@Model.ValidDate</td>
+                            </tr>
+                            <tr>
+                                <td class="fornews">Hết hạn ngày:</td>
+                                <td class="fornews">@Model.ExpiredDate</td>
+                            </tr>
+                            <tr>
+                                <td class="fornews">Nhóm bạn đọc:</td>
+                                <td class="fornews">@Model.GroupName</td>
+                            </tr>
+                            <tr>
+                                <td class="fornews" colspan="2">
+                                    <button class="submit" id="change-info" onclick="alert('OK')">
+                                        Thay đổi thông
+                                        tin
+                                    </button>
+                                </td>
+                            </tr>
+                        </table>
+                    </td>
+                </tr>
+            </table>
+        </div>
+    }
     <br>
 </div>
 <br>

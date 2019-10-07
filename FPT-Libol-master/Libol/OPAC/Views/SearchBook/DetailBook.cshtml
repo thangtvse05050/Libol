@@ -23,8 +23,15 @@
             </div>
         </div>
         <a href="#" style="width: 153px">Nội qui thư viện</a>
-        <a href="@Url.Action("PatronPage", "InformationPatron")" style="width: 220px">Thông tin bạn đọc</a>
-        <a href="@Url.Action("Login", "Login")" id="login" class="login"><i class="fa fa-sign-in"></i> Đăng nhập</a>
+        <a href="@Url.Action("PatronAfterLoginPage", "InformationPatron")" style="width: 220px">Thông tin bạn đọc</a>
+        @if (Session["ID"] == null)
+        {
+            <a href="@Url.Action("Login", "Login")" id="login" class="login"><i class="fa fa-sign-in"></i> Đăng nhập</a>
+        }
+        else
+        {
+            <a href="@Url.Action("Logout", "Login")" id="login" class="login"><i class="fa fa-sign-out"></i> Đăng xuất</a>
+        }
     </div>
     <br>
     @{
@@ -288,7 +295,7 @@
     </div>
     <hr>
     <div>
-        <a href="javascript:window.history.back()" class="back"><b><i class='fa fa-arrow-left'></i> Quay về trang tìm kiếm</b></a>
+        <a href="javascript:window.history.back()" class="back"><b><i class='fa fa-arrow-left'></i> Quay về trang trước</b></a>
     </div>
     <br>
 </div>
