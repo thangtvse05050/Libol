@@ -1,4 +1,4 @@
-@charset "UTF-8";
+﻿@charset "UTF-8";
 /*
 Template Name: LIBRARIA
 Template URI: http://www.libraria.com
@@ -59,6 +59,7 @@ Version: 1.0.0
  */
 /*! normalize.css v3.0.3 | MIT License | github.com/necolas/normalize.css */
 html {
+  scroll-behavior: smooth;
   font-family: sans-serif;
   -ms-text-size-adjust: 100%;
   -webkit-text-size-adjust: 100%;
@@ -19311,6 +19312,10 @@ th.personal {
 }
 
 tr.searching {
+   background-color: #f05122;
+}
+
+td.searching {
   background-color: #f05122;
 }
 
@@ -19746,4 +19751,60 @@ button#book-location {
   width: 120px;
   height: 40px;
   background-color: #f05122;
+}
+
+td.message {
+  width: 313px; 
+  position: relative; 
+  bottom: 10px; 
+  color: red; 
+  font-weight: bold;
+}
+
+#hide {
+  -moz-animation: cssAnimation 0s ease-in 5s forwards;
+  /* Firefox */
+  -webkit-animation: cssAnimation 0s ease-in 5s forwards;
+  /* Safari and Chrome */
+  -o-animation: cssAnimation 0s ease-in 5s forwards;
+  /* Opera */
+  animation: cssAnimation 0s ease-in 5s forwards;
+  -webkit-animation-fill-mode: forwards;
+  animation-fill-mode: forwards;
+}
+@keyframes cssAnimation {
+  to {
+      width:0;
+      height:0;
+      overflow:hidden;
+  }
+}
+@-webkit-keyframes cssAnimation {
+  to {
+      width:0;
+      height:0;
+      visibility:hidden;
+  }
+}
+
+a.scrollPage {
+    position: fixed;
+    top: 50%;
+    right: 0;
+    width: 60px;
+    height: 60px;
+    display: block;
+    text-align: center;
+    line-height: 80px;
+    text-decoration: none;
+    z-index: 10000;
+    color: green;
+}
+
+a.scrollPage.top {
+    top: calc(50% - 60px);
+}
+
+a.scrollPage.bottom {
+     top: calc(50% - 0);
 }
