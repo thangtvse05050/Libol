@@ -140,6 +140,7 @@
     <Compile Include="Controllers\LoginController.cs" />
     <Compile Include="Controllers\SearchBookController.cs" />
     <Compile Include="Dao\HomeDao.cs" />
+    <Compile Include="Dao\PatronDao.cs" />
     <Compile Include="Dao\SearchDao.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -4145,7 +4146,6 @@
     <Content Include="Views\Home\Home.cshtml" />
     <Content Include="Views\SearchBook\DetailBook.cshtml" />
     <Content Include="Views\SearchBook\AdvancedSearchBook.cshtml" />
-    <Content Include="Views\InformationPatron\PatronPage.cshtml" />
     <Content Include="Views\InformationPatron\PatronAfterLoginPage.cshtml" />
     <Content Include="Views\InformationPatron\BookBorrowingPage.cshtml" />
     <Content Include="Views\Login\Login.cshtml" />
