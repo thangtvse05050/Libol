@@ -338,16 +338,16 @@
         <div>
             <table style="width: 100%">
                 <thead>
-                    <tr>
-                        <th style="padding: 7px">Thư viện</th>
-                        <th style="padding: 7px">Kho</th>
-                        <th style="padding: 7px">ĐKCB</th>
-                        <th style="padding: 7px">Trạng thái</th>
-                    </tr>
+                <tr>
+                    <th style="padding: 7px">Thư viện</th>
+                    <th style="padding: 7px">Kho</th>
+                    <th style="padding: 7px">ĐKCB</th>
+                    <th style="padding: 7px">Trạng thái</th>
+                </tr>
                 </thead>
                 <tbody>
-                    @foreach (var item in listDetailBook)
-                    {
+                @foreach (var item in listDetailBook)
+                {
                     <tr>
                         <td style="padding: 7px">@item.Code</td>
                         <td style="padding: 7px">@item.Symbol</td>
@@ -361,7 +361,7 @@
                             <td style="padding: 7px; color: green; font-weight: bold">Đang sẵn sàng</td>
                         }
                     </tr>
-                    }
+                }
                 </tbody>
             </table>
             <br />

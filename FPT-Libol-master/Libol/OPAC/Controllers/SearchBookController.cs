@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using Microsoft.Ajax.Utilities;
 
 namespace OPAC.Controllers
 {
@@ -52,15 +53,15 @@ namespace OPAC.Controllers
                 TempData["errorMessage"] = "Ô tìm kiếm không được để trống";
                 return RedirectToAction("Home", "Home");
             }
-            
-            return RedirectToAction("SearchBook", new { page = 1 });
+
+            return RedirectToAction("SearchBook", new {page = 1});
         }
 
 
         public ActionResult SearchByKeyWord(string keyWord)
         {
             Session["key"] = keyWord.Trim();
-            return RedirectToAction("SearchBookByKeyWord", new { page = 1 });
+            return RedirectToAction("SearchBookByKeyWord", new {page = 1});
         }
 
         [OutputCache(NoStore = true, Duration = 0, VaryByParam = "*")]
@@ -90,7 +91,34 @@ namespace OPAC.Controllers
 
         public ActionResult AdvancedSearchBook()
         {
+            ViewBag.DocumentList = dao.GetDocumentType();
+            var libraryList = new List<SP_GET_LIBRARY_Result>();
+            foreach (var item in dao.GetLibrary())
+            {
+                if (!string.IsNullOrWhiteSpace(item.Name))
+                {
+                    libraryList.Add(item);
+                }
+            }
+            ViewBag.LibraryList = libraryList;
             return View();
+        }
+
+        public JsonResult GetLocationByLibId(int libraryId)
+        {
+            var list = dao.GetLocation(libraryId);
+            var listLocation = new List<SelectListItem>();
+            list.Insert(0, new Location()
+            {   
+                ID = 0,
+                Status = false,
+                SymbolAndCodeLoc = "--------------Chọn kho--------------"
+            });
+            foreach (var item in list)
+            {
+                listLocation.Add(new SelectListItem() { Text = item.SymbolAndCodeLoc, Value = item.ID.ToString() });
+            }
+            return Json(new SelectList(listLocation, "Value", "Text"));
         }
     }
 }

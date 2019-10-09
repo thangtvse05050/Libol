@@ -22,7 +22,7 @@
     <!-- Stylesheet -->
     <link href="~/AllContent/css/style.css" rel="stylesheet" type="text/css" />
     <link href="~/AllContent/css/borrow-book-popup.css" rel="stylesheet" type="text/css" />
-    
+
 </head>
 <body class="layout-v3">
     <!-- Start: Header Section -->
@@ -142,24 +142,5 @@
 
     <!-- Tab Navigation-->
     <script type="text/javascript" src="~/AllContent/js/tab-navigation.js"></script>
-
-    <!-- Custom Script-->
-    <script type="text/javascript" src="~/AllContent/js/main.js"></script>
-
-    <!-- Slider -->
-    <script>
-        $('#myCarousel').carousel({
-            interval: 5000
-        });
-    </script>
-
-    <!-- Redirect after borrowing success-->
-    <script type="text/javascript">
-        function redirectLink() {
-            setTimeout(function () {
-                window.location.href = "@Url.Action("BookBorrowingPage", "InformationPatron")";
-            }, 2000);
-        }
-    </script>
 </body>
 </html>
