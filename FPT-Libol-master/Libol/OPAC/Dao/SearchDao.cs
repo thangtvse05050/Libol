@@ -349,5 +349,52 @@ namespace OPAC.Dao
                 return holdingBook;
             }
         }
+
+        /// <summary>
+        /// Get list of document
+        /// </summary>
+        /// <returns></returns>
+        public List<SP_OPAC_GET_DIC_ITEM_TYPE_Result> GetDocumentType()
+        {
+            using (var dbContext = new OpacEntities())
+            {
+                return dbContext.SP_OPAC_GET_DIC_ITEM_TYPE().ToList();
+            }
+        }
+
+        /// <summary>
+        /// Get list of library
+        /// </summary>
+        /// <returns></returns>
+        public List<SP_GET_LIBRARY_Result> GetLibrary()
+        {
+            using (var dbContext = new OpacEntities())
+            {
+                return dbContext.SP_GET_LIBRARY().ToList();
+            }
+        }
+
+        public List<Location> GetLocation(int libId)
+        {
+            using (var dbContext = new OpacEntities())
+            {
+                var list = new List<Location>();
+                var locationList = dbContext.FPT_SP_OPAC_GET_LOCATION().Where(t => t.LibID == libId).ToList();
+                foreach (var item in locationList)
+                {
+                    Location location = new Location()
+                    {
+                        ID = item.ID,
+                        LibID = item.LibID,
+                        SymbolAndCodeLoc = item.Symbol + " (" + item.CodeLoc + ")",
+                        MaxNumber = item.MaxNumber,
+                        Status = item.Status
+                    };
+                    list.Add(location);
+                }
+
+                return list;
+            }
+        }
     }
 }
