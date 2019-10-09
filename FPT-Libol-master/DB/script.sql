@@ -5683,7 +5683,7 @@ DECLARE @StrSql varchar(1500)
 		end
 
 		SET @StrSql = @StrSql + ' GROUP BY CLH.CopyNumber  HAVING Count (*) >= ' + @intMinLoan + ' ORDER BY TotalLoan DESC'
-	EXEC (@StrSql)
+	
 
 
 
@@ -7522,60 +7522,6 @@ CREATE        PROCEDURE [dbo].[FPT_GET_DATE_SUGGEST_RENEW]
 	
 
 GO
-/****** Object:  StoredProcedure [dbo].[FPT_SP_STAT_ITEMMAX]    Script Date: 10/2/2019 11:47:37 PM ******/
-SET ANSI_NULLS ON
-GO
-SET QUOTED_IDENTIFIER ON
-GO
-
-CREATE PROCEDURE [dbo].[FPT_SP_STAT_ITEMMAX]
-	-- Created DungPT
-	-- ModifyDate:
-	@intUserID varchar(30),
-	@strCheckOutDateFrom varchar(30),
-	@strCheckOutDateTo varchar(30),
-	@intTopNum varchar(30),
-	@intMinLoan varchar(30),
-	@libid varchar(30),
-	@strLocationPrefix varchar(5),
-	@locid varchar(30)
-AS
-DECLARE @StrSql varchar(1500)
-	SET @StrSql = ''
-	SET @StrSql = @StrSql + 
-	' SELECT DISTINCT TOP ' + @intTopNum + ' Count (*) AS TotalLoan,  I.Code, REPLACE(REPLACE(REPLACE(REPLACE(F.Content,''$a'',''''),''$b'','' ''),''$c'','' ''),''$n'','' '') as Name 
-	FROM CIR_LOAN_HISTORY CLH LEFT JOIN FIELD200S F ON CLH.ItemID=F.ItemID and F.FieldCode=''245'' LEFT JOIN ITEM I ON CLH.ItemID = I.ID
-	WHERE 1=1 ' 
-	IF @strCheckOutDateFrom <> ''
-		SET @StrSql = @StrSql +  ' AND CLH.CheckOutDate >=''' + @strCheckOutDateFrom +''''
-	IF @strCheckOutDateTo <> ''
-		SET @StrSql = @StrSql +  ' AND CLH.CheckOutDate <=''' + @strCheckOutDateTo +''''
-
-		IF @locid <>''
-		begin
-		SET @StrSql = @StrSql + ' AND CLH.LocationID IN 
-		( SELECT B.ID AS ID 
-		FROM HOLDING_LIBRARY A, HOLDING_LOCATION B, SYS_USER_CIR_LOCATION C 
-		WHERE A.ID = ' + CAST(@libid as varchar(30))+' and A.LocalLib = 1 AND A.ID = B.LibID AND B.ID = C.LocationID AND C.UserID = ' 
-		+ @intUserID+ ' and B.ID = ' + @locid + ' AND B.Symbol LIKE '''+ @strLocationPrefix +'%'') '
-		end
-		else 
-		begin 
-			IF @strLocationPrefix <> '0'
-				BEGIN
-					SET @strSQL = @strSQL + ' AND CLH.LocationID IN ( SELECT B.ID AS ID 	FROM HOLDING_LIBRARY A, HOLDING_LOCATION B, SYS_USER_CIR_LOCATION C WHERE A.LocalLib = 1 AND A.ID ='+ CAST(@libid AS VARCHAR(30)) +' AND A.ID = B.LibID AND B.ID = C.LocationID AND C.UserID =' + CAST(@intUserID AS VARCHAR(30)) + ' AND B.Symbol LIKE '''+ @strLocationPrefix +'%'') '
-				END
-			ELSE
-                BEGIN		
-					SET @StrSql = @StrSql + ' AND CLH.LocationID IN 
-					( SELECT B.ID AS ID 
-					FROM HOLDING_LIBRARY A, HOLDING_LOCATION B, SYS_USER_CIR_LOCATION C 
-					WHERE A.ID = ' + CAST(@libid as varchar(30))+' and A.LocalLib = 1 AND A.ID = B.LibID AND B.ID = C.LocationID AND C.UserID = ' + @intUserID+ ' ) '
-				END
-		end
-
-		SET @StrSql = @StrSql + ' GROUP BY I.Code, REPLACE(REPLACE(REPLACE(REPLACE(F.Content,''$a'',''''),''$b'','' ''),''$c'','' ''),''$n'','' '')  HAVING Count (*) >= ' + @intMinLoan + ' ORDER BY TotalLoan DESC'
-	EXEC (@StrSql)
 
 	
 -- purpose : Get code (Thư viện) and symbol (kho) for searching copy number
