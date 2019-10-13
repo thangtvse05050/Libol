@@ -750,7 +750,7 @@ namespace Libol.Controllers
             return Json(new SelectList(loc, "Value", "Text"));
         }
         [HttpPost]
-        public PartialViewResult GetYearStats(string strLibID, string strLocID, string strFromYear, string strToYear, string strType)
+        public PartialViewResult GetYearStats(string strLibID, string strLocPrefix, string strLocID, string strFromYear, string strToYear, string strType)
         {
             int LibID = 0;
             int LocID = 0;
@@ -770,8 +770,8 @@ namespace Libol.Controllers
             {
                 ViewBag.TypeName = "đầu ấn phẩm";
             }
-            ViewBag.UsedResult = cb.GET_FPT_CIR_YEAR_STATISTIC_LIST(LibID, LocID, Type, 0, strFromYear, strToYear, (int)Session["UserID"]);
-            ViewBag.UsingResult = cb.GET_FPT_CIR_YEAR_STATISTIC_LIST(LibID, LocID, Type, 1, strFromYear, strToYear, (int)Session["UserID"]);
+            ViewBag.UsedResult = cb.GET_FPT_CIR_YEAR_STATISTIC_LIST(LibID, strLocPrefix, LocID, Type, 0, strFromYear, strToYear, (int)Session["UserID"]);
+            ViewBag.UsingResult = cb.GET_FPT_CIR_YEAR_STATISTIC_LIST(LibID, strLocPrefix, LocID, Type, 1, strFromYear, strToYear, (int)Session["UserID"]);
             return PartialView("GetYearStats");
         }
         [HttpPost]
@@ -1022,17 +1022,17 @@ namespace Libol.Controllers
             {
                 lib.Add(new SelectListItem { Text = item.Code, Value = item.ID.ToString() });
             }
-            ViewBag.list_lib = lib;
+            ViewData["lib"] = lib;
             return View();
         }
         [HttpPost]
-        public PartialViewResult DisplayTopPatron(string strLibID, string strLocID, string strDateFrom, string strDateTo,
+        public PartialViewResult DisplayTopPatron(string strLibID, string strLocPrefix, string strLocID, string strDateFrom, string strDateTo,
             string strNumPatron, string strHireTimes, string strType)
         {
             string userID = Session["UserID"].ToString();
 
             List<FPT_SP_STAT_PATRONMAX_Result> result =
-                pb.FPT_SP_STAT_PATRONMAX_LIST(userID, strDateFrom, strDateTo, strNumPatron, strHireTimes, strType, strLocID, strLibID);
+                pb.FPT_SP_STAT_PATRONMAX_LIST(userID, strDateFrom, strDateTo, strNumPatron, strHireTimes, strType, strLocID, strLocPrefix, strLibID);
 
             ViewBag.test = result;
             return PartialView("DisplayTopPatron");

@@ -21641,11 +21641,15 @@ namespace Libol.Models
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("FPT_CIR_MONTH_STATISTIC", intLibraryIDParameter, intLocationIDParameter, intTypeParameter, intStatusParameter, strInYearParameter, intUserIDParameter);
         }
     
-        public virtual int FPT_CIR_YEAR_STATISTIC(Nullable<int> intLibraryID, Nullable<int> intLocationID, Nullable<int> intType, Nullable<int> intStatus, string strFromYear, string strToYear, Nullable<int> intUserID)
+        public virtual int FPT_CIR_YEAR_STATISTIC(Nullable<int> intLibraryID, string strLocationPrefix, Nullable<int> intLocationID, Nullable<int> intType, Nullable<int> intStatus, string strFromYear, string strToYear, Nullable<int> intUserID)
         {
             var intLibraryIDParameter = intLibraryID.HasValue ?
                 new ObjectParameter("intLibraryID", intLibraryID) :
                 new ObjectParameter("intLibraryID", typeof(int));
+    
+            var strLocationPrefixParameter = strLocationPrefix != null ?
+                new ObjectParameter("strLocationPrefix", strLocationPrefix) :
+                new ObjectParameter("strLocationPrefix", typeof(string));
     
             var intLocationIDParameter = intLocationID.HasValue ?
                 new ObjectParameter("intLocationID", intLocationID) :
@@ -21671,7 +21675,7 @@ namespace Libol.Models
                 new ObjectParameter("intUserID", intUserID) :
                 new ObjectParameter("intUserID", typeof(int));
     
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("FPT_CIR_YEAR_STATISTIC", intLibraryIDParameter, intLocationIDParameter, intTypeParameter, intStatusParameter, strFromYearParameter, strToYearParameter, intUserIDParameter);
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("FPT_CIR_YEAR_STATISTIC", intLibraryIDParameter, strLocationPrefixParameter, intLocationIDParameter, intTypeParameter, intStatusParameter, strFromYearParameter, strToYearParameter, intUserIDParameter);
         }
     
         public virtual int FPT_GET_LIQUIDBOOKS(string strLiquidCode, Nullable<int> intLibraryID, Nullable<int> intLocationID, string strDateFrom, string strDateTo, Nullable<int> intUserID)
@@ -23113,7 +23117,7 @@ namespace Libol.Models
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("FPT_SP_STAT_PATRONGROUP", intUserIDParameter, strCheckOutDateFromParameter, strCheckOutDateToParameter, optItemIDParameter, intHistoryParameter, libIDParameter);
         }
     
-        public virtual int FPT_SP_STAT_PATRONMAX(string intUserID, string strCheckOutDateFrom, string strCheckOutDateTo, string intTopNum, string intMinLoan, string optItemID, string locID, string libID)
+        public virtual int FPT_SP_STAT_PATRONMAX(string intUserID, string strCheckOutDateFrom, string strCheckOutDateTo, string intTopNum, string intMinLoan, string optItemID, string locID, string strLocationPrefix, string libID)
         {
             var intUserIDParameter = intUserID != null ?
                 new ObjectParameter("intUserID", intUserID) :
@@ -23143,11 +23147,15 @@ namespace Libol.Models
                 new ObjectParameter("LocID", locID) :
                 new ObjectParameter("LocID", typeof(string));
     
+            var strLocationPrefixParameter = strLocationPrefix != null ?
+                new ObjectParameter("strLocationPrefix", strLocationPrefix) :
+                new ObjectParameter("strLocationPrefix", typeof(string));
+    
             var libIDParameter = libID != null ?
                 new ObjectParameter("LibID", libID) :
                 new ObjectParameter("LibID", typeof(string));
     
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("FPT_SP_STAT_PATRONMAX", intUserIDParameter, strCheckOutDateFromParameter, strCheckOutDateToParameter, intTopNumParameter, intMinLoanParameter, optItemIDParameter, locIDParameter, libIDParameter);
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("FPT_SP_STAT_PATRONMAX", intUserIDParameter, strCheckOutDateFromParameter, strCheckOutDateToParameter, intTopNumParameter, intMinLoanParameter, optItemIDParameter, locIDParameter, strLocationPrefixParameter, libIDParameter);
         }
     
         public virtual ObjectResult<FPT_ACQ_STATISTIC_TOP20_Result> FPT_ACQ_STATISTIC_TOP20(Nullable<int> intType, Nullable<int> intCategoryID)

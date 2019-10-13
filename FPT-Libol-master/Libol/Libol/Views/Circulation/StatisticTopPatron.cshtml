@@ -16,13 +16,17 @@
     <h4 style="padding-left:10px;margin-top:20px;">Thống kê số lần mượn theo bạn đọc</h4>
     <div class="row center-block">
         <div class="col-3">
-            <div class="form-group row">
-                <label class="control-label col-md-5 align-self-center">Thư viện</label>
-                @Html.DropDownList("Library", ViewBag.list_lib as List<SelectListItem>, new { @class = "form-control col-md-7" })
+            <div class="form-group row col">
+                <label class="control-label col-md-4 align-self-center">Thư viện</label>
+                @Html.DropDownList("Library", ViewData["lib"] as List<SelectListItem>, new { @class = "form-control col-md-8" })
             </div>
-            <div class="form-group row">
-                <label class="control-label col-md-5 align-self-center">Kho</label>
-                @Html.DropDownList("Location", new SelectList(string.Empty, "Value", "Text"), "Tất cả các kho", new { @class = "form-control col-md-7" })
+            <div class="form-group row col">
+                <label class="control-label col-md-4 align-self-center">Kho</label>
+                @Html.DropDownList("LocationPrefix", new SelectList(string.Empty, "Value", "Text"), "Chọn Kho", new { @class = "form-control col-md-8" })
+            </div>
+            <div class="form-group row col">
+                <label class="control-label col-md-4 align-self-center">Lĩnh vực kho</label>
+                @Html.DropDownList("LocationsByPrefix", new SelectList(string.Empty, "Value", "Text"), "Chọn lĩnh vực", new { @class = "form-control col-md-8", @multiple = true })
             </div>
         </div>
         <div class="col-3">
@@ -80,7 +84,8 @@
 
             var empObj = {
                 strLibID: $("#Library").val(),
-                strLocID: $("#Location").val(),
+                strLocPrefix: $("#LocationPrefix").val(),
+                strLocID: $("#LocationsByPrefix").val().toString(),
                 strDateFrom: $("#date_from").val(),
                 strDateTo: $("#date_to").val(),
                 strNumPatron: $("#number_patron").val(),
@@ -114,21 +119,35 @@
         };
 
         $("#Library").change(function () {
-            $("#Location").empty();
+            $("#LocationPrefix").empty();
+            $("#LocationsByPrefix").empty();
             $.ajax({
-            type: 'POST',
-            url: '@Url.Action("GetLocations")', // we are calling json method
-            dataType: 'json',
-            data: { id: $("#Library").val() },
-            success: function (locs) {
-                $.each(locs, function (i, loc) {
-                    $("#Location").append('<option value="' + loc.Value + '">' +
-                    loc.Text + '</option>');
-                });
-            }
-            //error: function (ex) {
-            //    alert('Failed to retrieve states.' + ex);
-            //}
+                type: 'POST',
+                url: '@Url.Action("GetLocationsPrefix")', // we are calling json method
+                dataType: 'json',
+                data: { id: $("#Library").val() },
+                success: function (locs) {
+                    $.each(locs, function (i, loc) {
+                        $("#LocationPrefix").append('<option value="' + loc.Value + '">' +
+                            loc.Text + '</option>');
+                    });
+                }
+            });
+            return false;
+        });
+        $("#LocationPrefix").change(function () {
+            $("#LocationsByPrefix").empty();
+            $.ajax({
+                type: 'POST',
+                url: '@Url.Action("GetLocationsByPrefix")', // we are calling json method
+                dataType: 'json',
+                data: { id: $("#Library").val(), prefix: $("#LocationPrefix").val() },
+                success: function (locs) {
+                    $.each(locs, function (i, loc) {
+                        $("#LocationsByPrefix").append('<option value="' + loc.Value + '">' +
+                            loc.Text + '</option>');
+                    });
+                }
             });
             return false;
         });
