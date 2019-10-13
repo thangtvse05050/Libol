@@ -7763,3 +7763,11 @@ AS
 	WHERE A.ID = @intItemID
 	ORDER BY B.Title
 GO
+
+-- purpose : Get location
+-- Last Update: 08/10/2019
+-- Creator: Thangnt
+CREATE PROCEDURE [dbo].[FPT_SP_OPAC_GET_LOCATION]
+AS
+	SELECT * FROM [dbo].[HOLDING_LOCATION]
+GO
