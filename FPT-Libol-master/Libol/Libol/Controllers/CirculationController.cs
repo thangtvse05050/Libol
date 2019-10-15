@@ -756,7 +756,7 @@ namespace Libol.Controllers
             int LocID = 0;
             int Type = 0;
             if (!string.IsNullOrEmpty(strLibID)) LibID = Convert.ToInt32(strLibID);
-            if (!string.IsNullOrEmpty(strLocID)) LocID = Convert.ToInt32(strLocID);
+            //if (!string.IsNullOrEmpty(strLocID)) LocID = Convert.ToInt32(strLocID);
             if (!string.IsNullOrEmpty(strType)) Type = Convert.ToInt32(strType);
             if (Type == 3)
             {
@@ -770,8 +770,8 @@ namespace Libol.Controllers
             {
                 ViewBag.TypeName = "đầu ấn phẩm";
             }
-            ViewBag.UsedResult = cb.GET_FPT_CIR_YEAR_STATISTIC_LIST(LibID, strLocPrefix, LocID, Type, 0, strFromYear, strToYear, (int)Session["UserID"]);
-            ViewBag.UsingResult = cb.GET_FPT_CIR_YEAR_STATISTIC_LIST(LibID, strLocPrefix, LocID, Type, 1, strFromYear, strToYear, (int)Session["UserID"]);
+            ViewBag.UsedResult = cb.GET_FPT_CIR_YEAR_STATISTIC_LIST(LibID, strLocPrefix, strLocID, Type, 0, strFromYear, strToYear, (int)Session["UserID"]);
+            ViewBag.UsingResult = cb.GET_FPT_CIR_YEAR_STATISTIC_LIST(LibID, strLocPrefix, strLocID, Type, 1, strFromYear, strToYear, (int)Session["UserID"]);
             return PartialView("GetYearStats");
         }
         [HttpPost]

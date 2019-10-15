@@ -66,39 +66,40 @@
 
 <div id="ContentStatYear"></div>
 <script>
-    document.getElementById("stat").onclick = function () {
-        var empObj = {
-            strLibID: document.getElementById("Library").value,
-            strLocPrefix: document.getElementById("LocationPrefix").value,
-            strLocID: document.getElementById("LocationsByPrefix").value,
-            strFromYear: document.getElementById("FromYear").value,
-            strToYear: document.getElementById("ToYear").value,
-            strType: $("input:radio[name=Type]:checked").val(),
-        };
-        if (document.getElementById("FromYear").value != "" && document.getElementById("ToYear").value != "" && document.getElementById("FromYear").value > document.getElementById("ToYear").value) {
-            alert("Khoảng thời gian thống kê không hợp lệ");
-        } else {
-            $.ajax({
-                url: "GetYearStats",
-                data: JSON.stringify(empObj),
-                contentType: "application/json;charset=utf-8",
-                type: "POST",
-                beforeSend: function () {
-                    $("#ContentStatYear").html("<h4>Loading...</h4>");
-                },
-                success: function (result) {
-                    $("#ContentStatYear").html(result)
-                },
-                error: function (errormessage) {
-                    console.log("error");
-                }
-            });
-        }
-    };
+    
 </script>
 
 <script type="text/javascript">
     $(document).ready(function () {
+        document.getElementById("stat").onclick = function () {
+            var empObj = {
+                strLibID: document.getElementById("Library").value,
+                strLocPrefix: document.getElementById("LocationPrefix").value,
+                strLocID: $("#LocationsByPrefix").val().toString(),
+                strFromYear: document.getElementById("FromYear").value,
+                strToYear: document.getElementById("ToYear").value,
+                strType: $("input:radio[name=Type]:checked").val(),
+            };
+            if (document.getElementById("FromYear").value != "" && document.getElementById("ToYear").value != "" && document.getElementById("FromYear").value > document.getElementById("ToYear").value) {
+                alert("Khoảng thời gian thống kê không hợp lệ");
+            } else {
+                $.ajax({
+                    url: "GetYearStats",
+                    data: JSON.stringify(empObj),
+                    contentType: "application/json;charset=utf-8",
+                    type: "POST",
+                    beforeSend: function () {
+                        $("#ContentStatYear").html("<h4>Loading...</h4>");
+                    },
+                    success: function (result) {
+                        $("#ContentStatYear").html(result)
+                    },
+                    error: function (errormessage) {
+                        console.log("error");
+                    }
+                });
+            }
+        };
         $("#Library").change(function () {
             $("#LocationPrefix").empty();
             $("#LocationsByPrefix").empty();

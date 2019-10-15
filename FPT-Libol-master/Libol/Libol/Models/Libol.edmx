@@ -5464,7 +5464,7 @@ warning 6002: The table/view 'Libol.dbo.MARC_BIB_WS_DETAIL' does not have a prim
         <Function Name="FPT_CIR_YEAR_STATISTIC" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="intLibraryID" Type="int" Mode="In" />
           <Parameter Name="strLocationPrefix" Type="varchar" Mode="In" />
-          <Parameter Name="intLocationID" Type="int" Mode="In" />
+          <Parameter Name="strLocationID" Type="varchar" Mode="In" />
           <Parameter Name="intType" Type="int" Mode="In" />
           <Parameter Name="intStatus" Type="int" Mode="In" />
           <Parameter Name="strFromYear" Type="varchar" Mode="In" />
@@ -25705,7 +25705,7 @@ warning 6002: The table/view 'Libol.dbo.MARC_BIB_WS_DETAIL' does not have a prim
           <FunctionImport Name="FPT_CIR_YEAR_STATISTIC">
             <Parameter Name="intLibraryID" Mode="In" Type="Int32" />
             <Parameter Name="strLocationPrefix" Mode="In" Type="String" />
-            <Parameter Name="intLocationID" Mode="In" Type="Int32" />
+            <Parameter Name="strLocationID" Mode="In" Type="String" />
             <Parameter Name="intType" Mode="In" Type="Int32" />
             <Parameter Name="intStatus" Mode="In" Type="Int32" />
             <Parameter Name="strFromYear" Mode="In" Type="String" />

@@ -33,7 +33,7 @@ namespace Libol.Models
                 new object[] { PatronCode, ItemCode, CopyNumber, LibraryID, LocationPrefix, LocationID, CheckOutDateFrom, CheckOutDateTo, CheckInDateFrom, CheckInDateTo, UserID }).ToList();
             return list;
         }
-        public List<FPT_CIR_YEAR_STATISTIC_Result> GET_FPT_CIR_YEAR_STATISTIC_LIST(int LibraryID, string strLocPrefix, int LocationID, int Type, int Status, string FromYear, string ToYear, int UserID)
+        public List<FPT_CIR_YEAR_STATISTIC_Result> GET_FPT_CIR_YEAR_STATISTIC_LIST(int LibraryID, string strLocPrefix, string LocationID, int Type, int Status, string FromYear, string ToYear, int UserID)
         {
             List<FPT_CIR_YEAR_STATISTIC_Result> list = db.Database.SqlQuery<FPT_CIR_YEAR_STATISTIC_Result>("FPT_CIR_YEAR_STATISTIC {0}, {1}, {2}, {3}, {4}, {5}, {6}, {7}",
                 new object[] { LibraryID, strLocPrefix, LocationID, Type, Status, FromYear, ToYear, UserID }).ToList();
