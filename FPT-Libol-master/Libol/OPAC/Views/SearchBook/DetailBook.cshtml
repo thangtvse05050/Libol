@@ -91,10 +91,10 @@
                     var getDDC = relatedTerm.Where(s => s.TermType.Equals("DDC")).FirstOrDefault();
                     if (getDDC != null)
                     {
-                    <tr>
-                        <td class="detail"><b>Phân loại thập phân Dewey</b></td>
-                        <td>@getDDC.DisplayEntry</td>
-                    </tr>
+                        <tr>
+                            <td class="detail"><b>Phân loại thập phân Dewey</b></td>
+                            <td>@getDDC.DisplayEntry</td>
+                        </tr>
                     }
                 }
                 @{
@@ -309,14 +309,33 @@
         <div>Bạn có muốn mượn sách <b>@title</b> ?</div>
         <div>
             <p style="text-align: center; position: relative; top: 28px">
-                <a href="#open-modal2" onclick="redirectLink()" class="btn1 btn-borrow1" style="color: white">Đồng ý</a>
+                @if (Session["ID"] == null)
+                {
+                    <a href="#open-modal2" class="btn1 btn-borrow1" style="color: white">Đồng ý</a>
+                }
+                else
+                {
+                    <a href="#open-modal3" onclick="redirectLink()" class="btn1 btn-borrow1" style="color: white">Đồng ý</a>
+                }
                 <button class="submit" onclick="window.history.back()">Hủy bỏ</button>
             </p>
         </div>
     </div>
 </div>
 
+
 <div id="open-modal2" class="modal-window">
+    <div>
+        <p style="font-family: Arial; color: red; text-align: center; font-size: 30px">
+            Bạn đọc cần phải đăng nhập để đặt mượn sách.
+        </p>
+        <p style="text-align: center">
+            <button class="submit" onclick="window.location = '@Url.Action("Login", "Login")'">Đăng nhập</button>
+        </p>
+    </div>
+</div>
+
+<div id="open-modal3" class="modal-window">
     <div>
         <div class="success-checkmark">
             <div class="check-icon">
@@ -338,30 +357,30 @@
         <div>
             <table style="width: 100%">
                 <thead>
-                <tr>
-                    <th style="padding: 7px">Thư viện</th>
-                    <th style="padding: 7px">Kho</th>
-                    <th style="padding: 7px">ĐKCB</th>
-                    <th style="padding: 7px">Trạng thái</th>
-                </tr>
+                    <tr>
+                        <th style="padding: 7px">Thư viện</th>
+                        <th style="padding: 7px">Kho</th>
+                        <th style="padding: 7px">ĐKCB</th>
+                        <th style="padding: 7px">Trạng thái</th>
+                    </tr>
                 </thead>
                 <tbody>
-                @foreach (var item in listDetailBook)
-                {
-                    <tr>
-                        <td style="padding: 7px">@item.Code</td>
-                        <td style="padding: 7px">@item.Symbol</td>
-                        <td style="padding: 7px">@item.CopyNumber</td>
-                        @if (item.InUsed)
-                        {
-                            <td style="padding: 7px; color: red; font-weight: bold">Đang cho mượn</td>
-                        }
-                        else
-                        {
-                            <td style="padding: 7px; color: green; font-weight: bold">Đang sẵn sàng</td>
-                        }
-                    </tr>
-                }
+                    @foreach (var item in listDetailBook)
+                    {
+                        <tr>
+                            <td style="padding: 7px">@item.Code</td>
+                            <td style="padding: 7px">@item.Symbol</td>
+                            <td style="padding: 7px">@item.CopyNumber</td>
+                            @if (item.InUsed)
+                            {
+                                <td style="padding: 7px; color: red; font-weight: bold">Đang cho mượn</td>
+                            }
+                            else
+                            {
+                                <td style="padding: 7px; color: green; font-weight: bold">Đang sẵn sàng</td>
+                            }
+                        </tr>
+                    }
                 </tbody>
             </table>
             <br />
