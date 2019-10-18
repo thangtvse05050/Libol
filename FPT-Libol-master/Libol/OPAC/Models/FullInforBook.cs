@@ -11,6 +11,7 @@ namespace OPAC.Models
         public string ISBN { get; set; }
         public string LanguageCode { get; set; }
         public string Publishing { get; set; }
+        public string PublishingYear { get; set; }
         public string PhysicDescription { get; set; }
         public string Brief { get; set; }
 

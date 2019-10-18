@@ -692,9 +692,6 @@
     <Compile Include="Models\FPT_SP_CIR_LIB_SEL_Result.cs">
       <DependentUpon>Opac.tt</DependentUpon>
     </Compile>
-    <Compile Include="Models\FPT_SP_GET_CODE_AND_SYMBOL_BY_ITEMID1_Result.cs">
-      <DependentUpon>Opac.tt</DependentUpon>
-    </Compile>
     <Compile Include="Models\FPT_SP_GET_CODE_AND_SYMBOL_BY_ITEMID_Result.cs">
       <DependentUpon>Opac.tt</DependentUpon>
     </Compile>
@@ -750,6 +747,15 @@
       <DependentUpon>Opac.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\FPT_SP_OPAC_GET_LOCATION_Result.cs">
+      <DependentUpon>Opac.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\FPT_SP_OPAC_GET_RELATED_TERMS_Result.cs">
+      <DependentUpon>Opac.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\FPT_SP_OPAC_GET_SEARCHED_INFO_BOOK_BY_KEYWORD_Result.cs">
+      <DependentUpon>Opac.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\FPT_SP_OPAC_GET_SEARCHED_INFO_BOOK_Result.cs">
       <DependentUpon>Opac.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\FPT_SYS_USER_RIGHT.cs">

@@ -21,9 +21,35 @@ namespace OPAC.Controllers
             ViewBag.TotalBook = dao.GetTotalBook(itemID);
             ViewBag.FreeBook = dao.GetFreeBook(itemID);
             ViewBag.InforCopyNumber = dao.GetInforCopyNumberList(itemID);
-            ViewBag.RelatedTerm = dao.SP_OPAC_RELATED_TERMS_LIST(itemID);
+            ViewBag.RelatedTerm = dao.FPT_SP_OPAC_GET_RELATED_TERMS_LIST(itemID);
             ViewBag.BookTitle = dao.GetItemTitle(itemID);
             ViewBag.FullBookInfo = dao.GetFullInforBook(itemID);
+            ViewBag.Summary = dao.GetSummary(itemID);
+
+            try
+            {
+                var terms = dao.FPT_SP_OPAC_GET_RELATED_TERMS_LIST(itemID).Where(s => s.TermType.Equals("DDC"))
+                    .FirstOrDefault();
+
+                var ddc = terms.DisplayEntry;
+                if (ddc.Contains("$a"))
+                {
+                    ddc = ddc.Replace("$a", "");
+                }
+
+                if (ddc.Contains("$b"))
+                {
+                    ddc = ddc.Replace("$b", " ");
+                }
+
+                ViewBag.DDC = ddc;
+                ViewBag.OriginalDDC = terms.DisplayEntry;
+            }
+            catch (NullReferenceException)
+            {
+                ViewBag.DDC = "";
+            }
+
             //TempData["itemID"] = itemID;
             //TempData["code"] = code;
 
@@ -57,10 +83,10 @@ namespace OPAC.Controllers
             return RedirectToAction("SearchBook", new {page = 1});
         }
 
-
-        public ActionResult SearchByKeyWord(string keyWord)
+        public ActionResult SearchBy(string keyWord, int searchBy)
         {
             Session["key"] = keyWord.Trim();
+            Session["searchBy"] = searchBy;
             return RedirectToAction("SearchBookByKeyWord", new {page = 1});
         }
 
@@ -81,12 +107,13 @@ namespace OPAC.Controllers
         public ActionResult SearchBookByKeyWord(int page)
         {
             string keyWord = Session["key"].ToString();
+            int searchBy = (int)Session["searchBy"];
             int maxItemInOnePage = 30;
-            ViewBag.NumberResultKeyWord = dao.GetNumberResultByKeyWord(keyWord, page, maxItemInOnePage);
+            ViewBag.NumberResultKeyWord = dao.GetNumberResultByKeyWord(keyWord, page, maxItemInOnePage, searchBy);
             ViewBag.ItemInOnePage = maxItemInOnePage;
             Session["PageNo"] = page;
 
-            return View(dao.GetSearchingBookByKeyWord(keyWord, page, maxItemInOnePage));
+            return View(dao.GetSearchingBookByKeyWord(keyWord, page, maxItemInOnePage, searchBy));
         }
 
         public ActionResult AdvancedSearchBook()

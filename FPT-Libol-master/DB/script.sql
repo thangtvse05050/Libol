@@ -7604,9 +7604,9 @@ AS
 GO
 
 -- purpose : Get information of book after user use search function
--- Last Update: 05/10/2019
+-- Last Update: 17/10/2019
 -- Creator: Thangnt
-CREATE PROCEDURE [dbo].[FPT_SP_GET_SEARCHED_INFO_BOOK]
+CREATE PROCEDURE [dbo].[FPT_SP_OPAC_GET_SEARCHED_INFO_BOOK]
 (
 	@strCode NVARCHAR(250),
 	@strOption NVARCHAR(5)
@@ -7614,7 +7614,7 @@ CREATE PROCEDURE [dbo].[FPT_SP_GET_SEARCHED_INFO_BOOK]
 AS
 	IF @strOption = '0'
 		BEGIN
-			SELECT DISTINCT A.ID, B.Title, E.DisplayEntry AS 'Publisher', F.[Year], G.DisplayEntry AS 'Author' FROM [dbo].ITEM AS A
+			SELECT DISTINCT A.ID, B.Title, (SELECT Content FROM FIELD200S WHERE FieldCode = '250' AND ItemID = A.ID) AS [Version], E.DisplayEntry AS 'Publisher', F.[Year], G.DisplayEntry AS 'Author' FROM [dbo].ITEM AS A
 			INNER JOIN [dbo].[ITEM_TITLE] AS B ON A.ID = B.ItemID
 			INNER JOIN [dbo].[ITEM_AUTHOR] AS C ON A.ID = C.ItemID
 			INNER JOIN [dbo].[ITEM_PUBLISHER] AS D ON A.ID = D.ItemID
@@ -7636,7 +7636,7 @@ AS
 		END
 	ELSE IF @strOption = '1'
 		BEGIN
-			SELECT DISTINCT A.ID, B.Title, E.DisplayEntry AS 'Publisher', F.[Year], G.DisplayEntry AS 'Author' FROM [dbo].ITEM AS A
+			SELECT DISTINCT A.ID, B.Title, (SELECT Content FROM FIELD200S WHERE FieldCode = '250' AND ItemID = A.ID) AS [Version], E.DisplayEntry AS 'Publisher', F.[Year], G.DisplayEntry AS 'Author' FROM [dbo].ITEM AS A
 			INNER JOIN [dbo].[ITEM_TITLE] AS B ON A.ID = B.ItemID
 			INNER JOIN [dbo].[ITEM_AUTHOR] AS C ON A.ID = C.ItemID
 			INNER JOIN [dbo].[ITEM_PUBLISHER] AS D ON A.ID = D.ItemID
@@ -7648,7 +7648,7 @@ AS
 		END
 	ELSE IF @strOption = '2'
 		BEGIN
-			SELECT DISTINCT A.ID, B.Title, E.DisplayEntry AS 'Publisher', F.[Year], G.DisplayEntry AS 'Author' FROM [dbo].ITEM AS A
+			SELECT DISTINCT A.ID, B.Title, (SELECT Content FROM FIELD200S WHERE FieldCode = '250' AND ItemID = A.ID) AS [Version], E.DisplayEntry AS 'Publisher', F.[Year], G.DisplayEntry AS 'Author' FROM [dbo].ITEM AS A
 			INNER JOIN [dbo].[ITEM_TITLE] AS B ON A.ID = B.ItemID
 			INNER JOIN [dbo].[ITEM_AUTHOR] AS C ON A.ID = C.ItemID
 			INNER JOIN [dbo].[ITEM_PUBLISHER] AS D ON A.ID = D.ItemID
@@ -7660,7 +7660,7 @@ AS
 		END
 	ELSE IF @strOption = '3'
 		BEGIN
-			SELECT DISTINCT A.ID, B.Title, E.DisplayEntry AS 'Publisher', F.[Year], G.DisplayEntry AS 'Author' FROM [dbo].ITEM AS A
+			SELECT DISTINCT A.ID, B.Title, (SELECT Content FROM FIELD200S WHERE FieldCode = '250' AND ItemID = A.ID) AS [Version], E.DisplayEntry AS 'Publisher', F.[Year], G.DisplayEntry AS 'Author' FROM [dbo].ITEM AS A
 			INNER JOIN [dbo].[ITEM_TITLE] AS B ON A.ID = B.ItemID
 			INNER JOIN [dbo].[ITEM_AUTHOR] AS C ON A.ID = C.ItemID
 			INNER JOIN [dbo].[ITEM_PUBLISHER] AS D ON A.ID = D.ItemID
@@ -7672,7 +7672,7 @@ AS
 		END
 	ELSE IF @strOption = '4'
 		BEGIN
-			SELECT DISTINCT A.ID, B.Title, E.DisplayEntry AS 'Publisher', F.[Year], G.DisplayEntry AS 'Author' FROM [dbo].ITEM AS A
+			SELECT DISTINCT A.ID, B.Title, (SELECT Content FROM FIELD200S WHERE FieldCode = '250' AND ItemID = A.ID) AS [Version], E.DisplayEntry AS 'Publisher', F.[Year], G.DisplayEntry AS 'Author' FROM [dbo].ITEM AS A
 			INNER JOIN [dbo].[ITEM_TITLE] AS B ON A.ID = B.ItemID
 			INNER JOIN [dbo].[ITEM_AUTHOR] AS C ON A.ID = C.ItemID
 			INNER JOIN [dbo].[ITEM_PUBLISHER] AS D ON A.ID = D.ItemID
@@ -7686,7 +7686,7 @@ AS
 		END
 	ELSE IF @strOption = '5'
 		BEGIN
-			SELECT DISTINCT A.ID, B.Title, E.DisplayEntry AS 'Publisher', F.[Year], G.DisplayEntry AS 'Author' FROM [dbo].ITEM AS A
+			SELECT DISTINCT A.ID, B.Title, (SELECT Content FROM FIELD200S WHERE FieldCode = '250' AND ItemID = A.ID) AS [Version], E.DisplayEntry AS 'Publisher', F.[Year], G.DisplayEntry AS 'Author' FROM [dbo].ITEM AS A
 			INNER JOIN [dbo].[ITEM_TITLE] AS B ON A.ID = B.ItemID
 			INNER JOIN [dbo].[ITEM_AUTHOR] AS C ON A.ID = C.ItemID
 			INNER JOIN [dbo].[ITEM_PUBLISHER] AS D ON A.ID = D.ItemID
@@ -7700,7 +7700,7 @@ AS
 		END
 	ELSE IF @strOption = '6'
 		BEGIN
-			SELECT DISTINCT A.ID, B.Title, E.DisplayEntry AS 'Publisher', F.[Year], G.DisplayEntry AS 'Author' FROM [dbo].ITEM AS A
+			SELECT DISTINCT A.ID, B.Title, (SELECT Content FROM FIELD200S WHERE FieldCode = '250' AND ItemID = A.ID) AS [Version], E.DisplayEntry AS 'Publisher', F.[Year], G.DisplayEntry AS 'Author' FROM [dbo].ITEM AS A
 			INNER JOIN [dbo].[ITEM_TITLE] AS B ON A.ID = B.ItemID
 			INNER JOIN [dbo].[ITEM_AUTHOR] AS C ON A.ID = C.ItemID
 			INNER JOIN [dbo].[ITEM_PUBLISHER] AS D ON A.ID = D.ItemID
@@ -7714,7 +7714,7 @@ AS
 		END
 	ELSE IF @strOption = '7'
 		BEGIN
-			SELECT DISTINCT A.ID, B.Title, E.DisplayEntry AS 'Publisher', F.[Year], G.DisplayEntry AS 'Author' FROM [dbo].ITEM AS A
+			SELECT DISTINCT A.ID, B.Title, (SELECT Content FROM FIELD200S WHERE FieldCode = '250' AND ItemID = A.ID) AS [Version], E.DisplayEntry AS 'Publisher', F.[Year], G.DisplayEntry AS 'Author' FROM [dbo].ITEM AS A
 			INNER JOIN [dbo].[ITEM_TITLE] AS B ON A.ID = B.ItemID
 			INNER JOIN [dbo].[ITEM_AUTHOR] AS C ON A.ID = C.ItemID
 			INNER JOIN [dbo].[ITEM_PUBLISHER] AS D ON A.ID = D.ItemID
@@ -7726,7 +7726,6 @@ AS
 			ORDER BY B.Title
 		END
 GO
-
 
 -- purpose : Get ISBN
 -- Last Update: 03/10/2019
@@ -7790,15 +7789,27 @@ AS
 	WHERE A.KeyWordID = B.ID and B.DisplayEntry = @strKeyWord
 GO
 
--- purpose : Get information of book by keyword
--- Last Update: 03/10/2019
+-- purpose : Get itemID by DDC
+-- Last Update: 17/10/2019
 -- Creator: Thangnt
-CREATE PROCEDURE [dbo].[FPT_SP_GET_SEARCHED_INFO_BOOK_BY_KEYWORD]
+CREATE PROCEDURE [dbo].[FPT_SP_OPAC_GET_ITEMID_BY_DDC]
+( 
+	@strDDC NVARCHAR(100)
+)
+AS
+	SELECT ItemID FROM [dbo].[FIELD000S]
+	WHERE [dbo].[FIELD000S].Content LIKE @strDDC AND [dbo].[FIELD000S].FieldCode = '090'
+GO
+
+-- purpose : Get information of book by keyword
+-- Last Update: 17/10/2019
+-- Creator: Thangnt
+CREATE PROCEDURE [dbo].[FPT_SP_OPAC_GET_SEARCHED_INFO_BOOK_BY_KEYWORD]
 (
 	@intItemID INT
 )
 AS
-	SELECT DISTINCT A.ID, B.Title, E.DisplayEntry AS 'Publisher', F.[Year], G.DisplayEntry AS 'Author' FROM [dbo].ITEM AS A
+	SELECT DISTINCT A.ID, B.Title, (SELECT Content FROM FIELD200S WHERE FieldCode = '250' AND ItemID = A.ID) AS [Version], E.DisplayEntry AS 'Publisher', F.[Year], G.DisplayEntry AS 'Author' FROM [dbo].ITEM AS A
 	INNER JOIN [dbo].[ITEM_TITLE] AS B ON A.ID = B.ItemID
 	INNER JOIN [dbo].[ITEM_AUTHOR] AS C ON A.ID = C.ItemID
 	INNER JOIN [dbo].[ITEM_PUBLISHER] AS D ON A.ID = D.ItemID
@@ -7858,3 +7869,24 @@ SELECT * FROM (SELECT CODE + ':' + SYMBOL AS LOCNAME, B.ID AS ID, REPLACE(CAST(A
 	ORDER BY B.LibID, B.Symbol
 	END
 	END
+
+
+-- purpose : Get detail term
+-- Last Update: 16/10/2019
+-- Creator: Thangnt
+CREATE PROCEDURE [dbo].[FPT_SP_OPAC_GET_RELATED_TERMS]
+@intItemID INT
+AS
+    SELECT DISTINCT 'KeyWord' AS TermType, A.KeyWordID AS ID,B.DisplayEntry, '' AS AccessEntry FROM ITEM_KEYWORD A, CAT_DIC_KEYWORD B WHERE A.KeyWordID = B.ID AND A.ItemID = @intItemID
+	UNION ALL
+	SELECT DISTINCT 'DDC' AS TermType, A.DDCID AS ID, B.Content AS DisplayEntry, '' AS AccessEntry FROM ITEM_DDC A, FIELD000S B WHERE A.ItemID = B.ItemID AND B.FieldCode = '090' AND A.ItemID = @intItemID
+	UNION ALL
+	SELECT DISTINCT 'UDC' AS TermType, A.UDCID AS ID, B.DisplayEntry, '' AS AccessEntry FROM ITEM_UDC A, CAT_DIC_CLASS_UDC B WHERE A.UDCID = B.ID AND A.ItemID = @intItemID
+	UNION ALL
+	SELECT DISTINCT 'Author' AS TermType, A.AuthorID AS ID, B.DisplayEntry, B.AccessEntry  FROM ITEM_AUTHOR A, CAT_DIC_AUTHOR B WHERE  A.AuthorID = B.ID AND  A.ItemID = @intItemID
+	UNION ALL
+	SELECT DISTINCT 'BBK' AS TermType, A.BBKID AS ID, DisplayEntry, AccessEntry FROM ITEM_BBK A, CAT_DIC_CLASS_BBK B WHERE A.BBKID = B.ID AND A.ItemID =@intItemID
+	UNION ALL
+	SELECT DISTINCT 'NSC' AS TermType, A.NSCID AS ID, DisplayEntry, '' AS AccessEntry FROM ITEM_NSC A, CAT_DIC_CLASS_NSC B WHERE A.NSCID = B.ID AND A.ItemID = @intItemID
+	UNION ALL
+	SELECT DISTINCT 'SubjectHeading' AS TermType, A.SHID AS ID, DisplayEntry, '' AS AccessEntry FROM ITEM_SH A, CAT_DIC_SH B WHERE A.SHID = B.ID AND A.ItemID = @intItemID;

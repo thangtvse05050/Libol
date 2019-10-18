@@ -12,6 +12,7 @@ namespace OPAC.Controllers
     public class InformationPatronController : Controller
     {
         private OpacEntities dbContext = new OpacEntities();
+        private PatronDao dao = new PatronDao();
 
         public ActionResult PatronAfterLoginPage()
         {
@@ -43,6 +44,16 @@ namespace OPAC.Controllers
             }
 
             return View(listBookOnHolding);
+        }
+
+        [HttpPost]
+        public ActionResult UpdatePatron(string newPassword)
+        {
+            var userID = (int)Session["ID"];
+            dao.UpdatePassword(newPassword, userID);
+            TempData["success"] = "Đổi mật khẩu thành công!";
+
+            return RedirectToAction("PatronAfterLoginPage");
         }
     }
 }
