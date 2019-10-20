@@ -2607,6 +2607,7 @@
     <Content Include="Views\Acquisition\CloseInventory.cshtml" />
     <Content Include="Views\Acquisition\InventoryReport.cshtml" />
     <Content Include="Views\Acquisition\GetInventoryReport.cshtml" />
+    <Content Include="Views\Acquisition\RecordNotFound.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\Patron\SearchPatronFilter.cshtml" />

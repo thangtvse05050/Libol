@@ -10538,9 +10538,10 @@
       <ResultMapping>
         <ComplexTypeMapping TypeName="LibolModel.FPT_SPECIALIZED_REPORT_GET_GTTK_Result">
           <ScalarProperty Name="total" ColumnName="total" />
-          <ScalarProperty Name="ItemID" ColumnName="ItemID" />
         </ComplexTypeMapping>
       </ResultMapping>
     </FunctionImportMapping>
+    <FunctionImportMapping FunctionImportName="FPT_GET_DATE_SUGGEST_CHECKOUT1" FunctionName="LibolModel.Store.FPT_GET_DATE_SUGGEST_CHECKOUT" />
+    <FunctionImportMapping FunctionImportName="FPT_GET_DATE_SUGGEST_RENEW1" FunctionName="LibolModel.Store.FPT_GET_DATE_SUGGEST_RENEW" />
   </EntityContainerMapping>
 </Mapping>

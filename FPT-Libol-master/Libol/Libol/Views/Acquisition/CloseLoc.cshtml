@@ -89,7 +89,7 @@
                     <thead>
                         <tr>
                             <td>Kho</td>
-                            <td>Chon</td>
+                            <td><input type="checkbox" id="checkAl" onclick="checkAll()"></td>
                         </tr>
                     </thead>
                     <tbody>
@@ -122,6 +122,22 @@
         function callChangefunc(val) {
             window.location.href = "/Acquisition/CloseLoc?libID=" + val;
         }
+        function checkAll() {
+            var checkbox = document.getElementsByName('checkToClose');
+            var checkAl = document.getElementById('checkAl');
+
+            if (checkAl.checked == true) {
+                for (var i = 0; i < checkbox.length; i++) {
+                    checkbox[i].checked = true;
+
+                }
+            } else {
+                for (var i = 0; i < checkbox.length; i++) {
+                    checkbox[i].checked = false;
+
+                }
+            }
+        }
         function CloseLoca() {
             var libID = document.getElementById("Library").value;
             var checkbox = document.getElementsByName('checkToClose');
@@ -140,7 +156,7 @@
                 contentType: "application/json;charset=utf-8",
                 dataType: "json",
                 success: function () {
-                    alert('Bạn đã Update trạng thái thành công');
+                    alert('Bạn đã đóng kho thành công');
                     $('#table').DataTable().ajax.reload();
                 },
                 error: function () {

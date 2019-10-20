@@ -2923,7 +2923,7 @@ warning 6002: The table/view 'Libol.dbo.MARC_BIB_WS_DETAIL' does not have a prim
       </Dependent>
     </ReferentialConstraint>
   </Association>
-  <Association Name="FK__FPT_CATA___ItemI__4A149BFC">
+  <Association Name="FK__FPT_CATA___ItemI__22B0B618">
     <End Role="ITEM" Type="Self.ITEM" Multiplicity="1" />
     <End Role="FPT_CATA_FILE_NEW" Type="Self.FPT_CATA_FILE_NEW" Multiplicity="*" />
     <ReferentialConstraint>
@@ -2935,7 +2935,7 @@ warning 6002: The table/view 'Libol.dbo.MARC_BIB_WS_DETAIL' does not have a prim
       </Dependent>
     </ReferentialConstraint>
   </Association>
-  <Association Name="FK__FPT_SYS_U__Right__64097829">
+  <Association Name="FK__FPT_SYS_U__Right__453AD846">
     <End Role="FPT_SYS_USER_RIGHT" Type="Self.FPT_SYS_USER_RIGHT" Multiplicity="1" />
     <End Role="FPT_SYS_USER_RIGHT_DETAIL" Type="Self.FPT_SYS_USER_RIGHT_DETAIL" Multiplicity="*" />
     <ReferentialConstraint>
@@ -5699,6 +5699,12 @@ warning 6002: The table/view 'Libol.dbo.MARC_BIB_WS_DETAIL' does not have a prim
   <Function Name="FPT_EDU_SP_RENEW_ITEM_BY_ALL_ID" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
     <Parameter Name="strFixedID" Type="varchar" Mode="In" />
   </Function>
+  <Function Name="FPT_GET_DATE_SUGGEST_CHECKOUT" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="term" Type="nvarchar" Mode="In" />
+  </Function>
+  <Function Name="FPT_GET_DATE_SUGGEST_RENEW" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="term" Type="nvarchar" Mode="In" />
+  </Function>
   <Function Name="FPT_GET_LIQUIDBOOKS" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
     <Parameter Name="strLiquidCode" Type="varchar" Mode="In" />
     <Parameter Name="intLibraryID" Type="int" Mode="In" />
@@ -6031,6 +6037,7 @@ warning 6002: The table/view 'Libol.dbo.MARC_BIB_WS_DETAIL' does not have a prim
     <Parameter Name="intTopNum" Type="varchar" Mode="In" />
     <Parameter Name="intMinLoan" Type="varchar" Mode="In" />
     <Parameter Name="libid" Type="varchar" Mode="In" />
+    <Parameter Name="strLocationPrefix" Type="varchar" Mode="In" />
     <Parameter Name="locid" Type="varchar" Mode="In" />
   </Function>
   <Function Name="FPT_SP_STAT_PATRONGROUP" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
@@ -6061,8 +6068,18 @@ warning 6002: The table/view 'Libol.dbo.MARC_BIB_WS_DETAIL' does not have a prim
     <Parameter Name="strSubCode" Type="varchar" Mode="In" />
     <Parameter Name="intUserID" Type="int" Mode="In" />
   </Function>
+  <Function Name="FPT_SPECIALIZED_REPORT_GET_GTTK" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="itemid" Type="int" Mode="In" />
+    <Parameter Name="type" Type="int" Mode="In" />
+    <Parameter Name="intUserID" Type="int" Mode="In" />
+    <Parameter Name="intLibID" Type="int" Mode="In" />
+  </Function>
   <Function Name="FPT_SPECIALIZED_REPORT_GET_PUBLISHER" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
     <Parameter Name="intItemID" Type="int" Mode="In" />
+  </Function>
+  <Function Name="FPT_SPECIALIZED_REPORT_GET_YEAR_PUBLISHNUM" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="itemId" Type="int" Mode="In" />
+    <Parameter Name="type" Type="int" Mode="In" />
   </Function>
   <Function Name="FPT_SPECIALIZED_REPORT_TOTAL" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
     <Parameter Name="intLibID" Type="int" Mode="In" />
@@ -12466,11 +12483,11 @@ warning 6002: The table/view 'Libol.dbo.MARC_BIB_WS_DETAIL' does not have a prim
       <End Role="CAT_DIC_MEDIUM" EntitySet="CAT_DIC_MEDIUM" />
       <End Role="ITEM" EntitySet="ITEM" />
     </AssociationSet>
-    <AssociationSet Name="FK__FPT_CATA___ItemI__4A149BFC" Association="Self.FK__FPT_CATA___ItemI__4A149BFC">
+    <AssociationSet Name="FK__FPT_CATA___ItemI__22B0B618" Association="Self.FK__FPT_CATA___ItemI__22B0B618">
       <End Role="ITEM" EntitySet="ITEM" />
       <End Role="FPT_CATA_FILE_NEW" EntitySet="FPT_CATA_FILE_NEW" />
     </AssociationSet>
-    <AssociationSet Name="FK__FPT_SYS_U__Right__64097829" Association="Self.FK__FPT_SYS_U__Right__64097829">
+    <AssociationSet Name="FK__FPT_SYS_U__Right__453AD846" Association="Self.FK__FPT_SYS_U__Right__453AD846">
       <End Role="FPT_SYS_USER_RIGHT" EntitySet="FPT_SYS_USER_RIGHT" />
       <End Role="FPT_SYS_USER_RIGHT_DETAIL" EntitySet="FPT_SYS_USER_RIGHT_DETAIL" />
     </AssociationSet>
