@@ -7858,3 +7858,25 @@ AS
 	SET @strSql = @strSql + @strJoinSQL + ' WHERE ' +@strLikeSQL
 	SET @strSql = LEFT(@strSql,LEN(@strSql)-3) 
 EXEC(@strSQL)
+GO
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+/******/
+	ALTER PROC [dbo].[FPT_SP_ILL_SEARCH_PATRON] 
+-- Purpose: Search Patron update search khong dau
+@strPatronName NVARCHAR(50),  
+@strPatronCode VARCHAR(50)  
+AS  
+DECLARE @strSQL NVARCHAR(500)  
+	SET @strSQL='select*,dbo.ufn_removeMark(FullName) as FullNameSimple from(select Code,ValidDate,ExpiredDate,DOB,REPLACE((IsNull(FirstName,'''') + '' '' + IsNull(MiddleName +'' '' ,'''')  + IsNull(LastName,'''')),''  '','' '') AS FullName from CIR_PATRON '
+	
+	IF @strPatronCode <>'' 
+		SET @strSQL=@strSQL + ' AND Code LIKE ''' + @strPatronCode + ''''  
+	
+	SET @strSQL=@strSQL + ') A'
+	IF @strPatronName<>'' 
+		SET @strSQL=@strSQL + ' WHERE A.FullName  LIKE N''%' + @strPatronName + '%'' or dbo.ufn_removeMark(FullName) like dbo.ufn_removeMark(N''%' + @strPatronName + '%'')'
+
+EXECUTE(@strSQL)
