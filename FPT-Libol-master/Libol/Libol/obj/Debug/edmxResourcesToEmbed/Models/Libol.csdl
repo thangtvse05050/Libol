@@ -12885,7 +12885,6 @@
       <Parameter Name="intTopNum" Mode="In" Type="String" />
       <Parameter Name="intMinLoan" Mode="In" Type="String" />
       <Parameter Name="libid" Mode="In" Type="String" />
-      <Parameter Name="strLocationPrefix" Mode="In" Type="String" />
       <Parameter Name="locid" Mode="In" Type="String" />
     </FunctionImport>
     <FunctionImport Name="FPT_SP_STAT_PATRONGROUP">
@@ -12972,20 +12971,6 @@
     <FunctionImport Name="FPT_SPECIALIZED_REPORT_GET_GTTK" ReturnType="Collection(LibolModel.FPT_SPECIALIZED_REPORT_GET_GTTK_Result)">
       <Parameter Name="itemid" Mode="In" Type="Int32" />
       <Parameter Name="type" Mode="In" Type="Int32" />
-      <Parameter Name="intUserID" Mode="In" Type="Int32" />
-      <Parameter Name="intLibID" Mode="In" Type="Int32" />
-    </FunctionImport>
-    <FunctionImport Name="FPT_GET_DATE_SUGGEST_CHECKOUT" ReturnType="Collection(String)">
-      <Parameter Name="term" Mode="In" Type="String" />
-    </FunctionImport>
-    <FunctionImport Name="FPT_GET_DATE_SUGGEST_RENEW" ReturnType="Collection(String)">
-      <Parameter Name="term" Mode="In" Type="String" />
-    </FunctionImport>
-    <FunctionImport Name="FPT_GET_DATE_SUGGEST_CHECKOUT1" ReturnType="Collection(String)">
-      <Parameter Name="term" Mode="In" Type="String" />
-    </FunctionImport>
-    <FunctionImport Name="FPT_GET_DATE_SUGGEST_RENEW1" ReturnType="Collection(String)">
-      <Parameter Name="term" Mode="In" Type="String" />
     </FunctionImport>
   </EntityContainer>
   <ComplexType Name="CAT_DIC_LIST_SEL_Result">
@@ -18091,5 +18076,6 @@
   </ComplexType>
   <ComplexType Name="FPT_SPECIALIZED_REPORT_GET_GTTK_Result">
     <Property Type="Int32" Name="total" Nullable="true" />
+    <Property Type="Int32" Name="ItemID" Nullable="false" />
   </ComplexType>
 </Schema>

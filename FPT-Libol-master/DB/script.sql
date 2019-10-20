@@ -6342,27 +6342,10 @@ CREATE PROCEDURE [dbo].[FPT_SP_INVENTORY]
 	@intLibraryID int
 AS
 BEGIN	
-	IF @intLibraryID=81
-		BEGIN
-			SELECT REPLACE(REPLACE(REPLACE(REPLACE(F.Content,'$a',''),'$b',''),'$c',''),'$n','') AS Content, B.Code, A.CopyNumber, B.CallNumber, A.Price, '' as Note from HOLDING A 
-				INNER join ITEM B ON A.ITEMID = B.ID
-				INNER JOIN FIELD200S F ON A.ITEMID = F.ITEMID
-			WHERE F.FieldCode = '245' AND InUsed=0 AND (A.LIBID= 81 or (A.LibID=20 and A.LocationID in (13,15,16,27)))
-		END
-	ELSE IF @intLibraryID=20
-		BEGIN
-			SELECT REPLACE(REPLACE(REPLACE(REPLACE(F.Content,'$a',''),'$b',''),'$c',''),'$n','') AS Content, B.Code, A.CopyNumber, B.CallNumber, A.Price, '' as Note from HOLDING A 
-				INNER join ITEM B ON A.ITEMID = B.ID
-				INNER JOIN FIELD200S F ON A.ITEMID = F.ITEMID
-			WHERE F.FieldCode = '245' AND InUsed=0 AND (A.LIBID= 81 or (A.LibID=20 and A.LocationID in (13,15,16,27)))
-		END
-	ELSE
-		BEGIN
-			SELECT REPLACE(REPLACE(REPLACE(REPLACE(F.Content,'$a',''),'$b',''),'$c',''),'$n','') AS Content, B.Code, A.CopyNumber, B.CallNumber, A.Price, '' as Note from HOLDING A 
-				INNER join ITEM B ON A.ITEMID = B.ID
-				INNER JOIN FIELD200S F ON A.ITEMID = F.ITEMID
-			WHERE F.FieldCode = '245' AND InUsed=0 AND A.LIBID= @intLibraryID
-		END
+	SELECT REPLACE(REPLACE(REPLACE(REPLACE(F.Content,'$a',''),'$b',''),'$c',''),'$n','') AS Content, B.Code, A.CopyNumber, B.CallNumber, A.Price, '' as Note from HOLDING A
+INNER join ITEM B ON A.ITEMID = B.ID
+INNER JOIN FIELD200S F ON A.ITEMID = F.ITEMID
+WHERE F.FieldCode = '245' AND InUsed=0 AND A.LIBID= @intLibraryID
 END
 
 
@@ -6974,6 +6957,7 @@ BEGIN
 		END
 	END
 END
+
 -- ===================================
 GO
 /****** Object:  StoredProcedure [dbo].[FPT_SPECIALIZED_REPORT_TOTAL_ITEM]    Script Date: 09/16/2019 14:26:54 ******/
@@ -7000,27 +6984,27 @@ BEGIN
 			SELECT COUNT(DISTINCT ITEMID) AS TOTAL 
 			FROM HOLDING 
 			WHERE @strItemIDs like '%;'+cast(ITEMID as varchar(20))+';%' 
-			AND LocationID in (SELECT DISTINCT B.ID FROM HOLDING_LIBRARY A, HOLDING_LOCATION B, SYS_USER_LOCATION C 
+			AND LocationID in (SELECT B.ID FROM HOLDING_LIBRARY A, HOLDING_LOCATION B, SYS_USER_LOCATION C 
 										WHERE A.LocalLib = 1 AND A.ID = B.LibID AND B.ID = C.LocID AND C.UserID = @intUserID AND B.LibID = @intLibID
 										UNION SELECT ID FROM HOLDING_LOCATION	WHERE ID in (13,15,16,27)) 	
-			--AND HOLDING.COPYNUMBER LIKE '%GT%'
+			AND HOLDING.COPYNUMBER LIKE '%GT%'
 		END
 		ELSE IF @intLibID = 20
 		BEGIN
 			SELECT COUNT(DISTINCT ITEMID) AS TOTAL 
 			FROM HOLDING 
 			WHERE @strItemIDs like '%;'+cast(ITEMID as varchar(20))+';%' 
-			AND LocationID in (SELECT DISTINCT B.ID FROM HOLDING_LIBRARY A, HOLDING_LOCATION B, SYS_USER_LOCATION C 
+			AND LocationID in (SELECT B.ID FROM HOLDING_LIBRARY A, HOLDING_LOCATION B, SYS_USER_LOCATION C 
 										WHERE A.LocalLib = 1 AND A.ID = B.LibID AND B.ID = C.LocID AND C.UserID = @intUserID AND B.LibID = @intLibID
 										EXCEPT SELECT ID FROM HOLDING_LOCATION	WHERE ID in (13,15,16,27)) 	
-			--AND HOLDING.COPYNUMBER LIKE '%GT%'
+			AND HOLDING.COPYNUMBER LIKE '%GT%'
 		END
 		ELSE
 		BEGIN
 			SELECT COUNT(DISTINCT ITEMID) AS TOTAL 
 			FROM HOLDING 
 			WHERE @strItemIDs like '%;'+cast(ITEMID as varchar(20))+';%' AND LIBID = @intLibID		
-			--AND HOLDING.COPYNUMBER LIKE '%GT%'
+			AND HOLDING.COPYNUMBER LIKE '%GT%'
 		END
 	END
 	ELSE -- TK
@@ -7030,36 +7014,36 @@ BEGIN
 			SELECT COUNT(DISTINCT ITEMID) AS TOTAL 
 			FROM HOLDING 
 			WHERE @strItemIDs like '%;'+cast(ITEMID as varchar(20))+';%' 
-			AND LocationID in (SELECT DISTINCT B.ID FROM HOLDING_LIBRARY A, HOLDING_LOCATION B, SYS_USER_LOCATION C 
+			AND LocationID in (SELECT B.ID FROM HOLDING_LIBRARY A, HOLDING_LOCATION B, SYS_USER_LOCATION C 
 										WHERE A.LocalLib = 1 AND A.ID = B.LibID AND B.ID = C.LocID AND C.UserID = @intUserID AND B.LibID = @intLibID
 										UNION SELECT ID FROM HOLDING_LOCATION	WHERE ID in (13,15,16,27)) 	
-			--AND HOLDING.COPYNUMBER LIKE '%TK%'
-			/*AND ITEMID NOT IN (SELECT DISTINCT ITEMID FROM HOLDING WHERE COPYNUMBER LIKE '%GT%'
+			AND HOLDING.COPYNUMBER LIKE '%TK%'
+			AND ITEMID NOT IN (SELECT DISTINCT ITEMID FROM HOLDING WHERE COPYNUMBER LIKE '%GT%'
 								INTERSECT
-								SELECT DISTINCT ITEMID FROM HOLDING WHERE COPYNUMBER LIKE '%TK%')*/
+								SELECT DISTINCT ITEMID FROM HOLDING WHERE COPYNUMBER LIKE '%TK%')
 		END
 		ELSE IF @intLibID = 20
 		BEGIN
 			SELECT COUNT(DISTINCT ITEMID) AS TOTAL 
 			FROM HOLDING 
 			WHERE @strItemIDs like '%;'+cast(ITEMID as varchar(20))+';%' 
-			AND LocationID in (SELECT DISTINCT B.ID FROM HOLDING_LIBRARY A, HOLDING_LOCATION B, SYS_USER_LOCATION C 
+			AND LocationID in (SELECT B.ID FROM HOLDING_LIBRARY A, HOLDING_LOCATION B, SYS_USER_LOCATION C 
 										WHERE A.LocalLib = 1 AND A.ID = B.LibID AND B.ID = C.LocID AND C.UserID = @intUserID AND B.LibID = @intLibID
 										EXCEPT SELECT ID FROM HOLDING_LOCATION	WHERE ID in (13,15,16,27)) 	
-			--AND HOLDING.COPYNUMBER LIKE '%TK%'
-		/*AND ITEMID NOT IN (SELECT DISTINCT ITEMID FROM HOLDING WHERE COPYNUMBER LIKE '%GT%'
+			AND HOLDING.COPYNUMBER LIKE '%TK%'
+			AND ITEMID NOT IN (SELECT DISTINCT ITEMID FROM HOLDING WHERE COPYNUMBER LIKE '%GT%'
 								INTERSECT
-								SELECT DISTINCT ITEMID FROM HOLDING WHERE COPYNUMBER LIKE '%TK%')*/
+								SELECT DISTINCT ITEMID FROM HOLDING WHERE COPYNUMBER LIKE '%TK%')
 		END
 		ELSE
 		BEGIN
 			SELECT COUNT(DISTINCT ITEMID) AS TOTAL 
 			FROM HOLDING 
 			WHERE @strItemIDs like '%;'+cast(ITEMID as varchar(20))+';%' AND LIBID = @intLibID		
-			--AND HOLDING.COPYNUMBER LIKE '%TK%'
-			/*AND ITEMID NOT IN (SELECT DISTINCT ITEMID FROM HOLDING WHERE COPYNUMBER LIKE '%GT%'
+			AND HOLDING.COPYNUMBER LIKE '%TK%'
+			AND ITEMID NOT IN (SELECT DISTINCT ITEMID FROM HOLDING WHERE COPYNUMBER LIKE '%GT%'
 								INTERSECT
-								SELECT DISTINCT ITEMID FROM HOLDING WHERE COPYNUMBER LIKE '%TK%')*/
+								SELECT DISTINCT ITEMID FROM HOLDING WHERE COPYNUMBER LIKE '%TK%')
 		END
 	END
 END
@@ -7194,7 +7178,7 @@ BEGIN
     begin
     if @intLibID=81
     begin
-    select count(Holding.CopyNumber)as total from HOLDING where CopyNumber like '%GT%'  and ItemID=@itemid 
+    select count(Holding.CopyNumber)as total from HOLDING where LoanTypeID  in (13,22,23) and ItemID=@itemid 
     and LocationID in (SELECT B.ID FROM HOLDING_LIBRARY A, HOLDING_LOCATION B, SYS_USER_LOCATION C 
                                         WHERE A.LocalLib = 1 AND A.ID = B.LibID AND B.ID = C.LocID AND C.UserID = @intUserID AND B.LibID = @intLibID
                                         UNION SELECT ID FROM HOLDING_LOCATION	WHERE ID in (13,15,16,27))
@@ -7202,7 +7186,7 @@ BEGIN
     end
     else if @intLibID=20
     begin
-    select count(Holding.CopyNumber)as total,ItemID from HOLDING where CopyNumber like '%GT%' and ItemID=@itemid 
+    select count(Holding.CopyNumber)as total,ItemID from HOLDING where LoanTypeID  in (13,22,23) and ItemID=@itemid 
     and LocationID in (SELECT B.ID FROM HOLDING_LIBRARY A, HOLDING_LOCATION B, SYS_USER_LOCATION C 
                                         WHERE A.LocalLib = 1 AND A.ID = B.LibID AND B.ID = C.LocID AND C.UserID = @intUserID AND B.LibID = @intLibID
                                         UNION SELECT ID FROM HOLDING_LOCATION	WHERE ID in (13,15,16,27))
@@ -7210,14 +7194,14 @@ BEGIN
     end
     else
     begin
-    select count(Holding.CopyNumber)as total,ItemID from HOLDING where CopyNumber like '%GT%' and ItemID=@itemid group by ItemID
+    select count(Holding.CopyNumber)as total,ItemID from HOLDING where LoanTypeID  in (13,22,23) and ItemID=@itemid group by ItemID
     end
 end
 else if @type=1
 begin 
     if @intLibID=81
     begin
-    select count(Holding.CopyNumber)as total,ItemID from HOLDING where CopyNumber like '%TK%' and ItemID=@itemid 
+    select count(Holding.CopyNumber)as total,ItemID from HOLDING where LoanTypeID not in (13,22,23) and ItemID=@itemid 
     and LocationID in (SELECT B.ID FROM HOLDING_LIBRARY A, HOLDING_LOCATION B, SYS_USER_LOCATION C 
                                         WHERE A.LocalLib = 1 AND A.ID = B.LibID AND B.ID = C.LocID AND C.UserID = @intUserID AND B.LibID = @intLibID
                                         UNION SELECT ID FROM HOLDING_LOCATION	WHERE ID in (13,15,16,27))
@@ -7225,7 +7209,7 @@ begin
     end
     else if @intLibID=20
     begin
-    select count(Holding.CopyNumber)as total,ItemID from HOLDING where  CopyNumber like '%TK%' and ItemID=@itemid 
+    select count(Holding.CopyNumber)as total,ItemID from HOLDING where LoanTypeID  not in (13,22,23) and ItemID=@itemid 
     and LocationID in (SELECT B.ID FROM HOLDING_LIBRARY A, HOLDING_LOCATION B, SYS_USER_LOCATION C 
                                         WHERE A.LocalLib = 1 AND A.ID = B.LibID AND B.ID = C.LocID AND C.UserID = @intUserID AND B.LibID = @intLibID
                                         UNION SELECT ID FROM HOLDING_LOCATION	WHERE ID in (13,15,16,27))
@@ -7233,7 +7217,7 @@ begin
     end
     else
     begin
-    select count(Holding.CopyNumber)as total,ItemID from HOLDING where CopyNumber like '%TK%' and ItemID=@itemid group by ItemID
+    select count(Holding.CopyNumber)as total,ItemID from HOLDING where LoanTypeID  not in (13,22,23) and ItemID=@itemid group by ItemID
     end
 end
 END
@@ -7252,7 +7236,7 @@ AS
 BEGIN 
 	IF @intLibID = 81
 	BEGIN
-		SELECT DISTINCT S.ItemID, S.Content AS SUBJECTCODE, F2.Content AS ITEMNAME, I.Code AS ITEMCODE, '' AS ISBN,''AS [YEAR],''AS PUBLISHNUM,'' AS GTNUMBER,'' AS TKNUMBER, '' AS AUTHOR, '' AS PUBLISHER, H.Total AS TOTAL
+		SELECT S.ItemID, S.Content AS SUBJECTCODE, F2.Content AS ITEMNAME, I.Code AS ITEMCODE, '' AS ISBN,''AS [YEAR],''AS PUBLISHNUM,'' AS GTNUMBER,'' AS TKNUMBER, F1.Content AS AUTHOR, '' AS PUBLISHER, H.Total AS TOTAL
 		FROM (SELECT DISTINCT ItemID, Content FROM FIELD600S WHERE FieldCode like '650' and @strSubCode like '%;'+cast(Content AS VARCHAR(20))+';%') S,
 			ITEM I, FIELD200S F2, FIELD100S F1, 
 			(SELECT count(Holding.ItemID) AS Total, Holding.ItemID FROM Holding, Item WHERE Holding.ItemID = Item.ID 
@@ -7260,13 +7244,13 @@ BEGIN
 										WHERE A.LocalLib = 1 AND A.ID = B.LibID AND B.ID = C.LocID AND C.UserID = @intUserID AND B.LibID = @intLibID
 										UNION SELECT ID FROM HOLDING_LOCATION	WHERE ID in (13,15,16,27)) 
 			GROUP BY Holding.ItemID) H
-		WHERE S.ItemID = I.ID and S.ItemID = F2.ItemID  and S.ItemID = H.ItemID
-			and F2.FieldCode = '245' 
+		WHERE S.ItemID = I.ID and S.ItemID = F2.ItemID and S.ItemID = F1.ItemID and S.ItemID = H.ItemID
+			and F2.FieldCode = '245' and F1.FieldCode = '100'
 		ORDER BY S.Content ASC
 	END
 	ELSE IF @intLibID = 20
 	BEGIN
-		SELECT DISTINCT S.ItemID, S.Content AS SUBJECTCODE, F2.Content AS ITEMNAME, I.Code AS ITEMCODE, '' AS ISBN,''AS [YEAR],''AS PUBLISHNUM,'' AS GTNUMBER,'' AS TKNUMBER, '' AS AUTHOR, '' AS PUBLISHER, H.Total AS TOTAL
+		SELECT S.ItemID, S.Content AS SUBJECTCODE, F2.Content AS ITEMNAME, I.Code AS ITEMCODE, '' AS ISBN,''AS [YEAR],''AS PUBLISHNUM,'' AS GTNUMBER,'' AS TKNUMBER, F1.Content AS AUTHOR, '' AS PUBLISHER, H.Total AS TOTAL
 		FROM (SELECT DISTINCT ItemID, Content FROM FIELD600S WHERE FieldCode like '650' and @strSubCode like '%;'+cast(Content AS VARCHAR(20))+';%') S,
 			ITEM I, FIELD200S F2, FIELD100S F1, 
 			(SELECT count(Holding.ItemID) AS Total, Holding.ItemID FROM Holding, Item WHERE Holding.ItemID = Item.ID 
@@ -7274,13 +7258,13 @@ BEGIN
 										WHERE A.LocalLib = 1 AND A.ID = B.LibID AND B.ID = C.LocID AND C.UserID = @intUserID AND B.LibID = @intLibID
 										EXCEPT SELECT ID FROM HOLDING_LOCATION	WHERE ID in (13,15,16,27)) 
 			GROUP BY Holding.ItemID) H
-		WHERE S.ItemID = I.ID and S.ItemID = F2.ItemID  and S.ItemID = H.ItemID
-			and F2.FieldCode = '245' 
+		WHERE S.ItemID = I.ID and S.ItemID = F2.ItemID and S.ItemID = F1.ItemID and S.ItemID = H.ItemID
+			and F2.FieldCode = '245' and F1.FieldCode = '100'
 		ORDER BY S.Content ASC
 	END
 	ELSE
 	BEGIN
-		SELECT DISTINCT S.ItemID, S.Content AS SUBJECTCODE, F2.Content AS ITEMNAME, I.Code AS ITEMCODE, '' AS ISBN,''AS [YEAR],''AS PUBLISHNUM,'' AS GTNUMBER,'' AS TKNUMBER, '' AS AUTHOR, '' AS PUBLISHER, H.Total AS TOTAL
+		SELECT S.ItemID, S.Content AS SUBJECTCODE, F2.Content AS ITEMNAME, I.Code AS ITEMCODE, '' AS ISBN,''AS [YEAR],''AS PUBLISHNUM,'' AS GTNUMBER,'' AS TKNUMBER, F1.Content AS AUTHOR, '' AS PUBLISHER, H.Total AS TOTAL
 		FROM (SELECT DISTINCT ItemID, Content FROM FIELD600S WHERE FieldCode like '650' and @strSubCode like '%;'+cast(Content AS VARCHAR(20))+';%') S,
 			ITEM I, FIELD200S F2, FIELD100S F1, 
 			(SELECT count(Holding.ItemID) AS Total, Holding.ItemID FROM Holding, Item WHERE Holding.ItemID = Item.ID 
@@ -7288,7 +7272,7 @@ BEGIN
 										WHERE A.LocalLib = 1 AND A.ID = B.LibID AND B.ID = C.LocID AND C.UserID = @intUserID AND B.LibID = @intLibID) 
 			GROUP BY Holding.ItemID) H
 		WHERE S.ItemID = I.ID and S.ItemID = F2.ItemID and S.ItemID = F1.ItemID and S.ItemID = H.ItemID
-			and F2.FieldCode = '245' 
+			and F2.FieldCode = '245' and F1.FieldCode = '100'
 		ORDER BY S.Content ASC
 	END	
 END

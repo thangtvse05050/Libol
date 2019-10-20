@@ -64,7 +64,6 @@
         </div>
     </div>
     <div id="ContentStatLiquidation"></div>
-    <div id="check"></div>
 </body>
 <script>
     document.getElementById("stat").onclick = function () {
@@ -90,31 +89,13 @@
                     $("#ContentStatLiquidation").html("<h4>Loading...</h4>");
                 },
                 success: function (result) {
-                 
                     $("#ContentStatLiquidation").html(result)
                 },
                 error: function (errormessage) {
                     console.log("error");
                 }
             });
-
-            $.ajax({
-                url: "RecordNotFound",
-                data: JSON.stringify(empObj),
-                contentType: "application/json;charset=utf-8",
-                type: "POST",
-                beforeSend: function () {
-                    $("#check").html("<h4>Loading...</h4>");
-                },
-                success: function (result) {
-                    $("#check").html(result)
-                },
-                error: function (errormessage) {
-                    console.log("error");
-                }
-            });
         }
-
     };
     $(window).bind("pageshow", function () {
         $("#Library").val('');
