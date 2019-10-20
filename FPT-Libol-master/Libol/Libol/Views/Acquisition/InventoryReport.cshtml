@@ -16,7 +16,8 @@
         label {
             text-align: right;
         }
-        .bold{
+
+        .bold {
             font-weight: bold;
         }
     </style>
@@ -64,6 +65,7 @@
         </div>
     </div>
     <div id="ContentStatLiquidation"></div>
+    <div id="check"></div>
 </body>
 <script>
     document.getElementById("stat").onclick = function () {
@@ -72,7 +74,7 @@
             strLibID: document.getElementById("Library").value,
             strDKCBID: document.getElementById("DKCBID").value,
         };
-        if (document.getElementById("DKCBID").value == "" ) {
+        if (document.getElementById("DKCBID").value == "") {
             alert("Đăng ký cá biệt không được để trống");
 
 
@@ -89,13 +91,31 @@
                     $("#ContentStatLiquidation").html("<h4>Loading...</h4>");
                 },
                 success: function (result) {
+
                     $("#ContentStatLiquidation").html(result)
                 },
                 error: function (errormessage) {
                     console.log("error");
                 }
             });
+
+            $.ajax({
+                url: "RecordNotFound",
+                data: JSON.stringify(empObj),
+                contentType: "application/json;charset=utf-8",
+                type: "POST",
+                beforeSend: function () {
+                    //$("#check").html("<h4>Loading...</h4>");
+                },
+                success: function (result) {
+                    $("#check").html(result)
+                },
+                error: function (errormessage) {
+                    console.log("error");
+                }
+            });
         }
+
     };
     $(window).bind("pageshow", function () {
         $("#Library").val('');
