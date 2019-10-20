@@ -28,11 +28,18 @@
             </div>
             <div class="form-group row col-12">
                 <label class="control-label col-md-8 align-self-center">Kho</label>
-                @Html.DropDownList("Location", new SelectList(string.Empty, "Value", "Text"), "Hãy chọn Kho", new { @class = "form-control col-md-4" })
+                @Html.DropDownList("LocationPrefix", new SelectList(string.Empty, "Value", "Text"), "Chọn Kho", new { @class = "form-control col-md-4" })
             </div>
 
         </div>
+        <div class="col-6">
+            <div class="form-group row col-12">
+                <label class="control-label col-md-3 align-self-center">Lĩnh vực kho</label>
+                @Html.DropDownList("LocationsByPrefix", new SelectList(string.Empty, "Value", "Text"), "Chọn lĩnh vực", new { @class = "form-control col-md-4", @multiple = true })
+            </div>
+        </div>
     </div>
+
     <div class="row">
         <div class="col-6">
             <div class="form-group row col-12">
@@ -42,7 +49,7 @@
         </div>
         <div class="col-6 text-left">
             <div class="form-group row col-12">
-                <label class="control-label col-md-1 align-self-center">Đến</label>
+                <label class="control-label col-md-3 align-self-center">Đến</label>
                 <input class="form-control col-md-4" type="date" id="ToDate" name="ToDate" />
             </div>
         </div>
@@ -61,21 +68,39 @@
 <script type="text/javascript">
         $(document).ready(function () {
             $("#Library").change(function () {
-                $("#Location").empty();
-                $.ajax({
-                    type: 'POST',
-                    url: '@Url.Action("GetLocations")', // we are calling json method
-                    dataType: 'json',
-                    data: { id: $("#Library").val() },
-                    success: function (locs) {
-                        $.each(locs, function (i, loc) {
-                            $("#Location").append('<option value="' + loc.Value + '">' +
-                                loc.Text + '</option>');
-                        });
-                    }
-                });
-                return false;
+            $("#LocationPrefix").empty();
+            $("#LocationsByPrefix").empty();
+            $.ajax({
+                type: 'POST',
+                url: '@Url.Action("GetLocationsPrefix")', // we are calling json method
+                dataType: 'json',
+                data: { id: $("#Library").val() },
+                success: function (locs) {
+                    $.each(locs, function (i, loc) {
+                        $("#LocationPrefix").append('<option value="' + loc.Value + '">' +
+                            loc.Text + '</option>');
+                    });
+                }
             });
+            return false;
+        });
+        $("#LocationPrefix").change(function () {
+            $("#LocationsByPrefix").empty();
+            $.ajax({
+                type: 'POST',
+                url: '@Url.Action("GetLocationsByPrefix")', // we are calling json method
+                dataType: 'json',
+                data: { id: $("#Library").val(), prefix: $("#LocationPrefix").val() },
+                success: function (locs) {
+                    $.each(locs, function (i, loc) {
+                        $("#LocationsByPrefix").append('<option value="' + loc.Value + '">' +
+                            loc.Text + '</option>');
+                    });
+                }
+            });
+            return false;
+            });
+
         });
 </script>
 <script>
@@ -83,9 +108,10 @@
         var empObj = {
             strLiquidID: document.getElementById("LiquidID").value,
             strLibID: document.getElementById("Library").value,
-            strLocID: document.getElementById("Location").value,
+            strLocPrefix: document.getElementById("LocationPrefix").value,
+            strLocID: $("#LocationsByPrefix").val().toString(),
             strFromDate: document.getElementById("FromDate").value,
-            strToDate: document.getElementById("ToDate").value,
+            strToDate: document.getElementById("ToDate").value
         };
         if (document.getElementById("FromDate").value != "" && document.getElementById("ToDate").value != "" && document.getElementById("FromDate").value > document.getElementById("ToDate").value) {
             alert("Khoảng thời gian báo cáo không hợp lệ");
@@ -113,8 +139,8 @@
     });
     function reset() {
         $("#Library").val('');
-        $("#Location").empty();
-        $("#FromDate").val('');
+        $("#LocationPrefix").val(''),
+            $("#FromDate").val('');
         $("#ToDate").val('');
         $("#LiquidID").val('');
     }

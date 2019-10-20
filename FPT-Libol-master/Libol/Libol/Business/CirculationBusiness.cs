@@ -39,10 +39,10 @@ namespace Libol.Models
                 new object[] { LibraryID, strLocPrefix, LocationID, Type, Status, FromYear, ToYear, UserID }).ToList();
             return list;
         }
-        public List<FPT_CIR_MONTH_STATISTIC_Result> GET_FPT_CIR_MONTH_STATISTIC_LIST(int LibraryID, int LocationID, int Type, int Status, string InYear, int UserID)
+        public List<FPT_CIR_MONTH_STATISTIC_Result> GET_FPT_CIR_MONTH_STATISTIC_LIST(int LibraryID, string LocPrefix, string LocationID, int Type, int Status, string fromDate, string toDate, int UserID)
         {
-            List<FPT_CIR_MONTH_STATISTIC_Result> list = db.Database.SqlQuery<FPT_CIR_MONTH_STATISTIC_Result>("FPT_CIR_MONTH_STATISTIC {0}, {1}, {2}, {3}, {4}, {5}",
-                new object[] { LibraryID, LocationID, Type, Status, InYear, UserID }).ToList();
+            List<FPT_CIR_MONTH_STATISTIC_Result> list = db.Database.SqlQuery<FPT_CIR_MONTH_STATISTIC_Result>("FPT_CIR_MONTH_STATISTIC {0}, {1}, {2}, {3}, {4}, {5}, {6}, {7}",
+                new object[] { LibraryID, LocPrefix, LocationID, Type, Status, fromDate, toDate, UserID }).ToList();
             return list;
         }
         public List<SP_GET_LOCKEDPATRONS_Result> GET_SP_GET_LOCKEDPATRONS_LIST(string PatronCode, string Note, string LockDateFrom, string LockDateTo, int CollegeID)

@@ -21612,15 +21612,19 @@ namespace Libol.Models
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<string>("FPT_CIR_GET_LOCLIBUSER_PREFIX_SEL", intUserIDParameter, intLibIDParameter);
         }
     
-        public virtual int FPT_CIR_MONTH_STATISTIC(Nullable<int> intLibraryID, Nullable<int> intLocationID, Nullable<int> intType, Nullable<int> intStatus, string strInYear, Nullable<int> intUserID)
+        public virtual int FPT_CIR_MONTH_STATISTIC(Nullable<int> intLibraryID, string strLocPrefix, string strLocationID, Nullable<int> intType, Nullable<int> intStatus, string strFromDate, string strToDate, Nullable<int> intUserID)
         {
             var intLibraryIDParameter = intLibraryID.HasValue ?
                 new ObjectParameter("intLibraryID", intLibraryID) :
                 new ObjectParameter("intLibraryID", typeof(int));
     
-            var intLocationIDParameter = intLocationID.HasValue ?
-                new ObjectParameter("intLocationID", intLocationID) :
-                new ObjectParameter("intLocationID", typeof(int));
+            var strLocPrefixParameter = strLocPrefix != null ?
+                new ObjectParameter("strLocPrefix", strLocPrefix) :
+                new ObjectParameter("strLocPrefix", typeof(string));
+    
+            var strLocationIDParameter = strLocationID != null ?
+                new ObjectParameter("strLocationID", strLocationID) :
+                new ObjectParameter("strLocationID", typeof(string));
     
             var intTypeParameter = intType.HasValue ?
                 new ObjectParameter("intType", intType) :
@@ -21630,15 +21634,19 @@ namespace Libol.Models
                 new ObjectParameter("intStatus", intStatus) :
                 new ObjectParameter("intStatus", typeof(int));
     
-            var strInYearParameter = strInYear != null ?
-                new ObjectParameter("strInYear", strInYear) :
-                new ObjectParameter("strInYear", typeof(string));
+            var strFromDateParameter = strFromDate != null ?
+                new ObjectParameter("strFromDate", strFromDate) :
+                new ObjectParameter("strFromDate", typeof(string));
+    
+            var strToDateParameter = strToDate != null ?
+                new ObjectParameter("strToDate", strToDate) :
+                new ObjectParameter("strToDate", typeof(string));
     
             var intUserIDParameter = intUserID.HasValue ?
                 new ObjectParameter("intUserID", intUserID) :
                 new ObjectParameter("intUserID", typeof(int));
     
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("FPT_CIR_MONTH_STATISTIC", intLibraryIDParameter, intLocationIDParameter, intTypeParameter, intStatusParameter, strInYearParameter, intUserIDParameter);
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("FPT_CIR_MONTH_STATISTIC", intLibraryIDParameter, strLocPrefixParameter, strLocationIDParameter, intTypeParameter, intStatusParameter, strFromDateParameter, strToDateParameter, intUserIDParameter);
         }
     
         public virtual int FPT_CIR_YEAR_STATISTIC(Nullable<int> intLibraryID, string strLocationPrefix, string strLocationID, Nullable<int> intType, Nullable<int> intStatus, string strFromYear, string strToYear, Nullable<int> intUserID)
@@ -21678,7 +21686,7 @@ namespace Libol.Models
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("FPT_CIR_YEAR_STATISTIC", intLibraryIDParameter, strLocationPrefixParameter, strLocationIDParameter, intTypeParameter, intStatusParameter, strFromYearParameter, strToYearParameter, intUserIDParameter);
         }
     
-        public virtual int FPT_GET_LIQUIDBOOKS(string strLiquidCode, Nullable<int> intLibraryID, Nullable<int> intLocationID, string strDateFrom, string strDateTo, Nullable<int> intUserID)
+        public virtual int FPT_GET_LIQUIDBOOKS(string strLiquidCode, Nullable<int> intLibraryID, string strLocPrefix, string strLocationID, string strDateFrom, string strDateTo, Nullable<int> intUserID)
         {
             var strLiquidCodeParameter = strLiquidCode != null ?
                 new ObjectParameter("strLiquidCode", strLiquidCode) :
@@ -21688,9 +21696,13 @@ namespace Libol.Models
                 new ObjectParameter("intLibraryID", intLibraryID) :
                 new ObjectParameter("intLibraryID", typeof(int));
     
-            var intLocationIDParameter = intLocationID.HasValue ?
-                new ObjectParameter("intLocationID", intLocationID) :
-                new ObjectParameter("intLocationID", typeof(int));
+            var strLocPrefixParameter = strLocPrefix != null ?
+                new ObjectParameter("strLocPrefix", strLocPrefix) :
+                new ObjectParameter("strLocPrefix", typeof(string));
+    
+            var strLocationIDParameter = strLocationID != null ?
+                new ObjectParameter("strLocationID", strLocationID) :
+                new ObjectParameter("strLocationID", typeof(string));
     
             var strDateFromParameter = strDateFrom != null ?
                 new ObjectParameter("strDateFrom", strDateFrom) :
@@ -21704,7 +21716,7 @@ namespace Libol.Models
                 new ObjectParameter("intUserID", intUserID) :
                 new ObjectParameter("intUserID", typeof(int));
     
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("FPT_GET_LIQUIDBOOKS", strLiquidCodeParameter, intLibraryIDParameter, intLocationIDParameter, strDateFromParameter, strDateToParameter, intUserIDParameter);
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("FPT_GET_LIQUIDBOOKS", strLiquidCodeParameter, intLibraryIDParameter, strLocPrefixParameter, strLocationIDParameter, strDateFromParameter, strDateToParameter, intUserIDParameter);
         }
     
         public virtual ObjectResult<FPT_GET_LOCFULLNAME_LIBUSER_SEL_Result> FPT_GET_LOCFULLNAME_LIBUSER_SEL(Nullable<int> intUserID, Nullable<int> intLibID, string strLocPrefix)

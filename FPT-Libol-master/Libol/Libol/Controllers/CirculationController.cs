@@ -775,13 +775,13 @@ namespace Libol.Controllers
             return PartialView("GetYearStats");
         }
         [HttpPost]
-        public PartialViewResult GetMonthStats(string strLibID, string strLocID, string strInYear, string strType)
+        public PartialViewResult GetMonthStats(string strLibID, string strLocPrefix, string strLocID, string strDateFrom, string strDateTo, string strType)
         {
             int LibID = 0;
-            int LocID = 0;
+            //int LocID = 0;
             int Type = 0;
             if (!string.IsNullOrEmpty(strLibID)) LibID = Convert.ToInt32(strLibID);
-            if (!string.IsNullOrEmpty(strLocID)) LocID = Convert.ToInt32(strLocID);
+            //if (!string.IsNullOrEmpty(strLocID)) LocID = Convert.ToInt32(strLocID);
             if (!string.IsNullOrEmpty(strType)) Type = Convert.ToInt32(strType);
             if (Type == 3)
             {
@@ -795,8 +795,8 @@ namespace Libol.Controllers
             {
                 ViewBag.TypeName = "đầu ấn phẩm";
             }
-            ViewBag.UsedResult = cb.GET_FPT_CIR_MONTH_STATISTIC_LIST(LibID, LocID, Type, 0, strInYear, (int)Session["UserID"]);
-            ViewBag.UsingResult = cb.GET_FPT_CIR_MONTH_STATISTIC_LIST(LibID, LocID, Type, 1, strInYear, (int)Session["UserID"]);
+            ViewBag.UsedResult = cb.GET_FPT_CIR_MONTH_STATISTIC_LIST(LibID, strLocPrefix, strLocID, Type, 0, strDateFrom, strDateTo, (int)Session["UserID"]);
+            ViewBag.UsingResult = cb.GET_FPT_CIR_MONTH_STATISTIC_LIST(LibID, strLocPrefix, strLocID, Type, 1, strDateFrom, strDateTo, (int)Session["UserID"]);
             return PartialView("GetMonthStats");
         }
         [AuthAttribute(ModuleID = 3, RightID = "23")]

@@ -13,7 +13,8 @@
                     "data": function (d) {
                         d.strLiquidID = document.getElementById("LiquidID").value,
                             d.strLibID = document.getElementById("Library").value,
-                            d.strLocID = document.getElementById("Location").value,
+                            d.strLocPrefix = document.getElementById("LocationPrefix").value,
+                            d.strLocID = $("#LocationsByPrefix").val().toString(),
                             d.strFromDate = document.getElementById("FromDate").value,
                             d.strToDate = document.getElementById("ToDate").value
                     }
