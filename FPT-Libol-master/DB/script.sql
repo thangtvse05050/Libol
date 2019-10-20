@@ -412,64 +412,7 @@ AS
 
 
 	go
-/******/
-Create PROCEDURE [dbo].[FPT_CIR_MONTH_STATISTIC] 
-@intLibraryID int,
-@intLocationID int,
-@intType int,
-@intStatus int,
-@strInYear varchar(4),
-@intUserID int
-AS
-	DECLARE @strSQL varchar(1000)
-	DECLARE @strJoinSQL varchar(1000)
-	DECLARE @strLikeSql varchar(1000)	
-	
-	SET @strLikeSql = '1 =1 AND '
-	SET @strJoinSQL = ''
-	
-	IF @intType = 1 -- Stat by ItemID
-		SET @strSQL = 'SELECT TotalLoan = Count (distinct ITEMID)'
-	
-	IF @intType = 2 -- Stat by ID (CopyNumber)
-		SET @strSQL = 'SELECT TotalLoan = Count (ID)'
-		
-	IF @intType = 3 -- Stat by PatronID
-		SET @strSQL = 'SELECT TotalLoan = Count (distinct PATRONID)'
-			
-	SET @strSQL = @strSQL + ', MONTH = DATEPART(month, CheckOutDate) '	
-		
-	IF @intStatus = 0 -- Used
-		SET @strJoinSQL = ' FROM CIR_LOAN_HISTORY'
-	ELSE -- Using
-		SET @strJoinSQL = ' FROM CIR_LOAN'
-		
-	IF NOT @intLibraryID = 0
-		BEGIN		
-			IF NOT @intLocationID = 0
-				SET @strLikeSQL = @strLikeSQL + 'LocationID = '+ CAST(@intLocationID AS VARCHAR(10)) +' AND '
-			ELSE
-				SET @strLikeSQL = @strLikeSQL + 'LocationID IN ( SELECT B.ID AS ID 	FROM HOLDING_LIBRARY A, HOLDING_LOCATION B, SYS_USER_CIR_LOCATION C WHERE A.LocalLib = 1 AND A.ID ='+ CAST(@intLibraryID AS CHAR(20)) +' AND A.ID = B.LibID AND B.ID = C.LocationID AND C.UserID =' + CAST(@intUserID AS CHAR(20)) + ') AND '		
-		END
-	ELSE 
-		BEGIN
-			SET @strLikeSQL = @strLikeSQL + 'LocationID IN ( SELECT B.ID AS ID 	FROM HOLDING_LIBRARY A, HOLDING_LOCATION B, SYS_USER_CIR_LOCATION C WHERE A.LocalLib = 1 AND A.ID = B.LibID AND B.ID = C.LocationID AND C.UserID =' + CAST(@intUserID AS CHAR(20)) + ' ) AND '
-		END
-	
-	IF NOT @strInYear = ''
-		BEGIN
-			SET @strLikeSQL = @strLikeSQL + 'DATEPART(year, CheckOutDate) = '+@strInYear+' AND '	
-		END
-		
-		
-	SET @strSQL = @strSQL + @strJoinSQL + ' WHERE ' +@strLikeSQL 
-	SET @strSQL = LEFT(@strSQL,LEN(@strSQL)-3) 
-	SET @strSQL = @strSQL + ' GROUP BY DATEPART(Month, CheckOutDate) ORDER BY MONTH ASC'
-	--process here
-EXEC(@strSQL)
 
-
-go
 /******/
 Create PROCEDURE [dbo].[FPT_CIR_YEAR_STATISTIC] 
 @intLibraryID int,
@@ -533,68 +476,7 @@ EXEC(@strSQL)
 
 
 go
-/******/
-Create PROCEDURE [dbo].[FPT_GET_LIQUIDBOOKS]
-	@strLiquidCode VARCHAR(500),
-	@intLibraryID int,
-	@intLocationID int,
-	@strDateFrom varchar(30),
-	@strDateTo varchar(30),
-	@intUserID int
-AS
 
-	DECLARE @strSQL VARCHAR(8000)
-	DECLARE @strJoinSQL varchar(1000)
-	DECLARE @strLikeSql varchar(1000)
-	SET @strSQL = 'SELECT HRR.Reason,
-	REPLACE(REPLACE(REPLACE(REPLACE(F.Content,''$a'',''''),''$b'','' ''),''$c'','' ''),''$n'','' '') as Content,
-	HR.AcquiredSourceID,HR.CallNumber,HR.CopyNumber,
-	HR.ID,HR.ItemID,HR.LibID,HR.LiquidCode,
-	HR.LoanTypeID,HR.LocationID,HR.PoID,HR.Price,HR.Shelf,HR.UseCount,HR.Volume,
-	HR.AcquiredDate,HR.RemovedDate,HR.DateLastUsed,
-	Code AS LibName, Symbol AS LocName '
-	
-	SET @strLikeSql = '1 =1 AND '
-	SET @strJoinSQL = ''
-	
-	SET @strJoinSQL = @strJoinSQL + ' FROM HOLDING_REMOVED HR LEFT JOIN FIELD200S F ON HR.ItemID = F.ItemID AND F.FieldCode=''245'' '
-	SET @strJoinSQL = @strJoinSQL + ' LEFT JOIN HOLDING_REMOVE_REASON HRR ON HR.Reason=HRR.ID '
-	SET @strJoinSQL = @strJoinSQL + ' LEFT JOIN HOLDING_LIBRARY HL ON HR.LibID = HL.ID '
-	SET @strJoinSQL = @strJoinSQL + ' LEFT JOIN HOLDING_LOCATION HLC ON HR.LocationID = HLC.ID '
-		
-	IF NOT @strLiquidCode=''
-		BEGIN
-			SET @strLikeSql=@strLikeSql+' LiquidCode='''+@strLiquidCode+''' AND '
-		END
-	IF NOT @intLibraryID = 0
-		BEGIN
-			SET @strLikeSql = @strLikeSql + 'HR.LibID = ' + CAST(@intLibraryID AS VARCHAR(10)) +' AND '
-			IF NOT @intLocationID = 0
-				BEGIN
-					SET @strLikeSql = @strLikeSql + 'HR.LocationID = ' + CAST(@intLocationID AS VARCHAR(10)) +' AND '
-				END
-			ELSE 
-				BEGIN
-					SET @strLikeSql = @strLikeSql + 'HR.LocationID IN (SELECT B.ID AS ID FROM HOLDING_LIBRARY A, HOLDING_LOCATION B, SYS_USER_CIR_LOCATION C WHERE A.LocalLib = 1 AND A.ID ='+ CAST(@intLibraryID AS CHAR(20)) +' AND A.ID = B.LibID AND B.ID = C.LocationID AND C.UserID =' + CAST(@intUserID AS CHAR(20)) + ' ) AND '
-				END
-		END
-	IF NOT @strDateFrom=''
-		BEGIN
-			SET @strLikeSQL = @strLikeSQL + 'HR.RemovedDate >= ''' + @strDateFrom +''' AND '	
-		END
-	IF NOT @strDateTo=''
-		BEGIN
-			SET @strLikeSQL = @strLikeSQL + 'HR.RemovedDate <= ''' + @strDateTo +''' AND '	
-		END
-	
-	
-	SET @strSql = @strSql + @strJoinSQL + ' WHERE ' +@strLikeSQL
-	SET @strSql = LEFT(@strSql,LEN(@strSql)-3) 
-EXEC(@strSQL)
-PRINT(@strSQL)
-
-
-go
 /******/
 Create PROCEDURE [dbo].[FPT_GET_LOCFULLNAME_LIBUSER_SEL](@intUserID int,@intLibID int, @strLocPrefix nvarchar(3))
 AS
@@ -7827,25 +7709,152 @@ AS
 	WHERE A.ID = @intItemID
 	ORDER BY B.Title
 GO
---update search tên
+
+/****** Object:  StoredProcedure [dbo].[FPT_CIR_MONTH_STATISTIC]    Script Date: 10/20/2019 10:26:42 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
 GO
 /******/
-	ALTER PROC [dbo].[FPT_SP_ILL_SEARCH_PATRON] 
--- Purpose: Search Patron update search khong dau
-@strPatronName NVARCHAR(50),  
-@strPatronCode VARCHAR(50)  
-AS  
-DECLARE @strSQL NVARCHAR(500)  
-	SET @strSQL='select*,dbo.ufn_removeMark(FullName) as FullNameSimple from(select Code,ValidDate,ExpiredDate,DOB,REPLACE((IsNull(FirstName,'''') + '' '' + IsNull(MiddleName +'' '' ,'''')  + IsNull(LastName,'''')),''  '','' '') AS FullName from CIR_PATRON '
+-- Last Update: 20/10/2019
+-- Creator: Dungpt
+CREATE PROCEDURE [dbo].[FPT_CIR_MONTH_STATISTIC] 
+@intLibraryID int,
+@strLocPrefix varchar(5),
+@strLocationID varchar(30),
+@intType int,
+@intStatus int,
+@strFromDate varchar(30),
+@strToDate varchar(30),
+@intUserID int
+AS
+	DECLARE @strSQL varchar(1000)
+	DECLARE @strJoinSQL varchar(1000)
+	DECLARE @strLikeSql varchar(1000)	
 	
-	IF @strPatronCode <>'' 
-		SET @strSQL=@strSQL + ' AND Code LIKE ''' + @strPatronCode + ''''  
+	SET @strLikeSql = '1 =1 AND '
+	SET @strJoinSQL = ''
 	
-	SET @strSQL=@strSQL + ') A'
-	IF @strPatronName<>'' 
-		SET @strSQL=@strSQL + ' WHERE A.FullName  LIKE N''%' + @strPatronName + '%'' or dbo.ufn_removeMark(FullName) like dbo.ufn_removeMark(N''%' + @strPatronName + '%'')'
+	IF @intType = 1 -- Stat by ItemID
+		SET @strSQL = 'SELECT TotalLoan = Count (distinct ITEMID)'
+	
+	IF @intType = 2 -- Stat by ID (CopyNumber)
+		SET @strSQL = 'SELECT TotalLoan = Count (ID)'
+		
+	IF @intType = 3 -- Stat by PatronID
+		SET @strSQL = 'SELECT TotalLoan = Count (distinct PATRONID)'
+			
+	SET @strSQL = @strSQL + ', YEAR = DATEPART(year, CheckOutDate), MONTH = DATEPART(month, CheckOutDate) '	
+		
+	IF @intStatus = 0 -- Used
+		SET @strJoinSQL = ' FROM CIR_LOAN_HISTORY'
+	ELSE -- Using
+		SET @strJoinSQL = ' FROM CIR_LOAN'
+		
+	IF NOT @intLibraryID = 0
+		BEGIN		
+			IF NOT @strLocationID = ''
+				SET @strLikeSQL = @strLikeSQL + 'LocationID IN ('+ @strLocationID +') AND '
+			ELSE
+				BEGIN
+					IF NOT @strLocPrefix = '0'
+						BEGIN
+							SET @strLikeSQL = @strLikeSQL + 'LocationID IN ( SELECT B.ID AS ID 	FROM HOLDING_LIBRARY A, HOLDING_LOCATION B, SYS_USER_CIR_LOCATION C WHERE A.LocalLib = 1 AND A.ID ='+ CAST(@intLibraryID AS CHAR(20)) +' AND A.ID = B.LibID AND B.ID = C.LocationID AND B.Symbol LIKE '''+ @strLocPrefix +'%'' AND C.UserID =' + CAST(@intUserID AS CHAR(20)) + ') AND '
+						END
+					ELSE
+					BEGIN
+						SET @strLikeSQL = @strLikeSQL + 'LocationID IN ( SELECT B.ID AS ID 	FROM HOLDING_LIBRARY A, HOLDING_LOCATION B, SYS_USER_CIR_LOCATION C WHERE A.LocalLib = 1 AND A.ID ='+ CAST(@intLibraryID AS CHAR(20)) +' AND A.ID = B.LibID AND B.ID = C.LocationID AND C.UserID =' + CAST(@intUserID AS CHAR(20)) + ') AND '
+					END
+				END
+						
+		END
+	ELSE 
+		BEGIN
+			SET @strLikeSQL = @strLikeSQL + 'LocationID IN ( SELECT B.ID AS ID 	FROM HOLDING_LIBRARY A, HOLDING_LOCATION B, SYS_USER_CIR_LOCATION C WHERE A.LocalLib = 1 AND A.ID = B.LibID AND B.ID = C.LocationID AND C.UserID =' + CAST(@intUserID AS CHAR(20)) + ' ) AND '
+		END
+	
 
-EXECUTE(@strSQL)
+		IF @strFromDate <> ''
+		SET @strLikeSQL = @strLikeSQL +  ' CheckOutDate >=''' + @strFromDate +''' AND '
+		IF @strToDate <> ''
+		SET @strLikeSQL = @strLikeSQL +  ' CheckOutDate <=''' + @strToDate +''' AND '		
+		
+	SET @strSQL = @strSQL + @strJoinSQL + ' WHERE ' +@strLikeSQL 
+	SET @strSQL = LEFT(@strSQL,LEN(@strSQL)-3) 
+	SET @strSQL = @strSQL + ' GROUP BY DATEPART(year, CheckOutDate), DATEPART(Month, CheckOutDate) ORDER BY YEAR, MONTH ASC'
+	--process here
+EXEC(@strSQL)
+
+/****** Object:  StoredProcedure [dbo].[FPT_GET_LIQUIDBOOKS]    Script Date: 10/20/2019 10:29:29 PM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+/******/
+-- Last Update: 20/10/2019
+-- Creator: Dungpt
+CREATE PROCEDURE [dbo].[FPT_GET_LIQUIDBOOKS]
+	@strLiquidCode VARCHAR(500),
+	@intLibraryID int,
+	@strLocPrefix varchar(5),
+	@strLocationID varchar(30),
+	@strDateFrom varchar(30),
+	@strDateTo varchar(30),
+	@intUserID int
+AS
+
+	DECLARE @strSQL VARCHAR(8000)
+	DECLARE @strJoinSQL varchar(1000)
+	DECLARE @strLikeSql varchar(1000)
+	SET @strSQL = 'SELECT HRR.Reason,
+	REPLACE(REPLACE(REPLACE(REPLACE(F.Content,''$a'',''''),''$b'','' ''),''$c'','' ''),''$n'','' '') as Content,
+	HR.AcquiredSourceID,HR.CallNumber,HR.CopyNumber,
+	HR.ID,HR.ItemID,HR.LibID,HR.LiquidCode,
+	HR.LoanTypeID,HR.LocationID,HR.PoID,HR.Price,HR.Shelf,HR.UseCount,HR.Volume,
+	HR.AcquiredDate,HR.RemovedDate,HR.DateLastUsed,
+	Code AS LibName, Symbol AS LocName '
+	
+	SET @strLikeSql = '1 =1 AND '
+	SET @strJoinSQL = ''
+	
+	SET @strJoinSQL = @strJoinSQL + ' FROM HOLDING_REMOVED HR LEFT JOIN FIELD200S F ON HR.ItemID = F.ItemID AND F.FieldCode=''245'' '
+	SET @strJoinSQL = @strJoinSQL + ' LEFT JOIN HOLDING_REMOVE_REASON HRR ON HR.Reason=HRR.ID '
+	SET @strJoinSQL = @strJoinSQL + ' LEFT JOIN HOLDING_LIBRARY HL ON HR.LibID = HL.ID '
+	SET @strJoinSQL = @strJoinSQL + ' LEFT JOIN HOLDING_LOCATION HLC ON HR.LocationID = HLC.ID '
+		
+	IF NOT @strLiquidCode=''
+		BEGIN
+			SET @strLikeSql=@strLikeSql+' LiquidCode='''+@strLiquidCode+''' AND '
+		END
+	IF NOT @intLibraryID = 0
+		BEGIN
+			SET @strLikeSql = @strLikeSql + 'HR.LibID = ' + CAST(@intLibraryID AS VARCHAR(10)) +' AND '
+			IF NOT @strLocationID =''
+				BEGIN
+					SET @strLikeSql = @strLikeSql + 'HR.LocationID IN (' + @strLocationID +') AND '
+				END
+			ELSE 
+				BEGIN
+					IF NOT @strLocPrefix ='0'
+						BEGIN
+							SET @strLikeSql = @strLikeSql + 'HR.LocationID IN (SELECT B.ID AS ID FROM HOLDING_LIBRARY A, HOLDING_LOCATION B, SYS_USER_CIR_LOCATION C WHERE A.LocalLib = 1 AND A.ID ='+ CAST(@intLibraryID AS CHAR(20)) +' AND A.ID = B.LibID AND B.ID = C.LocationID  AND B.Symbol LIKE '''+ @strLocPrefix +'%'' AND C.UserID =' + CAST(@intUserID AS CHAR(20)) + ' ) AND '
+						END
+					ELSE
+						BEGIN
+							SET @strLikeSql = @strLikeSql + 'HR.LocationID IN (SELECT B.ID AS ID FROM HOLDING_LIBRARY A, HOLDING_LOCATION B, SYS_USER_CIR_LOCATION C WHERE A.LocalLib = 1 AND A.ID ='+ CAST(@intLibraryID AS CHAR(20)) +' AND A.ID = B.LibID AND B.ID = C.LocationID  AND C.UserID =' + CAST(@intUserID AS CHAR(20)) + ' ) AND '
+						END
+				END
+		END
+	IF NOT @strDateFrom=''
+		BEGIN
+			SET @strLikeSQL = @strLikeSQL + 'HR.RemovedDate >= ''' + @strDateFrom +''' AND '	
+		END
+	IF NOT @strDateTo=''
+		BEGIN
+			SET @strLikeSQL = @strLikeSQL + 'HR.RemovedDate <= ''' + @strDateTo +''' AND '	
+		END
+	
+	
+	SET @strSql = @strSql + @strJoinSQL + ' WHERE ' +@strLikeSQL
+	SET @strSql = LEFT(@strSql,LEN(@strSql)-3) 
+EXEC(@strSQL)
