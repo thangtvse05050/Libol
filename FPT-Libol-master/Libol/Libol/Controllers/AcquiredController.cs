@@ -29,7 +29,7 @@ namespace Libol.Controllers
         [AuthAttribute(ModuleID = 4, RightID = "29")]
         public ActionResult LiquidationOrLost()
         {
-
+            updateLibID(true, "HOLDING_REMOVED");
             foreach (var item in db.SP_HOLDING_LIB_SEL(42).ToList())
             {
                 libs.Add(new Library(item.ID.ToString(), item.Code, item.LibName));
@@ -41,7 +41,7 @@ namespace Libol.Controllers
             {
                 List<Location> locs = new List<Location>();
 
-                foreach (var item in db.SP_HOLDING_LIBLOCUSER_SEL(42, Int32.Parse(lib.ID)).ToList())
+                foreach (var item in db.SP_HOLDING_LIBLOCUSER_SEL2(42, Int32.Parse(lib.ID)).ToList())
                 {
                     locs.Add(new Location(item.LOCNAME, item.ID.ToString(), item.GroupID, item.LibID.ToString(), item.Symbol, item.Code));
                 }
@@ -49,7 +49,7 @@ namespace Libol.Controllers
             }
 
             ViewBag.lic_locs = lic_locs;
-
+            updateLibID(false, "HOLDING_REMOVED");
             return View();
         }
 
@@ -59,6 +59,7 @@ namespace Libol.Controllers
             string find_price, string find_dkcb, string find_so_dinh_danh, string find_volume,
             string selected_checkbox_list, string strType, string libid, string locid, string date_from, string date_to, string reason, string date_type)
         {
+            updateLibID(true, "HOLDING_REMOVED");
             // setup for "date type list"
             List<SelectListItem> datetypes = new List<SelectListItem>();
             datetypes.Add(new SelectListItem { Text = "-------------", Value = "-1" });
@@ -217,7 +218,7 @@ namespace Libol.Controllers
                     {
                         numberPart = "0";
                         List<SelectListItem> loc = new List<SelectListItem>();
-                        foreach (var l in db.SP_HOLDING_LIBLOCUSER_SEL(42, Int32.Parse(libid)).ToList())
+                        foreach (var l in db.SP_HOLDING_LIBLOCUSER_SEL2(42, Int32.Parse(libid)).ToList())
                         {
                             if (l.ID == Int32.Parse(locid))
                             {
@@ -385,7 +386,7 @@ namespace Libol.Controllers
                     {
                         numberPart = "0";
                         List<SelectListItem> loc = new List<SelectListItem>();
-                        foreach (var l in db.SP_HOLDING_LIBLOCUSER_SEL(42, Int32.Parse(libid)).ToList())
+                        foreach (var l in db.SP_HOLDING_LIBLOCUSER_SEL2(42, Int32.Parse(libid)).ToList())
                         {
                             if (l.ID == Int32.Parse(locid))
                             {
@@ -468,6 +469,7 @@ namespace Libol.Controllers
                 ViewBag.page_index = page_index;
                 ViewBag.screen_stage = "";
             }
+            updateLibID(false, "HOLDING_REMOVED");
             return PartialView("LiquidationOrLostPartialView");
         }
 
@@ -570,7 +572,7 @@ namespace Libol.Controllers
             {
                 List<Location> locs = new List<Location>();
 
-                foreach (var item in db.SP_HOLDING_LIBLOCUSER_SEL(42, Int32.Parse(lib.ID)).ToList())
+                foreach (var item in db.SP_HOLDING_LIBLOCUSER_SEL2(42, Int32.Parse(lib.ID)).ToList())
                 {
                     int lbid = Int32.Parse(lib.ID.ToString());
                     int lcid = Int32.Parse(item.ID.ToString());
@@ -710,7 +712,7 @@ namespace Libol.Controllers
                 {
                     numberPart = "0";
                     List<SelectListItem> loc = new List<SelectListItem>();
-                    foreach (var l in db.SP_HOLDING_LIBLOCUSER_SEL(42, Int32.Parse(libid)).ToList())
+                    foreach (var l in db.SP_HOLDING_LIBLOCUSER_SEL2(42, Int32.Parse(libid)).ToList())
                     {
                         if (l.ID == Int32.Parse(locid))
                         {
@@ -813,7 +815,7 @@ namespace Libol.Controllers
                 {
                     numberPart = "0";
                     List<SelectListItem> loc = new List<SelectListItem>();
-                    foreach (var l in db.SP_HOLDING_LIBLOCUSER_SEL(42, Int32.Parse(libid)).ToList())
+                    foreach (var l in db.SP_HOLDING_LIBLOCUSER_SEL2(42, Int32.Parse(libid)).ToList())
                     {
                         if (l.ID == Int32.Parse(locid))
                         {
@@ -892,7 +894,7 @@ namespace Libol.Controllers
             {
                 List<Location> locs = new List<Location>();
 
-                foreach (var jtem in db.SP_HOLDING_LIBLOCUSER_SEL(42, Int32.Parse(lib.ID)).ToList())
+                foreach (var jtem in db.SP_HOLDING_LIBLOCUSER_SEL2(42, Int32.Parse(lib.ID)).ToList())
                 {
                     locs.Add(new Location(jtem.LOCNAME, jtem.ID.ToString(), jtem.GroupID, jtem.LibID.ToString(), jtem.Symbol, jtem.Code));
                 }
@@ -1067,7 +1069,7 @@ namespace Libol.Controllers
             {
                 List<Location> locs = new List<Location>();
 
-                foreach (var jtem in db.SP_HOLDING_LIBLOCUSER_SEL(42, Int32.Parse(lib.ID)).ToList())
+                foreach (var jtem in db.SP_HOLDING_LIBLOCUSER_SEL2(42, Int32.Parse(lib.ID)).ToList())
                 {
                     locs.Add(new Location(jtem.LOCNAME, jtem.ID.ToString(), jtem.GroupID, jtem.LibID.ToString(), jtem.Symbol, jtem.Code));
                 }
@@ -1131,6 +1133,7 @@ namespace Libol.Controllers
         [AuthAttribute(ModuleID = 4, RightID = "29")]
         public ActionResult InRepository()
         {
+            updateLibID(true, "HOLDING");
             foreach (var item in db.SP_HOLDING_LIB_SEL(42).ToList())
             {
                 int lbid = Int32.Parse(item.ID.ToString());
@@ -1153,7 +1156,7 @@ namespace Libol.Controllers
             {
                 List<Location> locs = new List<Location>();
 
-                foreach (var item in db.SP_HOLDING_LIBLOCUSER_SEL(42, Int32.Parse(lib.ID)).ToList())
+                foreach (var item in db.SP_HOLDING_LIBLOCUSER_SEL2(42, Int32.Parse(lib.ID)).ToList())
                 {
                     int lbid = Int32.Parse(lib.ID.ToString());
                     int lcid = Int32.Parse(item.ID.ToString());
@@ -1176,6 +1179,7 @@ namespace Libol.Controllers
 
 
             ViewBag.libs = libs;
+            updateLibID(false, "HOLDING");
 
             return View();
         }
@@ -1186,6 +1190,7 @@ namespace Libol.Controllers
             string find_price, string find_dkcb, string find_so_dinh_danh, string find_volume,
             string selected_checkbox_list, string strType, string libid, string locid, string reason)
         {
+            updateLibID(true, "HOLDING");
             List<SelectListItem> lib = new List<SelectListItem>();
             foreach (var item in db.FPT_SP_HOLDING_LIB_SEL().ToList())
             {
@@ -1504,6 +1509,7 @@ namespace Libol.Controllers
                 ViewBag.page_index = page_index;
                 ViewBag.screen_stage = "";
             }
+            updateLibID(false, "HOLDING");
             return PartialView("InRepositoryPartialView");
         }
 
@@ -1628,7 +1634,7 @@ namespace Libol.Controllers
             {
                 List<Location> locs = new List<Location>();
 
-                foreach (var jtem in db.SP_HOLDING_LIBLOCUSER_SEL(42, Int32.Parse(lib.ID)).ToList())
+                foreach (var jtem in db.SP_HOLDING_LIBLOCUSER_SEL2(42, Int32.Parse(lib.ID)).ToList())
                 {
                     locs.Add(new Location(jtem.LOCNAME, jtem.ID.ToString(), jtem.GroupID, jtem.LibID.ToString(), jtem.Symbol, jtem.Code));
                 }
@@ -1733,7 +1739,7 @@ namespace Libol.Controllers
             {
                 List<Location> locs = new List<Location>();
 
-                foreach (var jtem in db.SP_HOLDING_LIBLOCUSER_SEL(42, Int32.Parse(lib.ID)).ToList())
+                foreach (var jtem in db.SP_HOLDING_LIBLOCUSER_SEL2(42, Int32.Parse(lib.ID)).ToList())
                 {
                     locs.Add(new Location(jtem.LOCNAME, jtem.ID.ToString(), jtem.GroupID, jtem.LibID.ToString(), jtem.Symbol, jtem.Code));
                 }
@@ -1808,7 +1814,7 @@ namespace Libol.Controllers
             {
                 List<Location> locs = new List<Location>();
 
-                foreach (var jtem in db.SP_HOLDING_LIBLOCUSER_SEL(42, Int32.Parse(lib.ID)).ToList())
+                foreach (var jtem in db.SP_HOLDING_LIBLOCUSER_SEL2(42, Int32.Parse(lib.ID)).ToList())
                 {
                     locs.Add(new Location(jtem.LOCNAME, jtem.ID.ToString(), jtem.GroupID, jtem.LibID.ToString(), jtem.Symbol, jtem.Code));
                 }
@@ -1875,7 +1881,7 @@ namespace Libol.Controllers
             {
                 List<Location> locs = new List<Location>();
 
-                foreach (var jtem in db.SP_HOLDING_LIBLOCUSER_SEL(42, Int32.Parse(lib.ID)).ToList())
+                foreach (var jtem in db.SP_HOLDING_LIBLOCUSER_SEL2(42, Int32.Parse(lib.ID)).ToList())
                 {
                     locs.Add(new Location(jtem.LOCNAME, jtem.ID.ToString(), jtem.GroupID, jtem.LibID.ToString(), jtem.Symbol, jtem.Code));
                 }
@@ -2037,7 +2043,7 @@ namespace Libol.Controllers
         {
             List<SelectListItem> loc = new List<SelectListItem>();
             loc.Add(new SelectListItem { Text = "All", Value = "-1" });
-            foreach (var l in db.SP_HOLDING_LIBLOCUSER_SEL(42, id).ToList())
+            foreach (var l in db.SP_HOLDING_LIBLOCUSER_SEL2(42, id).ToList())
             {
                 loc.Add(new SelectListItem { Text = l.Symbol, Value = l.ID.ToString() });
             }
@@ -2320,6 +2326,17 @@ namespace Libol.Controllers
             else
             {
                 return new EmptyResult();
+            }
+        }
+        public void updateLibID(Boolean bol, string table)
+        {
+            if (bol == true)
+            {
+                db.ExcuteSQL("UPDATE " + table + " SET LibID=81 WHERE LocationID IN (13,15,16,27) AND LibID=20");
+            }
+            else
+            {
+                db.ExcuteSQL("UPDATE " + table + " SET LibID=20 WHERE LocationID IN (13,15,16,27) AND LibID=81");
             }
         }
 

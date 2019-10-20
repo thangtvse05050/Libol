@@ -2087,7 +2087,7 @@
     <NavigationProperty Name="MARC_WORKSHEET" Relationship="Self.MWOR_ITE_FK" FromRole="ITEM" ToRole="MARC_WORKSHEET" />
     <NavigationProperty Name="ACQ_PO" Relationship="Self.ACQ_PO_ITEM" FromRole="ITEM" ToRole="ACQ_PO" />
     <NavigationProperty Name="FPT_RECOMMEND" Relationship="LibolModel.FPT_RECOMMEND_ITEM" FromRole="ITEM" ToRole="FPT_RECOMMEND" />
-    <NavigationProperty Name="FPT_CATA_FILE_NEW" Relationship="LibolModel.FK__FPT_CATA___ItemI__567A72E1" FromRole="ITEM" ToRole="FPT_CATA_FILE_NEW" />
+    <NavigationProperty Name="FPT_CATA_FILE_NEW" Relationship="LibolModel.FK__FPT_CATA___ItemI__79C3AF1E" FromRole="ITEM" ToRole="FPT_CATA_FILE_NEW" />
   </EntityType>
   <EntityType Name="ITEM_FULLTEXT">
     <Key>
@@ -12885,6 +12885,8 @@
       <Parameter Name="intTopNum" Mode="In" Type="String" />
       <Parameter Name="intMinLoan" Mode="In" Type="String" />
       <Parameter Name="libid" Mode="In" Type="String" />
+      <Parameter Name="strLocationPrefix" Mode="In" Type="String" />
+      <Parameter Name="locid" Mode="In" Type="String" />
     </FunctionImport>
     <FunctionImport Name="FPT_SP_STAT_PATRONGROUP">
       <Parameter Name="intUserID" Mode="In" Type="String" />
@@ -12908,16 +12910,82 @@
       <Parameter Name="intType" Mode="In" Type="Int32" />
       <Parameter Name="intCategoryID" Mode="In" Type="Int32" />
     </FunctionImport>
-    <EntitySet Name="FPT_CATA_FILE_NEW" EntityType="LibolModel.FPT_CATA_FILE_NEW" />
-    <AssociationSet Name="FK__FPT_CATA___ItemI__567A72E1" Association="LibolModel.FK__FPT_CATA___ItemI__567A72E1">
-      <End Role="ITEM" EntitySet="ITEMs" />
-      <End Role="FPT_CATA_FILE_NEW" EntitySet="FPT_CATA_FILE_NEW" />
-    </AssociationSet>
     <FunctionImport Name="FPT_CIR_SP_STAT_TOP20">
       <Parameter Name="intHistory" Mode="In" Type="Int32" />
       <Parameter Name="intID" Mode="In" Type="Int32" />
       <Parameter Name="intUserID" Mode="In" Type="Int32" />
       <Parameter Name="intLibID" Mode="In" Type="Int32" />
+    </FunctionImport>
+    <EntitySet Name="FPT_CATA_FILE_NEW" EntityType="LibolModel.FPT_CATA_FILE_NEW" />
+    <AssociationSet Name="FK__FPT_CATA___ItemI__79C3AF1E" Association="LibolModel.FK__FPT_CATA___ItemI__79C3AF1E">
+      <End Role="ITEM" EntitySet="ITEMs" />
+      <End Role="FPT_CATA_FILE_NEW" EntitySet="FPT_CATA_FILE_NEW" />
+    </AssociationSet>
+    <FunctionImport Name="FPT_SP_GETINFOR_EMAIL">
+      <Parameter Name="libIDs" Mode="In" Type="String" />
+      <Parameter Name="intTime" Mode="In" Type="Int32" />
+    </FunctionImport>
+    <FunctionImport Name="FPT_SP_INVENTORY" ReturnType="Collection(LibolModel.FPT_SP_INVENTORY_Result)">
+      <Parameter Name="intLibraryID" Mode="In" Type="Int32" />
+    </FunctionImport>
+    <FunctionImport Name="FPT_SP_GET_HOLDING_BY_RECOMMENDID_Newest" ReturnType="Collection(LibolModel.FPT_SP_GET_HOLDING_BY_RECOMMENDID_Newest_Result)">
+      <Parameter Name="LibID" Mode="In" Type="Int32" />
+      <Parameter Name="LocID" Mode="In" Type="Int32" />
+      <Parameter Name="reid" Mode="In" Type="String" />
+      <Parameter Name="StartDate" Mode="In" Type="String" />
+      <Parameter Name="EndDate" Mode="In" Type="String" />
+    </FunctionImport>
+    <FunctionImport Name="FPT_SELECTALLDELETEABLE" ReturnType="Collection(Int32)" />
+    <FunctionImport Name="FPT_SPECIALIZED_REPORT" ReturnType="Collection(LibolModel.FPT_SPECIALIZED_REPORT_Result)">
+      <Parameter Name="intLibID" Mode="In" Type="Int32" />
+      <Parameter Name="strSubCode" Mode="In" Type="String" />
+      <Parameter Name="intUserID" Mode="In" Type="Int32" />
+    </FunctionImport>
+    <FunctionImport Name="FPT_SPECIALIZED_REPORT_GET_PUBLISHER" ReturnType="Collection(LibolModel.FPT_SPECIALIZED_REPORT_GET_PUBLISHER_Result)">
+      <Parameter Name="intItemID" Mode="In" Type="Int32" />
+    </FunctionImport>
+    <FunctionImport Name="FPT_SPECIALIZED_REPORT_TOTAL" ReturnType="Collection(Int32)">
+      <Parameter Name="intLibID" Mode="In" Type="Int32" />
+      <Parameter Name="strItemIDs" Mode="In" Type="String" />
+      <Parameter Name="intType" Mode="In" Type="Int32" />
+      <Parameter Name="intUserID" Mode="In" Type="Int32" />
+    </FunctionImport>
+    <FunctionImport Name="FPT_SPECIALIZED_REPORT_TOTAL_ITEM" ReturnType="Collection(Int32)">
+      <Parameter Name="intLibID" Mode="In" Type="Int32" />
+      <Parameter Name="strItemIDs" Mode="In" Type="String" />
+      <Parameter Name="intType" Mode="In" Type="Int32" />
+      <Parameter Name="intUserID" Mode="In" Type="Int32" />
+    </FunctionImport>
+    <FunctionImport Name="FPT_CATA_GETCONTENT_BY_INDEX" ReturnType="Collection(Int32)">
+      <Parameter Name="Index" Mode="In" Type="Int32" />
+    </FunctionImport>
+    <FunctionImport Name="FPT_SP_ACQ_GETMAXID_HINT" ReturnType="Collection(Int32)" />
+    <FunctionImport Name="FPT_SP_ACQ_NEW_INVENTORY">
+      <Parameter Name="strInventoryName" Mode="In" Type="String" />
+      <Parameter Name="strInventoryDate" Mode="In" Type="String" />
+      <Parameter Name="strInputer" Mode="In" Type="String" />
+    </FunctionImport>
+    <FunctionImport Name="FPT_SPECIALIZED_REPORT_GET_YEAR_PUBLISHNUM" ReturnType="Collection(LibolModel.FPT_SPECIALIZED_REPORT_GET_YEAR_PUBLISHNUM_Result)">
+      <Parameter Name="itemId" Mode="In" Type="Int32" />
+      <Parameter Name="type" Mode="In" Type="Int32" />
+    </FunctionImport>
+    <FunctionImport Name="FPT_SPECIALIZED_REPORT_GET_GTTK" ReturnType="Collection(LibolModel.FPT_SPECIALIZED_REPORT_GET_GTTK_Result)">
+      <Parameter Name="itemid" Mode="In" Type="Int32" />
+      <Parameter Name="type" Mode="In" Type="Int32" />
+      <Parameter Name="intUserID" Mode="In" Type="Int32" />
+      <Parameter Name="intLibID" Mode="In" Type="Int32" />
+    </FunctionImport>
+    <FunctionImport Name="FPT_GET_DATE_SUGGEST_CHECKOUT" ReturnType="Collection(String)">
+      <Parameter Name="term" Mode="In" Type="String" />
+    </FunctionImport>
+    <FunctionImport Name="FPT_GET_DATE_SUGGEST_RENEW" ReturnType="Collection(String)">
+      <Parameter Name="term" Mode="In" Type="String" />
+    </FunctionImport>
+    <FunctionImport Name="FPT_GET_DATE_SUGGEST_CHECKOUT1" ReturnType="Collection(String)">
+      <Parameter Name="term" Mode="In" Type="String" />
+    </FunctionImport>
+    <FunctionImport Name="FPT_GET_DATE_SUGGEST_RENEW1" ReturnType="Collection(String)">
+      <Parameter Name="term" Mode="In" Type="String" />
     </FunctionImport>
   </EntityContainer>
   <ComplexType Name="CAT_DIC_LIST_SEL_Result">
@@ -17958,9 +18026,9 @@
     <Property Name="ItemID" Type="Int32" Nullable="false" />
     <Property Name="FileName" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
     <Property Name="FilePath" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
-    <NavigationProperty Name="ITEM" Relationship="LibolModel.FK__FPT_CATA___ItemI__567A72E1" FromRole="FPT_CATA_FILE_NEW" ToRole="ITEM" />
+    <NavigationProperty Name="ITEM" Relationship="LibolModel.FK__FPT_CATA___ItemI__79C3AF1E" FromRole="FPT_CATA_FILE_NEW" ToRole="ITEM" />
   </EntityType>
-  <Association Name="FK__FPT_CATA___ItemI__567A72E1">
+  <Association Name="FK__FPT_CATA___ItemI__79C3AF1E">
     <End Type="LibolModel.ITEM" Role="ITEM" Multiplicity="1" />
     <End Type="LibolModel.FPT_CATA_FILE_NEW" Role="FPT_CATA_FILE_NEW" Multiplicity="*" />
     <ReferentialConstraint>
@@ -17972,4 +18040,56 @@
       </Dependent>
     </ReferentialConstraint>
   </Association>
+  <ComplexType Name="FPT_SP_INVENTORY_Result">
+    <Property Type="String" Name="Content" Nullable="true" MaxLength="4000" />
+    <Property Type="String" Name="Code" Nullable="false" MaxLength="20" />
+    <Property Type="String" Name="CopyNumber" Nullable="false" MaxLength="33" />
+    <Property Type="String" Name="CallNumber" Nullable="true" MaxLength="64" />
+    <Property Type="Single" Name="Price" Nullable="true" />
+    <Property Type="String" Name="Note" Nullable="false" MaxLength="1" />
+  </ComplexType>
+  <ComplexType Name="FPT_SP_GET_HOLDING_BY_RECOMMENDID_Newest_Result">
+    <Property Type="String" Name="RECORDNUMBER" Nullable="true" MaxLength="50" />
+    <Property Type="String" Name="Title" Nullable="true" MaxLength="4000" />
+    <Property Type="DateTime" Name="ReceiptedDate" Nullable="true" />
+    <Property Type="Int32" Name="useCount" Nullable="true" />
+    <Property Type="String" Name="ISBN" Nullable="false" MaxLength="1" />
+    <Property Type="Int32" Name="InBookNum" Nullable="true" />
+    <Property Type="String" Name="DKCB" Nullable="false" MaxLength="1" />
+    <Property Type="DateTime" Name="ACQUIREDDATE" Nullable="true" />
+    <Property Type="Int32" Name="LocationID" Nullable="false" />
+    <Property Type="String" Name="RECOMMENDID" Nullable="false" MaxLength="50" />
+    <Property Type="String" Name="Year" Nullable="false" MaxLength="16" />
+    <Property Type="Single" Name="Price" Nullable="true" />
+    <Property Type="String" Name="Currency" Nullable="true" MaxLength="8000" />
+    <Property Type="String" Name="NXB" Nullable="false" MaxLength="256" />
+    <Property Type="Double" Name="FullPrice" Nullable="true" />
+    <Property Type="Int32" Name="ItemID" Nullable="false" />
+  </ComplexType>
+  <ComplexType Name="FPT_SPECIALIZED_REPORT_Result">
+    <Property Type="Int32" Name="ItemID" Nullable="false" />
+    <Property Type="String" Name="SUBJECTCODE" Nullable="false" MaxLength="800" />
+    <Property Type="String" Name="ITEMNAME" Nullable="false" MaxLength="800" />
+    <Property Type="String" Name="ITEMCODE" Nullable="false" MaxLength="20" />
+    <Property Type="String" Name="ISBN" Nullable="false" MaxLength="1" />
+    <Property Type="String" Name="AUTHOR" Nullable="false" MaxLength="800" />
+    <Property Type="String" Name="PUBLISHER" Nullable="false" MaxLength="1" />
+    <Property Type="Int32" Name="TOTAL" Nullable="true" />
+    <Property Type="String" Name="YEAR" Nullable="false" MaxLength="1" />
+    <Property Type="String" Name="PUBLISHNUM" Nullable="false" MaxLength="1" />
+    <Property Type="String" Name="GTNUMBER" Nullable="false" MaxLength="1" />
+    <Property Type="String" Name="TKNUMBER" Nullable="false" MaxLength="1" />
+  </ComplexType>
+  <ComplexType Name="FPT_SPECIALIZED_REPORT_GET_PUBLISHER_Result">
+    <Property Type="Int32" Name="ItemID" Nullable="false" />
+    <Property Type="String" Name="PUBLISHER" Nullable="false" MaxLength="256" />
+  </ComplexType>
+  <ComplexType Name="FPT_SPECIALIZED_REPORT_GET_YEAR_PUBLISHNUM_Result">
+    <Property Type="Int32" Name="ITEMID" Nullable="false" />
+    <Property Type="String" Name="CONTENT" Nullable="false" MaxLength="800" />
+    <Property Type="String" Name="FieldCode" Nullable="false" MaxLength="5" />
+  </ComplexType>
+  <ComplexType Name="FPT_SPECIALIZED_REPORT_GET_GTTK_Result">
+    <Property Type="Int32" Name="total" Nullable="true" />
+  </ComplexType>
 </Schema>

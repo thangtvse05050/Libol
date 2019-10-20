@@ -33,5 +33,46 @@ namespace Libol.SupportClass
             //validate = validate.Replace("+$e", "");
             //return validate;
         }
+		public string getContent(string[] str,string tag)
+		{
+			string rt = "";
+			foreach (string st in str)
+			{
+				if (!st.Equals(""))
+				{
+					string a = st[0].ToString();
+					if (st[0].ToString().Equals(tag))
+					{
+						
+						rt = st.Substring(1,st.Length-1);
+						string q = rt[rt.Length - 1].ToString();
+						if (q.Equals("/")|| q.Equals("=")||q.Equals(":"))
+						{
+							rt=rt.Replace(q, "");
+						}
+						break;
+					}
+				}
+				
+			}
+			return rt;
+		}
+		public string getTagOnMarc(string str,string tag)
+		{
+			string result = "";
+			string[] arr = str.Split('$');
+			if (arr.Length == 1)
+			{
+				result = str;
+			}
+			else
+			{
+				
+				result=	getContent(arr, tag);
+				
+			}
+			return result;
+
+		}
     }
 }

@@ -2998,8 +2998,10 @@ namespace Libol.Controllers
 			{
 				ItemIDs += " " + i.ItemID;
 				i.SUBJECTCODE = format.OnFormatHoldingTitle(i.SUBJECTCODE);
-				i.ITEMNAME = format.OnFormatHoldingTitle(i.ITEMNAME);
-				i.AUTHOR = format.OnFormatHoldingTitle(i.AUTHOR);
+				string name = i.ITEMNAME;
+				i.ITEMNAME = format.getTagOnMarc(name,"a")+ " " + format.getTagOnMarc(name, "n");
+				//get author $c245
+				i.AUTHOR = format.getTagOnMarc(name, "c");
 				string isbn = "";
 				foreach (var item in le.FPT_JOIN_ISBN(i.ItemID))
 				{
@@ -3016,7 +3018,6 @@ namespace Libol.Controllers
 				i.PUBLISHER = publisher;
 				//get publish number
 				int itemCheck = (int)i.ItemID;
-				
 				List<FPT_SPECIALIZED_REPORT_GET_YEAR_PUBLISHNUM_Result> x = le.FPT_SPECIALIZED_REPORT_GET_YEAR_PUBLISHNUM(itemCheck, 0).ToList();
 				if (x.Count > 0)
 				{
@@ -3036,7 +3037,7 @@ namespace Libol.Controllers
 				}
 				//get year
 				List<FPT_SPECIALIZED_REPORT_GET_YEAR_PUBLISHNUM_Result> y = le.FPT_SPECIALIZED_REPORT_GET_YEAR_PUBLISHNUM(itemCheck, 1).ToList();
-				if (x.Count > 0)
+				if (y.Count > 0)
 				{
 					string[] arr = y.First().CONTENT.Split('$');
 					for (int j = 1; j < arr.Length; j++)
@@ -3058,6 +3059,45 @@ namespace Libol.Controllers
 					TKTOTAL += Int32.Parse( i.TKNUMBER);
 				}
 			}
+			List<FPT_SPECIALIZED_REPORT_Result> lst = ViewBag.Result;
+			List<int> deindx= new List<int>();
+			List<FPT_SPECIALIZED_REPORT_Result> idx = new List<FPT_SPECIALIZED_REPORT_Result>();
+			for (int i = 0; i < lst.Count-1; i++)
+			{
+				for(int j =i+1; j < lst.Count; j++)
+				{
+					if (lst[i].ITEMCODE.Equals(lst[j].ITEMCODE) && lst[i].ITEMNAME.Equals(lst[j].ITEMNAME) 
+						&& !lst[i].SUBJECTCODE.Equals(lst[j].SUBJECTCODE))
+					{
+						lst[i].SUBJECTCODE = lst[i].SUBJECTCODE + " " + lst[j].SUBJECTCODE;
+						lst[j].SUBJECTCODE = "";
+						if (!lst[j].GTNUMBER.Equals(""))
+						{
+							GTTOTAL = GTTOTAL - Int32.Parse(lst[j].GTNUMBER);
+						}
+						if (!lst[j].TKNUMBER.Equals(""))
+						{
+							TKTOTAL = TKTOTAL - Int32.Parse(lst[j].TKNUMBER);
+						}
+
+						deindx.Add(j);
+						
+					}
+				}
+			}
+			
+			for(int i = 0; i < deindx.Count; i++)
+			{
+				lst[deindx[i]]=null;
+			}
+			for (int i = 0; i < lst.Count; i++)
+			{
+				if (lst[i] != null)
+				{
+					idx.Add(lst[i]);
+				}
+			}
+			ViewBag.Result = idx;
 			ItemIDs = ItemIDs.Trim().Replace(" ", ";");
 			ItemIDs = ";" + ItemIDs + ';';
 			ViewBag.GT = le.FPT_SPECIALIZED_REPORT_TOTAL(LibID, ItemIDs, 1, (int)Session["UserID"]).First();
@@ -3065,7 +3105,7 @@ namespace Libol.Controllers
 			ViewBag.GTItem = le.FPT_SPECIALIZED_REPORT_TOTAL_ITEM(LibID, ItemIDs, 1, (int)Session["UserID"]).First();
 			ViewBag.TKItem = le.FPT_SPECIALIZED_REPORT_TOTAL_ITEM(LibID, ItemIDs, 0, (int)Session["UserID"]).First();
 			ViewBag.TT = ViewBag.GT + ViewBag.TK;
-			ViewBag.TTItem = ViewBag.GTItem + ViewBag.TKItem;
+			ViewBag.TTItem = ViewBag.GTItem;//+ ViewBag.TKItem;
 			ViewBag.GTTOTAL = GTTOTAL;
 			ViewBag.TKTOTAL = TKTOTAL;
 			ViewBag.Spec = strSpec;

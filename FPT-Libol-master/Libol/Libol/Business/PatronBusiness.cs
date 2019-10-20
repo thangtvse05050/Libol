@@ -11,12 +11,12 @@ namespace Libol.Models
 
         public List<FPT_SP_STAT_PATRONMAX_Result>
             FPT_SP_STAT_PATRONMAX_LIST(string UserID, string strDateFrom, string strDateTo,
-            string NumPat, string HireTimes, string OptItemID, string LocID, string LibID)
+            string NumPat, string HireTimes, string OptItemID, string LocID, string LocPrefix, string LibID)
         {
             List<FPT_SP_STAT_PATRONMAX_Result> list =
             le.Database.SqlQuery<FPT_SP_STAT_PATRONMAX_Result>(
-                "FPT_SP_STAT_PATRONMAX {0},{1},{2},{3},{4},{5},{6},{7}",
-                new object[] { UserID, strDateFrom, strDateTo, NumPat, HireTimes, OptItemID, LocID, LibID }
+                "FPT_SP_STAT_PATRONMAX {0},{1},{2},{3},{4},{5},{6},{7},{8}",
+                new object[] { UserID, strDateFrom, strDateTo, NumPat, HireTimes, OptItemID, LocID, LocPrefix, LibID }
             ).ToList();
             return list;
         }

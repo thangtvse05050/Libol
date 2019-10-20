@@ -19,14 +19,21 @@ namespace OPAC.Dao
         /// <param name="page"></param>
         /// <param name="pageSize"></param>
         /// <returns></returns>
-        public IEnumerable<FPT_SP_GET_SEARCHED_INFO_BOOK_Result> GetSearchingBook(string searchKeyword, string option, int page, int pageSize)
+        public IEnumerable<FPT_SP_OPAC_GET_SEARCHED_INFO_BOOK_Result> GetSearchingBook(string searchKeyword, string option, int page, int pageSize)
         {
             using (var dbContext = new OpacEntities())
             {
                 searchKeyword = Regex.Replace(searchKeyword, @"\s+", " ").Trim();
-                var list = dbContext.Database.SqlQuery<FPT_SP_GET_SEARCHED_INFO_BOOK_Result>("FPT_SP_GET_SEARCHED_INFO_BOOK {0}, {1}",
+                var list = dbContext.Database.SqlQuery<FPT_SP_OPAC_GET_SEARCHED_INFO_BOOK_Result>("FPT_SP_OPAC_GET_SEARCHED_INFO_BOOK {0}, {1}",
                      new object[] { searchKeyword, option }).ToList();
 
+                foreach (var item in list)
+                {
+                    if (item.Version != null)
+                    {
+                        item.Version = item.Version.Replace("$a", "");
+                    }
+                }
                 return list.ToPagedList(page, pageSize);
             }
         }
@@ -37,20 +44,57 @@ namespace OPAC.Dao
         /// <param name="searchKeyword"></param>
         /// <param name="page"></param>
         /// <param name="pageSize"></param>
+        /// <param name="searchBy"></param>
         /// <returns></returns>
-        public IEnumerable<FPT_SP_GET_SEARCHED_INFO_BOOK_BY_KEYWORD_Result> GetSearchingBookByKeyWord(string searchKeyword, int page, int pageSize)
+        public IEnumerable<FPT_SP_OPAC_GET_SEARCHED_INFO_BOOK_BY_KEYWORD_Result> GetSearchingBookByKeyWord(string searchKeyword, int page, int pageSize, int searchBy)
         {
+            /*
+             * Parameter searchBy definition:
+             * 1: Search by keyword
+             * 2: Search by DDC
+             */
             using (var dbContext = new OpacEntities())
             {
-                var getItemID = dbContext.FPT_SP_GET_ITEMID_BY_KEYWORD(searchKeyword).ToList();
-                var listResult = new List<FPT_SP_GET_SEARCHED_INFO_BOOK_BY_KEYWORD_Result>();
-
-                foreach (var item in getItemID)
+                var listResult = new List<FPT_SP_OPAC_GET_SEARCHED_INFO_BOOK_BY_KEYWORD_Result>();
+                if (searchBy == 1)
                 {
-                    var list = dbContext.Database.SqlQuery<FPT_SP_GET_SEARCHED_INFO_BOOK_BY_KEYWORD_Result>("FPT_SP_GET_SEARCHED_INFO_BOOK_BY_KEYWORD {0}",
-                        new object[] { item }).ToList();
+                    var getItemID = dbContext.FPT_SP_GET_ITEMID_BY_KEYWORD(searchKeyword).ToList();
 
-                    listResult.AddRange(list);
+                    foreach (var item in getItemID)
+                    {
+                        var list = dbContext.Database.SqlQuery<FPT_SP_OPAC_GET_SEARCHED_INFO_BOOK_BY_KEYWORD_Result>("FPT_SP_OPAC_GET_SEARCHED_INFO_BOOK_BY_KEYWORD {0}",
+                            new object[] { item }).ToList();
+
+                        foreach (var result in list)
+                        {
+                            if (result.Version != null)
+                            {
+                                result.Version = result.Version.Replace("$a", "");
+                            }
+                        }
+
+                        listResult.AddRange(list);
+                    }
+                }
+                else if (searchBy == 2)
+                {
+                    var getItemID = dbContext.FPT_SP_OPAC_GET_ITEMID_BY_DDC(searchKeyword).ToList();
+
+                    foreach (var item in getItemID)
+                    {
+                        var list = dbContext.Database.SqlQuery<FPT_SP_OPAC_GET_SEARCHED_INFO_BOOK_BY_KEYWORD_Result>("FPT_SP_OPAC_GET_SEARCHED_INFO_BOOK_BY_KEYWORD {0}",
+                            new object[] { item }).ToList();
+
+                        foreach (var result in list)
+                        {
+                            if (result.Version != null)
+                            {
+                                result.Version = result.Version.Replace("$a", "");
+                            }
+                        }
+
+                        listResult.AddRange(list);
+                    }
                 }
 
                 return listResult.ToPagedList(page, pageSize);
@@ -140,7 +184,7 @@ namespace OPAC.Dao
             using (var dbContext = new OpacEntities())
             {
                 searchKeyword = Regex.Replace(searchKeyword, @"\s+", " ").Trim();
-                var numberResult = dbContext.Database.SqlQuery<FPT_SP_GET_SEARCHED_INFO_BOOK_Result>("FPT_SP_GET_SEARCHED_INFO_BOOK {0}, {1}",
+                var numberResult = dbContext.Database.SqlQuery<FPT_SP_OPAC_GET_SEARCHED_INFO_BOOK_Result>("FPT_SP_OPAC_GET_SEARCHED_INFO_BOOK {0}, {1}",
                     new object[] { searchKeyword, option }).ToList().Count();
 
                 return numberResult;
@@ -153,19 +197,34 @@ namespace OPAC.Dao
         /// <param name="searchKeyword"></param>
         /// <param name="page"></param>
         /// <param name="pageSize"></param>
+        /// <param name="searchBy"></param>
         /// <returns></returns>
-        public int GetNumberResultByKeyWord(string searchKeyword, int page, int pageSize)
+        public int GetNumberResultByKeyWord(string searchKeyword, int page, int pageSize, int searchBy)
         {
-            var numberResult = new List<FPT_SP_GET_SEARCHED_INFO_BOOK_BY_KEYWORD_Result>();
+            var numberResult = new List<FPT_SP_OPAC_GET_SEARCHED_INFO_BOOK_BY_KEYWORD_Result>();
             using (var dbContext = new OpacEntities())
             {
-                var getItemID = dbContext.FPT_SP_GET_ITEMID_BY_KEYWORD(searchKeyword).ToList();
-                foreach (var item in getItemID)
+                if (searchBy == 1)
                 {
-                    var list = dbContext.Database.SqlQuery<FPT_SP_GET_SEARCHED_INFO_BOOK_BY_KEYWORD_Result>("FPT_SP_GET_SEARCHED_INFO_BOOK_BY_KEYWORD {0}",
-                        new object[] { item }).ToList();
+                    var getItemID = dbContext.FPT_SP_GET_ITEMID_BY_KEYWORD(searchKeyword).ToList();
+                    foreach (var item in getItemID)
+                    {
+                        var list = dbContext.Database.SqlQuery<FPT_SP_OPAC_GET_SEARCHED_INFO_BOOK_BY_KEYWORD_Result>("FPT_SP_OPAC_GET_SEARCHED_INFO_BOOK_BY_KEYWORD {0}",
+                            new object[] { item }).ToList();
 
-                    numberResult.AddRange(list);
+                        numberResult.AddRange(list);
+                    }
+                }
+                else if (searchBy == 2)
+                {
+                    var getItemID = dbContext.FPT_SP_OPAC_GET_ITEMID_BY_DDC(searchKeyword).ToList();
+                    foreach (var item in getItemID)
+                    {
+                        var list = dbContext.Database.SqlQuery<FPT_SP_OPAC_GET_SEARCHED_INFO_BOOK_BY_KEYWORD_Result>("FPT_SP_OPAC_GET_SEARCHED_INFO_BOOK_BY_KEYWORD {0}",
+                            new object[] { item }).ToList();
+
+                        numberResult.AddRange(list);
+                    }
                 }
 
                 return numberResult.ToPagedList(page, pageSize).TotalItemCount;
@@ -194,11 +253,11 @@ namespace OPAC.Dao
         /// </summary>
         /// <param name="itemID"></param>
         /// <returns></returns>
-        public List<SP_OPAC_RELATED_TERMS_Result> SP_OPAC_RELATED_TERMS_LIST(int itemID)
+        public List<FPT_SP_OPAC_GET_RELATED_TERMS_Result> FPT_SP_OPAC_GET_RELATED_TERMS_LIST(int itemID)
         {
             using (var dbContext = new OpacEntities())
             {
-                var list = dbContext.Database.SqlQuery<SP_OPAC_RELATED_TERMS_Result>("SP_OPAC_RELATED_TERMS {0}",
+                var list = dbContext.Database.SqlQuery<FPT_SP_OPAC_GET_RELATED_TERMS_Result>("FPT_SP_OPAC_GET_RELATED_TERMS {0}",
                     new object[] { itemID }).ToList();
 
                 return list;
@@ -249,6 +308,7 @@ namespace OPAC.Dao
             StringBuilder getISBN = new StringBuilder("");
             StringBuilder getLanguageCode = new StringBuilder("");
             StringBuilder getPublishing = new StringBuilder("");
+            StringBuilder getPublishingYear = new StringBuilder("");
             StringBuilder getPhysicDescription = new StringBuilder("");
             StringBuilder getBrief = new StringBuilder("");
             string[] specialCharacterList = { "$a", "$b", "$c", "$p", "$e", "$n" };
@@ -273,6 +333,17 @@ namespace OPAC.Dao
                     getPublishing.Append(item + " ");
                 }
 
+                string[] temp = getPublishing.ToString().Split(new[] {"$c"}, StringSplitOptions.None);
+                if (temp.Length == 1)
+                {
+                    getPublishing = new StringBuilder(temp[0]);
+                }
+                else
+                {
+                    getPublishing = new StringBuilder(temp[0]);
+                    getPublishingYear.Append(temp[1]);
+                }
+
                 var getPhysicDescriptionTemp = dbContext.FPT_SP_GET_PHYSICAL_INFO_ITEM(itemID).ToList();
                 foreach (var item in getPhysicDescriptionTemp)
                 {
@@ -293,6 +364,7 @@ namespace OPAC.Dao
                 ISBN = getISBN.ToString().Trim(),
                 LanguageCode = getLanguageCode.ToString().Trim(),
                 Publishing = getPublishing.ToString().Trim(),
+                PublishingYear = getPublishingYear.ToString().Trim(),
                 PhysicDescription = getPhysicDescription.ToString().Trim()
             };
 
@@ -347,6 +419,85 @@ namespace OPAC.Dao
                                 select h).Count();
 
                 return holdingBook;
+            }
+        }
+
+        /// <summary>
+        /// Get list of document
+        /// </summary>
+        /// <returns></returns>
+        public List<SP_OPAC_GET_DIC_ITEM_TYPE_Result> GetDocumentType()
+        {
+            using (var dbContext = new OpacEntities())
+            {
+                return dbContext.SP_OPAC_GET_DIC_ITEM_TYPE().ToList();
+            }
+        }
+
+        /// <summary>
+        /// Get list of library
+        /// </summary>
+        /// <returns></returns>
+        public List<SP_GET_LIBRARY_Result> GetLibrary()
+        {
+            using (var dbContext = new OpacEntities())
+            {
+                return dbContext.SP_GET_LIBRARY().ToList();
+            }
+        }
+
+        /// <summary>
+        /// Get location
+        /// </summary>
+        /// <param name="libId"></param>
+        /// <returns></returns>
+        public List<Location> GetLocation(int libId)
+        {
+            using (var dbContext = new OpacEntities())
+            {
+                var list = new List<Location>();
+                var locationList = dbContext.FPT_SP_OPAC_GET_LOCATION().Where(t => t.LibID == libId).ToList();
+                foreach (var item in locationList)
+                {
+                    Location location = new Location()
+                    {
+                        ID = item.ID,
+                        LibID = item.LibID,
+                        SymbolAndCodeLoc = item.Symbol + " (" + item.CodeLoc + ")",
+                        MaxNumber = item.MaxNumber,
+                        Status = item.Status
+                    };
+                    list.Add(location);
+                }
+
+                return list;
+            }
+        }
+
+        /// <summary>
+        /// Get summary field
+        /// </summary>
+        /// <param name="itemID"></param>
+        /// <returns></returns>
+        public string GetSummary(int itemID)
+        {
+            using (var dbContext = new OpacEntities())
+            {
+                var summary = "";
+                try
+                {
+                    summary = (from s in dbContext.FIELD500S
+                        where s.FieldCode.Equals("520") && s.ItemID == itemID
+                        select s.Content).FirstOrDefault();
+
+                    summary = summary.Replace("$a", "");
+                }
+                catch (NullReferenceException)
+                {
+                    summary = "";
+                }
+                
+                return summary;
             }
         }
     }

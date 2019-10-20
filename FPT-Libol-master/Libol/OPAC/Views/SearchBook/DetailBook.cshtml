@@ -40,9 +40,12 @@
         int freeBook = (int)ViewBag.FreeBook;
         var fullBookInfo = (FullInforBook)ViewBag.FullBookInfo;
         var inforCopyNumber = (List<FPT_SP_GET_CODE_AND_SYMBOL_BY_ITEMID_Result>)ViewBag.InforCopyNumber;
-        var relatedTerm = (List<SP_OPAC_RELATED_TERMS_Result>)ViewBag.RelatedTerm;
+        var relatedTerm = (List<FPT_SP_OPAC_GET_RELATED_TERMS_Result>)ViewBag.RelatedTerm;
         string title = (string)ViewBag.BookTitle;
+        string summary = (string) ViewBag.Summary;
         var listDetailBook = new List<FPT_SP_GET_DETAIL_BOOK_WITH_STATUS_Result>();
+        var ddc = (string)ViewBag.DDC;
+        var originalDDC = (string)ViewBag.OriginalDDC;
     }
     <h2 class="searching">Thông tin chi tiết sách</h2>
     <br>
@@ -70,6 +73,17 @@
             </table>
             <table style="width: 900px">
                 <tr>
+                    <td class="detail"><b>Thông tin nhan đề</b></td>
+                    <td><b>@title</b></td>
+                </tr>
+                @if (!string.IsNullOrEmpty(summary))
+                {
+                    <tr>
+                        <td class="detail"><b>Tóm tắt</b></td>
+                        <td>@summary</td>
+                    </tr>
+                }
+                <tr>
                     <td class="detail"><b>Loại tài liệu</b></td>
                     <td>Tư liệu ngôn ngữ (Sách)</td>
                 </tr>
@@ -87,15 +101,12 @@
                         <td>@fullBookInfo.LanguageCode</td>
                     </tr>
                 }
-                @{
-                    var getDDC = relatedTerm.Where(s => s.TermType.Equals("DDC")).FirstOrDefault();
-                    if (getDDC != null)
-                    {
+                @if (!string.IsNullOrEmpty(ddc))
+                {
                     <tr>
                         <td class="detail"><b>Phân loại thập phân Dewey</b></td>
-                        <td>@getDDC.DisplayEntry</td>
+                        <td><a href="@Url.Action("SearchBy", "SearchBook", new {keyWord = originalDDC, searchBy = 2})" style="font-weight: bold; color: blue">@ddc</a></td>
                     </tr>
-                    }
                 }
                 @{
                     var authorList = relatedTerm.Where(s => s.TermType.Equals("Author"));
@@ -115,7 +126,6 @@
                         }
                     }
                     relatedAuthor = relatedAuthor.TrimEnd(',', ' ');
-
                 }
                 <tr>
                     <td class="detail"><b>Tên tác giả</b></td>
@@ -129,13 +139,16 @@
                     </tr>
                 }
                 <tr>
-                    <td class="detail"><b>Thông tin nhan đề</b></td>
-                    <td>@title</td>
-                </tr>
-                <tr>
-                    <td class="detail"><b>Xuẩt bản,phát hành</b></td>
+                    <td class="detail"><b>Xuẩt bản</b></td>
                     <td>@fullBookInfo.Publishing</td>
                 </tr>
+                @if (!string.IsNullOrEmpty(fullBookInfo.PublishingYear))
+                {
+                    <tr>
+                        <td class="detail"><b>Năm phát hành</b></td>
+                        <td>@fullBookInfo.PublishingYear</td>
+                    </tr>
+                }
                 <tr>
                     <td class="detail"><b>Mô tả vật lý</b></td>
                     <td>@fullBookInfo.PhysicDescription</td>
@@ -154,7 +167,7 @@
                                 {
                                     keywordNo++;
                                     keyWord = keywordNo + ". " + item.DisplayEntry;
-                                    <a href="@Url.Action("SearchByKeyWord", "SearchBook", new { keyWord = item.DisplayEntry })" style="font-weight: bold; color: blue">
+                                    <a href="@Url.Action("SearchBy", "SearchBook", new {keyWord = item.DisplayEntry, searchBy = 1})" style="font-weight: bold; color: blue">
                                         @keyWord &nbsp;
                                     </a>
                                 }
@@ -309,14 +322,33 @@
         <div>Bạn có muốn mượn sách <b>@title</b> ?</div>
         <div>
             <p style="text-align: center; position: relative; top: 28px">
-                <a href="#open-modal2" onclick="redirectLink()" class="btn1 btn-borrow1" style="color: white">Đồng ý</a>
+                @if (Session["ID"] == null)
+                {
+                    <a href="#open-modal2" class="btn1 btn-borrow1" style="color: white">Đồng ý</a>
+                }
+                else
+                {
+                    <a href="#open-modal3" onclick="redirectLink()" class="btn1 btn-borrow1" style="color: white">Đồng ý</a>
+                }
                 <button class="submit" onclick="window.history.back()">Hủy bỏ</button>
             </p>
         </div>
     </div>
 </div>
 
+
 <div id="open-modal2" class="modal-window">
+    <div>
+        <p style="font-family: Arial; color: red; text-align: center; font-size: 30px">
+            Bạn đọc cần phải đăng nhập để đặt mượn sách.
+        </p>
+        <p style="text-align: center">
+            <button class="submit" onclick="window.location = '@Url.Action("Login", "Login")'">Đăng nhập</button>
+        </p>
+    </div>
+</div>
+
+<div id="open-modal3" class="modal-window">
     <div>
         <div class="success-checkmark">
             <div class="check-icon">
@@ -348,19 +380,19 @@
                 <tbody>
                     @foreach (var item in listDetailBook)
                     {
-                    <tr>
-                        <td style="padding: 7px">@item.Code</td>
-                        <td style="padding: 7px">@item.Symbol</td>
-                        <td style="padding: 7px">@item.CopyNumber</td>
-                        @if (item.InUsed)
-                        {
-                            <td style="padding: 7px; color: red; font-weight: bold">Đang cho mượn</td>
-                        }
-                        else
-                        {
-                            <td style="padding: 7px; color: green; font-weight: bold">Đang sẵn sàng</td>
-                        }
-                    </tr>
+                        <tr>
+                            <td style="padding: 7px">@item.Code</td>
+                            <td style="padding: 7px">@item.Symbol</td>
+                            <td style="padding: 7px">@item.CopyNumber</td>
+                            @if (item.InUsed)
+                            {
+                                <td style="padding: 7px; color: red; font-weight: bold">Đang cho mượn</td>
+                            }
+                            else
+                            {
+                                <td style="padding: 7px; color: green; font-weight: bold">Đang sẵn sàng</td>
+                            }
+                        </tr>
                     }
                 </tbody>
             </table>

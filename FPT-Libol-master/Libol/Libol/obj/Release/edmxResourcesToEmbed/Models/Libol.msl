@@ -10482,6 +10482,7 @@
         </ComplexTypeMapping>
       </ResultMapping>
     </FunctionImportMapping>
+    <FunctionImportMapping FunctionImportName="FPT_CIR_SP_STAT_TOP20" FunctionName="LibolModel.Store.FPT_CIR_SP_STAT_TOP20" />
     <EntitySetMapping Name="FPT_CATA_FILE_NEW">
       <EntityTypeMapping TypeName="LibolModel.FPT_CATA_FILE_NEW">
         <MappingFragment StoreEntitySet="FPT_CATA_FILE_NEW">
@@ -10492,6 +10493,55 @@
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
-    <FunctionImportMapping FunctionImportName="FPT_CIR_SP_STAT_TOP20" FunctionName="LibolModel.Store.FPT_CIR_SP_STAT_TOP20" />
+    <FunctionImportMapping FunctionImportName="FPT_SELECTALLDELETEABLE" FunctionName="LibolModel.Store.FPT_SELECTALLDELETEABLE" />
+    <FunctionImportMapping FunctionImportName="FPT_SPECIALIZED_REPORT" FunctionName="LibolModel.Store.FPT_SPECIALIZED_REPORT">
+      <ResultMapping>
+        <ComplexTypeMapping TypeName="LibolModel.FPT_SPECIALIZED_REPORT_Result">
+          <ScalarProperty Name="ItemID" ColumnName="ItemID" />
+          <ScalarProperty Name="SUBJECTCODE" ColumnName="SUBJECTCODE" />
+          <ScalarProperty Name="ITEMNAME" ColumnName="ITEMNAME" />
+          <ScalarProperty Name="ITEMCODE" ColumnName="ITEMCODE" />
+          <ScalarProperty Name="ISBN" ColumnName="ISBN" />
+          <ScalarProperty Name="AUTHOR" ColumnName="AUTHOR" />
+          <ScalarProperty Name="PUBLISHER" ColumnName="PUBLISHER" />
+          <ScalarProperty Name="TOTAL" ColumnName="TOTAL" />
+          <ScalarProperty Name="YEAR" ColumnName="YEAR" />
+          <ScalarProperty Name="PUBLISHNUM" ColumnName="PUBLISHNUM" />
+          <ScalarProperty Name="GTNUMBER" ColumnName="GTNUMBER" />
+          <ScalarProperty Name="TKNUMBER" ColumnName="TKNUMBER" />
+        </ComplexTypeMapping>
+      </ResultMapping>
+    </FunctionImportMapping>
+    <FunctionImportMapping FunctionImportName="FPT_SPECIALIZED_REPORT_GET_PUBLISHER" FunctionName="LibolModel.Store.FPT_SPECIALIZED_REPORT_GET_PUBLISHER">
+      <ResultMapping>
+        <ComplexTypeMapping TypeName="LibolModel.FPT_SPECIALIZED_REPORT_GET_PUBLISHER_Result">
+          <ScalarProperty Name="ItemID" ColumnName="ItemID" />
+          <ScalarProperty Name="PUBLISHER" ColumnName="PUBLISHER" />
+        </ComplexTypeMapping>
+      </ResultMapping>
+    </FunctionImportMapping>
+    <FunctionImportMapping FunctionImportName="FPT_SPECIALIZED_REPORT_TOTAL" FunctionName="LibolModel.Store.FPT_SPECIALIZED_REPORT_TOTAL" />
+    <FunctionImportMapping FunctionImportName="FPT_SPECIALIZED_REPORT_TOTAL_ITEM" FunctionName="LibolModel.Store.FPT_SPECIALIZED_REPORT_TOTAL_ITEM" />
+    <FunctionImportMapping FunctionImportName="FPT_CATA_GETCONTENT_BY_INDEX" FunctionName="LibolModel.Store.FPT_CATA_GETCONTENT_BY_INDEX" />
+    <FunctionImportMapping FunctionImportName="FPT_SP_ACQ_GETMAXID_HINT" FunctionName="LibolModel.Store.FPT_SP_ACQ_GETMAXID_HINT" />
+    <FunctionImportMapping FunctionImportName="FPT_SP_ACQ_NEW_INVENTORY" FunctionName="LibolModel.Store.FPT_SP_ACQ_NEW_INVENTORY" />
+    <FunctionImportMapping FunctionImportName="FPT_SPECIALIZED_REPORT_GET_YEAR_PUBLISHNUM" FunctionName="LibolModel.Store.FPT_SPECIALIZED_REPORT_GET_YEAR_PUBLISHNUM">
+      <ResultMapping>
+        <ComplexTypeMapping TypeName="LibolModel.FPT_SPECIALIZED_REPORT_GET_YEAR_PUBLISHNUM_Result">
+          <ScalarProperty Name="ITEMID" ColumnName="ITEMID" />
+          <ScalarProperty Name="CONTENT" ColumnName="CONTENT" />
+          <ScalarProperty Name="FieldCode" ColumnName="FieldCode" />
+        </ComplexTypeMapping>
+      </ResultMapping>
+    </FunctionImportMapping>
+    <FunctionImportMapping FunctionImportName="FPT_SPECIALIZED_REPORT_GET_GTTK" FunctionName="LibolModel.Store.FPT_SPECIALIZED_REPORT_GET_GTTK">
+      <ResultMapping>
+        <ComplexTypeMapping TypeName="LibolModel.FPT_SPECIALIZED_REPORT_GET_GTTK_Result">
+          <ScalarProperty Name="total" ColumnName="total" />
+        </ComplexTypeMapping>
+      </ResultMapping>
+    </FunctionImportMapping>
+    <FunctionImportMapping FunctionImportName="FPT_GET_DATE_SUGGEST_CHECKOUT1" FunctionName="LibolModel.Store.FPT_GET_DATE_SUGGEST_CHECKOUT" />
+    <FunctionImportMapping FunctionImportName="FPT_GET_DATE_SUGGEST_RENEW1" FunctionName="LibolModel.Store.FPT_GET_DATE_SUGGEST_RENEW" />
   </EntityContainerMapping>
 </Mapping>

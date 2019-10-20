@@ -12465,7 +12465,8 @@
     </FunctionImport>
     <FunctionImport Name="FPT_CIR_YEAR_STATISTIC">
       <Parameter Name="intLibraryID" Mode="In" Type="Int32" />
-      <Parameter Name="intLocationID" Mode="In" Type="Int32" />
+      <Parameter Name="strLocationPrefix" Mode="In" Type="String" />
+      <Parameter Name="strLocationID" Mode="In" Type="String" />
       <Parameter Name="intType" Mode="In" Type="Int32" />
       <Parameter Name="intStatus" Mode="In" Type="Int32" />
       <Parameter Name="strFromYear" Mode="In" Type="String" />
@@ -12885,6 +12886,7 @@
       <Parameter Name="intTopNum" Mode="In" Type="String" />
       <Parameter Name="intMinLoan" Mode="In" Type="String" />
       <Parameter Name="libid" Mode="In" Type="String" />
+      <Parameter Name="strLocationPrefix" Mode="In" Type="String" />
       <Parameter Name="locid" Mode="In" Type="String" />
     </FunctionImport>
     <FunctionImport Name="FPT_SP_STAT_PATRONGROUP">
@@ -12903,6 +12905,7 @@
       <Parameter Name="intMinLoan" Mode="In" Type="String" />
       <Parameter Name="OptItemID" Mode="In" Type="String" />
       <Parameter Name="LocID" Mode="In" Type="String" />
+      <Parameter Name="strLocationPrefix" Mode="In" Type="String" />
       <Parameter Name="LibID" Mode="In" Type="String" />
     </FunctionImport>
     <FunctionImport Name="FPT_ACQ_STATISTIC_TOP20" ReturnType="Collection(LibolModel.FPT_ACQ_STATISTIC_TOP20_Result)">
@@ -12949,12 +12952,6 @@
       <Parameter Name="intType" Mode="In" Type="Int32" />
       <Parameter Name="intUserID" Mode="In" Type="Int32" />
     </FunctionImport>
-    <FunctionImport Name="FPT_SPECIALIZED_REPORT_TOTAL_ITEM" ReturnType="Collection(Int32)">
-      <Parameter Name="intLibID" Mode="In" Type="Int32" />
-      <Parameter Name="strItemIDs" Mode="In" Type="String" />
-      <Parameter Name="intType" Mode="In" Type="Int32" />
-      <Parameter Name="intUserID" Mode="In" Type="Int32" />
-    </FunctionImport>
     <FunctionImport Name="FPT_CATA_GETCONTENT_BY_INDEX" ReturnType="Collection(Int32)">
       <Parameter Name="Index" Mode="In" Type="Int32" />
     </FunctionImport>
@@ -12971,6 +12968,24 @@
     <FunctionImport Name="FPT_SPECIALIZED_REPORT_GET_GTTK" ReturnType="Collection(LibolModel.FPT_SPECIALIZED_REPORT_GET_GTTK_Result)">
       <Parameter Name="itemid" Mode="In" Type="Int32" />
       <Parameter Name="type" Mode="In" Type="Int32" />
+      <Parameter Name="intUserID" Mode="In" Type="Int32" />
+      <Parameter Name="intLibID" Mode="In" Type="Int32" />
+    </FunctionImport>
+    <FunctionImport Name="FPT_SPECIALIZED_REPORT_TOTAL_ITEM" ReturnType="Collection(Int32)">
+      <Parameter Name="intLibID" Mode="In" Type="Int32" />
+      <Parameter Name="strItemIDs" Mode="In" Type="String" />
+      <Parameter Name="intType" Mode="In" Type="Int32" />
+      <Parameter Name="intUserID" Mode="In" Type="Int32" />
+    </FunctionImport>
+    <FunctionImport Name="FPT_GET_DATE_SUGGEST_CHECKOUT" ReturnType="Collection(String)">
+      <Parameter Name="term" Mode="In" Type="String" />
+    </FunctionImport>
+    <FunctionImport Name="FPT_GET_DATE_SUGGEST_RENEW" ReturnType="Collection(String)">
+      <Parameter Name="term" Mode="In" Type="String" />
+    </FunctionImport>
+    <FunctionImport Name="SP_HOLDING_LIBLOCUSER_SEL2" ReturnType="Collection(LibolModel.SP_HOLDING_LIBLOCUSER_SEL2_Result)">
+      <Parameter Name="intUserID" Mode="In" Type="Int32" />
+      <Parameter Name="intLibID" Mode="In" Type="Int32" />
     </FunctionImport>
   </EntityContainer>
   <ComplexType Name="CAT_DIC_LIST_SEL_Result">
@@ -18076,6 +18091,13 @@
   </ComplexType>
   <ComplexType Name="FPT_SPECIALIZED_REPORT_GET_GTTK_Result">
     <Property Type="Int32" Name="total" Nullable="true" />
-    <Property Type="Int32" Name="ItemID" Nullable="false" />
+  </ComplexType>
+  <ComplexType Name="SP_HOLDING_LIBLOCUSER_SEL2_Result">
+    <Property Type="String" Name="LOCNAME" Nullable="false" MaxLength="83" />
+    <Property Type="Int32" Name="ID" Nullable="false" />
+    <Property Type="String" Name="GroupID" Nullable="true" MaxLength="8000" />
+    <Property Type="Int32" Name="LibID" Nullable="false" />
+    <Property Type="String" Name="Symbol" Nullable="false" MaxLength="50" />
+    <Property Type="String" Name="Code" Nullable="false" MaxLength="32" />
   </ComplexType>
 </Schema>

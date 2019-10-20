@@ -249,7 +249,7 @@ namespace Libol.Models
             string querry = "SELECT DISTINCT ID FROM ITEM WHERE 1 = 1";
             if (!string.IsNullOrEmpty(title))
             {
-                List<int> itemList = db.ITEM_TITLE.Where(it => it.Title.Contains(title.Trim())).Select(i => i.ItemID).ToList();
+                List<int> itemList = db.FIELD200S.Where(it => it.Content.Contains(title.Trim())).Select(i => i.ItemID).ToList();
                 if (itemList.Count > 0)
                 {
                     querry = querry + " AND ITEM.ID IN (" + string.Join(",", itemList) + ")";

@@ -665,6 +665,9 @@
     <Compile Include="Models\FPT_SPECIALIZED_REPORT_GET_PUBLISHER_Result.cs">
       <DependentUpon>Opac.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\FPT_SPECIALIZED_REPORT_GET_YEAR_PUBLISHNUM_Result.cs">
+      <DependentUpon>Opac.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\FPT_SPECIALIZED_REPORT_Result.cs">
       <DependentUpon>Opac.tt</DependentUpon>
     </Compile>
@@ -741,6 +744,18 @@
       <DependentUpon>Opac.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\FPT_SP_JOIN_COPYNUMBER_BY_ITEMID_AND_ACQUIREDDATE_Result.cs">
+      <DependentUpon>Opac.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\FPT_SP_OPAC_GET_LOCATION_Result.cs">
+      <DependentUpon>Opac.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\FPT_SP_OPAC_GET_RELATED_TERMS_Result.cs">
+      <DependentUpon>Opac.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\FPT_SP_OPAC_GET_SEARCHED_INFO_BOOK_BY_KEYWORD_Result.cs">
+      <DependentUpon>Opac.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\FPT_SP_OPAC_GET_SEARCHED_INFO_BOOK_Result.cs">
       <DependentUpon>Opac.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\FPT_SYS_USER_RIGHT.cs">
@@ -985,6 +1000,8 @@
     <Compile Include="Models\libol8.cs">
       <DependentUpon>Opac.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\LibraryLocationModel.cs" />
+    <Compile Include="Models\Location.cs" />
     <Compile Include="Models\MARC_AUTHORITY_BLOCK.cs">
       <DependentUpon>Opac.tt</DependentUpon>
     </Compile>
@@ -4151,6 +4168,7 @@
     <Content Include="Views\Login\Login.cshtml" />
     <Content Include="Views\SearchBook\SearchBook.cshtml" />
     <Content Include="Views\SearchBook\SearchBookByKeyWord.cshtml" />
+    <Content Include="Views\Shared\_LayoutSupport.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
