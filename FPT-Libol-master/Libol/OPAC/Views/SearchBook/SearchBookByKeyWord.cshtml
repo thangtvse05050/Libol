@@ -1,5 +1,5 @@
 ﻿@using PagedList.Mvc
-@model PagedList.IPagedList<OPAC.Models.FPT_SP_GET_SEARCHED_INFO_BOOK_BY_KEYWORD_Result>
+@model PagedList.IPagedList<OPAC.Models.FPT_SP_OPAC_GET_SEARCHED_INFO_BOOK_BY_KEYWORD_Result>
 @using OPAC.Dao
 
 @{
@@ -67,7 +67,12 @@
                             <td style="padding: 7px">
                                 <a href="@Url.Action("DetailBook", "SearchBook", new { itemID = item.ID })" class="news">
                                     <b>@item.Title</b>
-                                </a> - @item.Publisher, @item.Year - @item.Author<br>
+                                </a>
+                                @if (!string.IsNullOrEmpty(item.Version))
+                                {
+                                    <span>- @item.Version </span>
+                                }
+                                - @item.Publisher, @item.Year - @item.Author<br>
                                 &nbsp;&nbsp;<i class="fa fa-angle-double-right" style="font-size:18px"></i>&nbsp;&nbsp;<b>
                                     Mã ĐKCB:
                                 </b>

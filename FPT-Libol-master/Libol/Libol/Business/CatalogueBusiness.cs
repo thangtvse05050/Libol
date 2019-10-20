@@ -60,7 +60,7 @@ namespace Libol.Models
             if (strTT != "")
             {
                 strTT = strTT.ToUpper();
-                List<int> id = db.ITEM_TITLE.Where(a => a.Title.Contains(strTT)).Select(a => a.ItemID).ToList();
+                List<int> id = db.FIELD200S.Where(a => a.Content.Contains(strTT)).Select(a => a.ItemID).ToList();
                 ItemIds = ItemIds.Concat(id).ToList();
             }
             if (ISBN != "")
