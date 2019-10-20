@@ -15,7 +15,7 @@
     </style>
 </head>
 
-<h4 style="margin-top:20px;">Thông tin ấn phẩm đã được mượn theo từng năm</h4>
+<h4 style="margin-top:20px;">Thông tin ấn phẩm đã được mượn theo từng tháng</h4>
 <div class="row">
     <div class="col-6">
         <div class="form-group row col-12">
@@ -23,14 +23,22 @@
             @Html.DropDownList("Library", ViewData["lib"] as List<SelectListItem>, new { @class = "form-control col-md-4" })
         </div>
         <div class="form-group row col-12">
-            <label class="control-label col-md-8 align-self-center">Từ năm</label>
-            @Html.DropDownList("InYear", new SelectList(Enumerable.Range(2007, (DateTime.Now.Year - 2007) + 1).Reverse().ToList()), "-- Hãy chọn năm --", new { @class = "form-control col-md-4" })
+            <label class="control-label col-md-8 align-self-center">Kho</label>
+            @Html.DropDownList("LocationPrefix", new SelectList(string.Empty, "Value", "Text"), "Chọn Kho", new { @class = "form-control col-md-4" })
+        </div>
+        <div class="form-group row col-12">
+            <label class="control-label col-md-8 align-self-center">Từ ngày</label>
+            <input class="form-control col-md-4" type="date" id="date_from" name="date_from" />
         </div>
     </div>
     <div class="col-6">
         <div class="form-group row col-12">
-            <label class="control-label col-md-2 align-self-center">Kho</label>
-            @Html.DropDownList("Location", new SelectList(string.Empty, "Value", "Text"), "Hãy chọn Kho", new { @class = "form-control col-md-4" })
+            <label class="control-label col-md-2 align-self-center">Lĩnh vực kho</label>
+            @Html.DropDownList("LocationsByPrefix", new SelectList(string.Empty, "Value", "Text"), "Chọn lĩnh vực", new { @class = "form-control col-md-4", @multiple = true })
+        </div>
+        <div class="form-group row col-12">
+            <label class="control-label col-md-2 align-self-center">Tới ngày</label>
+            <input class="form-control col-md-4" type="date" id="date_to" name="date_to" />
         </div>
     </div>
 </div>
@@ -61,46 +69,69 @@
     document.getElementById("stat").onclick = function () {
         var empObj = {
             strLibID: document.getElementById("Library").value,
-            strLocID: document.getElementById("Location").value,
-            strInYear: document.getElementById("InYear").value,
+            strLocPrefix: $("#LocationPrefix").val(),
+            strLocID: $("#LocationsByPrefix").val().toString(),
+            strDateFrom: $("#date_from").val(),
+            strDateTo: $("#date_to").val(),
             strType: $("input:radio[name=Type]:checked").val(),
         };
-        $.ajax({
-            url: "GetMonthStats",
-            data: JSON.stringify(empObj),
-            contentType: "application/json;charset=utf-8",
-            type: "POST",
-            beforeSend: function () {
-                $("#ContentStatMonth").html("<h4>Loading...</h4>");
-            },
-            success: function (result) {
-                $("#ContentStatMonth").html(result)
-            },
-            error: function (errormessage) {
-                console.log("error");
-            }
-        });
+        if (document.getElementById("Library").value == "") {
+            alert("Hãy chọn thư viện");
+
+        } else if (document.getElementById("date_from").value != "" && document.getElementById("date_to").value != "" && document.getElementById("date_from").value > document.getElementById("date_to").value) {
+            alert("Khoảng thời gian thống kê không hợp lệ");
+        } else {
+            $.ajax({
+                url: "GetMonthStats",
+                data: JSON.stringify(empObj),
+                contentType: "application/json;charset=utf-8",
+                type: "POST",
+                beforeSend: function () {
+                    $("#ContentStatMonth").html("<h4>Loading...</h4>");
+                },
+                success: function (result) {
+                    $("#ContentStatMonth").html(result)
+                },
+                error: function (errormessage) {
+                    console.log("error");
+                }
+            });
+        }
     };
 </script>
 
 <script type="text/javascript">
     $(document).ready(function () {
         $("#Library").change(function () {
-            $("#Location").empty();
+            $("#LocationPrefix").empty();
+            $("#LocationsByPrefix").empty();
             $.ajax({
                 type: 'POST',
-                url: '@Url.Action("GetLocations")', // we are calling json method
+                url: '@Url.Action("GetLocationsPrefix")', // we are calling json method
                 dataType: 'json',
                 data: { id: $("#Library").val() },
                 success: function (locs) {
                     $.each(locs, function (i, loc) {
-                        $("#Location").append('<option value="' + loc.Value + '">' +
+                        $("#LocationPrefix").append('<option value="' + loc.Value + '">' +
                             loc.Text + '</option>');
                     });
                 }
-                //error: function (ex) {
-                //    alert('Failed to retrieve states.' + ex);
-                //}
+            });
+            return false;
+        });
+        $("#LocationPrefix").change(function () {
+            $("#LocationsByPrefix").empty();
+            $.ajax({
+                type: 'POST',
+                url: '@Url.Action("GetLocationsByPrefix")', // we are calling json method
+                dataType: 'json',
+                data: { id: $("#Library").val(), prefix: $("#LocationPrefix").val() },
+                success: function (locs) {
+                    $.each(locs, function (i, loc) {
+                        $("#LocationsByPrefix").append('<option value="' + loc.Value + '">' +
+                            loc.Text + '</option>');
+                    });
+                }
             });
             return false;
         });
