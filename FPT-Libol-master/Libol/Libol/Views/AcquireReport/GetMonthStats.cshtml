@@ -100,7 +100,7 @@ else
                         <table id="table1" class="WordSection1 table-striped table-bordered" style="margin-left:50px; border: thin;" border="1">
                             <thead>
                                 <tr>
-                                    <th style="text-align:center">Tháng</th>
+                                    <th style="text-align:center" width="80px">Tháng</th>
                                     <th style="text-align:center">Số đầu ấn phẩm</th>
                                 </tr>
                             </thead>
@@ -108,7 +108,7 @@ else
                                 @foreach (var item in ViewBag.Result)
                                 {
                                     <tr>
-                                        <td style="text-align:center">@item.Month</td>
+                                        <td style="text-align:center">@item.Month-@item.Year</td>
                                         <td style="text-align:center">@item.BooksTotal</td>
                                     </tr>
                                     sum1 += item.BooksTotal;
@@ -130,7 +130,7 @@ else
                         <table id="table2" class="WordSection1 table-striped table-bordered" style="margin-left:50px; border: thin;" border="1">
                             <thead>
                                 <tr>
-                                    <th style="text-align:center">Tháng</th>
+                                    <th style="text-align:center" width="80px">Tháng</th>
                                     <th id="tbl2_th" style="text-align:center">Số bản ấn phẩm</th>
                                 </tr>
                             </thead>
@@ -138,7 +138,7 @@ else
                                 @foreach (var item in ViewBag.Result)
                                 {
                                     <tr>
-                                        <td style="text-align:center">@item.Month</td>
+                                        <td style="text-align:center">@item.Month-@item.Year</td>
                                         <td style="text-align:center">@item.CopiesTotal</td>
                                     </tr>
                                     sum2 += item.CopiesTotal;
@@ -160,7 +160,7 @@ else
                         <table id="table3" class="WordSection1 table-striped table-bordered" style="margin-left:50px; border: thin;" border="1">
                             <thead>
                                 <tr>
-                                    <th style="text-align:center">Tháng</th>
+                                    <th style="text-align:center" width="80px">Tháng</th>
                                     <th id="tbl3_th" style="text-align:center">Số chi phí</th>
                                 </tr>
                             </thead>
@@ -168,7 +168,7 @@ else
                                 @foreach (var item in ViewBag.Result)
                                 {
                                     <tr>
-                                        <td style="text-align:center">@item.Month</td>
+                                        <td style="text-align:center">@item.Month-@item.Year</td>
                                         <td style="text-align:center">@item.MoneyTotal</td>
                                     </tr>
                                     sum3 += item.MoneyTotal;

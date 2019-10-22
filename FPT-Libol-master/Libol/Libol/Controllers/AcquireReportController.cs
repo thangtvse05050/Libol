@@ -1641,13 +1641,13 @@ namespace Libol.Controllers
             return View();
         }
         [HttpPost]
-        public PartialViewResult GetYearStats(string strLibID, string strLocID, string strFromYear, string strToYear)
+        public PartialViewResult GetYearStats(string strLibID, string strLocPrefix, string strLocID, string strFromYear, string strToYear)
         {
             int LibID = 0;
-            int LocID = 0;
+            //int LocID = 0;
             if (!String.IsNullOrEmpty(strLibID)) LibID = Convert.ToInt32(strLibID);
-            if (!String.IsNullOrEmpty(strLocID)) LocID = Convert.ToInt32(strLocID);
-            ViewBag.Result = ab.FPT_ACQ_YEAR_STATISTIC_LIST(LibID, LocID, strFromYear, strToYear, (int)Session["UserID"]);
+            //if (!String.IsNullOrEmpty(strLocID)) LocID = Convert.ToInt32(strLocID);
+            ViewBag.Result = ab.FPT_ACQ_YEAR_STATISTIC_LIST(LibID, strLocPrefix, strLocID, strFromYear, strToYear, (int)Session["UserID"]);
             return PartialView("GetYearStats");
         }
         [AuthAttribute(ModuleID = 4, RightID = "28")]
@@ -1665,13 +1665,13 @@ namespace Libol.Controllers
             return View();
         }
         [HttpPost]
-        public PartialViewResult GetMonthStats(string strLibID, string strLocID, string strInYear)
+        public PartialViewResult GetMonthStats(string strLibID, string strLocPrefix, string strLocID, string strDateFrom, string strDateTo)
         {
             int LibID = 0;
-            int LocID = 0;
+            //int LocID = 0;
             if (!String.IsNullOrEmpty(strLibID)) LibID = Convert.ToInt32(strLibID);
-            if (!String.IsNullOrEmpty(strLocID)) LocID = Convert.ToInt32(strLocID);
-            ViewBag.Result = ab.FPT_ACQ_MONTH_STATISTIC_LIST(LibID, LocID, strInYear, (int)Session["UserID"]);
+            //if (!String.IsNullOrEmpty(strLocID)) LocID = Convert.ToInt32(strLocID);
+            ViewBag.Result = ab.FPT_ACQ_MONTH_STATISTIC_LIST(LibID, strLocPrefix, strLocID, strDateFrom, strDateTo, (int)Session["UserID"]);
             return PartialView("GetMonthStats");
         }
         [AuthAttribute(ModuleID = 4, RightID = "27")]

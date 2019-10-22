@@ -5330,8 +5330,10 @@ warning 6002: The table/view 'Libol.dbo.MARC_BIB_WS_DETAIL' does not have a prim
         </Function>
         <Function Name="FPT_ACQ_MONTH_STATISTIC" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="intLibraryID" Type="int" Mode="In" />
-          <Parameter Name="intLocationID" Type="int" Mode="In" />
-          <Parameter Name="strInYear" Type="varchar" Mode="In" />
+          <Parameter Name="strLocationPrefix" Type="varchar" Mode="In" />
+          <Parameter Name="strLocationID" Type="varchar" Mode="In" />
+          <Parameter Name="strFromDate" Type="varchar" Mode="In" />
+          <Parameter Name="strToDate" Type="varchar" Mode="In" />
           <Parameter Name="intUserID" Type="int" Mode="In" />
         </Function>
         <Function Name="FPT_ACQ_STATISTIC_TOP20" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
@@ -5403,7 +5405,8 @@ warning 6002: The table/view 'Libol.dbo.MARC_BIB_WS_DETAIL' does not have a prim
         </Function>
         <Function Name="FPT_ACQ_YEAR_STATISTIC" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="intLibraryID" Type="int" Mode="In" />
-          <Parameter Name="intLocationID" Type="int" Mode="In" />
+          <Parameter Name="strLocationPrefix" Type="varchar" Mode="In" />
+          <Parameter Name="strLocationID" Type="varchar" Mode="In" />
           <Parameter Name="strFromYear" Type="varchar" Mode="In" />
           <Parameter Name="strToYear" Type="varchar" Mode="In" />
           <Parameter Name="intUserID" Type="int" Mode="In" />
@@ -25671,13 +25674,16 @@ warning 6002: The table/view 'Libol.dbo.MARC_BIB_WS_DETAIL' does not have a prim
           </FunctionImport>
           <FunctionImport Name="FPT_ACQ_MONTH_STATISTIC">
             <Parameter Name="intLibraryID" Mode="In" Type="Int32" />
-            <Parameter Name="intLocationID" Mode="In" Type="Int32" />
-            <Parameter Name="strInYear" Mode="In" Type="String" />
+            <Parameter Name="strLocationPrefix" Mode="In" Type="String" />
+            <Parameter Name="strLocationID" Mode="In" Type="String" />
+            <Parameter Name="strFromDate" Mode="In" Type="String" />
+            <Parameter Name="strToDate" Mode="In" Type="String" />
             <Parameter Name="intUserID" Mode="In" Type="Int32" />
           </FunctionImport>
           <FunctionImport Name="FPT_ACQ_YEAR_STATISTIC">
             <Parameter Name="intLibraryID" Mode="In" Type="Int32" />
-            <Parameter Name="intLocationID" Mode="In" Type="Int32" />
+            <Parameter Name="strLocationPrefix" Mode="In" Type="String" />
+            <Parameter Name="strLocationID" Mode="In" Type="String" />
             <Parameter Name="strFromYear" Mode="In" Type="String" />
             <Parameter Name="strToYear" Mode="In" Type="String" />
             <Parameter Name="intUserID" Mode="In" Type="Int32" />
