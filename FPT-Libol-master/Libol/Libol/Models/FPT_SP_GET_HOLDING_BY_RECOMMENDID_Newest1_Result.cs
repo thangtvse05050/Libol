@@ -11,7 +11,7 @@ namespace Libol.Models
 {
     using System;
     
-    public partial class FPT_SP_GET_HOLDING_BY_RECOMMENDID_Newest_Result
+    public partial class FPT_SP_GET_HOLDING_BY_RECOMMENDID_Newest1_Result
     {
         public string RECORDNUMBER { get; set; }
         public string Title { get; set; }
@@ -21,6 +21,7 @@ namespace Libol.Models
         public Nullable<int> InBookNum { get; set; }
         public string DKCB { get; set; }
         public Nullable<System.DateTime> ACQUIREDDATE { get; set; }
+        public Nullable<System.DateTime> DateLastUsed { get; set; }
         public int LocationID { get; set; }
         public string RECOMMENDID { get; set; }
         public string Year { get; set; }
@@ -29,6 +30,5 @@ namespace Libol.Models
         public string NXB { get; set; }
         public Nullable<double> FullPrice { get; set; }
         public int ItemID { get; set; }
-        public Nullable<System.DateTime> DateLastUsed { get; set; }
     }
 }

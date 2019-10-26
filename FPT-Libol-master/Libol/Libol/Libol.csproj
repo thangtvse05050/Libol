@@ -269,6 +269,9 @@
     <Compile Include="Models\FPT_SP_GET_GENERAL_LOC_INFOR_DUCNV_Result.cs">
       <DependentUpon>Libol.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\FPT_SP_GET_HOLDING_BY_RECOMMENDID_Newest1_Result.cs">
+      <DependentUpon>Libol.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\FPT_SP_GET_HOLDING_BY_RECOMMENDID_Newest_Result.cs">
       <DependentUpon>Libol.tt</DependentUpon>
     </Compile>

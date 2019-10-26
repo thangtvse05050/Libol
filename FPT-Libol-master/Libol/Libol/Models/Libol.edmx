@@ -5901,6 +5901,14 @@ warning 6002: The table/view 'Libol.dbo.MARC_BIB_WS_DETAIL' does not have a prim
           <Parameter Name="EndDate" Type="date" Mode="In" />
           <Parameter Name="OrderBy" Type="varchar" Mode="In" />
         </Function>
+        <Function Name="FPT_SP_GET_HOLDING_BY_RECOMMENDID_Newest" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="LibID" Type="int" Mode="In" />
+          <Parameter Name="LocID" Type="int" Mode="In" />
+          <Parameter Name="reid" Type="varchar" Mode="In" />
+          <Parameter Name="StartDate" Type="varchar" Mode="In" />
+          <Parameter Name="EndDate" Type="varchar" Mode="In" />
+          <Parameter Name="strRecordNumber" Type="varchar" Mode="In" />
+        </Function>
         <Function Name="FPT_SP_GET_HOLDING_IDs_v1" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="intLibID" Type="nvarchar" Mode="In" />
           <Parameter Name="intLocID" Type="nvarchar" Mode="In" />
@@ -26191,6 +26199,7 @@ warning 6002: The table/view 'Libol.dbo.MARC_BIB_WS_DETAIL' does not have a prim
             <Parameter Name="reid" Mode="In" Type="String" />
             <Parameter Name="StartDate" Mode="In" Type="String" />
             <Parameter Name="EndDate" Mode="In" Type="String" />
+            <Parameter Name="strRecordNumber" Mode="In" Type="String" />
           </FunctionImport>
           <FunctionImport Name="FPT_SELECTALLDELETEABLE" ReturnType="Collection(Int32)" />
           <FunctionImport Name="FPT_SPECIALIZED_REPORT" ReturnType="Collection(LibolModel.FPT_SPECIALIZED_REPORT_Result)">
@@ -26241,6 +26250,14 @@ warning 6002: The table/view 'Libol.dbo.MARC_BIB_WS_DETAIL' does not have a prim
           <FunctionImport Name="SP_HOLDING_LIBLOCUSER_SEL2" ReturnType="Collection(LibolModel.SP_HOLDING_LIBLOCUSER_SEL2_Result)">
             <Parameter Name="intUserID" Mode="In" Type="Int32" />
             <Parameter Name="intLibID" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="FPT_SP_GET_HOLDING_BY_RECOMMENDID_Newest1" ReturnType="Collection(LibolModel.FPT_SP_GET_HOLDING_BY_RECOMMENDID_Newest1_Result)">
+            <Parameter Name="LibID" Mode="In" Type="Int32" />
+            <Parameter Name="LocID" Mode="In" Type="Int32" />
+            <Parameter Name="reid" Mode="In" Type="String" />
+            <Parameter Name="StartDate" Mode="In" Type="String" />
+            <Parameter Name="EndDate" Mode="In" Type="String" />
+            <Parameter Name="strRecordNumber" Mode="In" Type="String" />
           </FunctionImport>
         </EntityContainer>
         <ComplexType Name="CAT_DIC_LIST_SEL_Result">
@@ -31320,6 +31337,7 @@ warning 6002: The table/view 'Libol.dbo.MARC_BIB_WS_DETAIL' does not have a prim
           <Property Type="String" Name="NXB" Nullable="false" MaxLength="256" />
           <Property Type="Double" Name="FullPrice" Nullable="true" />
           <Property Type="Int32" Name="ItemID" Nullable="false" />
+          <Property Type="DateTime" Name="DateLastUsed" Nullable="true" Precision="23" />
         </ComplexType>
         <ComplexType Name="FPT_SPECIALIZED_REPORT_Result">
           <Property Type="Int32" Name="ItemID" Nullable="false" />
@@ -31354,6 +31372,25 @@ warning 6002: The table/view 'Libol.dbo.MARC_BIB_WS_DETAIL' does not have a prim
           <Property Type="Int32" Name="LibID" Nullable="false" />
           <Property Type="String" Name="Symbol" Nullable="false" MaxLength="50" />
           <Property Type="String" Name="Code" Nullable="false" MaxLength="32" />
+        </ComplexType>
+        <ComplexType Name="FPT_SP_GET_HOLDING_BY_RECOMMENDID_Newest1_Result">
+          <Property Type="String" Name="RECORDNUMBER" Nullable="true" MaxLength="50" />
+          <Property Type="String" Name="Title" Nullable="true" MaxLength="4000" />
+          <Property Type="DateTime" Name="ReceiptedDate" Nullable="true" />
+          <Property Type="Int32" Name="useCount" Nullable="true" />
+          <Property Type="String" Name="ISBN" Nullable="false" MaxLength="1" />
+          <Property Type="Int32" Name="InBookNum" Nullable="true" />
+          <Property Type="String" Name="DKCB" Nullable="false" MaxLength="1" />
+          <Property Type="DateTime" Name="ACQUIREDDATE" Nullable="true" />
+          <Property Type="DateTime" Name="DateLastUsed" Nullable="true" Precision="23" />
+          <Property Type="Int32" Name="LocationID" Nullable="false" />
+          <Property Type="String" Name="RECOMMENDID" Nullable="false" MaxLength="50" />
+          <Property Type="String" Name="Year" Nullable="false" MaxLength="16" />
+          <Property Type="Single" Name="Price" Nullable="true" />
+          <Property Type="String" Name="Currency" Nullable="true" MaxLength="8000" />
+          <Property Type="String" Name="NXB" Nullable="false" MaxLength="256" />
+          <Property Type="Double" Name="FullPrice" Nullable="true" />
+          <Property Type="Int32" Name="ItemID" Nullable="false" />
         </ComplexType>
       </Schema>
     </edmx:ConceptualModels>
@@ -41912,6 +41949,52 @@ warning 6002: The table/view 'Libol.dbo.MARC_BIB_WS_DETAIL' does not have a prim
                 <ScalarProperty Name="LibID" ColumnName="LibID" />
                 <ScalarProperty Name="Symbol" ColumnName="Symbol" />
                 <ScalarProperty Name="Code" ColumnName="Code" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="FPT_SP_GET_HOLDING_BY_RECOMMENDID_Newest1" FunctionName="LibolModel.Store.FPT_SP_GET_HOLDING_BY_RECOMMENDID_Newest">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="LibolModel.FPT_SP_GET_HOLDING_BY_RECOMMENDID_Newest1_Result">
+                <ScalarProperty Name="RECORDNUMBER" ColumnName="RECORDNUMBER" />
+                <ScalarProperty Name="Title" ColumnName="Title" />
+                <ScalarProperty Name="ReceiptedDate" ColumnName="ReceiptedDate" />
+                <ScalarProperty Name="useCount" ColumnName="useCount" />
+                <ScalarProperty Name="ISBN" ColumnName="ISBN" />
+                <ScalarProperty Name="InBookNum" ColumnName="InBookNum" />
+                <ScalarProperty Name="DKCB" ColumnName="DKCB" />
+                <ScalarProperty Name="ACQUIREDDATE" ColumnName="ACQUIREDDATE" />
+                <ScalarProperty Name="DateLastUsed" ColumnName="DateLastUsed" />
+                <ScalarProperty Name="LocationID" ColumnName="LocationID" />
+                <ScalarProperty Name="RECOMMENDID" ColumnName="RECOMMENDID" />
+                <ScalarProperty Name="Year" ColumnName="Year" />
+                <ScalarProperty Name="Price" ColumnName="Price" />
+                <ScalarProperty Name="Currency" ColumnName="Currency" />
+                <ScalarProperty Name="NXB" ColumnName="NXB" />
+                <ScalarProperty Name="FullPrice" ColumnName="FullPrice" />
+                <ScalarProperty Name="ItemID" ColumnName="ItemID" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="FPT_SP_GET_HOLDING_BY_RECOMMENDID_Newest" FunctionName="LibolModel.Store.FPT_SP_GET_HOLDING_BY_RECOMMENDID_Newest">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="LibolModel.FPT_SP_GET_HOLDING_BY_RECOMMENDID_Newest_Result">
+                <ScalarProperty Name="RECORDNUMBER" ColumnName="RECORDNUMBER" />
+                <ScalarProperty Name="Title" ColumnName="Title" />
+                <ScalarProperty Name="ReceiptedDate" ColumnName="ReceiptedDate" />
+                <ScalarProperty Name="useCount" ColumnName="useCount" />
+                <ScalarProperty Name="ISBN" ColumnName="ISBN" />
+                <ScalarProperty Name="InBookNum" ColumnName="InBookNum" />
+                <ScalarProperty Name="DKCB" ColumnName="DKCB" />
+                <ScalarProperty Name="ACQUIREDDATE" ColumnName="ACQUIREDDATE" />
+                <ScalarProperty Name="LocationID" ColumnName="LocationID" />
+                <ScalarProperty Name="RECOMMENDID" ColumnName="RECOMMENDID" />
+                <ScalarProperty Name="Year" ColumnName="Year" />
+                <ScalarProperty Name="Price" ColumnName="Price" />
+                <ScalarProperty Name="Currency" ColumnName="Currency" />
+                <ScalarProperty Name="NXB" ColumnName="NXB" />
+                <ScalarProperty Name="FullPrice" ColumnName="FullPrice" />
+                <ScalarProperty Name="ItemID" ColumnName="ItemID" />
+                <ScalarProperty Name="DateLastUsed" ColumnName="DateLastUsed" />
               </ComplexTypeMapping>
             </ResultMapping>
           </FunctionImportMapping>

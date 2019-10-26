@@ -21502,36 +21502,48 @@ namespace Libol.Models
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<FPT_ADMIN_GET_RIGHTS_WHEN_CREATE_Result>("FPT_ADMIN_GET_RIGHTS_WHEN_CREATE", intModuleIDParameter, intParentIDParameter, isBasicParameter);
         }
     
-        public virtual int FPT_ACQ_MONTH_STATISTIC(Nullable<int> intLibraryID, Nullable<int> intLocationID, string strInYear, Nullable<int> intUserID)
+        public virtual int FPT_ACQ_MONTH_STATISTIC(Nullable<int> intLibraryID, string strLocationPrefix, string strLocationID, string strFromDate, string strToDate, Nullable<int> intUserID)
         {
             var intLibraryIDParameter = intLibraryID.HasValue ?
                 new ObjectParameter("intLibraryID", intLibraryID) :
                 new ObjectParameter("intLibraryID", typeof(int));
     
-            var intLocationIDParameter = intLocationID.HasValue ?
-                new ObjectParameter("intLocationID", intLocationID) :
-                new ObjectParameter("intLocationID", typeof(int));
+            var strLocationPrefixParameter = strLocationPrefix != null ?
+                new ObjectParameter("strLocationPrefix", strLocationPrefix) :
+                new ObjectParameter("strLocationPrefix", typeof(string));
     
-            var strInYearParameter = strInYear != null ?
-                new ObjectParameter("strInYear", strInYear) :
-                new ObjectParameter("strInYear", typeof(string));
+            var strLocationIDParameter = strLocationID != null ?
+                new ObjectParameter("strLocationID", strLocationID) :
+                new ObjectParameter("strLocationID", typeof(string));
+    
+            var strFromDateParameter = strFromDate != null ?
+                new ObjectParameter("strFromDate", strFromDate) :
+                new ObjectParameter("strFromDate", typeof(string));
+    
+            var strToDateParameter = strToDate != null ?
+                new ObjectParameter("strToDate", strToDate) :
+                new ObjectParameter("strToDate", typeof(string));
     
             var intUserIDParameter = intUserID.HasValue ?
                 new ObjectParameter("intUserID", intUserID) :
                 new ObjectParameter("intUserID", typeof(int));
     
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("FPT_ACQ_MONTH_STATISTIC", intLibraryIDParameter, intLocationIDParameter, strInYearParameter, intUserIDParameter);
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("FPT_ACQ_MONTH_STATISTIC", intLibraryIDParameter, strLocationPrefixParameter, strLocationIDParameter, strFromDateParameter, strToDateParameter, intUserIDParameter);
         }
     
-        public virtual int FPT_ACQ_YEAR_STATISTIC(Nullable<int> intLibraryID, Nullable<int> intLocationID, string strFromYear, string strToYear, Nullable<int> intUserID)
+        public virtual int FPT_ACQ_YEAR_STATISTIC(Nullable<int> intLibraryID, string strLocationPrefix, string strLocationID, string strFromYear, string strToYear, Nullable<int> intUserID)
         {
             var intLibraryIDParameter = intLibraryID.HasValue ?
                 new ObjectParameter("intLibraryID", intLibraryID) :
                 new ObjectParameter("intLibraryID", typeof(int));
     
-            var intLocationIDParameter = intLocationID.HasValue ?
-                new ObjectParameter("intLocationID", intLocationID) :
-                new ObjectParameter("intLocationID", typeof(int));
+            var strLocationPrefixParameter = strLocationPrefix != null ?
+                new ObjectParameter("strLocationPrefix", strLocationPrefix) :
+                new ObjectParameter("strLocationPrefix", typeof(string));
+    
+            var strLocationIDParameter = strLocationID != null ?
+                new ObjectParameter("strLocationID", strLocationID) :
+                new ObjectParameter("strLocationID", typeof(string));
     
             var strFromYearParameter = strFromYear != null ?
                 new ObjectParameter("strFromYear", strFromYear) :
@@ -21545,7 +21557,7 @@ namespace Libol.Models
                 new ObjectParameter("intUserID", intUserID) :
                 new ObjectParameter("intUserID", typeof(int));
     
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("FPT_ACQ_YEAR_STATISTIC", intLibraryIDParameter, intLocationIDParameter, strFromYearParameter, strToYearParameter, intUserIDParameter);
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("FPT_ACQ_YEAR_STATISTIC", intLibraryIDParameter, strLocationPrefixParameter, strLocationIDParameter, strFromYearParameter, strToYearParameter, intUserIDParameter);
         }
     
         public virtual ObjectResult<Nullable<int>> FPT_BORROWNUMBER(Nullable<int> itemID, Nullable<float> price, string acqdate)
@@ -23226,7 +23238,7 @@ namespace Libol.Models
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<FPT_SP_INVENTORY_Result>("FPT_SP_INVENTORY", intLibraryIDParameter);
         }
     
-        public virtual ObjectResult<FPT_SP_GET_HOLDING_BY_RECOMMENDID_Newest_Result> FPT_SP_GET_HOLDING_BY_RECOMMENDID_Newest(Nullable<int> libID, Nullable<int> locID, string reid, string startDate, string endDate)
+        public virtual ObjectResult<FPT_SP_GET_HOLDING_BY_RECOMMENDID_Newest_Result> FPT_SP_GET_HOLDING_BY_RECOMMENDID_Newest(Nullable<int> libID, Nullable<int> locID, string reid, string startDate, string endDate, string strRecordNumber)
         {
             var libIDParameter = libID.HasValue ?
                 new ObjectParameter("LibID", libID) :
@@ -23248,7 +23260,11 @@ namespace Libol.Models
                 new ObjectParameter("EndDate", endDate) :
                 new ObjectParameter("EndDate", typeof(string));
     
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<FPT_SP_GET_HOLDING_BY_RECOMMENDID_Newest_Result>("FPT_SP_GET_HOLDING_BY_RECOMMENDID_Newest", libIDParameter, locIDParameter, reidParameter, startDateParameter, endDateParameter);
+            var strRecordNumberParameter = strRecordNumber != null ?
+                new ObjectParameter("strRecordNumber", strRecordNumber) :
+                new ObjectParameter("strRecordNumber", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<FPT_SP_GET_HOLDING_BY_RECOMMENDID_Newest_Result>("FPT_SP_GET_HOLDING_BY_RECOMMENDID_Newest", libIDParameter, locIDParameter, reidParameter, startDateParameter, endDateParameter, strRecordNumberParameter);
         }
     
         public virtual ObjectResult<Nullable<int>> FPT_SELECTALLDELETEABLE()
@@ -23418,6 +23434,35 @@ namespace Libol.Models
                 new ObjectParameter("intLibID", typeof(int));
     
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<SP_HOLDING_LIBLOCUSER_SEL2_Result>("SP_HOLDING_LIBLOCUSER_SEL2", intUserIDParameter, intLibIDParameter);
+        }
+    
+        public virtual ObjectResult<FPT_SP_GET_HOLDING_BY_RECOMMENDID_Newest1_Result> FPT_SP_GET_HOLDING_BY_RECOMMENDID_Newest1(Nullable<int> libID, Nullable<int> locID, string reid, string startDate, string endDate, string strRecordNumber)
+        {
+            var libIDParameter = libID.HasValue ?
+                new ObjectParameter("LibID", libID) :
+                new ObjectParameter("LibID", typeof(int));
+    
+            var locIDParameter = locID.HasValue ?
+                new ObjectParameter("LocID", locID) :
+                new ObjectParameter("LocID", typeof(int));
+    
+            var reidParameter = reid != null ?
+                new ObjectParameter("reid", reid) :
+                new ObjectParameter("reid", typeof(string));
+    
+            var startDateParameter = startDate != null ?
+                new ObjectParameter("StartDate", startDate) :
+                new ObjectParameter("StartDate", typeof(string));
+    
+            var endDateParameter = endDate != null ?
+                new ObjectParameter("EndDate", endDate) :
+                new ObjectParameter("EndDate", typeof(string));
+    
+            var strRecordNumberParameter = strRecordNumber != null ?
+                new ObjectParameter("strRecordNumber", strRecordNumber) :
+                new ObjectParameter("strRecordNumber", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<FPT_SP_GET_HOLDING_BY_RECOMMENDID_Newest1_Result>("FPT_SP_GET_HOLDING_BY_RECOMMENDID_Newest1", libIDParameter, locIDParameter, reidParameter, startDateParameter, endDateParameter, strRecordNumberParameter);
         }
     }
 }
