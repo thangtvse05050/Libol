@@ -15,24 +15,24 @@ namespace Libol.Models
                 new object[] { LiquidCode, LibID, LocPrefix, LocID, DateFrom, DateTo, UserID }).ToList();
             return list;
         }
-        public List<FPT_ACQ_YEAR_STATISTIC_Result> FPT_ACQ_YEAR_STATISTIC_LIST(int LibID, int LocID, string FromYear, string ToYear, int UserID)
+        public List<FPT_ACQ_YEAR_STATISTIC_Result> FPT_ACQ_YEAR_STATISTIC_LIST(int LibID, string LocPrefix, string LocID, string FromYear, string ToYear, int UserID)
         {
-            List<FPT_ACQ_YEAR_STATISTIC_Result> list = db.Database.SqlQuery<FPT_ACQ_YEAR_STATISTIC_Result>("FPT_ACQ_YEAR_STATISTIC {0}, {1}, {2}, {3}, {4}",
-                new object[] { LibID, LocID, FromYear, ToYear, UserID }).ToList();
+            List<FPT_ACQ_YEAR_STATISTIC_Result> list = db.Database.SqlQuery<FPT_ACQ_YEAR_STATISTIC_Result>("FPT_ACQ_YEAR_STATISTIC {0}, {1}, {2}, {3}, {4}, {5}",
+                new object[] { LibID, LocPrefix, LocID, FromYear, ToYear, UserID }).ToList();
             return list;
         }
-        public List<FPT_ACQ_MONTH_STATISTIC_Result> FPT_ACQ_MONTH_STATISTIC_LIST(int LibID, int LocID, string InYear, int UserID)
+        public List<FPT_ACQ_MONTH_STATISTIC_Result> FPT_ACQ_MONTH_STATISTIC_LIST(int LibID, string LocPrefix, string LocID, string DateFrom, string DateTo, int UserID)
         {
-            List<FPT_ACQ_MONTH_STATISTIC_Result> list = db.Database.SqlQuery<FPT_ACQ_MONTH_STATISTIC_Result>("FPT_ACQ_MONTH_STATISTIC {0}, {1}, {2}, {3}",
-                new object[] { LibID, LocID, InYear, UserID }).ToList();
+            List<FPT_ACQ_MONTH_STATISTIC_Result> list = db.Database.SqlQuery<FPT_ACQ_MONTH_STATISTIC_Result>("FPT_ACQ_MONTH_STATISTIC {0}, {1}, {2}, {3}, {4}, {5}",
+                new object[] { LibID, LocPrefix, LocID, DateFrom, DateTo, UserID }).ToList();
             return list;
         }
 
         // STATISTIC BOOKIN
-        public List<FPT_SP_GET_ITEM_Result> FPT_SP_GET_ITEM_LIST(string DateFrom, string DateTo, int LocID, int LibID)
+        public List<FPT_SP_GET_ITEM_Result> FPT_SP_GET_ITEM_LIST(string DateFrom, string DateTo, string LocID, string LocPrefix, int LibID)
         {
-            List<FPT_SP_GET_ITEM_Result> list = db.Database.SqlQuery<FPT_SP_GET_ITEM_Result>("FPT_SP_GET_ITEM {0}, {1}, {2}, {3}",
-                new object[] { DateFrom, DateTo, LocID, LibID }).ToList();
+            List<FPT_SP_GET_ITEM_Result> list = db.Database.SqlQuery<FPT_SP_GET_ITEM_Result>("FPT_SP_GET_ITEM {0}, {1}, {2}, {3}, {4}",
+                new object[] { DateFrom, DateTo, LocID, LocPrefix, LibID }).ToList();
             return list;
         }
         public List<FPT_COUNT_COPYNUMBER_BY_ITEMID_Result> FPT_COUNT_COPYNUMBER_BY_ITEMID_LIST(int ItemID, int LocID, int LibID)
@@ -57,10 +57,10 @@ namespace Libol.Models
         }
 
         //list liquid copynumber
-        public List<FPT_SP_GET_ITEM_INFOR_Result> FPT_SP_GET_ITEM_INFOR_LIST(int ItemID, int LocID, int LibID)
+        public List<FPT_SP_GET_ITEM_INFOR_Result> FPT_SP_GET_ITEM_INFOR_LIST(int ItemID, string LocID, string LocPrefix, int LibID)
         {
-            List<FPT_SP_GET_ITEM_INFOR_Result> list = db.Database.SqlQuery<FPT_SP_GET_ITEM_INFOR_Result>("FPT_SP_GET_ITEM_INFOR {0}, {1}, {2}",
-                new object[] { ItemID, LocID, LibID }).ToList();
+            List<FPT_SP_GET_ITEM_INFOR_Result> list = db.Database.SqlQuery<FPT_SP_GET_ITEM_INFOR_Result>("FPT_SP_GET_ITEM_INFOR {0}, {1}, {2}, {3}",
+                new object[] { ItemID, LocID, LocPrefix, LibID }).ToList();
             return list;
         }
 
@@ -94,13 +94,13 @@ namespace Libol.Models
             return list;
         }
         //recomend report
-        public List<FPT_SP_GET_HOLDING_BY_RECOMMENDID_Newest_Result> FPT_SP_GET_HOLDING_BY_RECOMMENDID_Newest(int LibraryID, int LocationID, string ReCode, string StartDate, string EndDate)
+        public List<FPT_SP_GET_HOLDING_BY_RECOMMENDID_Newest_Result> FPT_SP_GET_HOLDING_BY_RECOMMENDID_Newest(int LibraryID, int LocationID, string ReCode, string StartDate, string EndDate, string RecordNumber)
         {
-            List<FPT_SP_GET_HOLDING_BY_RECOMMENDID_Newest_Result> list = db.Database.SqlQuery<FPT_SP_GET_HOLDING_BY_RECOMMENDID_Newest_Result>("FPT_SP_GET_HOLDING_BY_RECOMMENDID_Newest {0}, {1}, {2}, {3}, {4}",
-                new object[] { LibraryID, LocationID, ReCode, StartDate, EndDate }).ToList();
+            List<FPT_SP_GET_HOLDING_BY_RECOMMENDID_Newest_Result> list = db.Database.SqlQuery<FPT_SP_GET_HOLDING_BY_RECOMMENDID_Newest_Result>("FPT_SP_GET_HOLDING_BY_RECOMMENDID_Newest {0}, {1}, {2}, {3}, {4}, {5}",
+                new object[] { LibraryID, LocationID, ReCode, StartDate, EndDate, RecordNumber }).ToList();
             return list;
         }
-        
+
         public List<FPT_SP_INVENTORY_Result> FPT_SP_INVENTORY(int LibraryID, string LocationPrefix, string LocationID,int InUsed)
         {
             List<FPT_SP_INVENTORY_Result> list = db.Database.SqlQuery<FPT_SP_INVENTORY_Result>("FPT_SP_INVENTORY {0}, {1}, {2}, {3}", new object[] { LibraryID, LocationPrefix, LocationID, InUsed }).ToList();
