@@ -2928,7 +2928,7 @@ warning 6002: The table/view 'Libol.dbo.MARC_BIB_WS_DETAIL' does not have a prim
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__FPT_CATA___ItemI__17B404B8">
+        <Association Name="FK__FPT_CATA___ItemI__0C42520C">
           <End Role="ITEM" Type="Self.ITEM" Multiplicity="1" />
           <End Role="FPT_CATA_FILE_NEW" Type="Self.FPT_CATA_FILE_NEW" Multiplicity="*" />
           <ReferentialConstraint>
@@ -2940,7 +2940,7 @@ warning 6002: The table/view 'Libol.dbo.MARC_BIB_WS_DETAIL' does not have a prim
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__FPT_SYS_U__Right__3B324B1F">
+        <Association Name="FK__FPT_SYS_U__Right__2FC09873">
           <End Role="FPT_SYS_USER_RIGHT" Type="Self.FPT_SYS_USER_RIGHT" Multiplicity="1" />
           <End Role="FPT_SYS_USER_RIGHT_DETAIL" Type="Self.FPT_SYS_USER_RIGHT_DETAIL" Multiplicity="*" />
           <ReferentialConstraint>
@@ -5330,10 +5330,8 @@ warning 6002: The table/view 'Libol.dbo.MARC_BIB_WS_DETAIL' does not have a prim
         </Function>
         <Function Name="FPT_ACQ_MONTH_STATISTIC" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="intLibraryID" Type="int" Mode="In" />
-          <Parameter Name="strLocationPrefix" Type="varchar" Mode="In" />
-          <Parameter Name="strLocationID" Type="varchar" Mode="In" />
-          <Parameter Name="strFromDate" Type="varchar" Mode="In" />
-          <Parameter Name="strToDate" Type="varchar" Mode="In" />
+          <Parameter Name="intLocationID" Type="int" Mode="In" />
+          <Parameter Name="strInYear" Type="varchar" Mode="In" />
           <Parameter Name="intUserID" Type="int" Mode="In" />
         </Function>
         <Function Name="FPT_ACQ_STATISTIC_TOP20" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
@@ -5405,8 +5403,7 @@ warning 6002: The table/view 'Libol.dbo.MARC_BIB_WS_DETAIL' does not have a prim
         </Function>
         <Function Name="FPT_ACQ_YEAR_STATISTIC" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="intLibraryID" Type="int" Mode="In" />
-          <Parameter Name="strLocationPrefix" Type="varchar" Mode="In" />
-          <Parameter Name="strLocationID" Type="varchar" Mode="In" />
+          <Parameter Name="intLocationID" Type="int" Mode="In" />
           <Parameter Name="strFromYear" Type="varchar" Mode="In" />
           <Parameter Name="strToYear" Type="varchar" Mode="In" />
           <Parameter Name="intUserID" Type="int" Mode="In" />
@@ -5468,8 +5465,7 @@ warning 6002: The table/view 'Libol.dbo.MARC_BIB_WS_DETAIL' does not have a prim
         </Function>
         <Function Name="FPT_CIR_YEAR_STATISTIC" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="intLibraryID" Type="int" Mode="In" />
-          <Parameter Name="strLocationPrefix" Type="varchar" Mode="In" />
-          <Parameter Name="strLocationID" Type="varchar" Mode="In" />
+          <Parameter Name="intLocationID" Type="int" Mode="In" />
           <Parameter Name="intType" Type="int" Mode="In" />
           <Parameter Name="intStatus" Type="int" Mode="In" />
           <Parameter Name="strFromYear" Type="varchar" Mode="In" />
@@ -5901,14 +5897,6 @@ warning 6002: The table/view 'Libol.dbo.MARC_BIB_WS_DETAIL' does not have a prim
           <Parameter Name="EndDate" Type="date" Mode="In" />
           <Parameter Name="OrderBy" Type="varchar" Mode="In" />
         </Function>
-        <Function Name="FPT_SP_GET_HOLDING_BY_RECOMMENDID_Newest" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
-          <Parameter Name="LibID" Type="int" Mode="In" />
-          <Parameter Name="LocID" Type="int" Mode="In" />
-          <Parameter Name="reid" Type="varchar" Mode="In" />
-          <Parameter Name="StartDate" Type="varchar" Mode="In" />
-          <Parameter Name="EndDate" Type="varchar" Mode="In" />
-          <Parameter Name="strRecordNumber" Type="varchar" Mode="In" />
-        </Function>
         <Function Name="FPT_SP_GET_HOLDING_IDs_v1" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="intLibID" Type="nvarchar" Mode="In" />
           <Parameter Name="intLocID" Type="nvarchar" Mode="In" />
@@ -5994,14 +5982,12 @@ warning 6002: The table/view 'Libol.dbo.MARC_BIB_WS_DETAIL' does not have a prim
         <Function Name="FPT_SP_GET_ITEM" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="strFromDate" Type="varchar" Mode="In" />
           <Parameter Name="strToDate" Type="varchar" Mode="In" />
-          <Parameter Name="strLocationID" Type="varchar" Mode="In" />
-          <Parameter Name="strLocationPrefix" Type="varchar" Mode="In" />
+          <Parameter Name="intLocationID" Type="int" Mode="In" />
           <Parameter Name="intLibraryID" Type="int" Mode="In" />
         </Function>
         <Function Name="FPT_SP_GET_ITEM_INFOR" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="intItemID" Type="int" Mode="In" />
-          <Parameter Name="strLocationID" Type="varchar" Mode="In" />
-          <Parameter Name="strLocationPrefix" Type="varchar" Mode="In" />
+          <Parameter Name="intLocationID" Type="int" Mode="In" />
           <Parameter Name="intLibraryID" Type="int" Mode="In" />
         </Function>
         <Function Name="FPT_SP_GET_STAT_BOOK" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
@@ -6059,7 +6045,6 @@ warning 6002: The table/view 'Libol.dbo.MARC_BIB_WS_DETAIL' does not have a prim
           <Parameter Name="intTopNum" Type="varchar" Mode="In" />
           <Parameter Name="intMinLoan" Type="varchar" Mode="In" />
           <Parameter Name="libid" Type="varchar" Mode="In" />
-          <Parameter Name="strLocationPrefix" Type="varchar" Mode="In" />
           <Parameter Name="locid" Type="varchar" Mode="In" />
         </Function>
         <Function Name="FPT_SP_STAT_PATRONGROUP" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
@@ -6078,7 +6063,6 @@ warning 6002: The table/view 'Libol.dbo.MARC_BIB_WS_DETAIL' does not have a prim
           <Parameter Name="intMinLoan" Type="varchar" Mode="In" />
           <Parameter Name="OptItemID" Type="varchar" Mode="In" />
           <Parameter Name="LocID" Type="varchar" Mode="In" />
-          <Parameter Name="strLocationPrefix" Type="varchar" Mode="In" />
           <Parameter Name="LibID" Type="varchar" Mode="In" />
         </Function>
         <Function Name="FPT_SP_UPDATE_UNLOCK_PATRON_CARD" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
@@ -12510,11 +12494,11 @@ warning 6002: The table/view 'Libol.dbo.MARC_BIB_WS_DETAIL' does not have a prim
             <End Role="CAT_DIC_MEDIUM" EntitySet="CAT_DIC_MEDIUM" />
             <End Role="ITEM" EntitySet="ITEM" />
           </AssociationSet>
-          <AssociationSet Name="FK__FPT_CATA___ItemI__17B404B8" Association="Self.FK__FPT_CATA___ItemI__17B404B8">
+          <AssociationSet Name="FK__FPT_CATA___ItemI__0C42520C" Association="Self.FK__FPT_CATA___ItemI__0C42520C">
             <End Role="ITEM" EntitySet="ITEM" />
             <End Role="FPT_CATA_FILE_NEW" EntitySet="FPT_CATA_FILE_NEW" />
           </AssociationSet>
-          <AssociationSet Name="FK__FPT_SYS_U__Right__3B324B1F" Association="Self.FK__FPT_SYS_U__Right__3B324B1F">
+          <AssociationSet Name="FK__FPT_SYS_U__Right__2FC09873" Association="Self.FK__FPT_SYS_U__Right__2FC09873">
             <End Role="FPT_SYS_USER_RIGHT" EntitySet="FPT_SYS_USER_RIGHT" />
             <End Role="FPT_SYS_USER_RIGHT_DETAIL" EntitySet="FPT_SYS_USER_RIGHT_DETAIL" />
           </AssociationSet>
@@ -25684,16 +25668,13 @@ warning 6002: The table/view 'Libol.dbo.MARC_BIB_WS_DETAIL' does not have a prim
           </FunctionImport>
           <FunctionImport Name="FPT_ACQ_MONTH_STATISTIC">
             <Parameter Name="intLibraryID" Mode="In" Type="Int32" />
-            <Parameter Name="strLocationPrefix" Mode="In" Type="String" />
-            <Parameter Name="strLocationID" Mode="In" Type="String" />
-            <Parameter Name="strFromDate" Mode="In" Type="String" />
-            <Parameter Name="strToDate" Mode="In" Type="String" />
+            <Parameter Name="intLocationID" Mode="In" Type="Int32" />
+            <Parameter Name="strInYear" Mode="In" Type="String" />
             <Parameter Name="intUserID" Mode="In" Type="Int32" />
           </FunctionImport>
           <FunctionImport Name="FPT_ACQ_YEAR_STATISTIC">
             <Parameter Name="intLibraryID" Mode="In" Type="Int32" />
-            <Parameter Name="strLocationPrefix" Mode="In" Type="String" />
-            <Parameter Name="strLocationID" Mode="In" Type="String" />
+            <Parameter Name="intLocationID" Mode="In" Type="Int32" />
             <Parameter Name="strFromYear" Mode="In" Type="String" />
             <Parameter Name="strToYear" Mode="In" Type="String" />
             <Parameter Name="intUserID" Mode="In" Type="Int32" />
@@ -25729,8 +25710,7 @@ warning 6002: The table/view 'Libol.dbo.MARC_BIB_WS_DETAIL' does not have a prim
           </FunctionImport>
           <FunctionImport Name="FPT_CIR_YEAR_STATISTIC">
             <Parameter Name="intLibraryID" Mode="In" Type="Int32" />
-            <Parameter Name="strLocationPrefix" Mode="In" Type="String" />
-            <Parameter Name="strLocationID" Mode="In" Type="String" />
+            <Parameter Name="intLocationID" Mode="In" Type="Int32" />
             <Parameter Name="intType" Mode="In" Type="Int32" />
             <Parameter Name="intStatus" Mode="In" Type="Int32" />
             <Parameter Name="strFromYear" Mode="In" Type="String" />
@@ -26032,8 +26012,7 @@ warning 6002: The table/view 'Libol.dbo.MARC_BIB_WS_DETAIL' does not have a prim
           <FunctionImport Name="FPT_SP_GET_ITEM">
             <Parameter Name="strFromDate" Mode="In" Type="String" />
             <Parameter Name="strToDate" Mode="In" Type="String" />
-            <Parameter Name="strLocationID" Mode="In" Type="String" />
-            <Parameter Name="strLocationPrefix" Mode="In" Type="String" />
+            <Parameter Name="intLocationID" Mode="In" Type="Int32" />
             <Parameter Name="intLibraryID" Mode="In" Type="Int32" />
           </FunctionImport>
           <FunctionImport Name="FPT_SP_CIR_OVERDUELIST_GETINFOR">
@@ -26115,8 +26094,7 @@ warning 6002: The table/view 'Libol.dbo.MARC_BIB_WS_DETAIL' does not have a prim
           </FunctionImport>
           <FunctionImport Name="FPT_SP_GET_ITEM_INFOR" ReturnType="Collection(LibolModel.FPT_SP_GET_ITEM_INFOR_Result)">
             <Parameter Name="intItemID" Mode="In" Type="Int32" />
-            <Parameter Name="strLocationID" Mode="In" Type="String" />
-            <Parameter Name="strLocationPrefix" Mode="In" Type="String" />
+            <Parameter Name="intLocationID" Mode="In" Type="Int32" />
             <Parameter Name="intLibraryID" Mode="In" Type="Int32" />
           </FunctionImport>
           <EntitySet Name="FPT_SYS_USER_RIGHT" EntityType="LibolModel.FPT_SYS_USER_RIGHT" />
@@ -26153,7 +26131,6 @@ warning 6002: The table/view 'Libol.dbo.MARC_BIB_WS_DETAIL' does not have a prim
             <Parameter Name="intTopNum" Mode="In" Type="String" />
             <Parameter Name="intMinLoan" Mode="In" Type="String" />
             <Parameter Name="libid" Mode="In" Type="String" />
-            <Parameter Name="strLocationPrefix" Mode="In" Type="String" />
             <Parameter Name="locid" Mode="In" Type="String" />
           </FunctionImport>
           <FunctionImport Name="FPT_SP_STAT_PATRONGROUP">
@@ -26172,7 +26149,6 @@ warning 6002: The table/view 'Libol.dbo.MARC_BIB_WS_DETAIL' does not have a prim
             <Parameter Name="intMinLoan" Mode="In" Type="String" />
             <Parameter Name="OptItemID" Mode="In" Type="String" />
             <Parameter Name="LocID" Mode="In" Type="String" />
-            <Parameter Name="strLocationPrefix" Mode="In" Type="String" />
             <Parameter Name="LibID" Mode="In" Type="String" />
           </FunctionImport>
           <FunctionImport Name="FPT_ACQ_STATISTIC_TOP20" ReturnType="Collection(LibolModel.FPT_ACQ_STATISTIC_TOP20_Result)">
@@ -26203,7 +26179,6 @@ warning 6002: The table/view 'Libol.dbo.MARC_BIB_WS_DETAIL' does not have a prim
             <Parameter Name="reid" Mode="In" Type="String" />
             <Parameter Name="StartDate" Mode="In" Type="String" />
             <Parameter Name="EndDate" Mode="In" Type="String" />
-            <Parameter Name="strRecordNumber" Mode="In" Type="String" />
           </FunctionImport>
           <FunctionImport Name="FPT_SELECTALLDELETEABLE" ReturnType="Collection(Int32)" />
           <FunctionImport Name="FPT_SPECIALIZED_REPORT" ReturnType="Collection(LibolModel.FPT_SPECIALIZED_REPORT_Result)">
@@ -26254,14 +26229,6 @@ warning 6002: The table/view 'Libol.dbo.MARC_BIB_WS_DETAIL' does not have a prim
           <FunctionImport Name="SP_HOLDING_LIBLOCUSER_SEL2" ReturnType="Collection(LibolModel.SP_HOLDING_LIBLOCUSER_SEL2_Result)">
             <Parameter Name="intUserID" Mode="In" Type="Int32" />
             <Parameter Name="intLibID" Mode="In" Type="Int32" />
-          </FunctionImport>
-          <FunctionImport Name="FPT_SP_GET_HOLDING_BY_RECOMMENDID_Newest1" ReturnType="Collection(LibolModel.FPT_SP_GET_HOLDING_BY_RECOMMENDID_Newest1_Result)">
-            <Parameter Name="LibID" Mode="In" Type="Int32" />
-            <Parameter Name="LocID" Mode="In" Type="Int32" />
-            <Parameter Name="reid" Mode="In" Type="String" />
-            <Parameter Name="StartDate" Mode="In" Type="String" />
-            <Parameter Name="EndDate" Mode="In" Type="String" />
-            <Parameter Name="strRecordNumber" Mode="In" Type="String" />
           </FunctionImport>
         </EntityContainer>
         <ComplexType Name="CAT_DIC_LIST_SEL_Result">
@@ -31341,7 +31308,6 @@ warning 6002: The table/view 'Libol.dbo.MARC_BIB_WS_DETAIL' does not have a prim
           <Property Type="String" Name="NXB" Nullable="false" MaxLength="256" />
           <Property Type="Double" Name="FullPrice" Nullable="true" />
           <Property Type="Int32" Name="ItemID" Nullable="false" />
-          <Property Type="DateTime" Name="DateLastUsed" Nullable="true" Precision="23" />
         </ComplexType>
         <ComplexType Name="FPT_SPECIALIZED_REPORT_Result">
           <Property Type="Int32" Name="ItemID" Nullable="false" />
@@ -31376,25 +31342,6 @@ warning 6002: The table/view 'Libol.dbo.MARC_BIB_WS_DETAIL' does not have a prim
           <Property Type="Int32" Name="LibID" Nullable="false" />
           <Property Type="String" Name="Symbol" Nullable="false" MaxLength="50" />
           <Property Type="String" Name="Code" Nullable="false" MaxLength="32" />
-        </ComplexType>
-        <ComplexType Name="FPT_SP_GET_HOLDING_BY_RECOMMENDID_Newest1_Result">
-          <Property Type="String" Name="RECORDNUMBER" Nullable="true" MaxLength="50" />
-          <Property Type="String" Name="Title" Nullable="true" MaxLength="4000" />
-          <Property Type="DateTime" Name="ReceiptedDate" Nullable="true" />
-          <Property Type="Int32" Name="useCount" Nullable="true" />
-          <Property Type="String" Name="ISBN" Nullable="false" MaxLength="1" />
-          <Property Type="Int32" Name="InBookNum" Nullable="true" />
-          <Property Type="String" Name="DKCB" Nullable="false" MaxLength="1" />
-          <Property Type="DateTime" Name="ACQUIREDDATE" Nullable="true" />
-          <Property Type="DateTime" Name="DateLastUsed" Nullable="true" Precision="23" />
-          <Property Type="Int32" Name="LocationID" Nullable="false" />
-          <Property Type="String" Name="RECOMMENDID" Nullable="false" MaxLength="50" />
-          <Property Type="String" Name="Year" Nullable="false" MaxLength="16" />
-          <Property Type="Single" Name="Price" Nullable="true" />
-          <Property Type="String" Name="Currency" Nullable="true" MaxLength="8000" />
-          <Property Type="String" Name="NXB" Nullable="false" MaxLength="256" />
-          <Property Type="Double" Name="FullPrice" Nullable="true" />
-          <Property Type="Int32" Name="ItemID" Nullable="false" />
         </ComplexType>
       </Schema>
     </edmx:ConceptualModels>
@@ -41953,52 +41900,6 @@ warning 6002: The table/view 'Libol.dbo.MARC_BIB_WS_DETAIL' does not have a prim
                 <ScalarProperty Name="LibID" ColumnName="LibID" />
                 <ScalarProperty Name="Symbol" ColumnName="Symbol" />
                 <ScalarProperty Name="Code" ColumnName="Code" />
-              </ComplexTypeMapping>
-            </ResultMapping>
-          </FunctionImportMapping>
-          <FunctionImportMapping FunctionImportName="FPT_SP_GET_HOLDING_BY_RECOMMENDID_Newest1" FunctionName="LibolModel.Store.FPT_SP_GET_HOLDING_BY_RECOMMENDID_Newest">
-            <ResultMapping>
-              <ComplexTypeMapping TypeName="LibolModel.FPT_SP_GET_HOLDING_BY_RECOMMENDID_Newest1_Result">
-                <ScalarProperty Name="RECORDNUMBER" ColumnName="RECORDNUMBER" />
-                <ScalarProperty Name="Title" ColumnName="Title" />
-                <ScalarProperty Name="ReceiptedDate" ColumnName="ReceiptedDate" />
-                <ScalarProperty Name="useCount" ColumnName="useCount" />
-                <ScalarProperty Name="ISBN" ColumnName="ISBN" />
-                <ScalarProperty Name="InBookNum" ColumnName="InBookNum" />
-                <ScalarProperty Name="DKCB" ColumnName="DKCB" />
-                <ScalarProperty Name="ACQUIREDDATE" ColumnName="ACQUIREDDATE" />
-                <ScalarProperty Name="DateLastUsed" ColumnName="DateLastUsed" />
-                <ScalarProperty Name="LocationID" ColumnName="LocationID" />
-                <ScalarProperty Name="RECOMMENDID" ColumnName="RECOMMENDID" />
-                <ScalarProperty Name="Year" ColumnName="Year" />
-                <ScalarProperty Name="Price" ColumnName="Price" />
-                <ScalarProperty Name="Currency" ColumnName="Currency" />
-                <ScalarProperty Name="NXB" ColumnName="NXB" />
-                <ScalarProperty Name="FullPrice" ColumnName="FullPrice" />
-                <ScalarProperty Name="ItemID" ColumnName="ItemID" />
-              </ComplexTypeMapping>
-            </ResultMapping>
-          </FunctionImportMapping>
-          <FunctionImportMapping FunctionImportName="FPT_SP_GET_HOLDING_BY_RECOMMENDID_Newest" FunctionName="LibolModel.Store.FPT_SP_GET_HOLDING_BY_RECOMMENDID_Newest">
-            <ResultMapping>
-              <ComplexTypeMapping TypeName="LibolModel.FPT_SP_GET_HOLDING_BY_RECOMMENDID_Newest_Result">
-                <ScalarProperty Name="RECORDNUMBER" ColumnName="RECORDNUMBER" />
-                <ScalarProperty Name="Title" ColumnName="Title" />
-                <ScalarProperty Name="ReceiptedDate" ColumnName="ReceiptedDate" />
-                <ScalarProperty Name="useCount" ColumnName="useCount" />
-                <ScalarProperty Name="ISBN" ColumnName="ISBN" />
-                <ScalarProperty Name="InBookNum" ColumnName="InBookNum" />
-                <ScalarProperty Name="DKCB" ColumnName="DKCB" />
-                <ScalarProperty Name="ACQUIREDDATE" ColumnName="ACQUIREDDATE" />
-                <ScalarProperty Name="LocationID" ColumnName="LocationID" />
-                <ScalarProperty Name="RECOMMENDID" ColumnName="RECOMMENDID" />
-                <ScalarProperty Name="Year" ColumnName="Year" />
-                <ScalarProperty Name="Price" ColumnName="Price" />
-                <ScalarProperty Name="Currency" ColumnName="Currency" />
-                <ScalarProperty Name="NXB" ColumnName="NXB" />
-                <ScalarProperty Name="FullPrice" ColumnName="FullPrice" />
-                <ScalarProperty Name="ItemID" ColumnName="ItemID" />
-                <ScalarProperty Name="DateLastUsed" ColumnName="DateLastUsed" />
               </ComplexTypeMapping>
             </ResultMapping>
           </FunctionImportMapping>

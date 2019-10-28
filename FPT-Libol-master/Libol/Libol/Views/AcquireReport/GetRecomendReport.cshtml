@@ -1,7 +1,7 @@
 ﻿
 @{
     ViewBag.Title = "GetRecomendReport";
-    Layout = null;
+    Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
 <head>
@@ -220,7 +220,6 @@
                             <th>Năm XB</th>
                             <th>Số lượng nhập</th>
                             <th>Ngày bổ sung</th>
-                            <th>Ngày mượn cuối</th>
                             <th>Đơn giá</th>
                             <th>Đơn vị tiền tệ</th>
                             <th>Thành tiền</th>
@@ -243,7 +242,6 @@
                                 <td>@item.Year</td>
                                 <td>@item.InBookNum</td>
                                 <td>@item.ReceiptedDate</td>
-                                <td>@item.DateLastUsed</td>
                                 <td>@item.Price</td>
                                 <td>@item.Currency</td>
                                 <td>@item.FullPrice</td>
@@ -253,7 +251,7 @@
                             TOTAL1 += item.InBookNum;
                         }
                     </tbody>
-
+                   
                     <tfoot>
                         <tr>
                             <td></td>
@@ -266,7 +264,6 @@
                             <td></td>
                             <td></td>
                             <td>@TOTAL1</td>
-                            <td></td>
                             <td></td>
                             <td></td>
                             <td></td>
@@ -305,7 +302,6 @@
                             <th>Năm XB</th>
                             <th>Số lượng nhập</th>
                             <th>Ngày bổ sung</th>
-                            <td>Ngày mượn cuối</td>
                             <th>Đơn giá</th>
                             <th>Đơn vị tiền tệ</th>
                             <th>Thành tiền</th>
@@ -318,7 +314,7 @@
 
                             <tr>
                                 <td>@(++STT2)</td>
-                                <td>@item.ACQUIREDDATE.ToString("dd/MM/yyyy")</td>
+                                <td>@item.RECORDNUMBER</td>
                                 <td>@item.ReceiptedDate</td>
                                 <td>@item.RECOMMENDID</td>
                                 <td>@item.DKCB</td>
@@ -327,8 +323,7 @@
                                 <td>@item.NXB</td>
                                 <td>@item.Year</td>
                                 <td>@item.InBookNum</td>
-                                <td>@item.ReceiptedDate</td>
-                                <td>@item.DateLastUsed</td>
+                                <td>@item.ACQUIREDDATE.ToString("dd/MM/yyyy")</td>
                                 <td>@item.Price</td>
                                 <td>@item.Currency</td>
                                 <td>@item.FullPrice</td>
@@ -353,7 +348,6 @@
                             <td></td>
                             <td></td>
                             <td>@TOTAL2</td>
-                            <td></td>
                             <td></td>
                             <td></td>
                             <td></td>
@@ -395,7 +389,6 @@
                             <th>Năm XB</th>
                             <th>Số lượng nhập</th>
                             <th>Ngày bổ sung</th>
-                            <th>Ngày mượn cuối</th>
                             <th>Đơn giá</th>
                             <th>Đơn vị tiền tệ</th>
                             <th>Thành tiền</th>
@@ -409,7 +402,7 @@
                             <tr>
                                 <td>@(++STT3)</td>
                                 <td>@item.RECORDNUMBER</td>
-                                <td>@item.ACQUIREDDATE.ToString("dd/MM/yyyy")</td>
+                                <td>@item.ReceiptedDate</td>
                                 <td>@item.RECOMMENDID</td>
                                 <td>@item.DKCB</td>
                                 <td>@item.ISBN</td>
@@ -417,8 +410,7 @@
                                 <td>@item.NXB</td>
                                 <td>@item.Year</td>
                                 <td>@item.InBookNum</td>
-                                <td>@item.ReceiptedDate</td>
-                                <td>@item.DateLastUsed</td>
+                                <td>@item.ACQUIREDDATE.ToString("dd/MM/yyyy")</td>
                                 <td>@item.Price</td>
                                 <td>@item.Currency</td>
                                 <td>@item.FullPrice</td>
@@ -443,7 +435,6 @@
                             <td></td>
                             <td></td>
                             <td>@TOTAL3</td>
-                            <td></td>
                             <td></td>
                             <td></td>
                             <td></td>
@@ -480,7 +471,6 @@
                             <th>Năm XB</th>
                             <th>Số lượng nhập</th>
                             <th>Ngày bổ sung</th>
-                            <th>Ngày mượn cuối</th>
                             <th>Đơn giá</th>
                             <th>Đơn vị tiền tệ</th>
                             <th>Thành tiền</th>
@@ -494,7 +484,7 @@
                             <tr>
                                 <td>@(++STT4)</td>
                                 <td>@item.RECORDNUMBER</td>
-                                <td>@item.ACQUIREDDATE.ToString("dd/MM/yyyy")</td>
+                                <td>@item.ReceiptedDate</td>
                                 <td>@item.RECOMMENDID</td>
                                 <td>@item.DKCB</td>
                                 <td>@item.ISBN</td>
@@ -502,8 +492,7 @@
                                 <td>@item.NXB</td>
                                 <td>@item.Year</td>
                                 <td>@item.InBookNum</td>
-                                <td>@item.ReceiptedDate</td>
-                                <td>@item.DateLastUsed</td>
+                                <td>@item.ACQUIREDDATE.ToString("dd/MM/yyyy")</td>
                                 <td>@item.Price</td>
                                 <td>@item.Currency</td>
                                 <td>@item.FullPrice</td>
@@ -528,7 +517,6 @@
                             <td></td>
                             <td></td>
                             <td>@TOTAL4</td>
-                            <td></td>
                             <td></td>
                             <td></td>
                             <td></td>
@@ -565,7 +553,6 @@
                             <th>Năm XB</th>
                             <th>Số lượng nhập</th>
                             <th>Ngày bổ sung</th>
-                            <th>Ngày mượn cuối</th>
                             <th>Đơn giá</th>
                             <th>Đơn vị tiền tệ</th>
                             <th>Thành tiền</th>
@@ -579,7 +566,7 @@
                             <tr>
                                 <td>@(++STT5)</td>
                                 <td>@item.RECORDNUMBER</td>
-                                <td>@item.ACQUIREDDATE.ToString("dd/MM/yyyy")</td>
+                                <td>@item.ReceiptedDate</td>
                                 <td>@item.RECOMMENDID</td>
                                 <td>@item.DKCB</td>
                                 <td>@item.ISBN</td>
@@ -587,8 +574,7 @@
                                 <td>@item.NXB</td>
                                 <td>@item.Year</td>
                                 <td>@item.InBookNum</td>
-                                <td>@item.ReceiptedDate</td>
-                                <td>@item.DateLastUsed</td>
+                                <td>@item.ACQUIREDDATE.ToString("dd/MM/yyyy")</td>
                                 <td>@item.Price</td>
                                 <td>@item.Currency</td>
                                 <td>@item.FullPrice</td>
@@ -613,7 +599,6 @@
                             <td></td>
                             <td></td>
                             <td>@TOTAL5</td>
-                            <td></td>
                             <td></td>
                             <td></td>
                             <td></td>
@@ -650,7 +635,6 @@
                             <th>Năm XB</th>
                             <th>Số lượng nhập</th>
                             <th>Ngày bổ sung</th>
-                            <th>Ngày mượn cuối</th>
                             <th>Đơn giá</th>
                             <th>Đơn vị tiền tệ</th>
                             <th>Thành tiền</th>
@@ -664,7 +648,7 @@
                             <tr>
                                 <td>@(++STT6)</td>
                                 <td>@item.RECORDNUMBER</td>
-                                <td>@item.ACQUIREDDATE.ToString("dd/MM/yyyy")</td>
+                                <td>@item.ReceiptedDate</td>
                                 <td>@item.RECOMMENDID</td>
                                 <td>@item.DKCB</td>
                                 <td>@item.ISBN</td>
@@ -672,8 +656,7 @@
                                 <td>@item.NXB</td>
                                 <td>@item.Year</td>
                                 <td>@item.InBookNum</td>
-                                <td>@item.ReceiptedDate</td>
-                                <td>@item.DateLastUsed</td>
+                                <td>@item.ACQUIREDDATE.ToString("dd/MM/yyyy")</td>
                                 <td>@item.Price</td>
                                 <td>@item.Currency</td>
                                 <td>@item.FullPrice</td>
@@ -698,7 +681,6 @@
                             <td></td>
                             <td></td>
                             <td>@TOTAL6</td>
-                            <td></td>
                             <td></td>
                             <td></td>
                             <td></td>

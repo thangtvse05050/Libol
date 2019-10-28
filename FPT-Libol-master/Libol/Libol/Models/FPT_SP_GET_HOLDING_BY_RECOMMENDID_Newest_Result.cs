@@ -29,6 +29,5 @@ namespace Libol.Models
         public string NXB { get; set; }
         public Nullable<double> FullPrice { get; set; }
         public int ItemID { get; set; }
-        public Nullable<System.DateTime> DateLastUsed { get; set; }
     }
 }
