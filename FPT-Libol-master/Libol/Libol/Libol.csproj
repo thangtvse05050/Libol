@@ -2455,8 +2455,6 @@
     <None Include="Properties\PublishProfiles\flib123 - Web Deploy1.pubxml" />
     <None Include="Properties\PublishProfiles\flib20 - Web Deploy.pubxml" />
     <None Include="Properties\PublishProfiles\flib30 - Web Deploy.pubxml" />
-    <None Include="Properties\PublishProfiles\flib30 - Web Deploy1.pubxml" />
-    <None Include="Properties\PublishProfiles\flib30 - Web Deploy2.pubxml" />
     <None Include="Properties\PublishProfiles\Libol - FTP.pubxml" />
     <None Include="Properties\PublishProfiles\Libol - Web Deploy.pubxml" />
     <None Include="log4net.config">
@@ -2620,8 +2618,6 @@
     <Content Include="Views\Acquisition\DuplicateCopyNumber.cshtml" />
     <Content Include="Views\Catalogue\SearchViewCode.cshtml" />
     <Content Include="Views\Catalogue\ViewCatalogueAfterSearch.cshtml" />
-    <Content Include="Views\Acquisition\InventoryReportByItemID.cshtml" />
-    <Content Include="Views\Acquisition\GetInventoryReportByItemID.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\Patron\SearchPatronFilter.cshtml" />
