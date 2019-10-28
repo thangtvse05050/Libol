@@ -29,7 +29,6 @@
         <div class="row">
             <div class="col-md-2">
                 <a class="form-group row col bold" href="/Acquisition/InventoryReport">Kiểm kê</a>
-                <a class="form-group row col" href="/Acquisition/InventoryReportByItemID">Kiểm kê theo biểu ghi</a>
                 <a class="form-group row col" href="/Acquisition/CloseLoc">Đóng kho</a>
                 <a class="form-group row col" href="/Acquisition/CreateInventory">Tạo kỳ kiểm kê</a>
                 <a class="form-group row col" href="/Acquisition/OpenLoc">Mở kho</a>
@@ -131,7 +130,6 @@
             strLocPrefix: document.getElementById("LocationPrefix").value,
             strLocID: $("#LocationsByPrefix").val().toString(),
             strDKCBID01: document.getElementById("DKCBID").value,
-            strItemID: "",
         };
         if (document.getElementById("DKCBID").value == "") {
             alert("Đăng ký cá biệt không được để trống");
