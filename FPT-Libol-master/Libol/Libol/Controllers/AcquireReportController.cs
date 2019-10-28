@@ -1641,13 +1641,13 @@ namespace Libol.Controllers
             return View();
         }
         [HttpPost]
-        public PartialViewResult GetYearStats(string strLibID, string strLocID, string strFromYear, string strToYear)
+        public PartialViewResult GetYearStats(string strLibID, string strLocPrefix, string strLocID, string strFromYear, string strToYear)
         {
             int LibID = 0;
-            int LocID = 0;
+            //int LocID = 0;
             if (!String.IsNullOrEmpty(strLibID)) LibID = Convert.ToInt32(strLibID);
-            if (!String.IsNullOrEmpty(strLocID)) LocID = Convert.ToInt32(strLocID);
-            ViewBag.Result = ab.FPT_ACQ_YEAR_STATISTIC_LIST(LibID, LocID, strFromYear, strToYear, (int)Session["UserID"]);
+            //if (!String.IsNullOrEmpty(strLocID)) LocID = Convert.ToInt32(strLocID);
+            ViewBag.Result = ab.FPT_ACQ_YEAR_STATISTIC_LIST(LibID, strLocPrefix, strLocID, strFromYear, strToYear, (int)Session["UserID"]);
             return PartialView("GetYearStats");
         }
         [AuthAttribute(ModuleID = 4, RightID = "28")]
@@ -1665,13 +1665,13 @@ namespace Libol.Controllers
             return View();
         }
         [HttpPost]
-        public PartialViewResult GetMonthStats(string strLibID, string strLocID, string strInYear)
+        public PartialViewResult GetMonthStats(string strLibID, string strLocPrefix, string strLocID, string strDateFrom, string strDateTo)
         {
             int LibID = 0;
-            int LocID = 0;
+            //int LocID = 0;
             if (!String.IsNullOrEmpty(strLibID)) LibID = Convert.ToInt32(strLibID);
-            if (!String.IsNullOrEmpty(strLocID)) LocID = Convert.ToInt32(strLocID);
-            ViewBag.Result = ab.FPT_ACQ_MONTH_STATISTIC_LIST(LibID, LocID, strInYear, (int)Session["UserID"]);
+            //if (!String.IsNullOrEmpty(strLocID)) LocID = Convert.ToInt32(strLocID);
+            ViewBag.Result = ab.FPT_ACQ_MONTH_STATISTIC_LIST(LibID, strLocPrefix, strLocID, strDateFrom, strDateTo, (int)Session["UserID"]);
             return PartialView("GetMonthStats");
         }
         [AuthAttribute(ModuleID = 4, RightID = "27")]
@@ -1821,31 +1821,47 @@ namespace Libol.Controllers
             ViewData["lib"] = lib;
             return View();
         }
-        public ActionResult GetRecomendReport(int Library, int Location, int? ReNumber, DateTime? StartDate, DateTime? EndDate, int? SortBy, int? size, int? page, FormCollection collection)
+        public ActionResult GetRecomendReport(string Library, string LocationPrefix, string Location, string ReNumber, string StartDate, string EndDate, string RecordNumber, int? SortBy, int? size, int? page, FormCollection collection)
         {
-            String StartD = StartDate.ToString();
-            String EndD = EndDate.ToString();
-            int LibID = 0;
-            if (Library >= 0)
-            {
-                LibID = Library;
-            }
+            //String StartD = StartDate.ToString();
+            //String EndD = EndDate.ToString();
+            int LibID = int.Parse(Library);
             int LocID = 0;
-            if (Location >= 0)
+            List<int> locIDList = new List<int>();
+            if (LocationPrefix != "0")
             {
-                LocID = Location;
+                if (Location != "")
+                {
+                    string[] s = Location.Split(',');
+                    for (int i = 0; i < s.Length; i++)
+                    {
+                        locIDList.Add(int.Parse(s[i]));
+                    }
+                }
+                else
+                {
+                    foreach (var lbp in le.FPT_CIR_GET_LOCFULLNAME_LIBUSER_SEL((int)Session["UserID"], LibID, LocationPrefix))
+                    {
+                        locIDList.Add(lbp.ID);
+                    }
+
+                }
+            }
+            else
+            {
+                locIDList.Add(LocID);
             }
             String sdd = "", edd = "";
             string recomCode = "";
-            sdd = Request.Form["StartDate"].ToString();
-            edd = Request.Form["EndDate"].ToString();
-            if (String.IsNullOrEmpty(Request.Form["recomCode"].ToString()))
+            sdd = StartDate;
+            edd = EndDate;
+            if (String.IsNullOrEmpty(ReNumber))
             {
                 recomCode = null;
             }
             else
             {
-                recomCode = Request.Form["recomCode"].ToString();
+                recomCode = ReNumber;
                 recomCode = recomCode.Replace(" ", "");
             }
 
@@ -1862,39 +1878,44 @@ namespace Libol.Controllers
             List<Temper> listPO = new List<Temper>();
 
             List<FPT_SP_GET_HOLDING_BY_RECOMMENDID_Newest_Result> listRecommend = new List<FPT_SP_GET_HOLDING_BY_RECOMMENDID_Newest_Result>();
-            foreach (var item in ab.FPT_SP_GET_HOLDING_BY_RECOMMENDID_Newest(LibID, LocID, recomCode, sdd, edd).ToList())
+            foreach (var locationID in locIDList)
             {
+                LocID = locationID;
+                foreach (var item in ab.FPT_SP_GET_HOLDING_BY_RECOMMENDID_Newest(LibID, LocID, recomCode, sdd, edd, RecordNumber).ToList())
+                {
 
-                int uCount = 0;
-                foreach (var itemss in le.FPT_SELECT_USECOUNT2(LibID, item.ItemID, item.ACQUIREDDATE))
-                {
-                    uCount += itemss.Value;
+                    int uCount = 0;
+                    foreach (var itemss in le.FPT_SELECT_USECOUNT2(LibID, item.ItemID, item.ACQUIREDDATE))
+                    {
+                        uCount += itemss.Value;
+                    }
+                    string isb = "";
+                    foreach (var ite in le.FPT_JOIN_ISBN(item.ItemID))
+                    {
+                        isb = ite.ISBN;
+                    }
+                    FPT_SP_GET_HOLDING_BY_RECOMMENDID_Newest_Result obj = new FPT_SP_GET_HOLDING_BY_RECOMMENDID_Newest_Result()
+                    {
+                        RECORDNUMBER = item.RECORDNUMBER,
+                        Title = item.Title,
+                        ReceiptedDate = item.ReceiptedDate,
+                        useCount = uCount,
+                        ISBN = isb,
+                        InBookNum = 0,
+                        DKCB = "",
+                        ACQUIREDDATE = item.ACQUIREDDATE,
+                        LocationID = item.LocationID,
+                        RECOMMENDID = item.RECOMMENDID,
+                        Year = item.Year,
+                        Price = item.Price,
+                        Currency = item.Currency,
+                        NXB = item.NXB,
+                        FullPrice = 0,
+                        ItemID = item.ItemID,
+                        DateLastUsed = item.DateLastUsed
+                    };
+                    listRecommend.Add(obj);
                 }
-                string isb = "";
-                foreach (var ite in le.FPT_JOIN_ISBN(item.ItemID))
-                {
-                    isb = ite.ISBN;
-                }
-                FPT_SP_GET_HOLDING_BY_RECOMMENDID_Newest_Result obj = new FPT_SP_GET_HOLDING_BY_RECOMMENDID_Newest_Result()
-                {
-                    RECORDNUMBER = item.RECORDNUMBER,
-                    Title = item.Title,
-                    ReceiptedDate = item.ReceiptedDate,
-                    useCount = uCount,
-                    ISBN = isb,
-                    InBookNum = 0,
-                    DKCB = "",
-                    ACQUIREDDATE = item.ACQUIREDDATE,
-                    LocationID = item.LocationID,
-                    RECOMMENDID = item.RECOMMENDID,
-                    Year = item.Year,
-                    Price = item.Price,
-                    Currency = item.Currency,
-                    NXB = item.NXB,
-                    FullPrice = 0,
-                    ItemID = item.ItemID
-                };
-                listRecommend.Add(obj);
             }
             ViewBag.POList = listRecommend;
 
@@ -2271,7 +2292,8 @@ namespace Libol.Controllers
                             Currency = item.Currency,
                             NXB = item.NXB,
                             FullPrice = item.FullPrice,
-                            ItemID = item.ItemID
+                            ItemID = item.ItemID,
+                            DateLastUsed = item.DateLastUsed
                         };
                         display1.Add(obj);
                     }
@@ -2294,7 +2316,8 @@ namespace Libol.Controllers
                             Currency = item.Currency,
                             NXB = item.NXB,
                             FullPrice = item.FullPrice,
-                            ItemID = item.ItemID
+                            ItemID = item.ItemID,
+                            DateLastUsed = item.DateLastUsed,
                         };
                         display2.Add(obj);
 
@@ -2318,7 +2341,8 @@ namespace Libol.Controllers
                             Currency = item.Currency,
                             NXB = item.NXB,
                             FullPrice = item.FullPrice,
-                            ItemID = item.ItemID
+                            ItemID = item.ItemID,
+                            DateLastUsed = item.DateLastUsed,
                         };
                         display3.Add(obj);
                     }
@@ -2341,7 +2365,8 @@ namespace Libol.Controllers
                             Currency = item.Currency,
                             NXB = item.NXB,
                             FullPrice = item.FullPrice,
-                            ItemID = item.ItemID
+                            ItemID = item.ItemID,
+                            DateLastUsed = item.DateLastUsed
                         };
                         display4.Add(obj);
                     }
@@ -2364,7 +2389,8 @@ namespace Libol.Controllers
                             Currency = item.Currency,
                             NXB = item.NXB,
                             FullPrice = item.FullPrice,
-                            ItemID = item.ItemID
+                            ItemID = item.ItemID,
+                            DateLastUsed = item.DateLastUsed,
                         };
                         display5.Add(obj);
                     }
@@ -2387,7 +2413,8 @@ namespace Libol.Controllers
                             Currency = item.Currency,
                             NXB = item.NXB,
                             FullPrice = item.FullPrice,
-                            ItemID = item.ItemID
+                            ItemID = item.ItemID,
+                            DateLastUsed = item.DateLastUsed,
                         };
                         display6.Add(obj);
                     }
@@ -2506,17 +2533,17 @@ namespace Libol.Controllers
             return View();
         }
 
-        public PartialViewResult GetStatTaskbar(string strLibID, string strLocID, string strFromDate, string strToDate)
+        public PartialViewResult GetStatTaskbar(string strLibID, string LocationPrefix, string strLocID, string strFromDate, string strToDate)
         {
             int LibID = 0;
-            int LocID = 0;
+            //int LocID = 0;
             int count = 0;
             if (!String.IsNullOrEmpty(strLibID)) LibID = Convert.ToInt32(strLibID);
-            if (!String.IsNullOrEmpty(strLocID)) LocID = Convert.ToInt32(strLocID);
+            //if (!String.IsNullOrEmpty(strLocID)) LocID = Convert.ToInt32(strLocID);
             List<FPT_SP_GET_ITEM_Result> listItem = new List<FPT_SP_GET_ITEM_Result>();
             List<FPT_SP_GET_ITEM_Result> listIte = new List<FPT_SP_GET_ITEM_Result>();
 
-            listIte = ab.FPT_SP_GET_ITEM_LIST(strFromDate, strToDate, LocID, LibID).ToList();
+            listIte = ab.FPT_SP_GET_ITEM_LIST(strFromDate, strToDate, strLocID, LocationPrefix, LibID).ToList();
 
             foreach (var item in listIte)
             {
@@ -2532,7 +2559,7 @@ namespace Libol.Controllers
                 string StrTitle = "";
                 string Strdigit = "";
                 //lay thong tin item
-                foreach (var items in ab.FPT_SP_GET_ITEM_INFOR_LIST(item.ID, LocID, LibID))
+                foreach (var items in ab.FPT_SP_GET_ITEM_INFOR_LIST(item.ID, strLocID, LocationPrefix, LibID))
                 {
                     if (items.FieldCode == "100")
                     {
