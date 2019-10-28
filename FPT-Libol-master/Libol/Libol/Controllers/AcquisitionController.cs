@@ -16,8 +16,9 @@ namespace Libol.Controllers
         private LibolEntities db = new LibolEntities();
         ShelfBusiness shelfBusiness = new ShelfBusiness();
         AcquisitionBusiness ab = new AcquisitionBusiness();
+		private  static string  statust = "notcheck";
 
-        [AuthAttribute(ModuleID = 4, RightID = "32")]
+		[AuthAttribute(ModuleID = 4, RightID = "32")]
         public ActionResult HoldingLocRemove()
         {
             ViewBag.Library = shelfBusiness.FPT_SP_HOLDING_LIBRARY_SELECT(0, 1, -1, (int)Session["UserID"], 1);
@@ -254,7 +255,8 @@ namespace Libol.Controllers
             return View();
         }
 
-        public PartialViewResult GetInventoryReport(string strInventoryID01, string strLibID01, string strLocPrefix, string strLocID, string strDKCBID01)
+		
+		public PartialViewResult GetInventoryReport(string strInventoryID01, string strLibID01, string strLocPrefix, string strLocID, string strDKCBID01,string strItemID)
         {
 
             strDKCBID01 = strDKCBID01.Trim();
@@ -263,7 +265,7 @@ namespace Libol.Controllers
             int libid = 0, invenid = 0;
             if (strDKCBID01.Equals(" "))
             {
-                strDKCBID01 = strLibID01.Trim();
+                strDKCBID01 = strDKCBID01.Trim();
             }
             if (strLibID01 != "")
             {
@@ -301,14 +303,15 @@ namespace Libol.Controllers
             totalReLib = countCN + cirCount;
             //ViewBag.totalInLibrary = totalInLib.ToString();
             //ViewBag.totalReLibrary = totalReLib.ToString();
-            ViewBag.totalInLibrary = ab.FPT_SP_INVENTORY(libid, strLocPrefix, strLocID, 2).Count.ToString();
-            ViewBag.totalOnLoan = ab.FPT_SP_INVENTORY(libid, strLocPrefix, strLocID, 1).Count.ToString();
-            List<FPT_SP_INVENTORY_Result> listData = ab.FPT_SP_INVENTORY(libid, strLocPrefix, strLocID, 0);
+            ViewBag.totalInLibrary = ab.FPT_SP_INVENTORY(libid, strLocPrefix, strLocID, 2,statust).Count.ToString();
+            ViewBag.totalOnLoan = ab.FPT_SP_INVENTORY(libid, strLocPrefix, strLocID, 1, statust).Count.ToString();
+			
+            List<FPT_SP_INVENTORY_Result> listData = ab.FPT_SP_INVENTORY(libid, strLocPrefix, strLocID, 0, statust);
 
             List<string> listStr = myList.ToList();
             ViewBag.totalCheck = listStr.Count();
             List<string> tempLstr = myList.ToList();
-            List<FPT_SP_INVENTORY_Result> listDataTemp = ab.FPT_SP_INVENTORY(libid, strLocPrefix, strLocID, 0);
+            List<FPT_SP_INVENTORY_Result> listDataTemp = ab.FPT_SP_INVENTORY(libid, strLocPrefix, strLocID, 0, statust);
             List<string> strDuplicate = new List<string>();
 
 
@@ -323,7 +326,7 @@ namespace Libol.Controllers
                     {
                         if (listData[j].CopyNumber.Equals(listStr[i].Trim()))
                         {
-                            tempLstr.Remove(listStr[i].Trim());
+                            tempLstr.Remove(listStr[i]);
                             strDuplicate.Add(listStr[i].Trim());
                             foreach (FPT_SP_INVENTORY_Result ob in listDataTemp)
                             {
@@ -349,7 +352,7 @@ namespace Libol.Controllers
                 {
                     if (strDuplicate[i].Trim().Equals(strDuplicate[j].Trim()))
                     {
-                        if (!strDuplicate.Contains(listStr[i].Trim()))
+                        if (!strNumDup.Contains(listStr[i].Trim()))
                         {
                             strNumDup.Add(strDuplicate[i]);
                         }
@@ -383,7 +386,154 @@ namespace Libol.Controllers
 
             return PartialView("GetInventoryReport");
         }
-        public JsonResult GetLocationsPrefix(string id)
+		public ActionResult InventoryReportByItemID()
+		{
+			List<SelectListItem> inven = new List<SelectListItem>();
+			foreach (var l in db.SP_ACQ_INVENTORY_GET(0, 0))
+			{
+				inven.Add(new SelectListItem { Text = l.Name, Value = l.ID.ToString() });
+			}
+			ViewData["inven"] = inven;
+			List<SelectListItem> lib = new List<SelectListItem>();
+			lib.Add(new SelectListItem { Text = "Hãy chọn thư viện", Value = "" });
+			foreach (var l in db.SP_HOLDING_LIB_SEL((int)Session["UserID"]).ToList())
+			{
+				lib.Add(new SelectListItem { Text = l.Code, Value = l.ID.ToString() });
+			}
+			ViewData["lib"] = lib;
+			return View();
+		}
+		public PartialViewResult GetInventoryReportByItemID(string strInventoryID01, string strLibID01, string strLocPrefix, string strLocID, string strDKCBID01, string strItemID)
+		{
+
+			strDKCBID01 = strDKCBID01.Trim();
+			string[] myList = strDKCBID01.Split('\n');
+			int countCN = myList.Length;
+			int libid = 0, invenid = 0;
+			if (strDKCBID01.Equals(" "))
+			{
+				strDKCBID01 = strDKCBID01.Trim();
+			}
+			if (strLibID01 != "")
+			{
+				libid = Convert.ToInt32(strLibID01);
+			}
+			if (strInventoryID01 != "")
+			{
+				invenid = Convert.ToInt32(strInventoryID01);
+			}
+			int cirCount = 0;
+			int totalInLib = 0, totalReLib = 0;
+			//get and set inventorytime
+			int intInventoryTime = 0;
+			foreach (var item in db.FPT_SP_ACQ_GETMAXID_HINT())
+			{
+				intInventoryTime = item.Value;
+			}
+			intInventoryTime = intInventoryTime + 1;
+			//add table
+			ViewBag.intResult = db.SP_ACQ_RUN_INVENTORY(0, libid, 1, invenid, "", intInventoryTime, 1, 0);
+			//exe inventory
+			List<FPT_SP_GET_GENERAL_LOC_INFOR_DUCNV_Result> listCountResult = ab.FPT_SP_GET_GENERAL_LOC_INFOR_DUCNV_LIST(libid, 0, null, 1);
+			foreach (var item in listCountResult)
+			{
+				if (item.Type == "CountCir")
+				{
+					cirCount = Convert.ToInt32(item.VALUE);
+				}
+
+				if (item.Type == "SUMCOPY")
+				{
+					totalInLib = Convert.ToInt32(item.VALUE);
+				}
+			}
+			totalReLib = countCN + cirCount;
+			//ViewBag.totalInLibrary = totalInLib.ToString();
+			//ViewBag.totalReLibrary = totalReLib.ToString();
+			ViewBag.totalInLibrary = ab.FPT_SP_INVENTORY(libid, "0", "", 2, strItemID).Count.ToString();
+			ViewBag.totalOnLoan = ab.FPT_SP_INVENTORY(libid, "0", "", 1, strItemID).Count.ToString();
+
+			List<FPT_SP_INVENTORY_Result> listData = ab.FPT_SP_INVENTORY(libid, "0", "", 0,strItemID);
+
+			List<string> listStr = myList.ToList();
+			ViewBag.totalCheck = listStr.Count();
+			List<string> tempLstr = myList.ToList();
+			List<FPT_SP_INVENTORY_Result> listDataTemp = ab.FPT_SP_INVENTORY(libid, "0", "", 0, strItemID);
+			List<string> strDuplicate = new List<string>();
+
+
+
+			if (myList.Length != 0 && listDataTemp.Count !=0)
+			{
+
+				for (int j = 0; j < listData.Count; j++)
+				{
+
+					for (int i = 0; i < listStr.Count; i++)
+					{
+						if (listData[j].CopyNumber.Equals(listStr[i].Trim()))
+						{
+							tempLstr.Remove(listStr[i]);
+							strDuplicate.Add(listStr[i].Trim());
+							foreach (FPT_SP_INVENTORY_Result ob in listDataTemp)
+							{
+								if (ob.CopyNumber.Equals(listData[j].CopyNumber))
+								{
+									listDataTemp.Remove(ob);
+									break;
+								}
+
+							}
+
+						}
+
+					}
+
+				}
+			}
+
+			List<string> strNumDup = new List<string>();
+			for (int i = 0; i < strDuplicate.Count - 1; i++)
+			{
+				for (int j = i + 1; j < strDuplicate.Count; j++)
+				{
+					if (strDuplicate[i].Trim().Equals(strDuplicate[j].Trim()))
+					{
+						if (!strDuplicate.Contains(listStr[i].Trim()))
+						{
+							strNumDup.Add(strDuplicate[i]);
+						}
+
+					}
+				}
+			}
+			ViewBag.totalDuplicate = strNumDup.Count();
+
+			if (listDataTemp.Count > 0)
+			{
+				ViewBag.LackDataResult = listDataTemp;
+				ViewBag.totalLack = listDataTemp.Count.ToString();
+			}
+			else
+			{
+				ViewBag.LackDataResult = null;
+				ViewBag.totalLack = "0";
+			}
+
+			if (tempLstr.Count > 0)
+			{
+				ViewBag.ExcessDataResult = tempLstr;
+				ViewBag.totalEX = tempLstr.Count.ToString();
+			}
+			else
+			{
+				ViewBag.ExcessDataResult = null;
+				ViewBag.totalEX = "0";
+			}
+
+			return PartialView("GetInventoryReportByItemID");
+		}	
+		public JsonResult GetLocationsPrefix(string id)
         {
             List<SelectListItem> LocPrefix = new List<SelectListItem>();
             LocPrefix.Add(new SelectListItem { Text = "Tất cả", Value = "0" });
@@ -399,6 +549,7 @@ namespace Libol.Controllers
             }
             return Json(new SelectList(LocPrefix, "Value", "Text"));
         }
+
 
         //GET LOCATIONS BY LOCATION PREFIX, LIBRARY, USERID
         public JsonResult GetLocationsByPrefix(int id, string prefix)
@@ -437,7 +588,7 @@ namespace Libol.Controllers
             return Json(new SelectList(LocByPrefix, "Value", "Text"));
         }
 
-        public PartialViewResult RecordNotFound(string strInventoryID01, string strLibID01, string strLocPrefix, string strLocID, string strDKCBID01)
+        public PartialViewResult RecordNotFound(string strInventoryID01, string strLibID01, string strLocPrefix, string strLocID, string strDKCBID01, string strItemID)
         {
             strDKCBID01 = strDKCBID01.Trim();
             string[] myList = strDKCBID01.Split('\n');
@@ -452,13 +603,22 @@ namespace Libol.Controllers
                 libid = Convert.ToInt32(strLibID01);
             }
 
+			string modeCheck;
+			if (strItemID == "")
+			{
+				modeCheck = statust;
+			}
+			else
+			{
+				modeCheck = strItemID;
+			}
 
-            List<FPT_SP_INVENTORY_Result> listData = ab.FPT_SP_INVENTORY(libid, strLocPrefix, strLocID, 0);
+			List<FPT_SP_INVENTORY_Result> listData = ab.FPT_SP_INVENTORY(libid, strLocPrefix, strLocID, 0, modeCheck);
 
-            List<string> listStr = myList.ToList();
-            List<string> tempLstr = myList.ToList();
-            List<FPT_SP_INVENTORY_Result> listDataTemp = ab.FPT_SP_INVENTORY(libid, strLocPrefix, strLocID, 0);
-            if (myList.Length != 0)
+			List<string> listStr = myList.ToList();
+			List<string> tempLstr = myList.ToList();
+			List<FPT_SP_INVENTORY_Result> listDataTemp = ab.FPT_SP_INVENTORY(libid, strLocPrefix, strLocID, 0, modeCheck);
+			if (myList.Length != 0)
             {
 
                 for (int j = 0; j < listData.Count; j++)
@@ -492,7 +652,7 @@ namespace Libol.Controllers
             return PartialView("RecordNotFound");
         }
 
-        public PartialViewResult DuplicateCopyNumber(string strInventoryID01, string strLibID01, string strLocPrefix, string strLocID, string strDKCBID01)
+        public PartialViewResult DuplicateCopyNumber(string strInventoryID01, string strLibID01, string strLocPrefix, string strLocID, string strDKCBID01, string strItemID)
         {
             strDKCBID01 = strDKCBID01.Trim();
             string[] myList = strDKCBID01.Split('\n');
@@ -506,13 +666,21 @@ namespace Libol.Controllers
             {
                 libid = Convert.ToInt32(strLibID01);
             }
-
-
-            List<FPT_SP_INVENTORY_Result> listData = ab.FPT_SP_INVENTORY(libid, strLocPrefix, strLocID, 0);
+			string modeCheck;
+			if (strItemID == "")
+			{
+				modeCheck = statust;
+			}
+			else
+			{
+				modeCheck = strItemID;
+			}
+			
+			List<FPT_SP_INVENTORY_Result> listData = ab.FPT_SP_INVENTORY(libid, strLocPrefix, strLocID, 0, modeCheck);
 
             List<string> listStr = myList.ToList();
             List<string> tempLstr = new List<string>();
-            List<FPT_SP_INVENTORY_Result> listDataTemp = ab.FPT_SP_INVENTORY(libid, strLocPrefix, strLocID, 0);
+            List<FPT_SP_INVENTORY_Result> listDataTemp = ab.FPT_SP_INVENTORY(libid, strLocPrefix, strLocID, 0, modeCheck);
             List<DUPLICATE_INVENTORY> duplicates = new List<DUPLICATE_INVENTORY>();
             if (myList.Length != 0)
             {
