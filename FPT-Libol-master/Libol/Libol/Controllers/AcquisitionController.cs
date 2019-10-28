@@ -82,7 +82,45 @@ namespace Libol.Controllers
 			return Json(ViewBag.Liquidate, JsonRequestBehavior.AllowGet);
 
 		}
+		[HttpPost]
+		public JsonResult SearchCode(string strCode, string strCN, string strTT, string ISBN)
+		{
+			List<FPT_SP_CATA_GET_DETAILINFOR_OF_ITEM_Result> inforList = ab.SearchCode(strCode, strCN, strTT, ISBN);
+			return Json(inforList, JsonRequestBehavior.AllowGet);
+		}
 
+		[AuthAttribute(ModuleID = 1, RightID = "15")]
+		public PartialViewResult AddNewCatalogueDetail()
+		{
+			string Id = Request["ID"];
+			ViewBag.SearchItemResult = null;
+			if (!String.IsNullOrEmpty(Id))
+			{
+				List<FPT_SP_CATA_GET_CONTENTS_OF_ITEMS_Result> listContent = ab.GetContentByID(Id).ToList();
+				if (listContent.Count == 0) return PartialView("SearchItemCode");
+				ViewBag.SearchItemResult = listContent[1].Content;
+				
+			}
+			else
+			{
+				return PartialView("SearchItemCode");
+			}
+			List<SelectListItem> inven = new List<SelectListItem>();
+			foreach (var l in db.SP_ACQ_INVENTORY_GET(0, 0))
+			{
+				inven.Add(new SelectListItem { Text = l.Name, Value = l.ID.ToString() });
+			}
+			ViewData["inven"] = inven;
+			List<SelectListItem> lib = new List<SelectListItem>();
+			lib.Add(new SelectListItem { Text = "Hãy chọn thư viện", Value = "" });
+			foreach (var l in db.SP_HOLDING_LIB_SEL((int)Session["UserID"]).ToList())
+			{
+				lib.Add(new SelectListItem { Text = l.Code, Value = l.ID.ToString() });
+			}
+			ViewData["lib"] = lib;
+			return PartialView("InventoryReportByItemID");
+		}
+		
 		[HttpPost]
 		public JsonResult SearchItem(string title, string copynumber, string author, string publisher, string year, string isbn)
 		{
@@ -401,6 +439,13 @@ namespace Libol.Controllers
 				lib.Add(new SelectListItem { Text = l.Code, Value = l.ID.ToString() });
 			}
 			ViewData["lib"] = lib;
+			ViewBag.SearchItemResult = null;
+			return View();
+		}
+
+		public ActionResult SearchItemCode()
+		{
+			
 			return View();
 		}
 		public PartialViewResult GetInventoryReportByItemID(string strInventoryID01, string strLibID01, string strLocPrefix, string strLocID, string strDKCBID01, string strItemID)
