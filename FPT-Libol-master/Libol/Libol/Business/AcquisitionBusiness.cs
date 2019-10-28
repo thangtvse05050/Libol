@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Libol.SupportClass;
 using System.Web;
 
 namespace Libol.Models
@@ -106,6 +107,97 @@ namespace Libol.Models
 			List<FPT_SP_INVENTORY_Result> list = db.Database.SqlQuery<FPT_SP_INVENTORY_Result>("FPT_SP_INVENTORY {0}, {1}, {2}, {3}, {4}", new object[] { LibraryID, LocationPrefix, LocationID, InUsed, ItemCode }).ToList();
 			return list;
 
+		}
+
+		public List<int> SearchIDByCondition(string strCode, string strCN, string strTT, string ISBN)
+		{
+			List<int> ItemIds = new List<int>();
+
+			if (strCode != "")
+			{
+				int id = db.ITEMs.Where(a => a.Code == strCode).Select(a => a.ID).FirstOrDefault();
+				ItemIds.Add(id);
+			}
+			if (strCN != "")
+			{
+				int id = db.HOLDINGs.Where(a => a.CopyNumber == strCN).Select(a => a.ItemID).FirstOrDefault();
+				ItemIds.Add(id);
+			}
+			if (strTT != "")
+			{
+				strTT = strTT.ToUpper();
+				List<int> id = db.FIELD200S.Where(a => a.Content.Contains(strTT)).Select(a => a.ItemID).ToList();
+				ItemIds = ItemIds.Concat(id).ToList();
+			}
+			if (ISBN != "")
+			{
+				int id = db.CAT_DIC_NUMBER.Where(a => a.Number == ISBN).Select(a => a.ItemID).Distinct().FirstOrDefault();
+				ItemIds.Add(id);
+			}
+
+
+
+			return ItemIds;
+		}
+		public List<FPT_SP_CATA_GET_DETAILINFOR_OF_ITEM_Result> SearchCode(string strCode, string strCN, string strTT, string ISBN)
+		{
+			List<int> ItemId = SearchIDByCondition(strCode, strCN, strTT, ISBN).Distinct().ToList();
+
+
+			//get List Infor detail
+			List<FPT_SP_CATA_GET_DETAILINFOR_OF_ITEM_Result> inforList = new List<FPT_SP_CATA_GET_DETAILINFOR_OF_ITEM_Result>();
+
+
+			foreach (int item in ItemId)
+			{
+				//inforList = inforList.Concat(db.FPT_SP_CATA_GET_DETAILINFOR_OF_ITEM(item.ToString(), 0).ToList()).ToList();
+				List<FPT_SP_CATA_GET_DETAILINFOR_OF_ITEM_Result> inforListTemp = db.FPT_SP_CATA_GET_DETAILINFOR_OF_ITEM(item.ToString(), 0).ToList();
+				for (int i = 0; i < inforListTemp.Count; i++)
+				{
+					if (inforListTemp[i].FieldCode == "001")
+					{
+						inforList.Add(inforListTemp[i]);
+					}
+					if (inforListTemp[i].FieldCode == "245")
+					{
+						inforListTemp[i].Content = new FormatHoldingTitle().OnFormatHoldingTitle(inforListTemp[i].Content);
+						inforList.Add(inforListTemp[i]);
+					}
+
+				}
+			}
+
+
+			return inforList;
+		}
+		public List<FPT_SP_CATA_GET_CONTENTS_OF_ITEMS_Result> GetContentByID(string Id)
+		{
+			List<FPT_SP_CATA_GET_CONTENTS_OF_ITEMS_Result> list = db.FPT_SP_CATA_GET_CONTENTS_OF_ITEMS(Id, 0).ToList();
+
+			//Ghep Cac truong trung nhau thanh 1 dong
+			List<int> index = new List<int>();
+			for (int i = 0; i < list.Count; i++)
+			{
+				if (i > 0)
+				{
+					if (list[i].FieldCode == list[i - 1].FieldCode)
+					{
+						index.Add(i - 1);
+						list[i].Content = list[i - 1].Content + "::" + list[i].Content;
+					}
+					//if (listContent[i].FieldCode.StartsWith("852"))
+					//{
+					//    index.Add(i);
+					//}
+				}
+
+			}
+			//remove các trường trùng đã được ghép
+			for (int i = 0; i < index.Count; i++)
+			{
+				list.RemoveAt(index[i] - i);
+			}
+			return list;
 		}
 
 
