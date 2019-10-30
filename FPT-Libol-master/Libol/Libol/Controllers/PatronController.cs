@@ -612,12 +612,16 @@ namespace Libol.Controllers
         public JsonResult ListPatron(DataTableAjaxPostModel model,string strCode, string  blnSex, string strLastIssuedDate, string  intPatronGroupID,
             string strClass, string strGrade, string strName, string strDOB, string strExpiredDate, string faculty, string intOccupationID)
         {
-            
+            string name = strName.Replace("  ", " ").Trim();
+            while(name.Contains("  "))
+            {
+                name = name.Replace("  ", " ");
+            }
             var patrons = db.CIR_PATRON;
             var search = patrons.Where(a => true);
-            if (!String.IsNullOrEmpty(strCode))
+            if (!String.IsNullOrEmpty(strCode.Trim()))
             {
-                search = search.Where(a => a.Code.Contains(strCode));
+                search = search.Where(a => a.Code.Contains(strCode.Trim()));
             }
             if (!String.IsNullOrEmpty(blnSex))
             {
@@ -634,18 +638,18 @@ namespace Libol.Controllers
             {
                 search = search.Where(a => a.CIR_PATRON_GROUP == null ? false : a.CIR_PATRON_GROUP.Name == intPatronGroupID);
             }
-            if (!String.IsNullOrEmpty(strClass))
+            if (!String.IsNullOrEmpty(strClass.Trim()))
             {
-                search = search.Where(a => a.CIR_PATRON_UNIVERSITY != null && a.CIR_PATRON_UNIVERSITY.Class.Contains(strClass));
+                search = search.Where(a => a.CIR_PATRON_UNIVERSITY != null && a.CIR_PATRON_UNIVERSITY.Class.Contains(strClass.Trim()));
             }
-            if (!String.IsNullOrEmpty(strGrade))
+            if (!String.IsNullOrEmpty(strGrade.Trim()))
             {
-                search = search.Where(a => a.CIR_PATRON_UNIVERSITY != null && a.CIR_PATRON_UNIVERSITY.Grade.Contains(strGrade));
+                search = search.Where(a => a.CIR_PATRON_UNIVERSITY != null && a.CIR_PATRON_UNIVERSITY.Grade.Contains(strGrade.Trim()));
             }
-            if (!String.IsNullOrEmpty(strName))
+            if (!String.IsNullOrEmpty(name))
             {
-                search = search.Where(a => (a.FirstName.Trim() + " " + a.MiddleName.Trim() + " " + a.LastName.Trim()).Contains(strName)
-                        || (a.FirstName.Trim() + " " + a.LastName.Trim()).Contains(strName));
+                search = search.Where(a => (a.FirstName.Trim() + " " + a.MiddleName.Trim() + " " + a.LastName.Trim()).Contains(name)
+                        || (a.FirstName.Trim() + " " + a.LastName.Trim()).Contains(name));
             }
             if (!String.IsNullOrEmpty(strDOB))
             {
