@@ -6331,24 +6331,33 @@ CREATE PROCEDURE [dbo].[FPT_SP_INVENTORY]
 	@intLibraryID int,
 	@strLocationPrefix varchar(5),
 	@intLocationID  varchar(500),
-	@intInUsed int
+	@intInUsed int,
+	@strItemID varchar(500)
 AS
 DECLARE @strSql varchar(2000)
---DECLARE @intInUsedVa varchar(2000)
+DECLARE @strInUsedVa varchar(2000)
+DECLARE @strItemCode varchar(2000)
 BEGIN	
 	SET @strSql='SELECT REPLACE(REPLACE(REPLACE(REPLACE(F.Content,''$a'',''''),''$b'',''''),''$c'',''''),''$n'','''') AS Content, B.Code, A.CopyNumber, B.CallNumber, A.Price, '''' as Note from HOLDING A 
 				INNER JOIN ITEM B ON A.ITEMID = B.ID
 				INNER JOIN FIELD200S F ON A.ITEMID = F.ITEMID
-				WHERE F.FieldCode = ''245'' AND '
+				WHERE F.FieldCode = ''245''  '
 	IF @intInUsed = 0
 	BEGIN
-		SET @strSql= @strSql + ' InUsed= 0 '
+		SET @strInUsedVa= ' AND InUsed= 0 '
 	END
 	ELSE IF @intInUsed = 1
 	BEGIN
-		SET @strSql= @strSql + ' InUsed= 1 '
+		SET @strInUsedVa=' AND InUsed= 1 '
 	END
-				
+	ELSE IF @intInUsed=2
+	BEGIN
+		SET @strInUsedVa=''
+	END
+
+	SET @strSql= @strSql + @strInUsedVa
+	IF @strItemID='notcheck'
+	BEGIN		
 	IF @intLibraryID=81
 		BEGIN
 			SET @strSql=@strSql+ ' AND (A.LIBID= 81 or (A.LibID=20 and A.LocationID in (13,15,16,27)))'
@@ -6419,9 +6428,27 @@ BEGIN
 						END
 				END			
 		END
+	END
+	ELSE
+		SET @strSql=@strSql+' AND  B.Code='''+ @strItemID+''''
+	BEGIN
+		IF @intLibraryID=81
+		BEGIN
+			SET @strSql=@strSql+ ' AND (A.LIBID= 81 or (A.LibID=20 and A.LocationID in (13,15,16,27)))'					
+		END
+	ELSE IF @intLibraryID=20
+		BEGIN
+			SET @strSql=@strSql+ ' AND InUsed=0 AND A.LibID=20 and A.LocationID not in (13,15,16,27)'	
+		END
+	ELSE
+		BEGIN
+			SET @strSql=@strSql+ ' AND InUsed=0 AND A.LIBID= '+CAST(@intLibraryID AS CHAR(20))		
+		END
+	END
 END
 EXEC(@strSql)
 PRINT (@strSql)
+
 
 
 GO
