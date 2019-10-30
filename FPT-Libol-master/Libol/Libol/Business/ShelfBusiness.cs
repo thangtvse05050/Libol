@@ -71,7 +71,10 @@ namespace Libol.Models
             holding.Acquired = false;
             holding.Note = "";
             holding.POID = 0;
-
+            if(holding.Price == null)
+            {
+                holding.Price = 0;
+            }
 
             // check start holding tồn tại chưa
 

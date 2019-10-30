@@ -350,6 +350,12 @@
         var recordNumber = document.getElementById("txtSCT").value;
         var recommendID = document.getElementById("txtRecommendID").value;
         var itemID = -1;
+
+        if (price === "") {
+            alert("Hãy nhập đơn giá");
+            document.getElementById("txtPrice").focus();
+            return;
+        }
         if ('@ViewBag.itemID' != '') {
             itemID = '@ViewBag.itemID';
         }
