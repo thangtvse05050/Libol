@@ -249,6 +249,12 @@
     <Compile Include="Models\FPT_CATA_FILE_NEW.cs">
       <DependentUpon>Libol.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\FPT_GET_SPECIALIZED_STORE_Result.cs">
+      <DependentUpon>Libol.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\FPT_GET_SPELIALIZED_NAME_Result.cs">
+      <DependentUpon>Libol.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\FPT_RECOMMEND.cs">
       <DependentUpon>Libol.tt</DependentUpon>
     </Compile>
@@ -265,6 +271,9 @@
       <DependentUpon>Libol.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\FPT_SP_CATA_GET_CONTENTS_OF_ITEMS_Result.cs">
+      <DependentUpon>Libol.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\FPT_SP_GET_DETAIL_BOOK_WITH_STATUS_Result.cs">
       <DependentUpon>Libol.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\FPT_SP_GET_GENERAL_LOC_INFOR_DUCNV_Result.cs">
@@ -294,6 +303,12 @@
     <Compile Include="Models\FPT_SP_GET_ITEM_INFOR_Result.cs">
       <DependentUpon>Libol.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\FPT_SP_GET_SEARCHED_INFO_BOOK_BY_KEYWORD_Result.cs">
+      <DependentUpon>Libol.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\FPT_SP_GET_SEARCHED_INFO_BOOK_Result.cs">
+      <DependentUpon>Libol.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\FPT_SP_HOLDING_LIBLOCUSER_SEL_Result.cs">
       <DependentUpon>Libol.tt</DependentUpon>
     </Compile>
@@ -301,6 +316,9 @@
       <DependentUpon>Libol.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\FPT_SP_INVENTORY_Result.cs">
+      <DependentUpon>Libol.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\FPT_SP_SPECIALIZED_STORE.cs">
       <DependentUpon>Libol.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\FPT_SYS_USER_RIGHT.cs">
@@ -2458,6 +2476,9 @@
     <None Include="Properties\PublishProfiles\flib123 - Web Deploy1.pubxml" />
     <None Include="Properties\PublishProfiles\flib20 - Web Deploy.pubxml" />
     <None Include="Properties\PublishProfiles\flib30 - Web Deploy.pubxml" />
+    <None Include="Properties\PublishProfiles\flib30 - Web Deploy1.pubxml" />
+    <None Include="Properties\PublishProfiles\flib30 - Web Deploy2.pubxml" />
+    <None Include="Properties\PublishProfiles\flib30 - Web Deploy3.pubxml" />
     <None Include="Properties\PublishProfiles\Libol - FTP.pubxml" />
     <None Include="Properties\PublishProfiles\Libol - Web Deploy.pubxml" />
     <None Include="log4net.config">
@@ -2624,6 +2645,7 @@
     <Content Include="Views\Acquisition\GetInventoryReportByItemID.cshtml" />
     <Content Include="Views\Acquisition\InventoryReportByItemID.cshtml" />
     <Content Include="Views\Acquisition\SearchItemCode.cshtml" />
+    <Content Include="Views\AcquireReport\CreateNewSpecialized.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\Patron\SearchPatronFilter.cshtml" />

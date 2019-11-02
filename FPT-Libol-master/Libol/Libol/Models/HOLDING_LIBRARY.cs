@@ -21,6 +21,7 @@ namespace Libol.Models
             this.HOLDING_INVENTORY = new HashSet<HOLDING_INVENTORY>();
             this.HOLDING_SHELF_SCHEMA = new HashSet<HOLDING_SHELF_SCHEMA>();
             this.HOLDING_LOCATION = new HashSet<HOLDING_LOCATION>();
+            this.FPT_SP_SPECIALIZED_STORE = new HashSet<FPT_SP_SPECIALIZED_STORE>();
         }
     
         public int ID { get; set; }
@@ -38,5 +39,7 @@ namespace Libol.Models
         public virtual ICollection<HOLDING_SHELF_SCHEMA> HOLDING_SHELF_SCHEMA { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<HOLDING_LOCATION> HOLDING_LOCATION { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<FPT_SP_SPECIALIZED_STORE> FPT_SP_SPECIALIZED_STORE { get; set; }
     }
 }

@@ -3040,8 +3040,8 @@ namespace Libol.Controllers
             ViewData["lib"] = lib;
             return View();
         }
-
-        public PartialViewResult GetSpecializedReport(string strLibID, string strSubjects, string strSpec)
+		
+		public PartialViewResult GetSpecializedReport(string strLibID, string strSubjects, string strSpec)
         {
             int LibID = 0;
             if (!String.IsNullOrEmpty(strLibID)) LibID = Int32.Parse(strLibID);
@@ -3173,7 +3173,78 @@ namespace Libol.Controllers
             return PartialView("GetSpecializedReport");
         }
 
-        public JsonResult GetLocationsPrefix(string id)
+		public ActionResult CreateNewSpecialized()
+		{
+			List<SelectListItem> lib = new List<SelectListItem>
+			{
+				new SelectListItem { Text = "Hãy chọn thư viện", Value = "" }
+			};
+			foreach (var l in le.FPT_SP_CIR_LIB_SEL((int)Session["UserID"]).ToList())
+			{
+				lib.Add(new SelectListItem { Text = l.Code, Value = l.ID.ToString() });
+			}
+			ViewData["lib"] = lib;
+			return View();
+		}
+		[HttpPost]
+		public JsonResult GetCreateNewSpecialized(string strLibID, string strSubjects, string strSpec)
+		{
+			int LibID = 0;
+			if (!String.IsNullOrEmpty(strLibID)) LibID = Int32.Parse(strLibID);
+			//;$aPRJ101;$aPRJ201;
+			strSubjects = strSubjects.Trim().ToUpper();
+			List<FPT_GET_SPELIALIZED_NAME_Result> lstName = le.FPT_GET_SPELIALIZED_NAME(LibID).ToList();
+			List<String> listtemp = new List<String>();
+			foreach(FPT_GET_SPELIALIZED_NAME_Result spc in lstName)
+			{
+				if (spc.Name.Equals(strSpec.Trim()))
+				{
+					listtemp.Add(spc.Name);
+				}
+			}
+			if (listtemp.Count == 0)
+			{
+				le.ExcuteSQL("INSERT INTO FPT_SP_SPECIALIZED_STORE VALUES ('"+ strSpec + "','"+ strSubjects + "','"+ strLibID + "')");
+				ViewBag.message = "Thêm chuyên ngành thành công!!";
+			}
+			else
+			{
+				ViewBag.message = "Chuyên ngành đã tồn tại!!";
+			}
+			return Json(ViewBag.message, JsonRequestBehavior.AllowGet);
+		}
+		public JsonResult GetSpecializedStored(string id)
+		{
+			List<SelectListItem> sprecial = new List<SelectListItem>();
+			sprecial.Add(new SelectListItem { Text = "Chuyên ngành", Value = "0" });
+			if (!string.IsNullOrEmpty(id))
+			{
+				foreach (var lp in le.FPT_GET_SPECIALIZED_STORE( Int32.Parse(id)))
+				{
+					sprecial.Add(new SelectListItem { Text = lp.Name, Value = lp.ID.ToString() });
+				}
+			}
+			return Json(new SelectList(sprecial, "Value", "Text"));
+		}
+		[HttpPost]
+		public JsonResult GetSpecializedSubject(string id)
+		{
+			string subjects = "";
+
+			int ID = Int32.Parse(id);
+			if (ID != 0)
+			{
+				FPT_SP_SPECIALIZED_STORE ab = le.FPT_SP_SPECIALIZED_STORE.Where(a => a.ID == ID).First();
+				subjects = ab.Name+"/"+ab.Subjects;
+			}
+			
+			
+			
+			
+
+			return Json(subjects,JsonRequestBehavior.AllowGet);
+		}
+		public JsonResult GetLocationsPrefix(string id)
         {
             List<SelectListItem> LocPrefix = new List<SelectListItem>();
             LocPrefix.Add(new SelectListItem { Text = "Tất cả", Value = "0" });
