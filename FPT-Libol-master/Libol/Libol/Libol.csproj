@@ -2624,6 +2624,7 @@
     <Content Include="Views\Acquisition\GetInventoryReportByItemID.cshtml" />
     <Content Include="Views\Acquisition\InventoryReportByItemID.cshtml" />
     <Content Include="Views\Acquisition\SearchItemCode.cshtml" />
+    <Content Include="Views\Management\ChangePassword.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\Patron\SearchPatronFilter.cshtml" />
