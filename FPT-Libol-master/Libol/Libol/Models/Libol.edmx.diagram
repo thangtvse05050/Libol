@@ -407,8 +407,6 @@
         <AssociationConnector Association="LibolModel.FK__FPT_SYS_U__Right__76923CB8" />
         <EntityTypeShape EntityType="LibolModel.FPT_CATA_FILE_NEW" Width="1.5" PointX="13.5" PointY="148.5" />
         <AssociationConnector Association="LibolModel.FK__FPT_CATA___ItemI__79C3AF1E" />
-        <EntityTypeShape EntityType="LibolModel.FPT_SP_SPECIALIZED_STORE" Width="1.5" PointX="5.25" PointY="130" />
-        <AssociationConnector Association="LibolModel.FK__FPT_SP_SP__LibID__53C8EEBF" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>
