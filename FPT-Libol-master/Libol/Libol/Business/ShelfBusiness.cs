@@ -71,7 +71,10 @@ namespace Libol.Models
             holding.Acquired = false;
             holding.Note = "";
             holding.POID = 0;
-
+            if(holding.Price == null)
+            {
+                holding.Price = 0;
+            }
 
             // check start holding tồn tại chưa
 
@@ -188,7 +191,7 @@ namespace Libol.Models
           //  currentHolding.CopyNumber = holding.CopyNumber;
             currentHolding.CallNumber = holding.CallNumber;
            // currentHolding.Availlable = holding.Availlable;
-          //  currentHolding.AcquiredSourceID = holding.AcquiredSourceID;
+            currentHolding.AcquiredSourceID = Int32.Parse(holding.AcquiredSource);
           if(holding.AcquiredDate != null)
             {
                 currentHolding.AcquiredDate = DateTime.ParseExact(holding.AcquiredDate, "yyyy-MM-dd", null);

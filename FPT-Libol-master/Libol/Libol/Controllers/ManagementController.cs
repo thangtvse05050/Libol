@@ -577,6 +577,38 @@ namespace Libol.Controllers
                 return Json(rights, JsonRequestBehavior.AllowGet);
             }
         }
+
+        public ActionResult ChangePassword(string oldPassword, string newPassword, string repeatNewPassword)
+        {
+            int CurrentUser = (int)Session["UserID"];
+            if (oldPassword == null || oldPassword == "" || newPassword == null || newPassword == "" || repeatNewPassword == null || repeatNewPassword == "")
+            {
+                return View();
+            }
+            string oldPassEncrypt = new XCryptEngine(XCryptEngine.AlgorithmType.MD5).Encrypt(oldPassword.Trim(), "pl");
+            string newPassEncrypt = new XCryptEngine(XCryptEngine.AlgorithmType.MD5).Encrypt(newPassword.Trim(), "pl");
+            if (newPassword != repeatNewPassword)
+            {
+                ViewData["Notification"] = "Mật khẩu không khớp.";
+                return View();
+            }
+            else
+            {
+                if (db.SYS_USER.Where(a => a.ID == CurrentUser).Where(a => a.Password == oldPassEncrypt).Count() > 0)
+                {
+                    SYS_USER sysUser = db.SYS_USER.Single(a => a.ID == CurrentUser);
+                    sysUser.Password = newPassEncrypt;
+                    db.SaveChanges();
+                    ViewData["NotificationSuccess"] = "Thay đổi mật khẩu thành công!";
+                    return View();
+                }
+                else
+                {
+                    ViewData["Notification"] = "Mật khẩu cũ không đúng.";
+                    return View();
+                }
+            }
+        }
     }
     public class CustomUser
     {

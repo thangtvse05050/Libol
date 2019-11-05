@@ -231,24 +231,24 @@
                         @foreach (var item in ViewBag.DisVND)
                         {
 
-                            <tr>
-                                <td>@(++STT1)</td>
-                                <td>@item.RECORDNUMBER</td>
-                                <td>@item.ACQUIREDDATE.ToString("dd/MM/yyyy")</td>
-                                <td>@item.RECOMMENDID</td>
-                                <td>@item.DKCB</td>
-                                <td>@item.ISBN</td>
-                                <td>@item.Title</td>
-                                <td>@item.NXB</td>
-                                <td>@item.Year</td>
-                                <td>@item.InBookNum</td>
-                                <td>@item.ReceiptedDate</td>
-                                <td>@item.DateLastUsed</td>
-                                <td>@item.Price</td>
-                                <td>@item.Currency</td>
-                                <td>@item.FullPrice</td>
-                                <td>@item.useCount</td>
-                            </tr>
+                        <tr>
+                            <td>@(++STT1)</td>
+                            <td>@item.RECORDNUMBER</td>
+                            <td>@item.ReceiptedDate</td>
+                            <td>@item.RECOMMENDID</td>
+                            <td>@item.DKCB</td>
+                            <td>@item.ISBN</td>
+                            <td>@item.Title</td>
+                            <td>@item.NXB</td>
+                            <td>@item.Year</td>
+                            <td>@item.InBookNum</td>
+                            <td>@item.ACQUIREDDATE.ToString("dd/MM/yyyy")</td>
+                            <td>@item.DateLastUsed</td>
+                            <td>@item.Price</td>
+                            <td>@item.Currency</td>
+                            <td>@item.FullPrice</td>
+                            <td>@item.useCount</td>
+                        </tr>
                             SUM1 += item.FullPrice;
                             TOTAL1 += item.InBookNum;
                         }
@@ -318,7 +318,7 @@
 
                             <tr>
                                 <td>@(++STT2)</td>
-                                <td>@item.ACQUIREDDATE.ToString("dd/MM/yyyy")</td>
+                                <td>@item.RECORDNUMBER</td>
                                 <td>@item.ReceiptedDate</td>
                                 <td>@item.RECOMMENDID</td>
                                 <td>@item.DKCB</td>
@@ -327,7 +327,7 @@
                                 <td>@item.NXB</td>
                                 <td>@item.Year</td>
                                 <td>@item.InBookNum</td>
-                                <td>@item.ReceiptedDate</td>
+                                <td>@item.ACQUIREDDATE.ToString("dd/MM/yyyy")</td>
                                 <td>@item.DateLastUsed</td>
                                 <td>@item.Price</td>
                                 <td>@item.Currency</td>
@@ -409,7 +409,7 @@
                             <tr>
                                 <td>@(++STT3)</td>
                                 <td>@item.RECORDNUMBER</td>
-                                <td>@item.ACQUIREDDATE.ToString("dd/MM/yyyy")</td>
+                                <td>@item.ReceiptedDate</td>
                                 <td>@item.RECOMMENDID</td>
                                 <td>@item.DKCB</td>
                                 <td>@item.ISBN</td>
@@ -417,7 +417,7 @@
                                 <td>@item.NXB</td>
                                 <td>@item.Year</td>
                                 <td>@item.InBookNum</td>
-                                <td>@item.ReceiptedDate</td>
+                                <td>@item.ACQUIREDDATE.ToString("dd/MM/yyyy")</td>
                                 <td>@item.DateLastUsed</td>
                                 <td>@item.Price</td>
                                 <td>@item.Currency</td>
@@ -494,7 +494,7 @@
                             <tr>
                                 <td>@(++STT4)</td>
                                 <td>@item.RECORDNUMBER</td>
-                                <td>@item.ACQUIREDDATE.ToString("dd/MM/yyyy")</td>
+                                <td>@item.ReceiptedDate</td>
                                 <td>@item.RECOMMENDID</td>
                                 <td>@item.DKCB</td>
                                 <td>@item.ISBN</td>
@@ -502,7 +502,7 @@
                                 <td>@item.NXB</td>
                                 <td>@item.Year</td>
                                 <td>@item.InBookNum</td>
-                                <td>@item.ReceiptedDate</td>
+                                <td>@item.ACQUIREDDATE.ToString("dd/MM/yyyy")</td>
                                 <td>@item.DateLastUsed</td>
                                 <td>@item.Price</td>
                                 <td>@item.Currency</td>
@@ -579,7 +579,7 @@
                             <tr>
                                 <td>@(++STT5)</td>
                                 <td>@item.RECORDNUMBER</td>
-                                <td>@item.ACQUIREDDATE.ToString("dd/MM/yyyy")</td>
+                                <td>@item.ReceiptedDate</td>
                                 <td>@item.RECOMMENDID</td>
                                 <td>@item.DKCB</td>
                                 <td>@item.ISBN</td>
@@ -587,7 +587,7 @@
                                 <td>@item.NXB</td>
                                 <td>@item.Year</td>
                                 <td>@item.InBookNum</td>
-                                <td>@item.ReceiptedDate</td>
+                                <td>@item.ACQUIREDDATE.ToString("dd/MM/yyyy")</td>
                                 <td>@item.DateLastUsed</td>
                                 <td>@item.Price</td>
                                 <td>@item.Currency</td>
@@ -664,7 +664,7 @@
                             <tr>
                                 <td>@(++STT6)</td>
                                 <td>@item.RECORDNUMBER</td>
-                                <td>@item.ACQUIREDDATE.ToString("dd/MM/yyyy")</td>
+                                <td>@item.ReceiptedDate</td>
                                 <td>@item.RECOMMENDID</td>
                                 <td>@item.DKCB</td>
                                 <td>@item.ISBN</td>
@@ -672,7 +672,7 @@
                                 <td>@item.NXB</td>
                                 <td>@item.Year</td>
                                 <td>@item.InBookNum</td>
-                                <td>@item.ReceiptedDate</td>
+                                <td>@item.ACQUIREDDATE.ToString("dd/MM/yyyy")</td>
                                 <td>@item.DateLastUsed</td>
                                 <td>@item.Price</td>
                                 <td>@item.Currency</td>

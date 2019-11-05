@@ -104,9 +104,9 @@
 
 @if (ViewBag.PatronDetail != null)
 {
-    <h4 style="margin-top:1rem;">Trả ấn phẩm</h4>
-    <h5 style="padding-bottom:10px;">Thông tin bạn đọc</h5>
-    <div class="form-row" style="padding-bottom:10px;">
+    <h5 style="margin-top:1rem;">Trả ấn phẩm</h5>
+    <h6 style="padding-bottom:10px;">Thông tin bạn đọc</h6>
+    <div class="form-row" style="padding-bottom:10px; font-size:10px;">
         <div class="col-7">
             <div class="form-row">
                 <div class="col-2" style="padding-top:5px;">
@@ -157,7 +157,7 @@
 
     if (ViewBag.patronloaninfo.Count > 0)
     {
-        <h5>Bạn đọc này cũng đang mượn các ấn phẩm</h5>
+        <h6>Bạn đọc này cũng đang mượn các ấn phẩm</h6>
         <table id="table_loaninfo" class="table table-striped table-bordered datatables">
             <thead>
                 <tr>

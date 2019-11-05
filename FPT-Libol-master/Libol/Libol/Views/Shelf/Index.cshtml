@@ -350,6 +350,12 @@
         var recordNumber = document.getElementById("txtSCT").value;
         var recommendID = document.getElementById("txtRecommendID").value;
         var itemID = -1;
+
+        if (price === "") {
+            alert("Hãy nhập đơn giá");
+            document.getElementById("txtPrice").focus();
+            return;
+        }
         if ('@ViewBag.itemID' != '') {
             itemID = '@ViewBag.itemID';
         }
@@ -670,7 +676,7 @@
         var acquiredDate = from[2] + "-" + from[1] + "-" + from[0];
 
         AcquiredDate_Update = AcquiredDate;
-        AcquiredSource_Update = acquiredDate;
+        AcquiredSource_Update = AcquiredSource;
         Note_Update = Note;
 
         if (Shelf == "null") {
@@ -706,6 +712,10 @@
         document.getElementById("currencyList2").selectedIndex = indexCurrentcy;
         document.getElementById("EditPopup").style.display = "block";
 
+        var acquiredSource = document.getElementById(AcquiredSource);
+        var indexAcquiredSource = acquiredSource.index;
+        document.getElementById("acquiredSource").selectedIndex = indexAcquiredSource;
+
     }
     function CancelUpdate() {
         document.getElementById("EditPopup").style.display = "none";
@@ -724,6 +734,7 @@
         AcquiredDate_Update = document.getElementById("txtAcquiredDate2").value;
         ReceiptedDate_Update = document.getElementById("txtReceiptedDate2").value;
       //  AcquiredSource_Update = AcquiredSource;
+        AcquiredSource_Update = $("#acquiredSource :selected").val();
         Note_Update = document.getElementById("txtNote2").value;
 
         var data = {
@@ -915,7 +926,7 @@
                 </tr>
                 <tr>
                     <td style="width: 38%;text-align: right"><label for="txtCallNumber2">Số định danh:</label></td>
-                    <td style=""><input type="text" class="form-control" id="txtCallNumber2"></td>
+                    <td style=""><input type="text" class="form-control" id="txtCallNumber2" readonly></td>
                 </tr>
                 <tr>
                     <td style="width: 38%;text-align: right"><label for="txtShelf2">Giá sách:</label></td>
@@ -928,6 +939,19 @@
                 <tr>
                     <td style="width: 38%;text-align: right"><label for="txtReceiptedDate2">Ngày bổ sung:</label></td>
                     <td style=""><input type="date" class="form-control" id="txtReceiptedDate2"></td>
+                </tr>
+                <tr>
+                    <td style="width: 38%;text-align: right"><label for="acquiredSource">Nguồn bổ sung:</label></td>
+                    <td style="">
+                        <select class="form-control" name="acquiredSource" id="acquiredSource" style="width: 40%">
+                            @{
+                                foreach (ACQ_ACQUIRE_SOURCE item in listNBS)
+                                {
+                                    <option value="@item.ID" id="@item.Source">@item.Source</option>
+                                }
+                            }
+                        </select>
+                    </td>
                 </tr>
                 <tr>
                     <td style="width: 38%;text-align: right"><label for="txtRecordNumber2">Số chứng từ:</label></td>
