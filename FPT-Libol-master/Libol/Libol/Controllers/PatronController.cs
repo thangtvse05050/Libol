@@ -390,6 +390,13 @@ namespace Libol.Controllers
         [AuthAttribute(ModuleID = 2, RightID = "4")]
         public ActionResult PreviewPatronFile()
         {
+            string[] result;
+            int day = 0;
+            int month = 0;
+            int year = 0;
+            int stop = 0;
+            string date = "";
+            char[] splitchar = { '/' };
             List<PatronFile> listPatronInFile = new List<PatronFile>();
             List<PatronFile> listPatronInFileInvalid = new List<PatronFile>();
             for (int i = 0; i < Request.Files.Count; i++)
@@ -419,12 +426,32 @@ namespace Libol.Controllers
                     {
                         if (!String.IsNullOrEmpty(worksheet.Cells[u, 2].Text.ToString()))
                         {
+                            string dob = worksheet.Cells[u, 5].Text.ToString();
+                            result = dob.Split(splitchar);
+                            for (int count = 0; count <= result.Length - 1; count++)
+                            {
+                                stop++;
+                                //Console.WriteLine(result[count]);
+                                day = Convert.ToInt32(result[0]);
+                                month = Convert.ToInt32(result[1]);
+                                year = Convert.ToInt32(result[2]);
+
+                                if (stop == 1)
+                                {
+                                    break;
+                                }
+                            }
+
+                            date = month + "/" + day + "/" + year;
+
+
+                            DateTime e = DateTime.Parse(date);
                             listPatronInFile.Add(new PatronFile
                             {
                                 strCode = worksheet.Cells[u, 2].Text.ToString(),
                                 FullName = worksheet.Cells[u, 3].Text.ToString(),
                                 blnSex = worksheet.Cells[u, 4].Text.ToString(),
-                                strDOB = Convert.ToDateTime(worksheet.Cells[u, 5].Text.ToString()),
+                                strDOB = e /*Convert.ToDateTime(worksheet.Cells[u, 5].Text.ToString())*/,
                                 strEmail = worksheet.Cells[u, 6].Text.ToString(),
                                 strAddress = worksheet.Cells[u, 7].Text.ToString(),
                                 Faculty = worksheet.Cells[u, 8].Text.ToString(),
@@ -446,7 +473,7 @@ namespace Libol.Controllers
             ViewBag.ListPatronInvalid = listPatronInFileInvalid;
 
 
-            
+
             if (listPatronInFile != null)
             {
                 foreach (PatronFile p in listPatronInFile)
@@ -483,11 +510,11 @@ namespace Libol.Controllers
                     }
                     DateTime strExpiredDate = DateTime.Now;
                     strExpiredDate = strExpiredDate.AddYears(4);
-                    NewPatron(p.strCode, DateTime.Now.ToShortDateString(), strExpiredDate.ToShortDateString(), DateTime.Now.ToShortDateString(), strLastName, strFirstName, p.blnSex == "Nam" ? true : false, p.strDOB.ToString("yyyy-dd-MM"), null, null, null, "Đại học FPT", null, p.strMobile
+                    NewPatron(p.strCode, DateTime.Now.ToShortDateString(), strExpiredDate.ToShortDateString(), DateTime.Now.ToShortDateString(), strLastName, strFirstName, p.blnSex == "Nam" ? true : false, p.strDOB.ToString("yyyy-MM-dd"), null, null, null, "Đại học FPT", null, p.strMobile
                         , p.strEmail, null, intPatronGroupID, null, 0, null, p.strAddress, 1, p.strCity, 209, "", 0, intCollegeID, intFacultyID, p.strGrade, p.strClass);
                 }
-            } 
-                return View();
+            }
+            return View();
         }
 
         public bool CheckCodeInFile(string strCode, List<PatronFile> listPatronInFile)
