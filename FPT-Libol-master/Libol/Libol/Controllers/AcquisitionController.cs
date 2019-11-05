@@ -33,56 +33,109 @@ namespace Libol.Controllers
 			return Json(list, JsonRequestBehavior.AllowGet);
 		}
 
-		// Liquidate : thanh ly
-		[HttpPost]
-		public JsonResult Liquidate(string Copynumber, string DKCB, string Liquidate, string DateLiquidate, int Reason, string selectfile)
-		{
-			int IDCN = -1;
-			if (Copynumber != "" && Copynumber != null)
-			{
-				if (db.ITEMs.Where(a => a.Code == Copynumber).Count() == 0)
-				{
-					ViewBag.Liquidate = "Mã tài liệu : " + Copynumber + " không tồn tại";
-				}
-				else
-				{
-					IDCN = db.ITEMs.Where(a => a.Code == Copynumber).First().ID;
-					if (db.CIR_LOAN.Where(a => a.ItemID == IDCN).Count() != 0)
-					{
-						ViewBag.Liquidate = "Không thể Thanh Lý vì vẫn còn sách đang lưu thông";
-					}
-					else
-					{
-						string formatDKCB = "";
-						ViewBag.Liquidate = db.SP_HOLDING_REMOVED_LIQUIDATE(Liquidate, DateLiquidate, Copynumber, formatDKCB, Reason, new ObjectParameter("intTotalItem", typeof(int)),
-							new ObjectParameter("intOnLoan", typeof(int)),
-							new ObjectParameter("intOnInventory", typeof(int))).ToList();
-						ViewBag.Liquidate = "Thanh lý thành công";
-					}
-				}
-			}
-			else
-			{
-				if (Copynumber == "" && DKCB == "")
-				{
-					ViewBag.Liquidate = "Không thể thanh lý vì chưa nhập thông tin";
-				}
-				else
-				{
-					string formatDKCB = DKCB.Replace('\n', ',');
-					formatDKCB = formatDKCB.Replace("\t", "");
-					ViewBag.Liquidate = db.SP_HOLDING_REMOVED_LIQUIDATE(Liquidate, DateLiquidate, Copynumber, formatDKCB, Reason, new ObjectParameter("intTotalItem", typeof(int)),
-						new ObjectParameter("intOnLoan", typeof(int)),
-						new ObjectParameter("intOnInventory", typeof(int))).ToList();
-					ViewBag.Liquidate = "Thanh lý thành công";
-				}
+        [HttpPost]
+        public JsonResult Liquidate(string CopyNumber, string DKCB, string Liquidate, string DateLiquidate, int Reason, string selectfile, int libID, int libID2)
+        {
+            List<string> contentOnLoan = null;
+            List<string> contentExists = null;
+            int? result = 0;
+            int? result2 = 0;
+            int? result3 = 0;
+            int? result4 = 0;
+            int IDCN = -1;
+            if (CopyNumber != "" && CopyNumber != null)
+            {
+                if (db.FPT_CHECK_ITEM_COPYNUMBER_EXISTS(CopyNumber, libID).FirstOrDefault() == 0)
+                {
+                    ViewBag.Liquidate = "Mã tài liệu : " + CopyNumber + " không tồn tại";
 
-			}
+                }
+                else
+                {
+                    IDCN = db.ITEMs.Where(a => a.Code == CopyNumber).First().ID;
+                    //if (db.CIR_LOAN.Where(a => a.ItemID == IDCN).Count() != 0)
+                    //{
+                    //    result = db.HOLDINGs.Where(a => a.ItemID == IDCN).Count();
+                    //    result2 = db.CIR_LOAN.Where(a => a.ItemID == IDCN).Count();
+                    //    result3 = db.FPT_COUNT_HOLDING_REMOVE(Copynumber).FirstOrDefault();
+                    //    /* List<string>*/
+                    //    content = db.CIR_LOAN.Where(a => a.ItemID == IDCN).Select(a => a.CopyNumber).ToList();
+                    //    //result = string.Join(",", b.ToArray());
+                    //    ViewBag.Liquidate = "Không thể Thanh Lý vì vẫn còn sách đang lưu thông";
 
-			return Json(ViewBag.Liquidate, JsonRequestBehavior.AllowGet);
+                    //}
+                    if (db.FPT_CHECK_LOAN_COPYNUMBER(IDCN, libID).FirstOrDefault() != 0)
+                    {
+                        result = db.FPT_CHECK_HOLDING_COPYNUMBER(IDCN, libID).FirstOrDefault();
+                        result2 = db.FPT_CHECK_LOAN_COPYNUMBER(IDCN, libID).FirstOrDefault();
+                        result3 = db.FPT_COUNT_HOLDING_REMOVE(IDCN, libID).FirstOrDefault();
+                        /* List<string>*/
+                        //content = db.CIR_LOAN.Where(a => a.ItemID == IDCN).Select(a => a.CopyNumber).ToList();
+                        contentOnLoan = db.FPT_COPY_NUMBER_ONLOAN(IDCN, libID).ToList();
+                        //result = string.Join(",", b.ToArray());
+                        ViewBag.Liquidate = "Không thể Thanh Lý vì vẫn còn sách đang lưu thông";
 
-		}
-		[HttpPost]
+                    }
+                    else
+                    {
+                        string formatDKCB = "";
+                        result = db.FPT_CHECK_HOLDING_COPYNUMBER(IDCN, libID).FirstOrDefault();
+                        result2 = db.FPT_CHECK_LOAN_COPYNUMBER(IDCN, libID).FirstOrDefault();
+
+                        contentOnLoan = db.SP_HOLDING_REMOVED_LIQUIDATE2(Liquidate, DateLiquidate, CopyNumber, formatDKCB, Reason, new ObjectParameter("intTotalItem", typeof(int)),
+                            new ObjectParameter("intOnLoan", typeof(int)),
+                            new ObjectParameter("intOnInventory", typeof(int)), libID).ToList();
+                        result3 = db.FPT_COUNT_HOLDING_REMOVE(IDCN, libID).FirstOrDefault();
+                        ViewBag.Liquidate = "Thanh lý thành công";
+                    }
+                }
+            }
+            else
+            {
+                if (CopyNumber == "" && DKCB == "")
+                {
+                    ViewBag.Liquidate = "Không thể thanh lý vì chưa nhập thông tin";
+                }
+                else
+                {
+                    List<string> list1 = db.FPT_GET_ALL_COPYNUMBER_BY_LIBID(libID2).ToList();
+
+
+                    string formatDKCB = DKCB.Replace('\n', ',');
+                    formatDKCB = formatDKCB.Replace("\t", "");
+                    char[] splitchar = { ',' };
+                    List<string> list2 = formatDKCB.Split(splitchar).ToList();
+                    result = list2.Count();
+                    contentExists = list2.Where(i => !list1.Any(e => i.Contains(e))).ToList();
+                    result4 = contentExists.Count();
+                    List<string> list3 = list2.Where(i => list1.Any(e => i.Contains(e))).ToList();
+                    List<string> listOnLoan = db.FPT_GET_ALL_COPYNUMBER_ONLOAN_BY_LIBID(libID2).ToList();
+                    contentOnLoan = list3.Where(i => listOnLoan.Any(e => i.Contains(e))).ToList();
+                    result2 = contentOnLoan.Count();
+                    List<string> finalList = list3.Where(i => !listOnLoan.Any(e => i.Contains(e))).ToList();
+                    result3 = finalList.Count();
+                    string finalDKCB = String.Join(",", finalList);
+                    ViewBag.Liquidate = db.SP_HOLDING_REMOVED_LIQUIDATE2(Liquidate, DateLiquidate, CopyNumber, finalDKCB, Reason, new ObjectParameter("intTotalItem", typeof(int)),
+                        new ObjectParameter("intOnLoan", typeof(int)),
+                       new ObjectParameter("intOnInventory", typeof(int)), libID2).ToList();
+                    ViewBag.Liquidate = "Thanh lý thành công";
+                }
+
+            }
+
+            return Json(new Responses { Message = ViewBag.Liquidate, ContentOnLoan = contentOnLoan, ContentExists = contentExists, totalOnloan = result2, total = result, totalSuccess = result3, totalExists = result4 }, JsonRequestBehavior.AllowGet);
+
+        }
+        [HttpPost]
+        public JsonResult AddReason(string reason)
+        {
+            int id = db.HOLDING_REMOVE_REASON.Select(a => a.ID).Count();
+            ViewBag.Success = db.FPT_ADD_REASON(id + 1, reason);
+            ViewBag.Success = "Thêm thành công";
+
+            return Json(ViewBag.Success, JsonRequestBehavior.AllowGet);
+        }
+        [HttpPost]
 		public JsonResult SearchCode(string strCode, string strCN, string strTT, string ISBN)
 		{
 			List<FPT_SP_CATA_GET_DETAILINFOR_OF_ITEM_Result> inforList = ab.SearchCode(strCode, strCN, strTT, ISBN);

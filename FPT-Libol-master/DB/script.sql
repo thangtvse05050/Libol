@@ -8079,7 +8079,7 @@ DECLARE @StrSql varchar(1500)
 
 		SET @StrSql = @StrSql + ' GROUP BY I.Code, REPLACE(REPLACE(REPLACE(REPLACE(F.Content,''$a'',''''),''$b'','' ''),''$c'','' ''),''$n'','' '')  HAVING Count (*) >= ' + @intMinLoan + ' ORDER BY TotalLoan DESC'
 	EXEC (@StrSql)
-
+	GO
 	
 -- purpose : Get code (Thư viện) and symbol (kho) for searching copy number
 -- Last Update: 01/10/2019
@@ -8579,3 +8579,411 @@ AS
 	SET @STRSQL=@STRSQL+' ORDER BY Symbol'    
     print @STRSQL
 	EXEC(@STRSQL)
+	GO
+	
+	CREATE PROCEDURE [dbo].[FPT_CHECK_LOAN_COPYNUMBER]
+	@intItemID int,
+	@intLibID int
+	--@intLocID int
+AS
+begin
+--if(@intLocID=-1) 
+--begin
+SELECT COUNT(*) from CIR_LOAN c join HOLDING_LOCATION h on c.LocationID=h.ID where c.ItemID=@intItemID and h.LibID=@intLibID
+end
+--else
+--begin
+--SELECT COUNT(*) from CIR_LOAN  where ItemID=@intItemID and LocationID=@intLocID
+--end
+--end
+GO
+create PROCEDURE [dbo].[FPT_CHECK_HOLDING_COPYNUMBER]
+	@intItemID int,
+	@intLibID int
+	--@intLocID int
+AS
+--begin
+--if(@intLocID=-1) 
+begin
+SELECT COUNT(*) from HOLDING where ItemID=@intItemID and LibID=@intLibID
+end
+--else
+--begin
+--SELECT COUNT(*) from HOLDING  where ItemID=@intItemID and LocationID=@intLocID
+--end
+--end
+GO
+create PROCEDURE [dbo].[FPT_COPY_NUMBER_ONLOAN]
+	@intItemID int,
+	@intLibID int
+	--@intLocID int
+AS
+begin
+--if(@intLocID=-1) 
+--begin
+SELECT c.CopyNumber from CIR_LOAN c join HOLDING_LOCATION h on c.LocationID=h.ID where c.ItemID=@intItemID and h.LibID=@intLibID
+end
+--else
+--begin
+--SELECT CopyNumber from CIR_LOAN  where ItemID=@intItemID and LocationID=@intLocID
+--end
+--end
+GO
+
+/****** Object:  StoredProcedure [dbo].[FPT_COUNT_HOLDING_REMOVE]    Script Date: 10/30/2019 2:24:49 PM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE PROCEDURE [dbo].[FPT_COUNT_HOLDING_REMOVE]
+	@intItemID int,
+	@intLibID int
+	--@intLocID int
+AS
+begin
+--if(@intLocID=-1) 
+--begin
+SELECT COUNT(*) from HOLDING_REMOVED where ItemID=@intItemID and LibID=@intLibID and RemovedDate=CONVERT(nvarchar(10), getdate(), 120)
+end
+--else
+--begin
+--SELECT COUNT(*) from HOLDING_REMOVED  where ItemID=@intItemID and LocationID=@intLocID and RemovedDate=CONVERT(nvarchar(10), getdate(), 120)
+--end
+--end
+/****** Object:  StoredProcedure [dbo].[SP_HOLDING_REMOVED_LIQUIDATE2]    Script Date: 10/30/2019 2:14:16 PM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+
+CREATE        PROCEDURE [dbo].[SP_HOLDING_REMOVED_LIQUIDATE2]
+(
+	@strLiquidCode VARCHAR(50),
+	@strRemovedDate	VARCHAR(20),
+	@strItemCode VARCHAR(20),
+	@strCopyNumbers	VARCHAR(2500),	
+	@intReasonID INT,
+	@intTotalItem INT OUT,
+	@intOnLoan INT OUT,
+	@intOnInventory int OUT,
+	@intLibID int
+	--@intLocID int
+)
+AS
+DECLARE @intTotalItemRemoved INT
+	DECLARE @intTotalCopies INT
+	DECLARE @intFreeCopies INT
+	SET @intTotalItem=0
+	SET @intOnLoan=0
+	-- INSERT INTO HOLDING_REMOVE, DELETE HOLDING, UPDATE HOLDING_COPY
+	IF @strItemCode<>''
+	BEGIN
+	
+		INSERT INTO HOLDING_REMOVED (
+		CopyNumber,		
+		ItemID,
+		LibID,
+		LocationID,
+		LoanTypeID,		   
+		Shelf,
+		Price,
+		Reason,
+		AcquiredDate,
+		RemovedDate,	
+		Volume,
+		UseCount,
+		PoID,
+		DateLastUsed,
+		CallNumber,
+		AcquiredSourceID,
+		LiquidCode)		
+
+		SELECT 
+		CopyNumber,
+		ItemID,
+		@intLibID,
+		LocationID,
+		LoanTypeID,
+		Shelf,
+		Price,
+		@intReasonID,
+		AcquiredDate,
+		@strRemovedDate,
+		Volume,
+		UseCount,
+		POID,
+		DateLastUsed,
+		CallNumber,
+		AcquiredSourceID,
+		@strLiquidCode
+		FROM HOLDING
+		WHERE
+		InUsed=0 AND
+		ItemID IN (SELECT ID FROM ITEM WHERE Code =@strItemCode and LibID=@intLibID )
+		--and ID not in (select distinct A.holdingid from holding_inventory A,inventory B where A.InventoryID=B.ID AND B.Status=0)
+
+
+		SELECT @intTotalItemRemoved = COUNT(*) FROM HOLDING 
+			WHERE 
+			InUsed=0 AND
+			ItemID IN (SELECT ID FROM ITEM WHERE Code =@strItemCode and LibID=@intLibID)
+			--and ID not in (select distinct A.holdingid from holding_inventory A,inventory B where A.InventoryID=B.ID AND B.Status=0)
+
+		--UPDATE HOLDING_COPY 
+		--	SET TotalCopies=TotalCopies-@intTotalItemRemoved, FreeCopies=FreeCopies-@intTotalItemRemoved
+		--	WHERE 
+		--	ItemID IN (
+		--		SELECT ItemID FROM HOLDING WHERE 
+		--		InUsed=0 AND
+		--		ItemID IN (SELECT ID FROM ITEM WHERE Code =@strItemCode)
+		--		and ID not in (select distinct A.holdingid from holding_inventory A,inventory B where A.InventoryID=B.ID AND B.Status=0)
+		--		)
+		----ASSIGN TotalCopies=0,FreeCopies=0 IF <0
+		--UPDATE HOLDING_COPY SET TotalCopies=0,FreeCopies=0
+		--WHERE TotalCopies<0
+		
+		--GET INFORMATION LIQUIDATE
+		SELECT @intTotalItem=COUNT(*) FROM HOLDING
+		WHERE 
+		ItemID IN (SELECT ID FROM ITEM WHERE Code =@strItemCode and LibID=@intLibID)
+
+		SELECT @intOnLoan=COUNT(*) FROM HOLDING
+		WHERE 
+		InUsed=1 AND
+		ItemID IN (SELECT ID FROM ITEM WHERE Code =@strItemCode and LibID=@intLibID)
+		-- Get CopyNumber
+		SELECT CopyNumber FROM HOLDING
+		WHERE 
+		InUsed=1 AND
+		ItemID IN (SELECT ID FROM ITEM WHERE Code =@strItemCode and LibID=@intLibID)
+
+		-- get total of Item: on Holding_Inventory table
+       		set @intOnInventory=@intTotalItem-@intTotalItemRemoved-@intOnLoan
+
+		DELETE FROM HOLDING 
+		WHERE 
+		InUsed=0 AND
+		ItemID IN (SELECT ID FROM ITEM WHERE Code =@strItemCode and LibID=@intLibID)
+		--and ID not in (select distinct A.holdingid from holding_inventory A,inventory B where A.InventoryID=B.ID AND B.Status=0)
+		
+		delete from holding_inventory
+		where
+		ItemID IN (SELECT ItemID FROM HOLDING 
+		WHERE 
+		InUsed=0 AND
+		ItemID IN (SELECT ID FROM ITEM WHERE Code =@strItemCode) and LibID=@intLibID)		
+		
+	END		
+	ELSE
+	BEGIN
+	
+		INSERT INTO HOLDING_REMOVED(
+		CopyNumber,		
+		ItemID,
+		LibID,
+		LocationID,
+		LoanTypeID,		   
+		Shelf,
+		Price,
+		Reason,
+		AcquiredDate,
+		RemovedDate,	
+		Volume,
+		UseCount,
+		PoID,
+		DateLastUsed,
+		CallNumber,
+		AcquiredSourceID,
+		LiquidCode)		
+
+		SELECT 
+		CopyNumber,
+		ItemID,
+		@intLibID,
+		LocationID,
+		LoanTypeID,
+		Shelf,
+		Price,
+		@intReasonID,
+		AcquiredDate,
+		@strRemovedDate,
+		Volume,
+		UseCount,
+		POID,
+		DateLastUsed,
+		CallNumber,
+		AcquiredSourceID,
+		@strLiquidCode
+		FROM HOLDING
+		WHERE 
+		InUsed=0 AND
+		PATINDEX('%,'+CopyNumber+',%',','+@strCopyNumbers+',')>0	and LibID=@intLibID
+		--and ID not in (select distinct A.holdingid from holding_inventory A,inventory B where A.InventoryID=B.ID AND B.Status=0)
+
+		SELECT @intTotalItemRemoved = COUNT(*) FROM HOLDING 
+			WHERE 
+			InUsed=0 AND
+			PATINDEX('%,'+CopyNumber+',%',','+@strCopyNumbers+',')>0 and LibID=@intLibID
+			--and ID not in (select distinct A.holdingid from holding_inventory A,inventory B where A.InventoryID=B.ID AND B.Status=0)
+--print ('@intTotalItemRemoved=' + cast(@intTotalItemRemoved  as varchar))
+		--UPDATE HOLDING_COPY 
+		--	SET TotalCopies=TotalCopies-@intTotalItemRemoved, FreeCopies=FreeCopies-@intTotalItemRemoved
+		--	WHERE 
+		--	ItemID IN (
+		--		SELECT ItemID FROM HOLDING WHERE 
+		--		InUsed=0 AND
+		--		PATINDEX('%,'+CopyNumber+',%',','+@strCopyNumbers+',')>0
+		--		and ID not in (select distinct A.holdingid from holding_inventory A,inventory B where A.InventoryID=B.ID AND B.Status=0))
+
+		--ASSIGN TotalCopies=0,FreeCopies=0 IF <0
+		--UPDATE HOLDING_COPY SET TotalCopies=0,FreeCopies=0
+		--WHERE TotalCopies<0
+
+	        --GET Total of Item in Holding table
+		SELECT @intTotalItem = COUNT(*) FROM HOLDING 
+			WHERE 
+			PATINDEX('%,'+CopyNumber+',%',','+@strCopyNumbers+',')>0 and LibID=@intLibID 
+--print ('@intTotalItem= ' + cast(@intTotalItem as varchar))
+		--GET INFORMATION LIQUIDATE
+		SELECT @intOnLoan=COUNT(*) FROM HOLDING
+		WHERE 
+		InUsed=1 AND
+		PATINDEX('%,'+CopyNumber+',%',','+@strCopyNumbers+',')>0 and LibID=@intLibID
+		-- Get CopyNumber
+		SELECT CopyNumber FROM HOLDING
+	    WHERE 
+		InUsed=1 AND
+		PATINDEX('%,'+CopyNumber+',%',','+@strCopyNumbers+',')>0 and LibID=@intLibID
+
+		-- get total of Item: on Holding_Inventory table
+       		set @intOnInventory=@intTotalItem-@intTotalItemRemoved-@intOnLoan
+--print ('@intOnInventory=' + cast(@intOnInventory as varchar))
+
+		DELETE FROM HOLDING WHERE 
+		InUsed=0 AND
+		PATINDEX('%,'+CopyNumber+',%',','+@strCopyNumbers+',')>0		and LibID=@intLibID
+		--and ID not in (select distinct A.holdingid from holding_inventory A,inventory B where A.InventoryID=B.ID AND B.Status=0)
+		DELETE FROM holding_inventory WHERE 
+		ItemID IN(Select ItemID FROM HOLDING WHERE 
+		InUsed=0 AND
+		PATINDEX('%,'+CopyNumber+',%',','+@strCopyNumbers+',')>0	) and LibID=@intLibID
+		
+		
+		
+	END
+	GO
+create PROCEDURE [dbo].[FPT_CHECK_ITEM_COPYNUMBER_EXISTS]
+	@strCopyNumber nvarchar(200),
+	@intLibID int
+	--@intLocID int
+AS
+--begin
+--if(@intLocID=-1) 
+begin
+SELECT COUNT(*) from ITEM I join HOLDING H on I.ID=H.ItemID where I.Code like '%'+@strCopyNumber+'%' and H.LibID=@intLibID
+end
+--else
+--begin
+--SELECT COUNT(*) from HOLDING  where ItemID=@intItemID and LocationID=@intLocID
+--end
+--end
+
+GO
+
+/****** Object:  StoredProcedure [dbo].[FPT_COUNT_HOLDING_REMOVE]    Script Date: 10/30/2019 2:24:49 PM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE PROCEDURE [dbo].[FPT_GET_ALL_COPYNUMBER_BY_LIBID]
+	
+	@intLibID int
+	--@intLocID int
+AS
+begin
+--if(@intLocID=-1) 
+--begin
+SELECT CopyNumber from HOLDING where  LibID=@intLibID 
+end
+go
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE PROCEDURE [dbo].[FPT_GET_ALL_COPYNUMBER_ONLOAN_BY_LIBID]
+	
+	@intLibID int
+	--@intLocID int
+AS
+begin
+--if(@intLocID=-1) 
+--begin
+SELECT distinct C.CopyNumber from CIR_LOAN C join HOLDING_LOCATION H on C.LocationID=H.ID where  LibID=@intLibID
+
+end
+go
+/****** Object:  StoredProcedure [dbo].[SP_HOLDING_REMOVE_REASON_SEL]    Script Date: 11/2/2019 4:16:57 AM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+
+insert into HOLDING_REMOVE_REASON values(16,N'Sách mất đền tiền');
+   insert into HOLDING_REMOVE_REASON values(17,N'Sách quá hạn trên 30 ngày');
+    insert into HOLDING_REMOVE_REASON values(18,N'Sách cũ hỏng, rách nát');
+	 insert into HOLDING_REMOVE_REASON values(19,N'Sách đổi phiên bản');
+
+    insert into HOLDING_REMOVE_REASON values(20,N'Sách thất lạc');
+    insert into HOLDING_REMOVE_REASON values(21,N'Lý do khác');
+	GO
+
+
+
+
+-- Created by Oanhtn
+ALTER PROCEDURE [dbo].[SP_HOLDING_REMOVE_REASON_SEL]
+	@intReasonID	int
+AS
+	IF NOT @intReasonID = 0 
+		SELECT * FROM HOLDING_REMOVE_REASON WHERE ID > @intReasonID ORDER BY ID	
+	ELSE
+		SELECT * FROM HOLDING_REMOVE_REASON WHERE ID >= 16 ORDER BY ID	
+		
+GO
+CREATE PROCEDURE  [dbo].[FPT_ADD_REASON]
+@intReasonID int, @Reason nvarchar(200)
+
+AS
+
+/*
+----------------------------------------------------------------------------
+-- Object Name: dbo.spINSERT_dbo_Customer
+-- Project: Sample code
+-- Business Process: Sample code
+-- Purpose: Insert a record into a table
+-- Detailed Description: Insert a record into the dbo.Customer table
+-- Database: Test
+-- Dependent Objects: None
+-- Called By: Ad-hoc
+-- Upstream Systems: N\A
+-- Downstream Systems: N\A
+-- 
+--------------------------------------------------------------------------------------
+-- Rev | CMR | Date Modified | Developer  | Change Summary
+--------------------------------------------------------------------------------------
+-- 001 | N\A | 09.15.2011 | JKadlec | Original code
+--
+*/
+
+SET NOCOUNT ON
+
+-- 1 - Declare variables
+
+-- 2 - Initialize variables
+
+-- 3 - Execute INSERT command
+INSERT INTO HOLDING_REMOVE_REASON(ID,REASON)
+     VALUES
+           (@intReasonID
+           ,@Reason)
+GO
