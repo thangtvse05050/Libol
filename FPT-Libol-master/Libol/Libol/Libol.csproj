@@ -2422,6 +2422,7 @@
       <DependentUpon>Libol.edmx</DependentUpon>
       <LastGenOutput>Libol.cs</LastGenOutput>
     </Content>
+    <Content Include="Scripts\bootbox.min.js" />
     <Content Include="Scripts\bootstrap-table.min.js" />
     <Content Include="Scripts\bootstrap.bundle.js" />
     <Content Include="Scripts\bootstrap.bundle.min.js" />
@@ -2639,6 +2640,8 @@
     <Content Include="Views\AcquireReport\CreateNewSpecialized.cshtml" />
     <Content Include="Views\AcquireReport\UpdateSpecialized.cshtml" />
     <Content Include="Views\Acquisition\LiquidateByExcel.cshtml" />
+    <Content Include="Views\AcquireReport\AddSubjectToSpecialized.cshtml" />
+    <Content Include="Views\AcquireReport\DeleteSubjectFromSpecialzed.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\Patron\SearchPatronFilter.cshtml" />

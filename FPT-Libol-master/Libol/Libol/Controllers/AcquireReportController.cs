@@ -3258,12 +3258,12 @@ namespace Libol.Controllers
 			return View();
 		}
 		[HttpPost]
-		public JsonResult GetUpdateSpecialized(string strLibID, string strSubjects, string strSpec,string strSpecNew)
+		public JsonResult GetUpdateSpecialized(string strLibID, string strSpec,string strSpecNew)
 		{
 			int LibID = 0;
 			if (!String.IsNullOrEmpty(strLibID)) LibID = Int32.Parse(strLibID);
 			//;$aPRJ101;$aPRJ201;
-			strSubjects = strSubjects.Trim().ToUpper();
+			
 			List<string> lstName = le.FPT_GET_SPELIALIZED_NAME(LibID).ToList();
 			List<String> listtemp = new List<String>();
 			foreach (string spc in lstName)
@@ -3275,7 +3275,7 @@ namespace Libol.Controllers
 			}
 			if (listtemp.Count == 0)
 			{
-				le.ExcuteSQL("UPDATE FPT_SP_SPECIALIZED_STORE SET Name=N'" + strSpecNew + "', Subjects='" + strSubjects + "' WHERE ID='" + strSpec + "'");
+				le.ExcuteSQL("UPDATE FPT_SP_SPECIALIZED_STORE SET Name=N'" + strSpecNew + "'" + " WHERE ID='" + strSpec + "'");
 				ViewBag.message = "Cập nhật chuyên ngành thành công!!";
 			}
 			else
@@ -3288,10 +3288,9 @@ namespace Libol.Controllers
 			return Json(ViewBag.message, JsonRequestBehavior.AllowGet);
 		}
 		[HttpPost]
-		public JsonResult GetDeleteSpecialized(string strLibID, string strSubjects, string strSpec, string strSpecNew)
+		public JsonResult GetDeleteSpecialized( string strSpec)
 		{
-			int LibID = 0;
-			if (!String.IsNullOrEmpty(strLibID)) LibID = Int32.Parse(strLibID);
+			
 			
 
 
@@ -3301,7 +3300,50 @@ namespace Libol.Controllers
 
 			return Json(ViewBag.message, JsonRequestBehavior.AllowGet);
 		}
+		public ActionResult AddSubjectToSpecialized()
+		{
+			List<SelectListItem> lib = new List<SelectListItem>
+			{
+				new SelectListItem { Text = "Hãy chọn thư viện", Value = "" }
+			};
+			foreach (var l in le.FPT_SP_CIR_LIB_SEL((int)Session["UserID"]).ToList())
+			{
+				lib.Add(new SelectListItem { Text = l.Code, Value = l.ID.ToString() });
+			}
+			ViewData["lib"] = lib;
+			return View();
+		}
+		[HttpPost]
+		public JsonResult GetAddSubjectToSpecialized(string strSpec, string strNewSbj)
+		{
+			
+				le.ExcuteSQL("UPDATE FPT_SP_SPECIALIZED_STORE SET Subjects=N'" + strNewSbj + "'" + " WHERE ID='" + strSpec + "'");
+				ViewBag.message = "Cập nhật chuyên ngành thành công!!";
 
+			return Json(ViewBag.message, JsonRequestBehavior.AllowGet);
+		}
+		public ActionResult DeleteSubjectFromSpecialzed()
+		{
+			List<SelectListItem> lib = new List<SelectListItem>
+			{
+				new SelectListItem { Text = "Hãy chọn thư viện", Value = "" }
+			};
+			foreach (var l in le.FPT_SP_CIR_LIB_SEL((int)Session["UserID"]).ToList())
+			{
+				lib.Add(new SelectListItem { Text = l.Code, Value = l.ID.ToString() });
+			}
+			ViewData["lib"] = lib;
+			return View();
+		}
+		[HttpPost]
+		public JsonResult GetDeleteSubjectFromSpecialzed(string strSpec, string strNewSbj)
+		{
+
+			le.ExcuteSQL("UPDATE FPT_SP_SPECIALIZED_STORE SET Subjects=N'" + strNewSbj + "'" + " WHERE ID='" + strSpec + "'");
+			ViewBag.message = "Cập nhật chuyên ngành thành công!!";
+
+			return Json(ViewBag.message, JsonRequestBehavior.AllowGet);
+		}
 		public JsonResult GetLocationsPrefix(string id)
 		{
 			List<SelectListItem> LocPrefix = new List<SelectListItem>();
