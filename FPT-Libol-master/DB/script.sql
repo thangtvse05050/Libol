@@ -9163,3 +9163,316 @@ INSERT INTO HOLDING_REMOVED (
 		ItemID IN(Select ItemID FROM HOLDING WHERE 
 		InUsed=0 AND
 		@strCopyNumbers like  '%;'+cast(CopyNumber as varchar(200))+';%'	)
+
+GO
+CREATE TABLE PATRON_BY_EXCEL(ID int primary key,Code varchar(20) , 
+LastName nvarchar(30), 
+FirstName nvarchar(20),
+MiddleName nvarchar(30),
+Sex nvarchar(10),
+DOB nvarchar(100),
+Email nvarchar(100),
+Address nvarchar(300),
+Faculty nvarchar(70),
+Mobile varchar(12),
+Grade nvarchar(20),
+College nvarchar(100),
+City nvarchar(50),
+Class nvarchar(30),
+PatronGroup nvarchar(50)
+)
+GO
+Create   PROCEDURE [dbo].[FPT_LOAD_DATA_TO_DB_PATRON]
+-- Purpose: Create data record
+-- MODIFICATION HISTORY  
+-- Person      Date    Comments  
+-- thangtv    05112019  Create
+	
+(
+    @intId int,
+    @strCode                    NVARCHAR(200),
+    @strLastName		NVARCHAR(200), 
+	@strFirstName		NVARCHAR(200),
+    @strMiddleName		NVARCHAR(200),
+    
+	 @strSex                    NVARCHAR(200),
+	  @strDOB                    NVARCHAR(200),
+	   @strEmail                    NVARCHAR(200),
+	    @strAddress                    NVARCHAR(200),
+		 @strFaculty                   NVARCHAR(200),
+		  @strMobile                    NVARCHAR(200),
+		   @strGrade                    NVARCHAR(200),
+		   @strCollege                  NVARCHAR(200),
+		   @strCity                    NVARCHAR(200),
+		   @strClass                    NVARCHAR(200),
+		   
+		   @strPatronGroup                   NVARCHAR(200)
+       
+)
+AS
+
+
+		INSERT INTO  PATRON_BY_EXCEL(ID,
+		Code,
+			LastName , 
+FirstName ,
+MiddleName,
+Sex ,
+DOB ,
+Email ,
+Address,
+Faculty,
+Mobile ,
+Grade,
+College,
+City,
+Class,
+PatronGroup
+		) VALUES (@intId,
+			@strCode  ,                 
+    @strLastName		,  
+	@strFirstName		,
+    @strMiddleName		,
+    
+	 @strSex                    ,
+	  @strDOB                    ,
+	   @strEmail                    ,
+	    @strAddress                   ,
+		 @strFaculty                 ,
+		  @strMobile                   ,
+		   @strGrade                   ,
+		   @strCollege                ,
+		   @strCity                 ,
+		   @strClass                  ,
+		   
+		   @strPatronGroup                   
+		)
+
+GO
+Create   PROCEDURE [dbo].[FPT_CHECK_DATA_EXCEL_NULL]
+-- Purpose: Create data record
+-- MODIFICATION HISTORY  
+-- Person      Date    Comments  
+-- thangtv    05112019  Create
+	
+AS
+
+
+		SELECT ID
+		,[Code]
+      ,[LastName]
+      ,[FirstName]
+      ,[MiddleName]
+      ,[Sex]
+      ,[DOB]
+      ,[Email]
+      ,[Address]
+      ,[Faculty]
+      ,[Mobile]
+      ,[Grade]
+      ,[College]
+      ,[City]
+      ,[Class]
+      ,[PatronGroup] FROM PATRON_BY_EXCEL WHERE [Code] =''
+      OR [LastName] =''
+      OR [FirstName] =''
+      
+      OR [Sex] =''
+      OR [DOB] =''
+      OR [Email] =''
+      OR [Address] =''
+      OR [Faculty] =''
+      OR [Mobile] =''
+      OR [Grade] =''
+      OR [College] =''
+      OR [City] =''
+      
+      OR [PatronGroup] =''
+
+	   GO
+	  Create procedure FPT_GET_DOB_EXCEL
+	  AS
+	select DOB from PATRON_BY_EXCEL where DOB not in (Select  DOB from PATRON_BY_EXCEL where DOB='')
+	GO
+	Create procedure FPT_GET_EMAIL_EXCEL
+	  AS
+	select Email from PATRON_BY_EXCEL where Email not in (Select  Email from PATRON_BY_EXCEL where Email='')
+	GO
+	Create procedure FPT_GET_CODE_EXCEL
+	  AS
+	select Code from PATRON_BY_EXCEL where Code not in (Select  Code from PATRON_BY_EXCEL where Code='')
+	GO
+	Create PROCEDURE FPT_GET_DATE_FAIL(@stringDOB NVARCHAR(MAX))
+	AS
+	SELECT * from PATRON_BY_EXCEL where @stringDOB like '%;'+cast(DOB as varchar(200))+';%'	
+	GO
+	Create PROCEDURE FPT_GET_EMAIL_FAIL(@stringEmail NVARCHAR(MAX))
+	AS
+	SELECT * from PATRON_BY_EXCEL where @stringEmail like '%;'+cast(Email as varchar(200))+';%'	
+	GO
+	Create PROCEDURE FPT_GET_CODE_FAIL(@stringCode NVARCHAR(MAX))
+	AS
+	SELECT * from PATRON_BY_EXCEL where @stringCode like '%;'+cast(Code as varchar(200))+';%'	
+	GO
+	Create PROCEDURE FPT_SELECT_DUPLICATES_EMAIL_CODE
+AS
+SELECT a.*
+FROM PATRON_BY_EXCEL a
+JOIN (SELECT  email, COUNT(*) as count
+FROM PATRON_BY_EXCEL 
+GROUP BY  email
+HAVING count(*) > 1 ) b
+ON 
+a.email = b.email
+
+UNION SELECT a.*
+FROM PATRON_BY_EXCEL a
+JOIN (SELECT  Code, COUNT(*) as count
+FROM PATRON_BY_EXCEL 
+GROUP BY  Code
+HAVING count(*) > 1 ) b
+ON 
+a.Code = b.Code
+ORDER BY a.Code, a.email
+GO
+Create PROCEDURE FPT_GET_FACULTY_FAIL_DETAIL(@strCollege VARCHAR(MAX))
+AS
+select * from PATRON_BY_EXCEL where id not in (select distinct c.ID from PATRON_BY_EXCEL c join CIR_DIC_FACULTY a  join CIR_DIC_COLLEGE b on a.CollegeID=b.ID on c.Faculty=a.Faculty and c.College=b.College where @strCollege  like '%;'+cast(c.College as varchar(200))+';%')	
+GO
+Create PROCEDURE FPT_CHANGE_TYPE_AND_TRUNCATE
+AS
+TRUNCATE TABLE PATRON_BY_EXCEL
+GO
+Create PROCEDURE FPT_SELECT_PROVINCEID(@strProvince Nvarchar(200))
+as
+select ID from CIR_DIC_PROVINCE where Province like N'%'+@strProvince+'%'
+GO
+/****** Object:  StoredProcedure [dbo].[SP_PAT_CREATE_PATRON]    Script Date: 16/11/2019 11:29:48 CH ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER OFF
+GO
+
+
+
+
+
+ALTER   PROCEDURE [dbo].[SP_PAT_CREATE_PATRON]
+-- Purpose: Create patron record
+-- MODIFICATION HISTORY  
+-- Person      Date    Comments  
+-- Kiemdv      220105  Create
+-- Oanhtn      270405  Update 	
+(
+    @strCode                    VARCHAR(20),
+    @strValidDate		VARCHAR(20),    
+    @strExpiredDate		VARCHAR(20),
+    @strLastIssuedDate		VARCHAR(20),
+    @strLastName		NVARCHAR(30),
+    @strFirstName               NVARCHAR(20),
+    @strMiddleName		NVARCHAR(30),    
+    @blnSex                     BIT,
+    @strDOB			VARCHAR(20),
+    @intEthnicID                INT,
+    @intEducationID		INT,
+    @intOccupationID		INT,
+    @strWorkPlace		NVARCHAR(250),
+    @strTelephone		NVARCHAR(50),
+    @strMobile                  VARCHAR(12),
+    @strEmail                   VARCHAR(50),
+    @strPortrait                VARCHAR(150),    
+    @intPatronGroupID		INT,    
+    @strNote                    NVARCHAR(1000),    
+    @intIsQue		INT,
+    @strIDCard		VARCHAR(10),
+    @intRetval                  INT    OUTPUT    
+)
+AS
+	DECLARE @intCurrID	INT
+	DECLARE @intStatus     INT
+
+	IF @intIsQue = 0 
+		SET @intStatus = 1
+	ELSE
+		SET @intStatus = 0
+
+	IF @strLastIssuedDate = '' SET @strLastIssuedDate = GETDATE()
+	IF @strMiddleName = '' SET @strMiddleName = NULL
+	IF @strWorkPlace = '' SET @strWorkPlace = NULL
+	IF @strTelephone = '' SET @strTelephone = NULL
+	IF @strMobile = '' SET @strMobile = NULL
+	IF @strEmail = '' SET @strEmail = NULL
+	IF @strPortrait = '' SET @strPortrait = NULL
+	IF @strNote = '' SET @strNote = NULL
+	IF @strIDCard='' SET @strIDCard=NULL
+	
+	if @intEthnicID =0
+		set @intEthnicID=null
+
+	if @intEducationID =0
+		set @intEducationID=null
+
+	if @intOccupationID =0
+		set @intOccupationID=null
+
+	if @intPatronGroupID =0
+		set @intPatronGroupID=null
+
+
+
+	SET @intRetval = 0    
+	--  Check exists code
+	IF NOT EXISTS(SELECT * FROM CIR_PATRON WHERE UPPER(Code) = UPPER(@strCode))
+	BEGIN
+		SELECT @intCurrID = ISNULL(MAX(ID), 0) + 1 FROM CIR_PATRON
+		INSERT INTO CIR_PATRON (
+			ID, 
+			FirstName, 
+			MiddleName, 
+			LastName, 
+			Sex, 
+			DOB, 
+			EthnicID, 
+			PatronGroupID, 
+			Code, 
+			Portrait, 
+			LastIssuedDate, 
+			ValidDate, 
+			ExpiredDate, 
+			EducationID, 
+			OccupationID, 
+			WorkPlace, 
+			Telephone, 
+			Mobile, 
+			Email, 
+			Note, 
+			LastModifiedDate, 
+			Status,
+			IDCard
+		) VALUES (
+			@intCurrID,
+			LTrim(Rtrim(@strFirstName)),
+			LTrim(Rtrim(@strMiddleName)),
+			LTrim(Rtrim(@strLastName)),
+			@blnSex,
+			CONVERT(DATETIME, @strDOB, 120),
+			@intEthnicID,
+			@intPatronGroupID,
+			@strCode,
+			@strPortrait,
+			@strLastIssuedDate,
+			@strValidDate,
+			@strExpiredDate,
+			@intEducationID,
+			@intOccupationID,
+			@strWorkPlace,
+			@strTelephone,
+			@strMobile,
+			@strEmail,
+			@strNote,
+			GetDate(),
+			@intStatus,
+			@strIDCard
+		)
+		SET @intRetVal = @intCurrID
+	END

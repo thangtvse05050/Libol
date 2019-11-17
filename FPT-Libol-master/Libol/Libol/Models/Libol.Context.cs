@@ -250,6 +250,7 @@ namespace Libol.Models
         public virtual DbSet<FPT_CATA_FILE_NEW> FPT_CATA_FILE_NEW { get; set; }
         public virtual DbSet<HOLDING_TO_REMOVE_EXCEL> HOLDING_TO_REMOVE_EXCEL { get; set; }
         public virtual DbSet<FPT_SP_SPECIALIZED_STORE> FPT_SP_SPECIALIZED_STORE { get; set; }
+        public virtual DbSet<PATRON_BY_EXCEL> PATRON_BY_EXCEL { get; set; }
     
         public virtual ObjectResult<CAT_DIC_LIST_SEL_Result> CAT_DIC_LIST_SEL()
         {
@@ -23677,6 +23678,150 @@ namespace Libol.Models
                 new ObjectParameter("intLibID", typeof(int));
     
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<string>("FPT_GET_SPELIALIZED_NAME", intLibIDParameter);
+        }
+    
+        public virtual ObjectResult<FPT_CHECK_DATA_EXCEL_NULL_Result> FPT_CHECK_DATA_EXCEL_NULL()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<FPT_CHECK_DATA_EXCEL_NULL_Result>("FPT_CHECK_DATA_EXCEL_NULL");
+        }
+    
+        public virtual ObjectResult<string> FPT_GET_CODE_EXCEL()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<string>("FPT_GET_CODE_EXCEL");
+        }
+    
+        public virtual ObjectResult<FPT_GET_CODE_FAIL_Result> FPT_GET_CODE_FAIL(string stringCode)
+        {
+            var stringCodeParameter = stringCode != null ?
+                new ObjectParameter("stringCode", stringCode) :
+                new ObjectParameter("stringCode", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<FPT_GET_CODE_FAIL_Result>("FPT_GET_CODE_FAIL", stringCodeParameter);
+        }
+    
+        public virtual ObjectResult<FPT_GET_DATE_FAIL_Result> FPT_GET_DATE_FAIL(string stringDOB)
+        {
+            var stringDOBParameter = stringDOB != null ?
+                new ObjectParameter("stringDOB", stringDOB) :
+                new ObjectParameter("stringDOB", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<FPT_GET_DATE_FAIL_Result>("FPT_GET_DATE_FAIL", stringDOBParameter);
+        }
+    
+        public virtual ObjectResult<string> FPT_GET_DOB_EXCEL()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<string>("FPT_GET_DOB_EXCEL");
+        }
+    
+        public virtual ObjectResult<string> FPT_GET_EMAIL_EXCEL()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<string>("FPT_GET_EMAIL_EXCEL");
+        }
+    
+        public virtual ObjectResult<FPT_GET_EMAIL_FAIL_Result> FPT_GET_EMAIL_FAIL(string stringEmail)
+        {
+            var stringEmailParameter = stringEmail != null ?
+                new ObjectParameter("stringEmail", stringEmail) :
+                new ObjectParameter("stringEmail", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<FPT_GET_EMAIL_FAIL_Result>("FPT_GET_EMAIL_FAIL", stringEmailParameter);
+        }
+    
+        public virtual ObjectResult<FPT_GET_FACULTY_FAIL_DETAIL_Result> FPT_GET_FACULTY_FAIL_DETAIL(string strCollege)
+        {
+            var strCollegeParameter = strCollege != null ?
+                new ObjectParameter("strCollege", strCollege) :
+                new ObjectParameter("strCollege", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<FPT_GET_FACULTY_FAIL_DETAIL_Result>("FPT_GET_FACULTY_FAIL_DETAIL", strCollegeParameter);
+        }
+    
+        public virtual int FPT_LOAD_DATA_TO_DB_PATRON(Nullable<int> intId, string strCode, string strLastName, string strFirstName, string strMiddleName, string strSex, string strDOB, string strEmail, string strAddress, string strFaculty, string strMobile, string strGrade, string strCollege, string strCity, string strClass, string strPatronGroup)
+        {
+            var intIdParameter = intId.HasValue ?
+                new ObjectParameter("intId", intId) :
+                new ObjectParameter("intId", typeof(int));
+    
+            var strCodeParameter = strCode != null ?
+                new ObjectParameter("strCode", strCode) :
+                new ObjectParameter("strCode", typeof(string));
+    
+            var strLastNameParameter = strLastName != null ?
+                new ObjectParameter("strLastName", strLastName) :
+                new ObjectParameter("strLastName", typeof(string));
+    
+            var strFirstNameParameter = strFirstName != null ?
+                new ObjectParameter("strFirstName", strFirstName) :
+                new ObjectParameter("strFirstName", typeof(string));
+    
+            var strMiddleNameParameter = strMiddleName != null ?
+                new ObjectParameter("strMiddleName", strMiddleName) :
+                new ObjectParameter("strMiddleName", typeof(string));
+    
+            var strSexParameter = strSex != null ?
+                new ObjectParameter("strSex", strSex) :
+                new ObjectParameter("strSex", typeof(string));
+    
+            var strDOBParameter = strDOB != null ?
+                new ObjectParameter("strDOB", strDOB) :
+                new ObjectParameter("strDOB", typeof(string));
+    
+            var strEmailParameter = strEmail != null ?
+                new ObjectParameter("strEmail", strEmail) :
+                new ObjectParameter("strEmail", typeof(string));
+    
+            var strAddressParameter = strAddress != null ?
+                new ObjectParameter("strAddress", strAddress) :
+                new ObjectParameter("strAddress", typeof(string));
+    
+            var strFacultyParameter = strFaculty != null ?
+                new ObjectParameter("strFaculty", strFaculty) :
+                new ObjectParameter("strFaculty", typeof(string));
+    
+            var strMobileParameter = strMobile != null ?
+                new ObjectParameter("strMobile", strMobile) :
+                new ObjectParameter("strMobile", typeof(string));
+    
+            var strGradeParameter = strGrade != null ?
+                new ObjectParameter("strGrade", strGrade) :
+                new ObjectParameter("strGrade", typeof(string));
+    
+            var strCollegeParameter = strCollege != null ?
+                new ObjectParameter("strCollege", strCollege) :
+                new ObjectParameter("strCollege", typeof(string));
+    
+            var strCityParameter = strCity != null ?
+                new ObjectParameter("strCity", strCity) :
+                new ObjectParameter("strCity", typeof(string));
+    
+            var strClassParameter = strClass != null ?
+                new ObjectParameter("strClass", strClass) :
+                new ObjectParameter("strClass", typeof(string));
+    
+            var strPatronGroupParameter = strPatronGroup != null ?
+                new ObjectParameter("strPatronGroup", strPatronGroup) :
+                new ObjectParameter("strPatronGroup", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("FPT_LOAD_DATA_TO_DB_PATRON", intIdParameter, strCodeParameter, strLastNameParameter, strFirstNameParameter, strMiddleNameParameter, strSexParameter, strDOBParameter, strEmailParameter, strAddressParameter, strFacultyParameter, strMobileParameter, strGradeParameter, strCollegeParameter, strCityParameter, strClassParameter, strPatronGroupParameter);
+        }
+    
+        public virtual ObjectResult<FPT_SELECT_DUPLICATES_EMAIL_CODE_Result> FPT_SELECT_DUPLICATES_EMAIL_CODE()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<FPT_SELECT_DUPLICATES_EMAIL_CODE_Result>("FPT_SELECT_DUPLICATES_EMAIL_CODE");
+        }
+    
+        public virtual ObjectResult<Nullable<int>> FPT_SELECT_PROVINCEID(string strProvince)
+        {
+            var strProvinceParameter = strProvince != null ?
+                new ObjectParameter("strProvince", strProvince) :
+                new ObjectParameter("strProvince", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Nullable<int>>("FPT_SELECT_PROVINCEID", strProvinceParameter);
+        }
+    
+        public virtual int FPT_CHANGE_TYPE_AND_TRUNCATE()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("FPT_CHANGE_TYPE_AND_TRUNCATE");
         }
     }
 }

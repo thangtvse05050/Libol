@@ -944,16 +944,6 @@ warning 6002: The table/view 'Libol.dbo.CIR_OPEN_HOUR' does not have a primary k
           <Property Name="Class" Type="nvarchar" MaxLength="100" />
           <Property Name="CollegeID" Type="int" Nullable="false" />
         </EntityType>
-        <EntityType Name="CIR_PRINTED_CARD">
-          <Key>
-            <PropertyRef Name="ID" />
-          </Key>
-          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="PatronID" Type="int" Nullable="false" />
-          <Property Name="TemplateID" Type="int" Nullable="false" />
-          <Property Name="IssueLibraryID" Type="int" Nullable="false" />
-          <Property Name="PrintedDate" Type="datetime" Nullable="false" />
-        </EntityType>
         <EntityType Name="CIR_PHOTOCOPY_PRICE">
           <Key>
             <PropertyRef Name="TypeID" />
@@ -979,6 +969,16 @@ warning 6002: The table/view 'Libol.dbo.CIR_OPEN_HOUR' does not have a primary k
           <Property Name="CreatedDate" Type="datetime" />
           <Property Name="CopyNumber" Type="nvarchar" MaxLength="50" Nullable="false" />
           <Property Name="UserID" Type="int" />
+        </EntityType>
+        <EntityType Name="CIR_PRINTED_CARD">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="PatronID" Type="int" Nullable="false" />
+          <Property Name="TemplateID" Type="int" Nullable="false" />
+          <Property Name="IssueLibraryID" Type="int" Nullable="false" />
+          <Property Name="PrintedDate" Type="datetime" Nullable="false" />
         </EntityType>
         <EntityType Name="CIR_RENEW">
           <Key>
@@ -2310,16 +2310,6 @@ warning 6002: The table/view 'Libol.dbo.ITEM_SH' does not have a primary key def
           <Property Name="SHID" Type="int" Nullable="false" />
           <Property Name="FieldCode" Type="varchar" MaxLength="5" Nullable="false" />
         </EntityType>
-        <EntityType Name="ITEM_TITLE">
-          <Key>
-            <PropertyRef Name="ID" />
-          </Key>
-          <Property Name="ItemID" Type="int" Nullable="false" />
-          <Property Name="FieldCode" Type="varchar" MaxLength="5" Nullable="false" />
-          <Property Name="Title" Type="nvarchar" MaxLength="2000" Nullable="false" />
-          <Property Name="ts" Type="timestamp" StoreGeneratedPattern="Computed" Nullable="false" />
-          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-        </EntityType>
         <!--Errors Found During Generation:
 warning 6002: The table/view 'Libol.dbo.ITEM_THESIS_SUBJECT' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="ITEM_THESIS_SUBJECT">
@@ -2331,6 +2321,16 @@ warning 6002: The table/view 'Libol.dbo.ITEM_THESIS_SUBJECT' does not have a pri
           <Property Name="SubjectID" Type="int" Nullable="false" />
           <Property Name="ItemID" Type="int" Nullable="false" />
           <Property Name="FieldCode" Type="varchar" MaxLength="5" Nullable="false" />
+        </EntityType>
+        <EntityType Name="ITEM_TITLE">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ItemID" Type="int" Nullable="false" />
+          <Property Name="FieldCode" Type="varchar" MaxLength="5" Nullable="false" />
+          <Property Name="Title" Type="nvarchar" MaxLength="2000" Nullable="false" />
+          <Property Name="ts" Type="timestamp" StoreGeneratedPattern="Computed" Nullable="false" />
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
         </EntityType>
         <!--Errors Found During Generation:
 warning 6002: The table/view 'Libol.dbo.ITEM_UDC' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
@@ -2574,6 +2574,27 @@ warning 6002: The table/view 'Libol.dbo.MARC_BIB_WS_DETAIL' does not have a prim
           <Property Name="ParentID" Type="int" />
           <Property Name="Code" Type="nvarchar" MaxLength="16" Nullable="false" />
           <Property Name="Caption" Type="nvarchar" MaxLength="256" Nullable="false" />
+        </EntityType>
+        <EntityType Name="PATRON_BY_EXCEL">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" Nullable="false" />
+          <Property Name="Code" Type="varchar" MaxLength="20" />
+          <Property Name="LastName" Type="nvarchar" MaxLength="30" />
+          <Property Name="FirstName" Type="nvarchar" MaxLength="20" />
+          <Property Name="MiddleName" Type="nvarchar" MaxLength="30" />
+          <Property Name="Sex" Type="nvarchar" MaxLength="10" />
+          <Property Name="DOB" Type="nvarchar" MaxLength="100" />
+          <Property Name="Email" Type="nvarchar" MaxLength="100" />
+          <Property Name="Address" Type="nvarchar" MaxLength="300" />
+          <Property Name="Faculty" Type="nvarchar" MaxLength="70" />
+          <Property Name="Mobile" Type="varchar" MaxLength="12" />
+          <Property Name="Grade" Type="nvarchar" MaxLength="20" />
+          <Property Name="College" Type="nvarchar" MaxLength="100" />
+          <Property Name="City" Type="nvarchar" MaxLength="50" />
+          <Property Name="Class" Type="nvarchar" MaxLength="30" />
+          <Property Name="PatronGroup" Type="nvarchar" MaxLength="50" />
         </EntityType>
         <EntityType Name="REGULARITY_OUT">
           <Key>
@@ -3618,18 +3639,6 @@ warning 6002: The table/view 'Libol.dbo.MARC_BIB_WS_DETAIL' does not have a prim
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_CIR_PRINTED_CARD_CIR_PATRON">
-          <End Role="CIR_PATRON" Type="Self.CIR_PATRON" Multiplicity="1" />
-          <End Role="CIR_PRINTED_CARD" Type="Self.CIR_PRINTED_CARD" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="CIR_PATRON">
-              <PropertyRef Name="ID" />
-            </Principal>
-            <Dependent Role="CIR_PRINTED_CARD">
-              <PropertyRef Name="PatronID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="FK_CIR_PHOTOCOPY_REQUEST_CIR_PHOTOCOPY_PRICE">
           <End Role="CIR_PHOTOCOPY_PRICE" Type="Self.CIR_PHOTOCOPY_PRICE" Multiplicity="1" />
           <End Role="CIR_PHOTOCOPY_REQUEST" Type="Self.CIR_PHOTOCOPY_REQUEST" Multiplicity="*" />
@@ -3639,6 +3648,18 @@ warning 6002: The table/view 'Libol.dbo.MARC_BIB_WS_DETAIL' does not have a prim
             </Principal>
             <Dependent Role="CIR_PHOTOCOPY_REQUEST">
               <PropertyRef Name="TypeID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_CIR_PRINTED_CARD_CIR_PATRON">
+          <End Role="CIR_PATRON" Type="Self.CIR_PATRON" Multiplicity="1" />
+          <End Role="CIR_PRINTED_CARD" Type="Self.CIR_PRINTED_CARD" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CIR_PATRON">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="CIR_PRINTED_CARD">
+              <PropertyRef Name="PatronID" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -4602,18 +4623,6 @@ warning 6002: The table/view 'Libol.dbo.MARC_BIB_WS_DETAIL' does not have a prim
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_ITEM_TITLE_ITEM">
-          <End Role="ITEM" Type="Self.ITEM" Multiplicity="1" />
-          <End Role="ITEM_TITLE" Type="Self.ITEM_TITLE" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="ITEM">
-              <PropertyRef Name="ID" />
-            </Principal>
-            <Dependent Role="ITEM_TITLE">
-              <PropertyRef Name="ItemID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="FK_ITEM_THESIS_SUBJECT_CAT_DIC_THESIS_SUBJECT">
           <End Role="CAT_DIC_THESIS_SUBJECT" Type="Self.CAT_DIC_THESIS_SUBJECT" Multiplicity="1" />
           <End Role="ITEM_THESIS_SUBJECT" Type="Self.ITEM_THESIS_SUBJECT" Multiplicity="*" />
@@ -4634,6 +4643,18 @@ warning 6002: The table/view 'Libol.dbo.MARC_BIB_WS_DETAIL' does not have a prim
               <PropertyRef Name="ID" />
             </Principal>
             <Dependent Role="ITEM_THESIS_SUBJECT">
+              <PropertyRef Name="ItemID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ITEM_TITLE_ITEM">
+          <End Role="ITEM" Type="Self.ITEM" Multiplicity="1" />
+          <End Role="ITEM_TITLE" Type="Self.ITEM_TITLE" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ITEM">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="ITEM_TITLE">
               <PropertyRef Name="ItemID" />
             </Dependent>
           </ReferentialConstraint>
@@ -5470,6 +5491,8 @@ warning 6002: The table/view 'Libol.dbo.MARC_BIB_WS_DETAIL' does not have a prim
         <Function Name="FPT_CATA_GETCONTENT_BY_INDEX" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="Index" Type="int" Mode="In" />
         </Function>
+        <Function Name="FPT_CHANGE_TYPE_AND_TRUNCATE" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
+        <Function Name="FPT_CHECK_DATA_EXCEL_NULL" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
         <Function Name="FPT_CHECK_HOLDING_COPYNUMBER" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="intItemID" Type="int" Mode="In" />
           <Parameter Name="intLibID" Type="int" Mode="In" />
@@ -5770,11 +5793,26 @@ warning 6002: The table/view 'Libol.dbo.MARC_BIB_WS_DETAIL' does not have a prim
         <Function Name="FPT_GET_ALL_COPYNUMBER_ONLOAN_BY_LIBID" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="intLibID" Type="int" Mode="In" />
         </Function>
+        <Function Name="FPT_GET_CODE_EXCEL" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
+        <Function Name="FPT_GET_CODE_FAIL" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="stringCode" Type="nvarchar(max)" Mode="In" />
+        </Function>
+        <Function Name="FPT_GET_DATE_FAIL" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="stringDOB" Type="nvarchar(max)" Mode="In" />
+        </Function>
         <Function Name="FPT_GET_DATE_SUGGEST_CHECKOUT" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="term" Type="nvarchar" Mode="In" />
         </Function>
         <Function Name="FPT_GET_DATE_SUGGEST_RENEW" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="term" Type="nvarchar" Mode="In" />
+        </Function>
+        <Function Name="FPT_GET_DOB_EXCEL" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
+        <Function Name="FPT_GET_EMAIL_EXCEL" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
+        <Function Name="FPT_GET_EMAIL_FAIL" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="stringEmail" Type="nvarchar(max)" Mode="In" />
+        </Function>
+        <Function Name="FPT_GET_FACULTY_FAIL_DETAIL" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="strCollege" Type="varchar(max)" Mode="In" />
         </Function>
         <Function Name="FPT_GET_LIQUIDBOOKS" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="strLiquidCode" Type="varchar" Mode="In" />
@@ -5872,8 +5910,30 @@ warning 6002: The table/view 'Libol.dbo.MARC_BIB_WS_DETAIL' does not have a prim
           <Parameter Name="strLiquidCode" Type="nvarchar" Mode="In" />
           <Parameter Name="strReason" Type="nvarchar" Mode="In" />
         </Function>
+        <Function Name="FPT_LOAD_DATA_TO_DB_PATRON" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="intId" Type="int" Mode="In" />
+          <Parameter Name="strCode" Type="nvarchar" Mode="In" />
+          <Parameter Name="strLastName" Type="nvarchar" Mode="In" />
+          <Parameter Name="strFirstName" Type="nvarchar" Mode="In" />
+          <Parameter Name="strMiddleName" Type="nvarchar" Mode="In" />
+          <Parameter Name="strSex" Type="nvarchar" Mode="In" />
+          <Parameter Name="strDOB" Type="nvarchar" Mode="In" />
+          <Parameter Name="strEmail" Type="nvarchar" Mode="In" />
+          <Parameter Name="strAddress" Type="nvarchar" Mode="In" />
+          <Parameter Name="strFaculty" Type="nvarchar" Mode="In" />
+          <Parameter Name="strMobile" Type="nvarchar" Mode="In" />
+          <Parameter Name="strGrade" Type="nvarchar" Mode="In" />
+          <Parameter Name="strCollege" Type="nvarchar" Mode="In" />
+          <Parameter Name="strCity" Type="nvarchar" Mode="In" />
+          <Parameter Name="strClass" Type="nvarchar" Mode="In" />
+          <Parameter Name="strPatronGroup" Type="nvarchar" Mode="In" />
+        </Function>
         <Function Name="FPT_REFRESH_TABLE_DATA" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" StoreFunctionName="FPT_REFRESH_TABLE DATA" />
         <Function Name="FPT_SELECT_COPYNUMBER" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
+        <Function Name="FPT_SELECT_DUPLICATES_EMAIL_CODE" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
+        <Function Name="FPT_SELECT_PROVINCEID" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="strProvince" Type="nvarchar" Mode="In" />
+        </Function>
         <Function Name="FPT_SELECT_USECOUNT2" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="LibID" Type="int" Mode="In" />
           <Parameter Name="itemID" Type="int" Mode="In" />
@@ -12200,9 +12260,9 @@ warning 6002: The table/view 'Libol.dbo.MARC_BIB_WS_DETAIL' does not have a prim
           <EntitySet Name="CIR_PATRON_LOCK" EntityType="Self.CIR_PATRON_LOCK" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="CIR_PATRON_OTHER_ADDR" EntityType="Self.CIR_PATRON_OTHER_ADDR" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="CIR_PATRON_UNIVERSITY" EntityType="Self.CIR_PATRON_UNIVERSITY" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="CIR_PRINTED_CARD" EntityType="Self.CIR_PRINTED_CARD" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="CIR_PHOTOCOPY_PRICE" EntityType="Self.CIR_PHOTOCOPY_PRICE" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="CIR_PHOTOCOPY_REQUEST" EntityType="Self.CIR_PHOTOCOPY_REQUEST" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="CIR_PRINTED_CARD" EntityType="Self.CIR_PRINTED_CARD" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="CIR_RENEW" EntityType="Self.CIR_RENEW" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="CIR_RESERVE_REQUEST" EntityType="Self.CIR_RESERVE_REQUEST" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="CLASSIFICATION" EntityType="Self.CLASSIFICATION" Schema="dbo" store:Type="Tables" />
@@ -12299,6 +12359,7 @@ warning 6002: The table/view 'Libol.dbo.MARC_BIB_WS_DETAIL' does not have a prim
           <EntitySet Name="OPAC_COMMENT" EntityType="Self.OPAC_COMMENT" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="OPAC_SUBJECT_BBK" EntityType="Self.OPAC_SUBJECT_BBK" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="OPAC_SUBJECT_DDC" EntityType="Self.OPAC_SUBJECT_DDC" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="PATRON_BY_EXCEL" EntityType="Self.PATRON_BY_EXCEL" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="REGULARITY_OUT" EntityType="Self.REGULARITY_OUT" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="SER_ARTICLE" EntityType="Self.SER_ARTICLE" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="SER_CATEGORY" EntityType="Self.SER_CATEGORY" Schema="dbo" store:Type="Tables" />
@@ -12832,13 +12893,13 @@ warning 6002: The table/view 'Libol.dbo.MARC_BIB_WS_DETAIL' does not have a prim
             <End Role="CIR_PATRON" EntitySet="CIR_PATRON" />
             <End Role="CIR_PATRON_UNIVERSITY" EntitySet="CIR_PATRON_UNIVERSITY" />
           </AssociationSet>
-          <AssociationSet Name="FK_CIR_PRINTED_CARD_CIR_PATRON" Association="Self.FK_CIR_PRINTED_CARD_CIR_PATRON">
-            <End Role="CIR_PATRON" EntitySet="CIR_PATRON" />
-            <End Role="CIR_PRINTED_CARD" EntitySet="CIR_PRINTED_CARD" />
-          </AssociationSet>
           <AssociationSet Name="FK_CIR_PHOTOCOPY_REQUEST_CIR_PHOTOCOPY_PRICE" Association="Self.FK_CIR_PHOTOCOPY_REQUEST_CIR_PHOTOCOPY_PRICE">
             <End Role="CIR_PHOTOCOPY_PRICE" EntitySet="CIR_PHOTOCOPY_PRICE" />
             <End Role="CIR_PHOTOCOPY_REQUEST" EntitySet="CIR_PHOTOCOPY_REQUEST" />
+          </AssociationSet>
+          <AssociationSet Name="FK_CIR_PRINTED_CARD_CIR_PATRON" Association="Self.FK_CIR_PRINTED_CARD_CIR_PATRON">
+            <End Role="CIR_PATRON" EntitySet="CIR_PATRON" />
+            <End Role="CIR_PRINTED_CARD" EntitySet="CIR_PRINTED_CARD" />
           </AssociationSet>
           <AssociationSet Name="FK_CIR_RESERVE_REQUEST_CIR_PATRON" Association="Self.FK_CIR_RESERVE_REQUEST_CIR_PATRON">
             <End Role="CIR_PATRON" EntitySet="CIR_PATRON" />
@@ -13160,10 +13221,6 @@ warning 6002: The table/view 'Libol.dbo.MARC_BIB_WS_DETAIL' does not have a prim
             <End Role="ITEM" EntitySet="ITEM" />
             <End Role="ITEM_SH" EntitySet="ITEM_SH" />
           </AssociationSet>
-          <AssociationSet Name="FK_ITEM_TITLE_ITEM" Association="Self.FK_ITEM_TITLE_ITEM">
-            <End Role="ITEM" EntitySet="ITEM" />
-            <End Role="ITEM_TITLE" EntitySet="ITEM_TITLE" />
-          </AssociationSet>
           <AssociationSet Name="FK_ITEM_THESIS_SUBJECT_CAT_DIC_THESIS_SUBJECT" Association="Self.FK_ITEM_THESIS_SUBJECT_CAT_DIC_THESIS_SUBJECT">
             <End Role="CAT_DIC_THESIS_SUBJECT" EntitySet="CAT_DIC_THESIS_SUBJECT" />
             <End Role="ITEM_THESIS_SUBJECT" EntitySet="ITEM_THESIS_SUBJECT" />
@@ -13171,6 +13228,10 @@ warning 6002: The table/view 'Libol.dbo.MARC_BIB_WS_DETAIL' does not have a prim
           <AssociationSet Name="FK_ITEM_THESIS_SUBJECT_ITEM" Association="Self.FK_ITEM_THESIS_SUBJECT_ITEM">
             <End Role="ITEM" EntitySet="ITEM" />
             <End Role="ITEM_THESIS_SUBJECT" EntitySet="ITEM_THESIS_SUBJECT" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ITEM_TITLE_ITEM" Association="Self.FK_ITEM_TITLE_ITEM">
+            <End Role="ITEM" EntitySet="ITEM" />
+            <End Role="ITEM_TITLE" EntitySet="ITEM_TITLE" />
           </AssociationSet>
           <AssociationSet Name="FK_ITEM_UDC_CAT_DIC_CLASS_UDC" Association="Self.FK_ITEM_UDC_CAT_DIC_CLASS_UDC">
             <End Role="CAT_DIC_CLASS_UDC" EntitySet="CAT_DIC_CLASS_UDC" />
@@ -26430,11 +26491,51 @@ warning 6002: The table/view 'Libol.dbo.MARC_BIB_WS_DETAIL' does not have a prim
             <End Role="FPT_SP_SPECIALIZED_STORE" EntitySet="FPT_SP_SPECIALIZED_STORE" />
           </AssociationSet>
           <FunctionImport Name="FPT_GET_SPECIALIZED_STORE" ReturnType="Collection(LibolModel.FPT_GET_SPECIALIZED_STORE_Result)">
-            <Parameter Name="intLibID" Mode="In" Type="Int32" />
+          <Parameter Name="intLibID" Mode="In" Type="Int32" />
           </FunctionImport>
           <FunctionImport Name="FPT_GET_SPELIALIZED_NAME" ReturnType="Collection(String)">
-            <Parameter Name="intLibID" Mode="In" Type="Int32" />
+          <Parameter Name="intLibID" Mode="In" Type="Int32" />
           </FunctionImport>
+          <EntitySet Name="PATRON_BY_EXCEL" EntityType="LibolModel.PATRON_BY_EXCEL" />
+          <FunctionImport Name="FPT_CHECK_DATA_EXCEL_NULL" ReturnType="Collection(LibolModel.FPT_CHECK_DATA_EXCEL_NULL_Result)" />
+          <FunctionImport Name="FPT_GET_CODE_EXCEL" ReturnType="Collection(String)" />
+          <FunctionImport Name="FPT_GET_CODE_FAIL" ReturnType="Collection(LibolModel.FPT_GET_CODE_FAIL_Result)">
+          <Parameter Name="stringCode" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="FPT_GET_DATE_FAIL" ReturnType="Collection(LibolModel.FPT_GET_DATE_FAIL_Result)">
+          <Parameter Name="stringDOB" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="FPT_GET_DOB_EXCEL" ReturnType="Collection(String)" />
+          <FunctionImport Name="FPT_GET_EMAIL_EXCEL" ReturnType="Collection(String)" />
+          <FunctionImport Name="FPT_GET_EMAIL_FAIL" ReturnType="Collection(LibolModel.FPT_GET_EMAIL_FAIL_Result)">
+          <Parameter Name="stringEmail" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="FPT_GET_FACULTY_FAIL_DETAIL" ReturnType="Collection(LibolModel.FPT_GET_FACULTY_FAIL_DETAIL_Result)">
+          <Parameter Name="strCollege" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="FPT_LOAD_DATA_TO_DB_PATRON">
+            <Parameter Name="intId" Mode="In" Type="Int32" />
+            <Parameter Name="strCode" Mode="In" Type="String" />
+            <Parameter Name="strLastName" Mode="In" Type="String" />
+            <Parameter Name="strFirstName" Mode="In" Type="String" />
+            <Parameter Name="strMiddleName" Mode="In" Type="String" />
+            <Parameter Name="strSex" Mode="In" Type="String" />
+            <Parameter Name="strDOB" Mode="In" Type="String" />
+            <Parameter Name="strEmail" Mode="In" Type="String" />
+            <Parameter Name="strAddress" Mode="In" Type="String" />
+            <Parameter Name="strFaculty" Mode="In" Type="String" />
+            <Parameter Name="strMobile" Mode="In" Type="String" />
+            <Parameter Name="strGrade" Mode="In" Type="String" />
+            <Parameter Name="strCollege" Mode="In" Type="String" />
+            <Parameter Name="strCity" Mode="In" Type="String" />
+            <Parameter Name="strClass" Mode="In" Type="String" />
+            <Parameter Name="strPatronGroup" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="FPT_SELECT_DUPLICATES_EMAIL_CODE" ReturnType="Collection(LibolModel.FPT_SELECT_DUPLICATES_EMAIL_CODE_Result)" />
+          <FunctionImport Name="FPT_SELECT_PROVINCEID" ReturnType="Collection(Int32)">
+          <Parameter Name="strProvince" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="FPT_CHANGE_TYPE_AND_TRUNCATE" />
         </EntityContainer>
         <ComplexType Name="CAT_DIC_LIST_SEL_Result">
           <Property Type="String" Name="BrowseFile" Nullable="true" MaxLength="50" />
@@ -31596,6 +31697,135 @@ warning 6002: The table/view 'Libol.dbo.MARC_BIB_WS_DETAIL' does not have a prim
           <Property Type="String" Name="Name" Nullable="false" MaxLength="4000" />
           <Property Type="String" Name="Subjects" Nullable="false" />
           <Property Type="Int32" Name="LibID" Nullable="false" />
+        </ComplexType>
+        <EntityType Name="PATRON_BY_EXCEL">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" />
+          <Property Name="Code" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="LastName" Type="String" MaxLength="30" FixedLength="false" Unicode="true" />
+          <Property Name="FirstName" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+          <Property Name="MiddleName" Type="String" MaxLength="30" FixedLength="false" Unicode="true" />
+          <Property Name="Sex" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Name="DOB" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="Email" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="Address" Type="String" MaxLength="300" FixedLength="false" Unicode="true" />
+          <Property Name="Faculty" Type="String" MaxLength="70" FixedLength="false" Unicode="true" />
+          <Property Name="Mobile" Type="String" MaxLength="12" FixedLength="false" Unicode="false" />
+          <Property Name="Grade" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+          <Property Name="College" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="City" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Class" Type="String" MaxLength="30" FixedLength="false" Unicode="true" />
+          <Property Name="PatronGroup" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <ComplexType Name="FPT_CHECK_DATA_EXCEL_NULL_Result">
+          <Property Type="Int32" Name="ID" Nullable="false" />
+          <Property Type="String" Name="Code" Nullable="true" MaxLength="20" />
+          <Property Type="String" Name="LastName" Nullable="true" MaxLength="30" />
+          <Property Type="String" Name="FirstName" Nullable="true" MaxLength="20" />
+          <Property Type="String" Name="MiddleName" Nullable="true" MaxLength="30" />
+          <Property Type="String" Name="Sex" Nullable="true" MaxLength="10" />
+          <Property Type="String" Name="DOB" Nullable="true" MaxLength="100" />
+          <Property Type="String" Name="Email" Nullable="true" MaxLength="100" />
+          <Property Type="String" Name="Address" Nullable="true" MaxLength="300" />
+          <Property Type="String" Name="Faculty" Nullable="true" MaxLength="70" />
+          <Property Type="String" Name="Mobile" Nullable="true" MaxLength="12" />
+          <Property Type="String" Name="Grade" Nullable="true" MaxLength="20" />
+          <Property Type="String" Name="College" Nullable="true" MaxLength="100" />
+          <Property Type="String" Name="City" Nullable="true" MaxLength="50" />
+          <Property Type="String" Name="Class" Nullable="true" MaxLength="30" />
+          <Property Type="String" Name="PatronGroup" Nullable="true" MaxLength="50" />
+        </ComplexType>
+        <ComplexType Name="FPT_GET_CODE_FAIL_Result">
+          <Property Type="Int32" Name="ID" Nullable="false" />
+          <Property Type="String" Name="Code" Nullable="true" MaxLength="20" />
+          <Property Type="String" Name="LastName" Nullable="true" MaxLength="30" />
+          <Property Type="String" Name="FirstName" Nullable="true" MaxLength="20" />
+          <Property Type="String" Name="MiddleName" Nullable="true" MaxLength="30" />
+          <Property Type="String" Name="Sex" Nullable="true" MaxLength="10" />
+          <Property Type="String" Name="DOB" Nullable="true" MaxLength="100" />
+          <Property Type="String" Name="Email" Nullable="true" MaxLength="100" />
+          <Property Type="String" Name="Address" Nullable="true" MaxLength="300" />
+          <Property Type="String" Name="Faculty" Nullable="true" MaxLength="70" />
+          <Property Type="String" Name="Mobile" Nullable="true" MaxLength="12" />
+          <Property Type="String" Name="Grade" Nullable="true" MaxLength="20" />
+          <Property Type="String" Name="College" Nullable="true" MaxLength="100" />
+          <Property Type="String" Name="City" Nullable="true" MaxLength="50" />
+          <Property Type="String" Name="Class" Nullable="true" MaxLength="30" />
+          <Property Type="String" Name="PatronGroup" Nullable="true" MaxLength="50" />
+        </ComplexType>
+        <ComplexType Name="FPT_GET_DATE_FAIL_Result">
+          <Property Type="Int32" Name="ID" Nullable="false" />
+          <Property Type="String" Name="Code" Nullable="true" MaxLength="20" />
+          <Property Type="String" Name="LastName" Nullable="true" MaxLength="30" />
+          <Property Type="String" Name="FirstName" Nullable="true" MaxLength="20" />
+          <Property Type="String" Name="MiddleName" Nullable="true" MaxLength="30" />
+          <Property Type="String" Name="Sex" Nullable="true" MaxLength="10" />
+          <Property Type="String" Name="DOB" Nullable="true" MaxLength="100" />
+          <Property Type="String" Name="Email" Nullable="true" MaxLength="100" />
+          <Property Type="String" Name="Address" Nullable="true" MaxLength="300" />
+          <Property Type="String" Name="Faculty" Nullable="true" MaxLength="70" />
+          <Property Type="String" Name="Mobile" Nullable="true" MaxLength="12" />
+          <Property Type="String" Name="Grade" Nullable="true" MaxLength="20" />
+          <Property Type="String" Name="College" Nullable="true" MaxLength="100" />
+          <Property Type="String" Name="City" Nullable="true" MaxLength="50" />
+          <Property Type="String" Name="Class" Nullable="true" MaxLength="30" />
+          <Property Type="String" Name="PatronGroup" Nullable="true" MaxLength="50" />
+        </ComplexType>
+        <ComplexType Name="FPT_GET_EMAIL_FAIL_Result">
+          <Property Type="Int32" Name="ID" Nullable="false" />
+          <Property Type="String" Name="Code" Nullable="true" MaxLength="20" />
+          <Property Type="String" Name="LastName" Nullable="true" MaxLength="30" />
+          <Property Type="String" Name="FirstName" Nullable="true" MaxLength="20" />
+          <Property Type="String" Name="MiddleName" Nullable="true" MaxLength="30" />
+          <Property Type="String" Name="Sex" Nullable="true" MaxLength="10" />
+          <Property Type="String" Name="DOB" Nullable="true" MaxLength="100" />
+          <Property Type="String" Name="Email" Nullable="true" MaxLength="100" />
+          <Property Type="String" Name="Address" Nullable="true" MaxLength="300" />
+          <Property Type="String" Name="Faculty" Nullable="true" MaxLength="70" />
+          <Property Type="String" Name="Mobile" Nullable="true" MaxLength="12" />
+          <Property Type="String" Name="Grade" Nullable="true" MaxLength="20" />
+          <Property Type="String" Name="College" Nullable="true" MaxLength="100" />
+          <Property Type="String" Name="City" Nullable="true" MaxLength="50" />
+          <Property Type="String" Name="Class" Nullable="true" MaxLength="30" />
+          <Property Type="String" Name="PatronGroup" Nullable="true" MaxLength="50" />
+        </ComplexType>
+        <ComplexType Name="FPT_GET_FACULTY_FAIL_DETAIL_Result">
+          <Property Type="Int32" Name="ID" Nullable="false" />
+          <Property Type="String" Name="Code" Nullable="true" MaxLength="20" />
+          <Property Type="String" Name="LastName" Nullable="true" MaxLength="30" />
+          <Property Type="String" Name="FirstName" Nullable="true" MaxLength="20" />
+          <Property Type="String" Name="MiddleName" Nullable="true" MaxLength="30" />
+          <Property Type="String" Name="Sex" Nullable="true" MaxLength="10" />
+          <Property Type="String" Name="DOB" Nullable="true" MaxLength="100" />
+          <Property Type="String" Name="Email" Nullable="true" MaxLength="100" />
+          <Property Type="String" Name="Address" Nullable="true" MaxLength="300" />
+          <Property Type="String" Name="Faculty" Nullable="true" MaxLength="70" />
+          <Property Type="String" Name="Mobile" Nullable="true" MaxLength="12" />
+          <Property Type="String" Name="Grade" Nullable="true" MaxLength="20" />
+          <Property Type="String" Name="College" Nullable="true" MaxLength="100" />
+          <Property Type="String" Name="City" Nullable="true" MaxLength="50" />
+          <Property Type="String" Name="Class" Nullable="true" MaxLength="30" />
+          <Property Type="String" Name="PatronGroup" Nullable="true" MaxLength="50" />
+        </ComplexType>
+        <ComplexType Name="FPT_SELECT_DUPLICATES_EMAIL_CODE_Result">
+          <Property Type="Int32" Name="ID" Nullable="false" />
+          <Property Type="String" Name="Code" Nullable="true" MaxLength="20" />
+          <Property Type="String" Name="LastName" Nullable="true" MaxLength="30" />
+          <Property Type="String" Name="FirstName" Nullable="true" MaxLength="20" />
+          <Property Type="String" Name="MiddleName" Nullable="true" MaxLength="30" />
+          <Property Type="String" Name="Sex" Nullable="true" MaxLength="10" />
+          <Property Type="String" Name="DOB" Nullable="true" MaxLength="100" />
+          <Property Type="String" Name="Email" Nullable="true" MaxLength="100" />
+          <Property Type="String" Name="Address" Nullable="true" MaxLength="300" />
+          <Property Type="String" Name="Faculty" Nullable="true" MaxLength="70" />
+          <Property Type="String" Name="Mobile" Nullable="true" MaxLength="12" />
+          <Property Type="String" Name="Grade" Nullable="true" MaxLength="20" />
+          <Property Type="String" Name="College" Nullable="true" MaxLength="100" />
+          <Property Type="String" Name="City" Nullable="true" MaxLength="50" />
+          <Property Type="String" Name="Class" Nullable="true" MaxLength="30" />
+          <Property Type="String" Name="PatronGroup" Nullable="true" MaxLength="50" />
         </ComplexType>
       </Schema>
     </edmx:ConceptualModels>
@@ -42249,6 +42479,166 @@ warning 6002: The table/view 'Libol.dbo.MARC_BIB_WS_DETAIL' does not have a prim
             </ResultMapping>
           </FunctionImportMapping>
           <FunctionImportMapping FunctionImportName="FPT_GET_SPELIALIZED_NAME" FunctionName="LibolModel.Store.FPT_GET_SPELIALIZED_NAME" />
+          <EntitySetMapping Name="PATRON_BY_EXCEL">
+            <EntityTypeMapping TypeName="LibolModel.PATRON_BY_EXCEL">
+              <MappingFragment StoreEntitySet="PATRON_BY_EXCEL">
+                <ScalarProperty Name="PatronGroup" ColumnName="PatronGroup" />
+                <ScalarProperty Name="Class" ColumnName="Class" />
+                <ScalarProperty Name="City" ColumnName="City" />
+                <ScalarProperty Name="College" ColumnName="College" />
+                <ScalarProperty Name="Grade" ColumnName="Grade" />
+                <ScalarProperty Name="Mobile" ColumnName="Mobile" />
+                <ScalarProperty Name="Faculty" ColumnName="Faculty" />
+                <ScalarProperty Name="Address" ColumnName="Address" />
+                <ScalarProperty Name="Email" ColumnName="Email" />
+                <ScalarProperty Name="DOB" ColumnName="DOB" />
+                <ScalarProperty Name="Sex" ColumnName="Sex" />
+                <ScalarProperty Name="MiddleName" ColumnName="MiddleName" />
+                <ScalarProperty Name="FirstName" ColumnName="FirstName" />
+                <ScalarProperty Name="LastName" ColumnName="LastName" />
+                <ScalarProperty Name="Code" ColumnName="Code" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <FunctionImportMapping FunctionImportName="FPT_CHECK_DATA_EXCEL_NULL" FunctionName="LibolModel.Store.FPT_CHECK_DATA_EXCEL_NULL">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="LibolModel.FPT_CHECK_DATA_EXCEL_NULL_Result">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="Code" ColumnName="Code" />
+                <ScalarProperty Name="LastName" ColumnName="LastName" />
+                <ScalarProperty Name="FirstName" ColumnName="FirstName" />
+                <ScalarProperty Name="MiddleName" ColumnName="MiddleName" />
+                <ScalarProperty Name="Sex" ColumnName="Sex" />
+                <ScalarProperty Name="DOB" ColumnName="DOB" />
+                <ScalarProperty Name="Email" ColumnName="Email" />
+                <ScalarProperty Name="Address" ColumnName="Address" />
+                <ScalarProperty Name="Faculty" ColumnName="Faculty" />
+                <ScalarProperty Name="Mobile" ColumnName="Mobile" />
+                <ScalarProperty Name="Grade" ColumnName="Grade" />
+                <ScalarProperty Name="College" ColumnName="College" />
+                <ScalarProperty Name="City" ColumnName="City" />
+                <ScalarProperty Name="Class" ColumnName="Class" />
+                <ScalarProperty Name="PatronGroup" ColumnName="PatronGroup" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="FPT_GET_CODE_EXCEL" FunctionName="LibolModel.Store.FPT_GET_CODE_EXCEL" />
+          <FunctionImportMapping FunctionImportName="FPT_GET_CODE_FAIL" FunctionName="LibolModel.Store.FPT_GET_CODE_FAIL">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="LibolModel.FPT_GET_CODE_FAIL_Result">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="Code" ColumnName="Code" />
+                <ScalarProperty Name="LastName" ColumnName="LastName" />
+                <ScalarProperty Name="FirstName" ColumnName="FirstName" />
+                <ScalarProperty Name="MiddleName" ColumnName="MiddleName" />
+                <ScalarProperty Name="Sex" ColumnName="Sex" />
+                <ScalarProperty Name="DOB" ColumnName="DOB" />
+                <ScalarProperty Name="Email" ColumnName="Email" />
+                <ScalarProperty Name="Address" ColumnName="Address" />
+                <ScalarProperty Name="Faculty" ColumnName="Faculty" />
+                <ScalarProperty Name="Mobile" ColumnName="Mobile" />
+                <ScalarProperty Name="Grade" ColumnName="Grade" />
+                <ScalarProperty Name="College" ColumnName="College" />
+                <ScalarProperty Name="City" ColumnName="City" />
+                <ScalarProperty Name="Class" ColumnName="Class" />
+                <ScalarProperty Name="PatronGroup" ColumnName="PatronGroup" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="FPT_GET_DATE_FAIL" FunctionName="LibolModel.Store.FPT_GET_DATE_FAIL">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="LibolModel.FPT_GET_DATE_FAIL_Result">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="Code" ColumnName="Code" />
+                <ScalarProperty Name="LastName" ColumnName="LastName" />
+                <ScalarProperty Name="FirstName" ColumnName="FirstName" />
+                <ScalarProperty Name="MiddleName" ColumnName="MiddleName" />
+                <ScalarProperty Name="Sex" ColumnName="Sex" />
+                <ScalarProperty Name="DOB" ColumnName="DOB" />
+                <ScalarProperty Name="Email" ColumnName="Email" />
+                <ScalarProperty Name="Address" ColumnName="Address" />
+                <ScalarProperty Name="Faculty" ColumnName="Faculty" />
+                <ScalarProperty Name="Mobile" ColumnName="Mobile" />
+                <ScalarProperty Name="Grade" ColumnName="Grade" />
+                <ScalarProperty Name="College" ColumnName="College" />
+                <ScalarProperty Name="City" ColumnName="City" />
+                <ScalarProperty Name="Class" ColumnName="Class" />
+                <ScalarProperty Name="PatronGroup" ColumnName="PatronGroup" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="FPT_GET_DOB_EXCEL" FunctionName="LibolModel.Store.FPT_GET_DOB_EXCEL" />
+          <FunctionImportMapping FunctionImportName="FPT_GET_EMAIL_EXCEL" FunctionName="LibolModel.Store.FPT_GET_EMAIL_EXCEL" />
+          <FunctionImportMapping FunctionImportName="FPT_GET_EMAIL_FAIL" FunctionName="LibolModel.Store.FPT_GET_EMAIL_FAIL">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="LibolModel.FPT_GET_EMAIL_FAIL_Result">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="Code" ColumnName="Code" />
+                <ScalarProperty Name="LastName" ColumnName="LastName" />
+                <ScalarProperty Name="FirstName" ColumnName="FirstName" />
+                <ScalarProperty Name="MiddleName" ColumnName="MiddleName" />
+                <ScalarProperty Name="Sex" ColumnName="Sex" />
+                <ScalarProperty Name="DOB" ColumnName="DOB" />
+                <ScalarProperty Name="Email" ColumnName="Email" />
+                <ScalarProperty Name="Address" ColumnName="Address" />
+                <ScalarProperty Name="Faculty" ColumnName="Faculty" />
+                <ScalarProperty Name="Mobile" ColumnName="Mobile" />
+                <ScalarProperty Name="Grade" ColumnName="Grade" />
+                <ScalarProperty Name="College" ColumnName="College" />
+                <ScalarProperty Name="City" ColumnName="City" />
+                <ScalarProperty Name="Class" ColumnName="Class" />
+                <ScalarProperty Name="PatronGroup" ColumnName="PatronGroup" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="FPT_GET_FACULTY_FAIL_DETAIL" FunctionName="LibolModel.Store.FPT_GET_FACULTY_FAIL_DETAIL">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="LibolModel.FPT_GET_FACULTY_FAIL_DETAIL_Result">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="Code" ColumnName="Code" />
+                <ScalarProperty Name="LastName" ColumnName="LastName" />
+                <ScalarProperty Name="FirstName" ColumnName="FirstName" />
+                <ScalarProperty Name="MiddleName" ColumnName="MiddleName" />
+                <ScalarProperty Name="Sex" ColumnName="Sex" />
+                <ScalarProperty Name="DOB" ColumnName="DOB" />
+                <ScalarProperty Name="Email" ColumnName="Email" />
+                <ScalarProperty Name="Address" ColumnName="Address" />
+                <ScalarProperty Name="Faculty" ColumnName="Faculty" />
+                <ScalarProperty Name="Mobile" ColumnName="Mobile" />
+                <ScalarProperty Name="Grade" ColumnName="Grade" />
+                <ScalarProperty Name="College" ColumnName="College" />
+                <ScalarProperty Name="City" ColumnName="City" />
+                <ScalarProperty Name="Class" ColumnName="Class" />
+                <ScalarProperty Name="PatronGroup" ColumnName="PatronGroup" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="FPT_LOAD_DATA_TO_DB_PATRON" FunctionName="LibolModel.Store.FPT_LOAD_DATA_TO_DB_PATRON" />
+          <FunctionImportMapping FunctionImportName="FPT_SELECT_DUPLICATES_EMAIL_CODE" FunctionName="LibolModel.Store.FPT_SELECT_DUPLICATES_EMAIL_CODE">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="LibolModel.FPT_SELECT_DUPLICATES_EMAIL_CODE_Result">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="Code" ColumnName="Code" />
+                <ScalarProperty Name="LastName" ColumnName="LastName" />
+                <ScalarProperty Name="FirstName" ColumnName="FirstName" />
+                <ScalarProperty Name="MiddleName" ColumnName="MiddleName" />
+                <ScalarProperty Name="Sex" ColumnName="Sex" />
+                <ScalarProperty Name="DOB" ColumnName="DOB" />
+                <ScalarProperty Name="Email" ColumnName="Email" />
+                <ScalarProperty Name="Address" ColumnName="Address" />
+                <ScalarProperty Name="Faculty" ColumnName="Faculty" />
+                <ScalarProperty Name="Mobile" ColumnName="Mobile" />
+                <ScalarProperty Name="Grade" ColumnName="Grade" />
+                <ScalarProperty Name="College" ColumnName="College" />
+                <ScalarProperty Name="City" ColumnName="City" />
+                <ScalarProperty Name="Class" ColumnName="Class" />
+                <ScalarProperty Name="PatronGroup" ColumnName="PatronGroup" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="FPT_SELECT_PROVINCEID" FunctionName="LibolModel.Store.FPT_SELECT_PROVINCEID" />
+          <FunctionImportMapping FunctionImportName="FPT_CHANGE_TYPE_AND_TRUNCATE" FunctionName="LibolModel.Store.FPT_CHANGE_TYPE_AND_TRUNCATE" />
           </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>

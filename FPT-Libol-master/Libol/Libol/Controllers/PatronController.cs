@@ -5,6 +5,7 @@ using System.Data.Entity;
 using System.Data.Entity.Core.Objects;
 using System.Data.Entity.SqlServer;
 using System.Data.OleDb;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Net;
@@ -39,7 +40,7 @@ namespace Libol.Controllers
         [AuthAttribute(ModuleID = 2, RightID = "2,3")]
         public ActionResult Create(string strPatronID)
         {
-            
+
             ViewBag.Ethnic = db.SP_PAT_GET_ETHNIC().ToList();
             ViewBag.PatronGroup = db.SP_PAT_GET_PATRONGROUP().ToList();
             ViewBag.Education = db.SP_PAT_GET_EDUCATION().ToList();
@@ -50,12 +51,12 @@ namespace Libol.Controllers
             ViewBag.Province = db.CIR_DIC_PROVINCE.ToList();
             ViewBag.Countries = db.SP_GET_COUNTRIES().ToList();
 
-            
-            if(!String.IsNullOrEmpty(strPatronID))
+
+            if (!String.IsNullOrEmpty(strPatronID))
             {
                 int id = Int32.Parse(strPatronID);
                 var patron = db.CIR_PATRON.Where(a => a.ID == id).Count() == 0 ? null : db.CIR_PATRON.Where(a => a.ID == id).First();
-                if(patron != null)
+                if (patron != null)
                 {
                     if (patron.CIR_PATRON_UNIVERSITY != null)
                     {
@@ -73,7 +74,7 @@ namespace Libol.Controllers
             {
                 return View(new CIR_PATRON());
             }
-            
+
         }
 
 
@@ -105,7 +106,7 @@ namespace Libol.Controllers
             Nullable<int> intisActive, int intCollegeID, int intFacultyID, string strGrade, string strClass)
         {
             string InvalidFields = "";
-            if ( String.IsNullOrEmpty(strFirstName))
+            if (String.IsNullOrEmpty(strFirstName))
             {
                 InvalidFields += "strFirstName-";
             }
@@ -174,7 +175,8 @@ namespace Libol.Controllers
                     CodeError = 2,
                     Data = "Bạn đọc với số thẻ " + strCode + " đã tồn tại!"
                 }, JsonRequestBehavior.AllowGet);
-            }else
+            }
+            else
             if (db.CIR_PATRON.Where(a => a.Code != strCode && a.Email == strEmail).Count() > 0)
             {
                 return Json(new Result()
@@ -390,23 +392,40 @@ namespace Libol.Controllers
         [AuthAttribute(ModuleID = 2, RightID = "4")]
         public ActionResult PreviewPatronFile()
         {
-            string[] result;
-            int day = 0;
-            int month = 0;
-            int year = 0;
+            db.FPT_CHANGE_TYPE_AND_TRUNCATE();
+            string[] resultDate;
+            string[] resultName;
+            string firstName = "";
+            string middleName = "";
+            string lastName = "";
+            string day = "";
+            string month = "";
+            string year = "";
             int stop = 0;
             string date = "";
             char[] splitchar = { '/' };
+            char[] splitchar2 = { ' ' };
             List<PatronFile> listPatronInFile = new List<PatronFile>();
-            List<PatronFile> listPatronInFileInvalid = new List<PatronFile>();
+            List<FPT_CHECK_DATA_EXCEL_NULL_Result> listPatronInFileInvalid = new List<FPT_CHECK_DATA_EXCEL_NULL_Result>();
+            List<FPT_GET_DATE_FAIL_Result> listDateFail = new List<FPT_GET_DATE_FAIL_Result>();
+            List<FPT_GET_EMAIL_FAIL_Result> listEmailFail = new List<FPT_GET_EMAIL_FAIL_Result>();
+            List<FPT_GET_CODE_FAIL_Result> listCodeFail = new List<FPT_GET_CODE_FAIL_Result>();
+            List<FPT_SELECT_DUPLICATES_EMAIL_CODE_Result> listDuplicate = new List<FPT_SELECT_DUPLICATES_EMAIL_CODE_Result>();
+            List<PATRON_BY_EXCEL> listSuccess = new List<PATRON_BY_EXCEL>();
+            List<FPT_GET_FACULTY_FAIL_DETAIL_Result> listFacultyFail = new List<FPT_GET_FACULTY_FAIL_DETAIL_Result>();
             for (int i = 0; i < Request.Files.Count; i++)
             {
                 var file = Request.Files[i];
                 var fileName = Path.GetFileName(file.FileName);
                 if (String.IsNullOrEmpty(fileName))
                 {
-                    ViewBag.ListPatron = listPatronInFile;
+                    ViewBag.ListPatron = listSuccess;
                     ViewBag.ListPatronInvalid = listPatronInFileInvalid;
+                    ViewBag.DateFail = listDateFail;
+                    ViewBag.EmailFail = listEmailFail;
+                    ViewBag.Duplicate = listDuplicate;
+                    ViewBag.CodeFail = listCodeFail;
+                    ViewBag.FacultyFail = listFacultyFail;
                     return View();
                 }
                 var path = Path.Combine(Server.MapPath("~/Uploads"), fileName);
@@ -426,15 +445,60 @@ namespace Libol.Controllers
                     {
                         if (!String.IsNullOrEmpty(worksheet.Cells[u, 2].Text.ToString()))
                         {
-                            string dob = worksheet.Cells[u, 5].Text.ToString();
-                            result = dob.Split(splitchar);
-                            for (int count = 0; count <= result.Length - 1; count++)
+                            //string dob = worksheet.Cells[u, 5].Text.ToString().Trim() ;
+                            //resultDate = dob.Split(splitchar);
+                            //for (int count = 0; count <= resultDate.Length; count++)
+                            //{
+                            //    stop++;
+                            //    //Console.WriteLine(result[count]);
+                            //    day = resultDate[0].Trim();
+                            //    month = resultDate[1].Trim();
+                            //    year = resultDate[2].Trim();
+
+                            //    if (stop == 1)
+                            //    {
+                            //        break;
+                            //    }
+                            //}
+
+                            //date = day  + "/" + month + "/" + year;
+                            string FullName = worksheet.Cells[u, 3].Text.ToString().Trim();
+                            resultName = FullName.Split(splitchar2);
+                            for (int count = 0; count <= resultName.Length; count++)
                             {
                                 stop++;
+                                if (resultName.Length == 4)
+                                {
+                                    firstName = resultName[0].Trim();
+                                    middleName = resultName[1].Trim() + " " + resultName[2].Trim();
+                                    lastName = resultName[3].Trim();
+                                }
+                                else if (resultName.Length == 5)
+                                {
+                                    firstName = resultName[0].Trim();
+                                    middleName = resultName[1].Trim() + " " + resultName[2].Trim() + " " + resultName[3].Trim();
+                                    lastName = resultName[4].Trim();
+                                }
+                                else if (resultName.Length == 3)
+                                {
+                                    firstName = resultName[0].Trim();
+                                    middleName = resultName[1].Trim();
+                                    lastName = resultName[2].Trim();
+                                }
+                                else if (resultName.Length == 2)
+                                {
+                                    firstName = resultName[0].Trim();
+                                    middleName = "";
+                                    lastName = resultName[1].Trim();
+                                }
+                                else
+                                {
+                                    firstName = resultName[0].Trim();
+                                    middleName = resultName[0].Trim();
+                                    lastName = resultName[0].Trim();
+                                }
                                 //Console.WriteLine(result[count]);
-                                day = Convert.ToInt32(result[0]);
-                                month = Convert.ToInt32(result[1]);
-                                year = Convert.ToInt32(result[2]);
+
 
                                 if (stop == 1)
                                 {
@@ -442,25 +506,29 @@ namespace Libol.Controllers
                                 }
                             }
 
-                            date = month + "/" + day + "/" + year;
+                            //DateTime temp = DateTime.ParseExact(dob, "dd/MM/yy", CultureInfo.InvariantCulture);
+                            //DateTime e = DateTime.ParseExact(temp.ToString("dd/MM/yyyy"), "dd/MM/yyyy", CultureInfo.InvariantCulture);
 
+                            //DateTime dateTime = DateTime.ParseExact(date, "dd/MM/yyyy", null);
 
-                            DateTime e = DateTime.Parse(date);
                             listPatronInFile.Add(new PatronFile
                             {
-                                strCode = worksheet.Cells[u, 2].Text.ToString(),
-                                FullName = worksheet.Cells[u, 3].Text.ToString(),
-                                blnSex = worksheet.Cells[u, 4].Text.ToString(),
-                                strDOB = e /*Convert.ToDateTime(worksheet.Cells[u, 5].Text.ToString())*/,
-                                strEmail = worksheet.Cells[u, 6].Text.ToString(),
-                                strAddress = worksheet.Cells[u, 7].Text.ToString(),
-                                Faculty = worksheet.Cells[u, 8].Text.ToString(),
-                                strMobile = worksheet.Cells[u, 9].Text.ToString(),
-                                strGrade = worksheet.Cells[u, 10].Text.ToString(),
-                                College = worksheet.Cells[u, 11].Text.ToString(),
-                                strCity = worksheet.Cells[u, 12].Text.ToString(),
-                                strClass = worksheet.Cells[u, 13].Text.ToString(),
-                                PatronGroup = worksheet.Cells[u, 14].Text.ToString(),
+                                Line = Convert.ToInt32(worksheet.Cells[u, 1].Text.ToString().Trim()),
+                                strCode = worksheet.Cells[u, 2].Text.ToString().Trim(),
+                                LastName = lastName,
+                                FirstName = firstName,
+                                MiddleName = middleName,
+                                blnSex = worksheet.Cells[u, 4].Text.ToString().Trim(),
+                                strDOB = worksheet.Cells[u, 5].Text.ToString().Trim() /*Convert.ToDateTime(worksheet.Cells[u, 5].Text.ToString())*/,
+                                strEmail = worksheet.Cells[u, 6].Text.ToString().Trim(),
+                                strAddress = worksheet.Cells[u, 7].Text.ToString().Trim(),
+                                Faculty = worksheet.Cells[u, 8].Text.ToString().Trim(),
+                                strMobile = worksheet.Cells[u, 9].Text.ToString().Trim(),
+                                strGrade = worksheet.Cells[u, 10].Text.ToString().Trim(),
+                                College = worksheet.Cells[u, 11].Text.ToString().Trim(),
+                                strCity = worksheet.Cells[u, 12].Text.ToString().Trim(),
+                                strClass = worksheet.Cells[u, 13].Text.ToString().Trim(),
+                                PatronGroup = worksheet.Cells[u, 14].Text.ToString().Trim(),
                             });
                         }
 
@@ -469,8 +537,8 @@ namespace Libol.Controllers
 
             }
 
-            ViewBag.ListPatron = listPatronInFile;
-            ViewBag.ListPatronInvalid = listPatronInFileInvalid;
+            //ViewBag.ListPatron = listPatronInFile;
+
 
 
 
@@ -478,15 +546,127 @@ namespace Libol.Controllers
             {
                 foreach (PatronFile p in listPatronInFile)
                 {
-                    string strLastName = "";
-                    string strFirstName = "";
-                    if (p.FullName.Split(' ').Length > 1)
-                    {
-                        List<string> names = p.FullName.Split(' ').ToList();
-                        strLastName = names.Last();
-                        names.RemoveAt(names.Count - 1);
-                        strFirstName = string.Join(" ", names);
-                    }
+                    PatronByFile(p.Line, p.strCode, p.LastName, p.FirstName, p.MiddleName, p.blnSex, p.strDOB, p.strEmail, p.strAddress, p.Faculty, p.strMobile, p.strGrade, p.College, p.strCity, p.strClass, p.PatronGroup);
+                    //string strLastName = "";
+                    //string strFirstName = "";
+                    //if (p.FullName.Split(' ').Length > 1)
+                    //{
+                    //    List<string> names = p.FullName.Split(' ').ToList();
+                    //    strLastName = names.Last();
+                    //    names.RemoveAt(names.Count - 1);
+                    //    strFirstName = string.Join(" ", names);
+                    //}
+                    //int intPatronGroupID = 0;
+                    //CIR_PATRON_GROUP patronGroup = db.CIR_PATRON_GROUP.Where(a => a.Name.Trim() == p.PatronGroup.Trim()).Count() == 0 ?
+                    //    null : db.CIR_PATRON_GROUP.Where(a => a.Name.Trim() == p.PatronGroup.Trim()).First();
+                    //if (patronGroup != null)
+                    //{
+                    //    intPatronGroupID = patronGroup.ID;
+                    //}
+                    //int intCollegeID = 0;
+                    //CIR_DIC_COLLEGE college = db.CIR_DIC_COLLEGE.Where(a => a.College.Trim() == p.College.Trim()).Count() == 0 ?
+                    //    null : db.CIR_DIC_COLLEGE.Where(a => a.College.Trim() == p.College.Trim()).First();
+                    //if (college != null)
+                    //{
+                    //    intCollegeID = college.ID;
+                    //}
+                    //int intFacultyID = 0;
+                    //CIR_DIC_FACULTY faculty = db.CIR_DIC_FACULTY.Where(a => a.CollegeID == intCollegeID).Where(a => a.Faculty.Trim() == p.Faculty.Trim()).Count() == 0 ?
+                    //    null : db.CIR_DIC_FACULTY.Where(a => a.CollegeID == intCollegeID).Where(a => a.Faculty.Trim() == p.Faculty.Trim()).First();
+                    //if (faculty != null)
+                    //{
+                    //    intFacultyID = faculty.ID;
+                    //}
+                    //DateTime strExpiredDate = DateTime.Now;
+                    //strExpiredDate = strExpiredDate.AddYears(4);
+                    //NewPatron(p.strCode, DateTime.Now.ToShortDateString(), strExpiredDate.ToShortDateString(), DateTime.Now.ToShortDateString(), strLastName, strFirstName, p.blnSex == "Nam" ? true : false, p.strDOB.ToString("yyyy-MM-dd"), null, null, null, "Đại học FPT", null, p.strMobile
+                    //    , p.strEmail, null, intPatronGroupID, null, 0, null, p.strAddress, 1, p.strCity, 209, "", 0, intCollegeID, intFacultyID, p.strGrade, p.strClass);
+                }
+            }
+            listPatronInFileInvalid = db.FPT_CHECK_DATA_EXCEL_NULL().ToList();
+            ViewBag.ListPatronInvalid = listPatronInFileInvalid;
+            List<string> dateConvert = db.FPT_GET_DOB_EXCEL().ToList();
+            List<string> notConvert = new List<string>();
+            foreach (var item in dateConvert)
+            {
+                if (validateTime(item) == false) { notConvert.Add(item); }
+
+            }
+            string datefail = ";" + String.Join(";", notConvert) + ";";
+            listDateFail = db.FPT_GET_DATE_FAIL(datefail).ToList();
+            ViewBag.DateFail = listDateFail;
+            List<string> emailExcel = db.FPT_GET_EMAIL_EXCEL().ToList();
+            List<string> codeExcel = db.PATRON_BY_EXCEL.Where(a => a.Code != "").Select(a => a.Code).ToList();
+            List<string> emailExist = new List<string>();
+            List<string> codeExist = new List<string>();
+            foreach (var item in emailExcel)
+            {
+                if (db.CIR_PATRON.Where(a => a.Email == item).Count() != 0) { emailExist.Add(item); }
+
+
+            }
+            foreach (var item in codeExcel)
+            {
+                if (db.CIR_PATRON.Where(a => a.Code == item).Count() != 0) { codeExist.Add(item); }
+            }
+            listDuplicate = db.FPT_SELECT_DUPLICATES_EMAIL_CODE().ToList();
+
+            string emailFailExist = ";" + String.Join(";", emailExist) + ";";
+            string codeFailExist = ";" + String.Join(";", codeExist) + ";";
+            listEmailFail = db.FPT_GET_EMAIL_FAIL(emailFailExist).ToList();
+            listCodeFail = db.FPT_GET_CODE_FAIL(codeFailExist).ToList();
+            //List<FPT_GET_FACULTY_EXCEL_Result> listFaculty = db.FPT_GET_FACULTY_EXCEL().ToList();
+            //List<FPT_GET_FACULTY_EXCEL_Result> listAfterCheck = new List<FPT_GET_FACULTY_EXCEL_Result>();
+            //foreach(var item in listFaculty)
+            //{
+            //    if (db.FPT_GET_FACULTY_RIGHT(item.College, item.Factualy) == null) { listAfterCheck.Add(item); }
+
+            //}
+            //foreach(var item in listAfterCheck)
+            //{
+            //    listFacultyFail = db.FPT_GET_FACULTY_LIST_FAIL(item.College, item.Factualy).ToList();
+            //}
+            List<string> listCollege = db.PATRON_BY_EXCEL.Select(a => a.College).Distinct().ToList();
+            string strCollege = ";" + String.Join(";", listCollege) + ";";
+            listFacultyFail = db.FPT_GET_FACULTY_FAIL_DETAIL(strCollege).ToList();
+
+
+            List<PATRON_BY_EXCEL> allData = db.PATRON_BY_EXCEL.ToList();
+            listSuccess = allData.Where(i => !listDateFail.Any(e => i.DOB.Contains(e.DOB))).Where(i => !listFacultyFail.Any(e => i.ID == e.ID)).Where(i => !listEmailFail.Any(e => i.Email.Contains(e.Email))).Where(i => !listCodeFail.Any(e => i.Code.Contains(e.Code))).Where(i => !listDuplicate.Any(e => i.Email.Contains(e.Email))).Where(i => !listPatronInFileInvalid.Any(e => i.Email.Contains(e.Email) && i.Code.Contains(e.Code))).ToList();
+            ViewBag.ListPatron = listSuccess;
+            ViewBag.EmailFail = listEmailFail;
+            ViewBag.CodeFail = listCodeFail;
+            ViewBag.Duplicate = listDuplicate;
+
+            ViewBag.FacultyFail = listFacultyFail;
+            return View();
+        }
+        [HttpPost]
+        public JsonResult AddPatronByExcel()
+        {
+            string[] resultDate;
+            int? intProvinceID = 0;
+            string day = "";
+            string month = "";
+            string year = "";
+            int stop = 0;
+            string date = "";
+            char[] splitchar = { '/' };
+            List<PATRON_BY_EXCEL> listPatronAdd = db.PATRON_BY_EXCEL.ToList();
+            if (listPatronAdd != null)
+            {
+                foreach (PATRON_BY_EXCEL p in listPatronAdd)
+                {
+                    //PatronByFile(p.Line, p.strCode, p.LastName, p.FirstName, p.MiddleName, p.blnSex, p.strDOB, p.strEmail, p.strAddress, p.Faculty, p.strMobile, p.strGrade, p.College, p.strCity, p.strClass, p.PatronGroup);
+                    //string strLastName = "";
+                    //string strFirstName = "";
+                    //if (p.FullName.Split(' ').Length > 1)
+                    //{
+                    //    List<string> names = p.FullName.Split(' ').ToList();
+                    //    strLastName = names.Last();
+                    //    names.RemoveAt(names.Count - 1);
+                    //    strFirstName = string.Join(" ", names);
+                    //}
                     int intPatronGroupID = 0;
                     CIR_PATRON_GROUP patronGroup = db.CIR_PATRON_GROUP.Where(a => a.Name.Trim() == p.PatronGroup.Trim()).Count() == 0 ?
                         null : db.CIR_PATRON_GROUP.Where(a => a.Name.Trim() == p.PatronGroup.Trim()).First();
@@ -508,27 +688,251 @@ namespace Libol.Controllers
                     {
                         intFacultyID = faculty.ID;
                     }
+                    intProvinceID = db.FPT_SELECT_PROVINCEID(p.City).FirstOrDefault();
                     DateTime strExpiredDate = DateTime.Now;
                     strExpiredDate = strExpiredDate.AddYears(4);
-                    NewPatron(p.strCode, DateTime.Now.ToShortDateString(), strExpiredDate.ToShortDateString(), DateTime.Now.ToShortDateString(), strLastName, strFirstName, p.blnSex == "Nam" ? true : false, p.strDOB.ToString("yyyy-MM-dd"), null, null, null, "Đại học FPT", null, p.strMobile
-                        , p.strEmail, null, intPatronGroupID, null, 0, null, p.strAddress, 1, p.strCity, 209, "", 0, intCollegeID, intFacultyID, p.strGrade, p.strClass);
-                }
-            }
-            return View();
-        }
 
+                    string dob = p.DOB;
+                    resultDate = dob.Split(splitchar);
+                    for (int count = 0; count <= resultDate.Length; count++)
+                    {
+                        stop++;
+                        //Console.WriteLine(result[count]);
+                        day = resultDate[0].Trim();
+                        month = resultDate[1].Trim();
+                        year = resultDate[2].Trim();
+
+                        if (stop == 1)
+                        {
+                            break;
+                        }
+                    }
+
+                    date = day + "/" + month + "/" + year;
+                    DateTime dateTime = DateTime.ParseExact(date, "dd/MM/yyyy", null);
+                    NewPatron2(p.Code, DateTime.Now.ToShortDateString(), strExpiredDate.ToShortDateString(), DateTime.Now.ToShortDateString(), p.LastName, p.FirstName, p.MiddleName, p.Sex == "Nam" ? true : false, dateTime.ToString("yyyy-MM-dd"), null, null, null, "Đại học FPT", null, p.Mobile
+                        , p.Email, null, intPatronGroupID, null, 0, null, p.Address, intProvinceID, p.City, 209, "", 0, intCollegeID, intFacultyID, p.Grade, p.Class);
+
+                }
+                ViewBag.AddPatronByExcel = "Thêm bạn đọc thành công!";
+            }
+            return Json(new { Message = ViewBag.AddPatronByExcel }, JsonRequestBehavior.AllowGet);
+        }
+        [HttpPost]
+        public JsonResult NewPatron2(string strCode, string strValidDate, string strExpiredDate, string strLastIssuedDate, string strLastName, string strFirstName, string strMiddleName,
+            Nullable<bool> blnSex, string strDOB, Nullable<int> intEthnicID, Nullable<int> intEducationID, Nullable<int> intOccupationID,
+           string strWorkPlace, string strTelephone, string strMobile, string strEmail, string strPortrait, Nullable<int> intPatronGroupID, string strNote,
+           Nullable<int> intIsQue, string strIDCard, string strAddress, Nullable<int> intProvinceID, string strCity, Nullable<int> intCountryID, string strZip,
+           Nullable<int> intisActive, int intCollegeID, int intFacultyID, string strGrade, string strClass)
+        {
+            string InvalidFields = "";
+            if (String.IsNullOrEmpty(strFirstName))
+            {
+                InvalidFields += "strFirstName-";
+            }
+            if (String.IsNullOrEmpty(strLastName))
+            {
+                InvalidFields += "strLastName-";
+            }
+            if (String.IsNullOrEmpty(strDOB))
+            {
+                InvalidFields += "strDOB-";
+            }
+            if (String.IsNullOrEmpty(strCode))
+            {
+                InvalidFields += "strCode-";
+            }
+            if (intPatronGroupID == null)
+            {
+                InvalidFields += "intPatronGroupID-";
+            }
+            if (String.IsNullOrEmpty(strValidDate))
+            {
+                InvalidFields += "strValidDate-";
+            }
+            if (String.IsNullOrEmpty(strExpiredDate))
+            {
+                InvalidFields += "strExpiredDate-";
+            }
+            if (String.IsNullOrEmpty(strLastIssuedDate))
+            {
+                InvalidFields += "strLastIssuedDate-";
+            }
+            //if (intCollegeID == -1)
+            //{
+            //    InvalidFields += "college-";
+            //}
+            //if (intFacultyID == -1)
+            //{
+            //    InvalidFields += "faculty-";
+            //}
+            if (String.IsNullOrEmpty(strWorkPlace))
+            {
+                InvalidFields += "strWorkPlace-";
+            }
+            if (String.IsNullOrEmpty(strAddress))
+            {
+                InvalidFields += "strAddress-";
+            }
+            if (String.IsNullOrEmpty(strEmail))
+            {
+                InvalidFields += "strEmail-";
+            }
+
+            if (InvalidFields != "")
+            {
+                return Json(new Result()
+                {
+                    CodeError = 1,
+                    Data = InvalidFields
+                }, JsonRequestBehavior.AllowGet);
+            }
+            else
+            if (db.CIR_PATRON.Where(a => a.Code == strCode).Count() > 0)
+            {
+                return Json(new Result()
+                {
+                    CodeError = 2,
+                    Data = "Bạn đọc với số thẻ " + strCode + " đã tồn tại!"
+                }, JsonRequestBehavior.AllowGet);
+            }
+            else
+            if (db.CIR_PATRON.Where(a => a.Code != strCode && a.Email == strEmail).Count() > 0)
+            {
+                return Json(new Result()
+                {
+                    CodeError = 2,
+                    Data = "Email " + strEmail + " không hợp lệ!"
+                }, JsonRequestBehavior.AllowGet);
+            }
+            else
+            {
+
+                var intPatronID = new ObjectParameter("intRetval", typeof(int));
+                db.SP_PAT_CREATE_PATRON(
+                    strCode, strValidDate, strExpiredDate, strLastIssuedDate, strLastName, strFirstName, strMiddleName, blnSex, strDOB, intEthnicID, intEducationID,
+                    intOccupationID, strWorkPlace, strTelephone, strMobile, strEmail, strPortrait, intPatronGroupID, strNote, intIsQue, strIDCard, intPatronID
+                    );
+                int patronID = (int)intPatronID.Value;
+                db.CIR_PATRON.Where(a => a.ID == patronID).First().Password = strCode;
+                db.SaveChanges();
+                if (strAddress != null && strAddress != "")
+                {
+                    db.SP_PAT_CREATE_OTHERADDRESS(patronID, strAddress, intProvinceID, strCity, intCountryID, strZip, intisActive);
+                }
+                if (intCollegeID > 0)
+                {
+                    db.SP_PAT_CREATE_PATRON_UNIV(patronID, intFacultyID, intCollegeID, strGrade, strClass);
+                }
+                ViewBag.AddPatronByExcel = "Thêm bạn đọc thành công!";
+
+                return Json(new { Message = ViewBag.AddPatronByExcel }, JsonRequestBehavior.AllowGet);
+            }
+        }
+        public static bool validateTime(string tempDate)
+        {
+            DateTime fromDateValue;
+            var formats = new[] { "dd/MM/yyyy", "yyyy-MM-dd" };
+            if (DateTime.TryParseExact(tempDate, formats, System.Globalization.CultureInfo.InvariantCulture, System.Globalization.DateTimeStyles.None, out fromDateValue))
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+        [HttpGet]
+        public ActionResult Edit(int id)
+
+        {
+            var data = db.PATRON_BY_EXCEL.Find(id);
+            return View(data);
+        }
+        [HttpPost]
+        public ActionResult Edit(PATRON_BY_EXCEL data)
+
+        {
+
+            char[] splitchar = { '/' };
+            char[] splitchar2 = { ' ' };
+            List<FPT_GET_FACULTY_FAIL_DETAIL_Result> listFacultyFail = new List<FPT_GET_FACULTY_FAIL_DETAIL_Result>();
+            List<PatronFile> listPatronInFile = new List<PatronFile>();
+            List<FPT_CHECK_DATA_EXCEL_NULL_Result> listPatronInFileInvalid = new List<FPT_CHECK_DATA_EXCEL_NULL_Result>();
+            List<FPT_GET_DATE_FAIL_Result> listDateFail = new List<FPT_GET_DATE_FAIL_Result>();
+            List<FPT_GET_EMAIL_FAIL_Result> listEmailFail = new List<FPT_GET_EMAIL_FAIL_Result>();
+            List<FPT_GET_CODE_FAIL_Result> listCodeFail = new List<FPT_GET_CODE_FAIL_Result>();
+            List<FPT_SELECT_DUPLICATES_EMAIL_CODE_Result> listDuplicate = new List<FPT_SELECT_DUPLICATES_EMAIL_CODE_Result>();
+            List<PATRON_BY_EXCEL> listSuccess = new List<PATRON_BY_EXCEL>();
+            db.Entry(data).State = System.Data.Entity.EntityState.Modified;
+            db.SaveChanges();
+            listPatronInFileInvalid = db.FPT_CHECK_DATA_EXCEL_NULL().ToList();
+            ViewBag.ListPatronInvalid = listPatronInFileInvalid;
+            List<string> dateConvert = db.FPT_GET_DOB_EXCEL().ToList();
+            List<string> notConvert = new List<string>();
+            foreach (var item in dateConvert)
+            {
+                if (validateTime(item) == false) { notConvert.Add(item); }
+
+            }
+            string datefail = ";" + String.Join(";", notConvert) + ";";
+            listDateFail = db.FPT_GET_DATE_FAIL(datefail).ToList();
+            ViewBag.DateFail = listDateFail;
+            List<string> emailExcel = db.FPT_GET_EMAIL_EXCEL().ToList();
+            List<string> codeExcel = db.PATRON_BY_EXCEL.Where(a => a.Code != "").Select(a => a.Code).ToList();
+            List<string> emailExist = new List<string>();
+            List<string> codeExist = new List<string>();
+            foreach (var item in emailExcel)
+            {
+                if (db.CIR_PATRON.Where(a => a.Email == item).Count() != 0) { emailExist.Add(item); }
+
+
+            }
+            foreach (var item in codeExcel)
+            {
+                if (db.CIR_PATRON.Where(a => a.Code == item).Count() != 0) { codeExist.Add(item); }
+            }
+            listDuplicate = db.FPT_SELECT_DUPLICATES_EMAIL_CODE().ToList();
+
+            string emailFailExist = ";" + String.Join(";", emailExist) + ";";
+            string codeFailExist = ";" + String.Join(";", codeExist) + ";";
+            listEmailFail = db.FPT_GET_EMAIL_FAIL(emailFailExist).ToList();
+            listCodeFail = db.FPT_GET_CODE_FAIL(codeFailExist).ToList();
+            List<string> listCollege = db.PATRON_BY_EXCEL.Select(a => a.College).Distinct().ToList();
+            string strCollege = ";" + String.Join(";", listCollege) + ";";
+            listFacultyFail = db.FPT_GET_FACULTY_FAIL_DETAIL(strCollege).ToList();
+
+
+            List<PATRON_BY_EXCEL> allData = db.PATRON_BY_EXCEL.ToList();
+            listSuccess = allData.Where(i => !listDateFail.Any(e => i.DOB.Contains(e.DOB))).Where(i => !listFacultyFail.Any(e => i.ID == e.ID)).Where(i => !listEmailFail.Any(e => i.Email.Contains(e.Email))).Where(i => !listCodeFail.Any(e => i.Code.Contains(e.Code))).Where(i => !listDuplicate.Any(e => i.Email.Contains(e.Email))).Where(i => !listPatronInFileInvalid.Any(e => i.Email.Contains(e.Email) && i.Code.Contains(e.Code))).ToList();
+            ViewBag.ListPatron = listSuccess;
+            ViewBag.EmailFail = listEmailFail;
+            ViewBag.CodeFail = listCodeFail;
+            ViewBag.Duplicate = listDuplicate;
+
+            ViewBag.FacultyFail = listFacultyFail;
+            return View("PreviewPatronFile");
+        }
+        public JsonResult PatronByFile(int ID, string Code, string LastName, string FirstName, string MiddleName, string blnSex, string strDOB, string strEmail, string strAddress, string Faculty, string strMobile, string strGrade, string College, string strCity, string strClass, string PatronGroup)
+        {
+            db.FPT_LOAD_DATA_TO_DB_PATRON(ID, Code, LastName, FirstName, MiddleName, blnSex, strDOB, strEmail, strAddress, Faculty, strMobile, strGrade, College, strCity, strClass, PatronGroup);
+
+
+
+            return Json(JsonRequestBehavior.AllowGet);
+        }
         public bool CheckCodeInFile(string strCode, List<PatronFile> listPatronInFile)
         {
             bool IsValid = true;
-            foreach(PatronFile p in listPatronInFile)
+            foreach (PatronFile p in listPatronInFile)
             {
-                if(p.strCode == strCode)
+                if (p.strCode == strCode)
                 {
                     IsValid = false;
                 }
             }
             return IsValid;
-        }        
+        }
 
         [HttpPost]
         [AuthAttribute(ModuleID = 2, RightID = "2,3")]
@@ -540,7 +944,7 @@ namespace Libol.Controllers
             {
                 db.SP_PAT_CREATE_ETHNIC(data, new ObjectParameter("intOut", typeof(int)));
                 addDictionaryResult.Field = "intEthnicID";
-                foreach(SP_PAT_GET_ETHNIC_Result r in db.SP_PAT_GET_ETHNIC().ToList())
+                foreach (SP_PAT_GET_ETHNIC_Result r in db.SP_PAT_GET_ETHNIC().ToList())
                 {
                     DictionarySelection dictionary = new DictionarySelection();
                     dictionary.ID = r.ID;
@@ -548,7 +952,7 @@ namespace Libol.Controllers
                     list.Add(dictionary);
                 }
                 addDictionaryResult.ListSelection = list;
-                
+
             }
 
             if (field == "intOccupationID")
@@ -581,7 +985,7 @@ namespace Libol.Controllers
 
             if (field == "faculty")
             {
-                db.SP_PAT_CREATE_FACULTY(CollegeID ,data, new ObjectParameter("intOut", typeof(int)));
+                db.SP_PAT_CREATE_FACULTY(CollegeID, data, new ObjectParameter("intOut", typeof(int)));
                 addDictionaryResult.Field = "faculty";
                 foreach (CIR_DIC_FACULTY r in db.CIR_DIC_FACULTY.Where(a => a.CollegeID == CollegeID).ToList())
                 {
@@ -636,11 +1040,11 @@ namespace Libol.Controllers
 
         [HttpPost]
         [AuthAttribute(ModuleID = 2, RightID = "1")]
-        public JsonResult ListPatron(DataTableAjaxPostModel model,string strCode, string  blnSex, string strLastIssuedDate, string  intPatronGroupID,
+        public JsonResult ListPatron(DataTableAjaxPostModel model, string strCode, string blnSex, string strLastIssuedDate, string intPatronGroupID,
             string strClass, string strGrade, string strName, string strDOB, string strExpiredDate, string faculty, string intOccupationID)
         {
             string name = strName.Replace("  ", " ").Trim();
-            while(name.Contains("  "))
+            while (name.Contains("  "))
             {
                 name = name.Replace("  ", " ");
             }
@@ -657,9 +1061,9 @@ namespace Libol.Controllers
             if (!String.IsNullOrEmpty(strLastIssuedDate))
             {
                 search = search.Where(a => (SqlFunctions.DatePart("year", a.LastIssuedDate) + "-" + SqlFunctions.DatePart("month", a.LastIssuedDate) + "-" + SqlFunctions.DatePart("day", a.LastIssuedDate)) == (strLastIssuedDate)
-                        || ( SqlFunctions.DatePart("year", a.LastIssuedDate) + "-" + SqlFunctions.DatePart("month", a.LastIssuedDate) + "-0" + SqlFunctions.DatePart("day", a.LastIssuedDate))==(strLastIssuedDate)
-                        || (SqlFunctions.DatePart("year", a.LastIssuedDate) + "-0" + SqlFunctions.DatePart("month", a.LastIssuedDate) + "-" + SqlFunctions.DatePart("day", a.LastIssuedDate))==(strLastIssuedDate)
-                        || (SqlFunctions.DatePart("year", a.LastIssuedDate) + "-0" + SqlFunctions.DatePart("month", a.LastIssuedDate) + "-0" + SqlFunctions.DatePart("day", a.LastIssuedDate))==(strLastIssuedDate));
+                        || (SqlFunctions.DatePart("year", a.LastIssuedDate) + "-" + SqlFunctions.DatePart("month", a.LastIssuedDate) + "-0" + SqlFunctions.DatePart("day", a.LastIssuedDate)) == (strLastIssuedDate)
+                        || (SqlFunctions.DatePart("year", a.LastIssuedDate) + "-0" + SqlFunctions.DatePart("month", a.LastIssuedDate) + "-" + SqlFunctions.DatePart("day", a.LastIssuedDate)) == (strLastIssuedDate)
+                        || (SqlFunctions.DatePart("year", a.LastIssuedDate) + "-0" + SqlFunctions.DatePart("month", a.LastIssuedDate) + "-0" + SqlFunctions.DatePart("day", a.LastIssuedDate)) == (strLastIssuedDate));
             }
             if (!String.IsNullOrEmpty(intPatronGroupID))
             {
@@ -705,11 +1109,11 @@ namespace Libol.Controllers
                 string searchValue = model.search.value;
                 search = search.Where(a => a.Code.Contains(searchValue)
                         || (a.FirstName.Trim() + " " + a.MiddleName.Trim() + " " + a.LastName.Trim()).Contains(searchValue)
-                        || (a.FirstName.Trim() +  " " + a.LastName.Trim()).Contains(searchValue)
+                        || (a.FirstName.Trim() + " " + a.LastName.Trim()).Contains(searchValue)
                         || (SqlFunctions.DatePart("day", a.DOB) + "/" + SqlFunctions.DatePart("month", a.DOB) + "/" + SqlFunctions.DatePart("year", a.DOB)).Contains(searchValue)
-                        || ("0"+SqlFunctions.DatePart("day", a.DOB) + "/" + SqlFunctions.DatePart("month", a.DOB) + "/" + SqlFunctions.DatePart("year", a.DOB)).Contains(searchValue)
+                        || ("0" + SqlFunctions.DatePart("day", a.DOB) + "/" + SqlFunctions.DatePart("month", a.DOB) + "/" + SqlFunctions.DatePart("year", a.DOB)).Contains(searchValue)
                         || (SqlFunctions.DatePart("day", a.DOB) + "/0" + SqlFunctions.DatePart("month", a.DOB) + "/" + SqlFunctions.DatePart("year", a.DOB)).Contains(searchValue)
-                        || ("0"+SqlFunctions.DatePart("day", a.DOB) + "/0" + SqlFunctions.DatePart("month", a.DOB) + "/" + SqlFunctions.DatePart("year", a.DOB)).Contains(searchValue)
+                        || ("0" + SqlFunctions.DatePart("day", a.DOB) + "/0" + SqlFunctions.DatePart("month", a.DOB) + "/" + SqlFunctions.DatePart("year", a.DOB)).Contains(searchValue)
                         || a.Sex.Contains(searchValue)
                         || (a.CIR_DIC_ETHNIC != null && a.CIR_DIC_ETHNIC.Ethnic.Contains(searchValue))
                         || (a.CIR_PATRON_UNIVERSITY != null && a.CIR_PATRON_UNIVERSITY.CIR_DIC_COLLEGE != null && a.CIR_PATRON_UNIVERSITY.CIR_DIC_COLLEGE.College.Contains(searchValue))
@@ -721,10 +1125,10 @@ namespace Libol.Controllers
                         || a.Email.Contains(searchValue)
                         || (a.CIR_PATRON_GROUP != null && a.CIR_PATRON_GROUP.Name.Contains(searchValue))
                 );
-                
-                
+
+
             }
-            
+
             var sorting = search.OrderBy(a => a.ID);
             var paging = sorting.Skip(model.start).Take(model.length).ToList();
             var result = new List<CustomPatron>(paging.Count);
@@ -737,19 +1141,19 @@ namespace Libol.Controllers
                     strDOB = Convert.ToDateTime(s.DOB).ToString("dd/MM/yyyy"),
                     strLastIssuedDate = Convert.ToDateTime(s.LastIssuedDate).ToString("dd/MM/yyyy"),
                     strExpiredDate = Convert.ToDateTime(s.ExpiredDate).ToString("dd/MM/yyyy"),
-                    Sex = s.Sex == "1" ? "Nam": "Nữ",
-                    intEthnicID = db.CIR_DIC_ETHNIC.Where(a => a.ID == s.EthnicID).Count() == 0? "" : db.CIR_DIC_ETHNIC.Where(a => a.ID == s.EthnicID).First().Ethnic,
+                    Sex = s.Sex == "1" ? "Nam" : "Nữ",
+                    intEthnicID = db.CIR_DIC_ETHNIC.Where(a => a.ID == s.EthnicID).Count() == 0 ? "" : db.CIR_DIC_ETHNIC.Where(a => a.ID == s.EthnicID).First().Ethnic,
                     intCollegeID = (s.CIR_PATRON_UNIVERSITY == null || s.CIR_PATRON_UNIVERSITY.CIR_DIC_COLLEGE == null) ? "" : s.CIR_PATRON_UNIVERSITY.CIR_DIC_COLLEGE.College,
                     intFacultyID = (s.CIR_PATRON_UNIVERSITY == null || s.CIR_PATRON_UNIVERSITY.CIR_DIC_FACULTY == null) ? "" : s.CIR_PATRON_UNIVERSITY.CIR_DIC_FACULTY.Faculty,
                     strGrade = s.CIR_PATRON_UNIVERSITY == null ? "" : s.CIR_PATRON_UNIVERSITY.Grade,
-                    strClass =s.CIR_PATRON_UNIVERSITY == null ? "" : s.CIR_PATRON_UNIVERSITY.Class,
+                    strClass = s.CIR_PATRON_UNIVERSITY == null ? "" : s.CIR_PATRON_UNIVERSITY.Class,
                     strAddress = s.CIR_PATRON_OTHER_ADDR.Count == 0 ? "" : s.CIR_PATRON_OTHER_ADDR.First().Address,
                     strTelephone = s.Telephone,
                     strMobile = s.Mobile,
                     strEmail = s.Email,
                     strNote = s.Note,
                     intOccupationID = s.CIR_DIC_OCCUPATION == null ? "" : s.CIR_DIC_OCCUPATION.Occupation,
-                    intPatronGroupID = s.CIR_PATRON_GROUP == null ? "": s.CIR_PATRON_GROUP.Name
+                    intPatronGroupID = s.CIR_PATRON_GROUP == null ? "" : s.CIR_PATRON_GROUP.Name
                 });
             };
             return Json(new
@@ -797,7 +1201,7 @@ namespace Libol.Controllers
         {
             int id = Int32.Parse(strPatronID);
             db.SP_PATRON_BATCH_DELETE(strPatronID);
-            if(db.CIR_PATRON.Where(a => a.ID == id).Count() > 0)
+            if (db.CIR_PATRON.Where(a => a.ID == id).Count() > 0)
             {
                 return Json("error", JsonRequestBehavior.AllowGet);
             }
@@ -805,7 +1209,7 @@ namespace Libol.Controllers
             {
                 return Json("", JsonRequestBehavior.AllowGet);
             }
-            
+
         }
 
         [AuthAttribute(ModuleID = 2, RightID = "33")]
@@ -824,7 +1228,7 @@ namespace Libol.Controllers
             {
                 if (db.CIR_PATRON.Where(a => a.Code == patronCode).Count() < 1)
                 {
-                    if(!String.IsNullOrWhiteSpace(patronCode) && !String.IsNullOrEmpty(patronCode))
+                    if (!String.IsNullOrWhiteSpace(patronCode) && !String.IsNullOrEmpty(patronCode))
                     {
                         listCanNotDel.Add(new CustomPatron()
                         {
@@ -832,7 +1236,7 @@ namespace Libol.Controllers
                             Name = "Số thẻ không có trong hệ thống"
                         });
                     }
-                    
+
                 }
                 else
                 {
@@ -840,25 +1244,25 @@ namespace Libol.Controllers
                 }
             }
 
-            foreach(var patronCode in listDel)
+            foreach (var patronCode in listDel)
             {
-                string id = db.CIR_PATRON.Where(a => a.Code == patronCode).First().ID+"";
+                string id = db.CIR_PATRON.Where(a => a.Code == patronCode).First().ID + "";
                 db.SP_PATRON_BATCH_DELETE(id);
                 if (db.CIR_PATRON.Where(a => a.Code == patronCode).Count() > 0)
                 {
                     listCanNotDel.Add(new CustomPatron()
                     {
                         strCode = patronCode,
-                        Name = db.CIR_PATRON.Where(a => a.Code == patronCode).First().FirstName +" "+ db.CIR_PATRON.Where(a => a.Code == patronCode).First().LastName
+                        Name = db.CIR_PATRON.Where(a => a.Code == patronCode).First().FirstName + " " + db.CIR_PATRON.Where(a => a.Code == patronCode).First().LastName
                     });
                 }
             }
             List<string[]> data = new List<string[]>();
-            for(int i = 0; i < listCanNotDel.Count; i++)
+            for (int i = 0; i < listCanNotDel.Count; i++)
             {
                 string[] d = { listCanNotDel[i].strCode, listCanNotDel[i].Name };
                 data.Add(d);
-                
+
             }
 
             return Json(data, JsonRequestBehavior.AllowGet);
@@ -872,7 +1276,7 @@ namespace Libol.Controllers
 
         [HttpPost]
         [AuthAttribute(ModuleID = 2, RightID = "34")]
-        public JsonResult AdjournPatronExpiredDate(string strPatronCodes,string newExpiredDate)
+        public JsonResult AdjournPatronExpiredDate(string strPatronCodes, string newExpiredDate)
         {
             DateTime expiredDate = DateTime.Parse(newExpiredDate);
             List<CustomPatron> listCanNotAdjourn = new List<CustomPatron>();
@@ -914,7 +1318,7 @@ namespace Libol.Controllers
         }
     }
 
-    
+
     class Result
     {
         public int CodeError { get; set; }
@@ -925,9 +1329,11 @@ namespace Libol.Controllers
     {
         public int Line { get; set; }
         public string strCode { get; set; }
-        public string FullName { get; set; }
+        public string FirstName { get; set; }
+        public string MiddleName { get; set; }
+        public string LastName { get; set; }
         public string blnSex { get; set; }
-        public DateTime strDOB { get; set; }
+        public string strDOB { get; set; }
         public string strEmail { get; set; }
         public string strAddress { get; set; }
         public string Faculty { get; set; }
@@ -937,37 +1343,39 @@ namespace Libol.Controllers
         public string strCity { get; set; }
         public string strClass { get; set; }
         public string PatronGroup { get; set; }
-        private bool isValid = true;
-        public bool IsValid
-        {
-            get
-            {
-                
-                if (String.IsNullOrEmpty(strCode) ||
-                    String.IsNullOrEmpty(FullName) ||
-                    String.IsNullOrEmpty(blnSex) ||
-                    String.IsNullOrEmpty(strEmail) ||
-                    String.IsNullOrEmpty(strAddress) ||
-                    String.IsNullOrEmpty(Faculty) ||
-                    String.IsNullOrEmpty(strMobile) ||
-                    String.IsNullOrEmpty(strGrade) ||
-                    String.IsNullOrEmpty(College) ||
-                    String.IsNullOrEmpty(strCity) ||
-                    String.IsNullOrEmpty(strClass) ||
-                    String.IsNullOrEmpty(PatronGroup))
-                {
-                    isValid = false;
-                }
+        //private bool isValid = true;
+        //public bool IsValid
+        //{
+        //    get
+        //    {
 
-                
-                return isValid;
-            }
-            set
-            {
-                isValid = value;
-            }
-            
-        }
+        //        if (String.IsNullOrEmpty(strCode) ||
+        //            String.IsNullOrEmpty(FirstName) ||
+        //            String.IsNullOrEmpty(MiddleName) ||
+        //            String.IsNullOrEmpty(LastName) ||
+        //            String.IsNullOrEmpty(blnSex) ||
+        //            String.IsNullOrEmpty(strEmail) ||
+        //            String.IsNullOrEmpty(strAddress) ||
+        //            String.IsNullOrEmpty(Faculty) ||
+        //            String.IsNullOrEmpty(strMobile) ||
+        //            String.IsNullOrEmpty(strGrade) ||
+        //            String.IsNullOrEmpty(College) ||
+        //            String.IsNullOrEmpty(strCity) ||
+        //            String.IsNullOrEmpty(strClass) ||
+        //            String.IsNullOrEmpty(PatronGroup))
+        //        {
+        //            isValid = false;
+        //        }
+
+
+        //        return isValid;
+        //    }
+        //    set
+        //    {
+        //        isValid = value;
+        //    }
+
+        //}
     }
 
     public class AddDictionaryResult

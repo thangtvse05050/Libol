@@ -251,10 +251,28 @@
     <Compile Include="Models\FPT_CATA_FILE_NEW.cs">
       <DependentUpon>Libol.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\FPT_CHECK_DATA_EXCEL_NULL_Result.cs">
+      <DependentUpon>Libol.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\FPT_GET_CODE_FAIL_Result.cs">
+      <DependentUpon>Libol.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\FPT_GET_DATE_FAIL_Result.cs">
+      <DependentUpon>Libol.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\FPT_GET_EMAIL_FAIL_Result.cs">
+      <DependentUpon>Libol.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\FPT_GET_FACULTY_FAIL_DETAIL_Result.cs">
+      <DependentUpon>Libol.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\FPT_GET_SPECIALIZED_STORE_Result.cs">
       <DependentUpon>Libol.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\FPT_RECOMMEND.cs">
+      <DependentUpon>Libol.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\FPT_SELECT_DUPLICATES_EMAIL_CODE_Result.cs">
       <DependentUpon>Libol.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\FPT_SPECIALIZED_REPORT_GET_GTTK_Result.cs">
@@ -1117,6 +1135,9 @@
     </Compile>
     <Compile Include="Business\PatronBusiness.cs" />
     <Compile Include="EntityResult\PATRON_GROUP.cs" />
+    <Compile Include="Models\PATRON_BY_EXCEL.cs">
+      <DependentUpon>Libol.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\REGULARITY_OUT.cs">
       <DependentUpon>Libol.tt</DependentUpon>
     </Compile>
@@ -2642,6 +2663,7 @@
     <Content Include="Views\Acquisition\LiquidateByExcel.cshtml" />
     <Content Include="Views\AcquireReport\AddSubjectToSpecialized.cshtml" />
     <Content Include="Views\AcquireReport\DeleteSubjectFromSpecialzed.cshtml" />
+    <Content Include="Views\Patron\Edit.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\Patron\SearchPatronFilter.cshtml" />

@@ -13074,6 +13074,46 @@
     <FunctionImport Name="FPT_GET_SPELIALIZED_NAME" ReturnType="Collection(String)">
       <Parameter Name="intLibID" Mode="In" Type="Int32" />
     </FunctionImport>
+    <EntitySet Name="PATRON_BY_EXCEL" EntityType="LibolModel.PATRON_BY_EXCEL" />
+    <FunctionImport Name="FPT_CHECK_DATA_EXCEL_NULL" ReturnType="Collection(LibolModel.FPT_CHECK_DATA_EXCEL_NULL_Result)" />
+    <FunctionImport Name="FPT_GET_CODE_EXCEL" ReturnType="Collection(String)" />
+    <FunctionImport Name="FPT_GET_CODE_FAIL" ReturnType="Collection(LibolModel.FPT_GET_CODE_FAIL_Result)">
+      <Parameter Name="stringCode" Mode="In" Type="String" />
+    </FunctionImport>
+    <FunctionImport Name="FPT_GET_DATE_FAIL" ReturnType="Collection(LibolModel.FPT_GET_DATE_FAIL_Result)">
+      <Parameter Name="stringDOB" Mode="In" Type="String" />
+    </FunctionImport>
+    <FunctionImport Name="FPT_GET_DOB_EXCEL" ReturnType="Collection(String)" />
+    <FunctionImport Name="FPT_GET_EMAIL_EXCEL" ReturnType="Collection(String)" />
+    <FunctionImport Name="FPT_GET_EMAIL_FAIL" ReturnType="Collection(LibolModel.FPT_GET_EMAIL_FAIL_Result)">
+      <Parameter Name="stringEmail" Mode="In" Type="String" />
+    </FunctionImport>
+    <FunctionImport Name="FPT_GET_FACULTY_FAIL_DETAIL" ReturnType="Collection(LibolModel.FPT_GET_FACULTY_FAIL_DETAIL_Result)">
+      <Parameter Name="strCollege" Mode="In" Type="String" />
+    </FunctionImport>
+    <FunctionImport Name="FPT_LOAD_DATA_TO_DB_PATRON">
+      <Parameter Name="intId" Mode="In" Type="Int32" />
+      <Parameter Name="strCode" Mode="In" Type="String" />
+      <Parameter Name="strLastName" Mode="In" Type="String" />
+      <Parameter Name="strFirstName" Mode="In" Type="String" />
+      <Parameter Name="strMiddleName" Mode="In" Type="String" />
+      <Parameter Name="strSex" Mode="In" Type="String" />
+      <Parameter Name="strDOB" Mode="In" Type="String" />
+      <Parameter Name="strEmail" Mode="In" Type="String" />
+      <Parameter Name="strAddress" Mode="In" Type="String" />
+      <Parameter Name="strFaculty" Mode="In" Type="String" />
+      <Parameter Name="strMobile" Mode="In" Type="String" />
+      <Parameter Name="strGrade" Mode="In" Type="String" />
+      <Parameter Name="strCollege" Mode="In" Type="String" />
+      <Parameter Name="strCity" Mode="In" Type="String" />
+      <Parameter Name="strClass" Mode="In" Type="String" />
+      <Parameter Name="strPatronGroup" Mode="In" Type="String" />
+    </FunctionImport>
+    <FunctionImport Name="FPT_SELECT_DUPLICATES_EMAIL_CODE" ReturnType="Collection(LibolModel.FPT_SELECT_DUPLICATES_EMAIL_CODE_Result)" />
+    <FunctionImport Name="FPT_SELECT_PROVINCEID" ReturnType="Collection(Int32)">
+      <Parameter Name="strProvince" Mode="In" Type="String" />
+    </FunctionImport>
+    <FunctionImport Name="FPT_CHANGE_TYPE_AND_TRUNCATE" />
   </EntityContainer>
   <ComplexType Name="CAT_DIC_LIST_SEL_Result">
     <Property Type="String" Name="BrowseFile" Nullable="true" MaxLength="50" />
@@ -18235,5 +18275,134 @@
     <Property Type="String" Name="Name" Nullable="false" MaxLength="4000" />
     <Property Type="String" Name="Subjects" Nullable="false" />
     <Property Type="Int32" Name="LibID" Nullable="false" />
+  </ComplexType>
+  <EntityType Name="PATRON_BY_EXCEL">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="Int32" Nullable="false" />
+    <Property Name="Code" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+    <Property Name="LastName" Type="String" MaxLength="30" FixedLength="false" Unicode="true" />
+    <Property Name="FirstName" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+    <Property Name="MiddleName" Type="String" MaxLength="30" FixedLength="false" Unicode="true" />
+    <Property Name="Sex" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+    <Property Name="DOB" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+    <Property Name="Email" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+    <Property Name="Address" Type="String" MaxLength="300" FixedLength="false" Unicode="true" />
+    <Property Name="Faculty" Type="String" MaxLength="70" FixedLength="false" Unicode="true" />
+    <Property Name="Mobile" Type="String" MaxLength="12" FixedLength="false" Unicode="false" />
+    <Property Name="Grade" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+    <Property Name="College" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+    <Property Name="City" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="Class" Type="String" MaxLength="30" FixedLength="false" Unicode="true" />
+    <Property Name="PatronGroup" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+  </EntityType>
+  <ComplexType Name="FPT_CHECK_DATA_EXCEL_NULL_Result">
+    <Property Type="Int32" Name="ID" Nullable="false" />
+    <Property Type="String" Name="Code" Nullable="true" MaxLength="20" />
+    <Property Type="String" Name="LastName" Nullable="true" MaxLength="30" />
+    <Property Type="String" Name="FirstName" Nullable="true" MaxLength="20" />
+    <Property Type="String" Name="MiddleName" Nullable="true" MaxLength="30" />
+    <Property Type="String" Name="Sex" Nullable="true" MaxLength="10" />
+    <Property Type="String" Name="DOB" Nullable="true" MaxLength="100" />
+    <Property Type="String" Name="Email" Nullable="true" MaxLength="100" />
+    <Property Type="String" Name="Address" Nullable="true" MaxLength="300" />
+    <Property Type="String" Name="Faculty" Nullable="true" MaxLength="70" />
+    <Property Type="String" Name="Mobile" Nullable="true" MaxLength="12" />
+    <Property Type="String" Name="Grade" Nullable="true" MaxLength="20" />
+    <Property Type="String" Name="College" Nullable="true" MaxLength="100" />
+    <Property Type="String" Name="City" Nullable="true" MaxLength="50" />
+    <Property Type="String" Name="Class" Nullable="true" MaxLength="30" />
+    <Property Type="String" Name="PatronGroup" Nullable="true" MaxLength="50" />
+  </ComplexType>
+  <ComplexType Name="FPT_GET_CODE_FAIL_Result">
+    <Property Type="Int32" Name="ID" Nullable="false" />
+    <Property Type="String" Name="Code" Nullable="true" MaxLength="20" />
+    <Property Type="String" Name="LastName" Nullable="true" MaxLength="30" />
+    <Property Type="String" Name="FirstName" Nullable="true" MaxLength="20" />
+    <Property Type="String" Name="MiddleName" Nullable="true" MaxLength="30" />
+    <Property Type="String" Name="Sex" Nullable="true" MaxLength="10" />
+    <Property Type="String" Name="DOB" Nullable="true" MaxLength="100" />
+    <Property Type="String" Name="Email" Nullable="true" MaxLength="100" />
+    <Property Type="String" Name="Address" Nullable="true" MaxLength="300" />
+    <Property Type="String" Name="Faculty" Nullable="true" MaxLength="70" />
+    <Property Type="String" Name="Mobile" Nullable="true" MaxLength="12" />
+    <Property Type="String" Name="Grade" Nullable="true" MaxLength="20" />
+    <Property Type="String" Name="College" Nullable="true" MaxLength="100" />
+    <Property Type="String" Name="City" Nullable="true" MaxLength="50" />
+    <Property Type="String" Name="Class" Nullable="true" MaxLength="30" />
+    <Property Type="String" Name="PatronGroup" Nullable="true" MaxLength="50" />
+  </ComplexType>
+  <ComplexType Name="FPT_GET_DATE_FAIL_Result">
+    <Property Type="Int32" Name="ID" Nullable="false" />
+    <Property Type="String" Name="Code" Nullable="true" MaxLength="20" />
+    <Property Type="String" Name="LastName" Nullable="true" MaxLength="30" />
+    <Property Type="String" Name="FirstName" Nullable="true" MaxLength="20" />
+    <Property Type="String" Name="MiddleName" Nullable="true" MaxLength="30" />
+    <Property Type="String" Name="Sex" Nullable="true" MaxLength="10" />
+    <Property Type="String" Name="DOB" Nullable="true" MaxLength="100" />
+    <Property Type="String" Name="Email" Nullable="true" MaxLength="100" />
+    <Property Type="String" Name="Address" Nullable="true" MaxLength="300" />
+    <Property Type="String" Name="Faculty" Nullable="true" MaxLength="70" />
+    <Property Type="String" Name="Mobile" Nullable="true" MaxLength="12" />
+    <Property Type="String" Name="Grade" Nullable="true" MaxLength="20" />
+    <Property Type="String" Name="College" Nullable="true" MaxLength="100" />
+    <Property Type="String" Name="City" Nullable="true" MaxLength="50" />
+    <Property Type="String" Name="Class" Nullable="true" MaxLength="30" />
+    <Property Type="String" Name="PatronGroup" Nullable="true" MaxLength="50" />
+  </ComplexType>
+  <ComplexType Name="FPT_GET_EMAIL_FAIL_Result">
+    <Property Type="Int32" Name="ID" Nullable="false" />
+    <Property Type="String" Name="Code" Nullable="true" MaxLength="20" />
+    <Property Type="String" Name="LastName" Nullable="true" MaxLength="30" />
+    <Property Type="String" Name="FirstName" Nullable="true" MaxLength="20" />
+    <Property Type="String" Name="MiddleName" Nullable="true" MaxLength="30" />
+    <Property Type="String" Name="Sex" Nullable="true" MaxLength="10" />
+    <Property Type="String" Name="DOB" Nullable="true" MaxLength="100" />
+    <Property Type="String" Name="Email" Nullable="true" MaxLength="100" />
+    <Property Type="String" Name="Address" Nullable="true" MaxLength="300" />
+    <Property Type="String" Name="Faculty" Nullable="true" MaxLength="70" />
+    <Property Type="String" Name="Mobile" Nullable="true" MaxLength="12" />
+    <Property Type="String" Name="Grade" Nullable="true" MaxLength="20" />
+    <Property Type="String" Name="College" Nullable="true" MaxLength="100" />
+    <Property Type="String" Name="City" Nullable="true" MaxLength="50" />
+    <Property Type="String" Name="Class" Nullable="true" MaxLength="30" />
+    <Property Type="String" Name="PatronGroup" Nullable="true" MaxLength="50" />
+  </ComplexType>
+  <ComplexType Name="FPT_GET_FACULTY_FAIL_DETAIL_Result">
+    <Property Type="Int32" Name="ID" Nullable="false" />
+    <Property Type="String" Name="Code" Nullable="true" MaxLength="20" />
+    <Property Type="String" Name="LastName" Nullable="true" MaxLength="30" />
+    <Property Type="String" Name="FirstName" Nullable="true" MaxLength="20" />
+    <Property Type="String" Name="MiddleName" Nullable="true" MaxLength="30" />
+    <Property Type="String" Name="Sex" Nullable="true" MaxLength="10" />
+    <Property Type="String" Name="DOB" Nullable="true" MaxLength="100" />
+    <Property Type="String" Name="Email" Nullable="true" MaxLength="100" />
+    <Property Type="String" Name="Address" Nullable="true" MaxLength="300" />
+    <Property Type="String" Name="Faculty" Nullable="true" MaxLength="70" />
+    <Property Type="String" Name="Mobile" Nullable="true" MaxLength="12" />
+    <Property Type="String" Name="Grade" Nullable="true" MaxLength="20" />
+    <Property Type="String" Name="College" Nullable="true" MaxLength="100" />
+    <Property Type="String" Name="City" Nullable="true" MaxLength="50" />
+    <Property Type="String" Name="Class" Nullable="true" MaxLength="30" />
+    <Property Type="String" Name="PatronGroup" Nullable="true" MaxLength="50" />
+  </ComplexType>
+  <ComplexType Name="FPT_SELECT_DUPLICATES_EMAIL_CODE_Result">
+    <Property Type="Int32" Name="ID" Nullable="false" />
+    <Property Type="String" Name="Code" Nullable="true" MaxLength="20" />
+    <Property Type="String" Name="LastName" Nullable="true" MaxLength="30" />
+    <Property Type="String" Name="FirstName" Nullable="true" MaxLength="20" />
+    <Property Type="String" Name="MiddleName" Nullable="true" MaxLength="30" />
+    <Property Type="String" Name="Sex" Nullable="true" MaxLength="10" />
+    <Property Type="String" Name="DOB" Nullable="true" MaxLength="100" />
+    <Property Type="String" Name="Email" Nullable="true" MaxLength="100" />
+    <Property Type="String" Name="Address" Nullable="true" MaxLength="300" />
+    <Property Type="String" Name="Faculty" Nullable="true" MaxLength="70" />
+    <Property Type="String" Name="Mobile" Nullable="true" MaxLength="12" />
+    <Property Type="String" Name="Grade" Nullable="true" MaxLength="20" />
+    <Property Type="String" Name="College" Nullable="true" MaxLength="100" />
+    <Property Type="String" Name="City" Nullable="true" MaxLength="50" />
+    <Property Type="String" Name="Class" Nullable="true" MaxLength="30" />
+    <Property Type="String" Name="PatronGroup" Nullable="true" MaxLength="50" />
   </ComplexType>
 </Schema>

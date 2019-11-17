@@ -10647,5 +10647,165 @@
       </ResultMapping>
     </FunctionImportMapping>
     <FunctionImportMapping FunctionImportName="FPT_GET_SPELIALIZED_NAME" FunctionName="LibolModel.Store.FPT_GET_SPELIALIZED_NAME" />
+    <EntitySetMapping Name="PATRON_BY_EXCEL">
+      <EntityTypeMapping TypeName="LibolModel.PATRON_BY_EXCEL">
+        <MappingFragment StoreEntitySet="PATRON_BY_EXCEL">
+          <ScalarProperty Name="PatronGroup" ColumnName="PatronGroup" />
+          <ScalarProperty Name="Class" ColumnName="Class" />
+          <ScalarProperty Name="City" ColumnName="City" />
+          <ScalarProperty Name="College" ColumnName="College" />
+          <ScalarProperty Name="Grade" ColumnName="Grade" />
+          <ScalarProperty Name="Mobile" ColumnName="Mobile" />
+          <ScalarProperty Name="Faculty" ColumnName="Faculty" />
+          <ScalarProperty Name="Address" ColumnName="Address" />
+          <ScalarProperty Name="Email" ColumnName="Email" />
+          <ScalarProperty Name="DOB" ColumnName="DOB" />
+          <ScalarProperty Name="Sex" ColumnName="Sex" />
+          <ScalarProperty Name="MiddleName" ColumnName="MiddleName" />
+          <ScalarProperty Name="FirstName" ColumnName="FirstName" />
+          <ScalarProperty Name="LastName" ColumnName="LastName" />
+          <ScalarProperty Name="Code" ColumnName="Code" />
+          <ScalarProperty Name="ID" ColumnName="ID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <FunctionImportMapping FunctionImportName="FPT_CHECK_DATA_EXCEL_NULL" FunctionName="LibolModel.Store.FPT_CHECK_DATA_EXCEL_NULL">
+      <ResultMapping>
+        <ComplexTypeMapping TypeName="LibolModel.FPT_CHECK_DATA_EXCEL_NULL_Result">
+          <ScalarProperty Name="ID" ColumnName="ID" />
+          <ScalarProperty Name="Code" ColumnName="Code" />
+          <ScalarProperty Name="LastName" ColumnName="LastName" />
+          <ScalarProperty Name="FirstName" ColumnName="FirstName" />
+          <ScalarProperty Name="MiddleName" ColumnName="MiddleName" />
+          <ScalarProperty Name="Sex" ColumnName="Sex" />
+          <ScalarProperty Name="DOB" ColumnName="DOB" />
+          <ScalarProperty Name="Email" ColumnName="Email" />
+          <ScalarProperty Name="Address" ColumnName="Address" />
+          <ScalarProperty Name="Faculty" ColumnName="Faculty" />
+          <ScalarProperty Name="Mobile" ColumnName="Mobile" />
+          <ScalarProperty Name="Grade" ColumnName="Grade" />
+          <ScalarProperty Name="College" ColumnName="College" />
+          <ScalarProperty Name="City" ColumnName="City" />
+          <ScalarProperty Name="Class" ColumnName="Class" />
+          <ScalarProperty Name="PatronGroup" ColumnName="PatronGroup" />
+        </ComplexTypeMapping>
+      </ResultMapping>
+    </FunctionImportMapping>
+    <FunctionImportMapping FunctionImportName="FPT_GET_CODE_EXCEL" FunctionName="LibolModel.Store.FPT_GET_CODE_EXCEL" />
+    <FunctionImportMapping FunctionImportName="FPT_GET_CODE_FAIL" FunctionName="LibolModel.Store.FPT_GET_CODE_FAIL">
+      <ResultMapping>
+        <ComplexTypeMapping TypeName="LibolModel.FPT_GET_CODE_FAIL_Result">
+          <ScalarProperty Name="ID" ColumnName="ID" />
+          <ScalarProperty Name="Code" ColumnName="Code" />
+          <ScalarProperty Name="LastName" ColumnName="LastName" />
+          <ScalarProperty Name="FirstName" ColumnName="FirstName" />
+          <ScalarProperty Name="MiddleName" ColumnName="MiddleName" />
+          <ScalarProperty Name="Sex" ColumnName="Sex" />
+          <ScalarProperty Name="DOB" ColumnName="DOB" />
+          <ScalarProperty Name="Email" ColumnName="Email" />
+          <ScalarProperty Name="Address" ColumnName="Address" />
+          <ScalarProperty Name="Faculty" ColumnName="Faculty" />
+          <ScalarProperty Name="Mobile" ColumnName="Mobile" />
+          <ScalarProperty Name="Grade" ColumnName="Grade" />
+          <ScalarProperty Name="College" ColumnName="College" />
+          <ScalarProperty Name="City" ColumnName="City" />
+          <ScalarProperty Name="Class" ColumnName="Class" />
+          <ScalarProperty Name="PatronGroup" ColumnName="PatronGroup" />
+        </ComplexTypeMapping>
+      </ResultMapping>
+    </FunctionImportMapping>
+    <FunctionImportMapping FunctionImportName="FPT_GET_DATE_FAIL" FunctionName="LibolModel.Store.FPT_GET_DATE_FAIL">
+      <ResultMapping>
+        <ComplexTypeMapping TypeName="LibolModel.FPT_GET_DATE_FAIL_Result">
+          <ScalarProperty Name="ID" ColumnName="ID" />
+          <ScalarProperty Name="Code" ColumnName="Code" />
+          <ScalarProperty Name="LastName" ColumnName="LastName" />
+          <ScalarProperty Name="FirstName" ColumnName="FirstName" />
+          <ScalarProperty Name="MiddleName" ColumnName="MiddleName" />
+          <ScalarProperty Name="Sex" ColumnName="Sex" />
+          <ScalarProperty Name="DOB" ColumnName="DOB" />
+          <ScalarProperty Name="Email" ColumnName="Email" />
+          <ScalarProperty Name="Address" ColumnName="Address" />
+          <ScalarProperty Name="Faculty" ColumnName="Faculty" />
+          <ScalarProperty Name="Mobile" ColumnName="Mobile" />
+          <ScalarProperty Name="Grade" ColumnName="Grade" />
+          <ScalarProperty Name="College" ColumnName="College" />
+          <ScalarProperty Name="City" ColumnName="City" />
+          <ScalarProperty Name="Class" ColumnName="Class" />
+          <ScalarProperty Name="PatronGroup" ColumnName="PatronGroup" />
+        </ComplexTypeMapping>
+      </ResultMapping>
+    </FunctionImportMapping>
+    <FunctionImportMapping FunctionImportName="FPT_GET_DOB_EXCEL" FunctionName="LibolModel.Store.FPT_GET_DOB_EXCEL" />
+    <FunctionImportMapping FunctionImportName="FPT_GET_EMAIL_EXCEL" FunctionName="LibolModel.Store.FPT_GET_EMAIL_EXCEL" />
+    <FunctionImportMapping FunctionImportName="FPT_GET_EMAIL_FAIL" FunctionName="LibolModel.Store.FPT_GET_EMAIL_FAIL">
+      <ResultMapping>
+        <ComplexTypeMapping TypeName="LibolModel.FPT_GET_EMAIL_FAIL_Result">
+          <ScalarProperty Name="ID" ColumnName="ID" />
+          <ScalarProperty Name="Code" ColumnName="Code" />
+          <ScalarProperty Name="LastName" ColumnName="LastName" />
+          <ScalarProperty Name="FirstName" ColumnName="FirstName" />
+          <ScalarProperty Name="MiddleName" ColumnName="MiddleName" />
+          <ScalarProperty Name="Sex" ColumnName="Sex" />
+          <ScalarProperty Name="DOB" ColumnName="DOB" />
+          <ScalarProperty Name="Email" ColumnName="Email" />
+          <ScalarProperty Name="Address" ColumnName="Address" />
+          <ScalarProperty Name="Faculty" ColumnName="Faculty" />
+          <ScalarProperty Name="Mobile" ColumnName="Mobile" />
+          <ScalarProperty Name="Grade" ColumnName="Grade" />
+          <ScalarProperty Name="College" ColumnName="College" />
+          <ScalarProperty Name="City" ColumnName="City" />
+          <ScalarProperty Name="Class" ColumnName="Class" />
+          <ScalarProperty Name="PatronGroup" ColumnName="PatronGroup" />
+        </ComplexTypeMapping>
+      </ResultMapping>
+    </FunctionImportMapping>
+    <FunctionImportMapping FunctionImportName="FPT_GET_FACULTY_FAIL_DETAIL" FunctionName="LibolModel.Store.FPT_GET_FACULTY_FAIL_DETAIL">
+      <ResultMapping>
+        <ComplexTypeMapping TypeName="LibolModel.FPT_GET_FACULTY_FAIL_DETAIL_Result">
+          <ScalarProperty Name="ID" ColumnName="ID" />
+          <ScalarProperty Name="Code" ColumnName="Code" />
+          <ScalarProperty Name="LastName" ColumnName="LastName" />
+          <ScalarProperty Name="FirstName" ColumnName="FirstName" />
+          <ScalarProperty Name="MiddleName" ColumnName="MiddleName" />
+          <ScalarProperty Name="Sex" ColumnName="Sex" />
+          <ScalarProperty Name="DOB" ColumnName="DOB" />
+          <ScalarProperty Name="Email" ColumnName="Email" />
+          <ScalarProperty Name="Address" ColumnName="Address" />
+          <ScalarProperty Name="Faculty" ColumnName="Faculty" />
+          <ScalarProperty Name="Mobile" ColumnName="Mobile" />
+          <ScalarProperty Name="Grade" ColumnName="Grade" />
+          <ScalarProperty Name="College" ColumnName="College" />
+          <ScalarProperty Name="City" ColumnName="City" />
+          <ScalarProperty Name="Class" ColumnName="Class" />
+          <ScalarProperty Name="PatronGroup" ColumnName="PatronGroup" />
+        </ComplexTypeMapping>
+      </ResultMapping>
+    </FunctionImportMapping>
+    <FunctionImportMapping FunctionImportName="FPT_LOAD_DATA_TO_DB_PATRON" FunctionName="LibolModel.Store.FPT_LOAD_DATA_TO_DB_PATRON" />
+    <FunctionImportMapping FunctionImportName="FPT_SELECT_DUPLICATES_EMAIL_CODE" FunctionName="LibolModel.Store.FPT_SELECT_DUPLICATES_EMAIL_CODE">
+      <ResultMapping>
+        <ComplexTypeMapping TypeName="LibolModel.FPT_SELECT_DUPLICATES_EMAIL_CODE_Result">
+          <ScalarProperty Name="ID" ColumnName="ID" />
+          <ScalarProperty Name="Code" ColumnName="Code" />
+          <ScalarProperty Name="LastName" ColumnName="LastName" />
+          <ScalarProperty Name="FirstName" ColumnName="FirstName" />
+          <ScalarProperty Name="MiddleName" ColumnName="MiddleName" />
+          <ScalarProperty Name="Sex" ColumnName="Sex" />
+          <ScalarProperty Name="DOB" ColumnName="DOB" />
+          <ScalarProperty Name="Email" ColumnName="Email" />
+          <ScalarProperty Name="Address" ColumnName="Address" />
+          <ScalarProperty Name="Faculty" ColumnName="Faculty" />
+          <ScalarProperty Name="Mobile" ColumnName="Mobile" />
+          <ScalarProperty Name="Grade" ColumnName="Grade" />
+          <ScalarProperty Name="College" ColumnName="College" />
+          <ScalarProperty Name="City" ColumnName="City" />
+          <ScalarProperty Name="Class" ColumnName="Class" />
+          <ScalarProperty Name="PatronGroup" ColumnName="PatronGroup" />
+        </ComplexTypeMapping>
+      </ResultMapping>
+    </FunctionImportMapping>
+    <FunctionImportMapping FunctionImportName="FPT_SELECT_PROVINCEID" FunctionName="LibolModel.Store.FPT_SELECT_PROVINCEID" />
+    <FunctionImportMapping FunctionImportName="FPT_CHANGE_TYPE_AND_TRUNCATE" FunctionName="LibolModel.Store.FPT_CHANGE_TYPE_AND_TRUNCATE" />
   </EntityContainerMapping>
 </Mapping>
