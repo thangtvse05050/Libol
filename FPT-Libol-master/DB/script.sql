@@ -9182,7 +9182,7 @@ Class nvarchar(30),
 PatronGroup nvarchar(50)
 )
 GO
-ALTER   PROCEDURE [dbo].[FPT_LOAD_DATA_TO_DB_PATRON]
+Create   PROCEDURE [dbo].[FPT_LOAD_DATA_TO_DB_PATRON]
 -- Purpose: Create data record
 -- MODIFICATION HISTORY  
 -- Person      Date    Comments  
@@ -9249,7 +9249,7 @@ PatronGroup
 		)
 
 GO
-ALTER   PROCEDURE [dbo].[FPT_CHECK_DATA_EXCEL_NULL]
+Create   PROCEDURE [dbo].[FPT_CHECK_DATA_EXCEL_NULL]
 -- Purpose: Create data record
 -- MODIFICATION HISTORY  
 -- Person      Date    Comments  
@@ -9290,31 +9290,31 @@ AS
       OR [PatronGroup] =''
 
 	   GO
-	  ALTER procedure FPT_GET_DOB_EXCEL
+	  Create procedure FPT_GET_DOB_EXCEL
 	  AS
 	select DOB from PATRON_BY_EXCEL where DOB not in (Select  DOB from PATRON_BY_EXCEL where DOB='')
 	GO
-	ALTER procedure FPT_GET_EMAIL_EXCEL
+	Create procedure FPT_GET_EMAIL_EXCEL
 	  AS
 	select Email from PATRON_BY_EXCEL where Email not in (Select  Email from PATRON_BY_EXCEL where Email='')
 	GO
-	ALTER procedure FPT_GET_CODE_EXCEL
+	Create procedure FPT_GET_CODE_EXCEL
 	  AS
 	select Code from PATRON_BY_EXCEL where Code not in (Select  Code from PATRON_BY_EXCEL where Code='')
 	GO
-	ALTER PROCEDURE FPT_GET_DATE_FAIL(@stringDOB NVARCHAR(MAX))
+	Create PROCEDURE FPT_GET_DATE_FAIL(@stringDOB NVARCHAR(MAX))
 	AS
 	SELECT * from PATRON_BY_EXCEL where @stringDOB like '%;'+cast(DOB as varchar(200))+';%'	
 	GO
-	ALTER PROCEDURE FPT_GET_EMAIL_FAIL(@stringEmail NVARCHAR(MAX))
+	Create PROCEDURE FPT_GET_EMAIL_FAIL(@stringEmail NVARCHAR(MAX))
 	AS
 	SELECT * from PATRON_BY_EXCEL where @stringEmail like '%;'+cast(Email as varchar(200))+';%'	
 	GO
-	ALTER PROCEDURE FPT_GET_CODE_FAIL(@stringCode NVARCHAR(MAX))
+	Create PROCEDURE FPT_GET_CODE_FAIL(@stringCode NVARCHAR(MAX))
 	AS
 	SELECT * from PATRON_BY_EXCEL where @stringCode like '%;'+cast(Code as varchar(200))+';%'	
 	GO
-	ALTER PROCEDURE FPT_SELECT_DUPLICATES_EMAIL_CODE
+	Create PROCEDURE FPT_SELECT_DUPLICATES_EMAIL_CODE
 AS
 SELECT a.*
 FROM PATRON_BY_EXCEL a
@@ -9335,27 +9335,15 @@ ON
 a.Code = b.Code
 ORDER BY a.Code, a.email
 GO
-ALTER PROCEDURE FPT_GET_FACULTY_FAIL(@strFaculty VARCHAR(MAX))
-AS
-select a.Faculty from CIR_DIC_FACULTY a join CIR_DIC_COLLEGE b on a.CollegeID=b.ID where b.College in (Select College From PATRON_BY_EXCEL) and @strFaculty like N'%;'+cast(a.Faculty as varchar(200))+';%'
-go
-ALTER PROCEDURE FPT_GET_FACULTY_FAIL2(@strFaculty VARCHAR(MAX))
-AS
-select * from PATRON_BY_EXCEL where @strFaculty not like N'%;'+cast(Faculty as varchar(200))+';%'
-go
-ALTER PROCEDURE FPT_GET_FACULTY_EXCEL
-AS
-select distinct Faculty from PATRON_BY_EXCEL where Faculty!=''
-Go
-ALTER PROCEDURE FPT_GET_FACULTY_FAIL_DETAIL(@strCollege VARCHAR(MAX))
+Create PROCEDURE FPT_GET_FACULTY_FAIL_DETAIL(@strCollege VARCHAR(MAX))
 AS
 select * from PATRON_BY_EXCEL where id not in (select distinct c.ID from PATRON_BY_EXCEL c join CIR_DIC_FACULTY a  join CIR_DIC_COLLEGE b on a.CollegeID=b.ID on c.Faculty=a.Faculty and c.College=b.College where @strCollege  like '%;'+cast(c.College as varchar(200))+';%')	
 GO
-ALTER PROCEDURE FPT_CHANGE_TYPE_AND_TRUNCATE
+Create PROCEDURE FPT_CHANGE_TYPE_AND_TRUNCATE
 AS
 TRUNCATE TABLE PATRON_BY_EXCEL
 GO
-ALTER PROCEDURE FPT_SELECT_PROVINCEID(@strProvince Nvarchar(200))
+Create PROCEDURE FPT_SELECT_PROVINCEID(@strProvince Nvarchar(200))
 as
 select ID from CIR_DIC_PROVINCE where Province like N'%'+@strProvince+'%'
 GO
