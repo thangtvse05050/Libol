@@ -1,5 +1,7 @@
 ﻿
 @{
+    /**/
+
     ViewBag.Title = "SpecializedReport";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
@@ -7,6 +9,8 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
     <link rel="stylesheet" type="text/css" href="~/Content/bootstrap.css">
+    <script src="bootbox.min.js"></script>
+    <script src="bootbox.locales.min.js"></script>
     <title>Thống kê ấn phẩm đã được mượn</title>
     <style>
         label {
@@ -25,9 +29,9 @@
     <div class="col-md-2">
         <a class="form-group row col" href="/AcquireReport/SpecializedReport">Báo cáo chuyên ngành</a>
         <a class="form-group row col" href="/AcquireReport/CreateNewSpecialized">Thêm chuyên ngành</a>
-        <a class="form-group row col bold" href="/AcquireReport/UpdateSpecialized">Sửa chuyên ngành</a>
+        <a class="form-group row col" href="/AcquireReport/UpdateSpecialized">Sửa chuyên ngành</a>
         <a class="form-group row col" href="/AcquireReport/AddSubjectToSpecialized">Thêm môn học vào chuyên ngành</a>
-        <a class="form-group row col" href="/AcquireReport/UpdateSpecialized">Xóa môn học khỏi chuyên ngành</a>
+        <a class="form-group row col bold" href="/AcquireReport/DeleteSubjectFromSpecialzed">Xóa môn học khỏi chuyên ngành</a>
     </div>
     <div class="col-md-8 text-center">
         <div class="form-group row col-8">
@@ -37,13 +41,15 @@
         <div class="form-group row col-8">
             <label class="control-label col-md-8 align-self-center">Chuyên ngành</label>
             @Html.DropDownList("Specialized", new SelectList(string.Empty, "Value", "Text"), "Chọn chuyên ngành", new { @class = "form-control col-md-4" })
-            
+
         </div>
         <div class="form-group row col-8">
-            <label class="control-label col-md-8 align-self-center">Tên mới</label>
-            <input type="text" id="Spec" name="Spec" class="form-control col-md-4" />
+            <label class="control-label col-md-8 align-self-center">Thêm mã môn</label>
+            <input type="text" id="newSbj" name="newSbj" class="form-control col-md-2" />
+            &ensp;
+            <button type="button" id="deleteSubject" class="btn-primary btn-danger">Xóa</button>
         </div>
-       
+
 
     </div>
 
@@ -52,15 +58,15 @@
     <div class="col-md-2">
     </div>
     <div class="col-md-8 ml-lg-4">
-        @*<div class="row">
-            
-            <textarea type="text" class="form-control col-md-4  mx-auto" id="subjects" name="subjects" rows="8" onchange="getSubjectText()"></textarea>
+        <div class="row">
+            <label class="control-label col-md-4 align-self-center">Danh sách mã môn</label>
+            <textarea type="text" class="form-control col-md-4 " id="subjects" name="subjects" rows="8"  disabled></textarea>
         </div>
-        <br />*@
+        <br />
         <div class="row ">
             <div class="mx-auto ">
-                <button type="button" id="update" class="btn-primary btn">Cập nhật chuyên ngành</button>
-                <button type="button" id="delete" class="btn-danger btn" >Xóa chuyên ngành</button>
+                <button type="button" id="update" class="btn-primary btn">Lưu</button>
+                <button type="button" id="refesh" class="btn-primary btn">Đặt lại</button>
             </div>
         </div>
     </div>
@@ -69,15 +75,10 @@
 <div id="ContentSpecReport"></div>
 
 <script>
-    function getSubjectText() {
-        document.getElementById("Subject").value = document.getElementById("subjects").value;
 
-    }
 
     $(document).ready(function () {
-        $("input[name=Subject]").change(function () {
-            document.getElementById("subjects").value = document.getElementById("Subject").value;
-        });
+        
 
         $("#Library").change(function () {
             $("#Specialized").empty();
@@ -104,89 +105,95 @@
                 data: { id: $("#Specialized").val() },
                 success: function (locs) {
                     var str = locs;
-                    document.getElementById("Spec").value = str.split("/")[0];
-                    document.getElementById("Subject").value = str.split("/")[1];
+
+
                     document.getElementById("subjects").value = str.split("/")[1];
-                    
+
                 }
             });
             return false;
           });
       });
- 
+
     document.getElementById("update").onclick = function () {
+        if (confirm("Lưu thay đổi?")) {
+
         var empObj = {
-            
+
             strSpec: document.getElementById("Specialized").value,
-            strLibID: document.getElementById("Library").value,
-            strSpecNew: document.getElementById("Spec").value,
+
+            strNewSbj: document.getElementById("subjects").value,
         };
 
         if (document.getElementById("Library").value == "") {
             alert("Hãy chọn Thư viện");
-        } else if (document.getElementById("Spec").value == "") {
-            alert("Tên chuyên ngành không được để trống");
-        } 
-         
+        }
+
         else {
             $.ajax({
-                url: "GetUpdateSpecialized",
+                url: "GetAddSubjectToSpecialized",
                 data: JSON.stringify(empObj),
                 type: "POST",
                 contentType: "application/json;charset=utf-8",
                 dataType: "json",
                 success: function (result) {
-                    if (result == "Cập nhật chuyên ngành thành công!!") {
+
                         alert(result);
                         location.reload();
-                    }
-                    else
-                    {
-                        alert(result);
-                        
-                    }
-                  
-                 
+
+
+
                 },
                 error: function () {
                 }
             });
 
         }
+        }
+    };
+    document.getElementById("deleteSubject").onclick = function () {
+        var oldSbj = document.getElementById("subjects").value;
+        var newSbj = document.getElementById("newSbj").value.toUpperCase();
+        var subjects = newSbj.trim().split(" ");
+        var check = 0;
+        var del = "";
+        if (newSbj == "") {
+            alert("Bạn cần nhập mã môn");
+
+        } else {
+            subjects.forEach(function (element) {
+                if (oldSbj.includes(element)) {
+                    del = del + " " + element;
+
+                    check = 1;
+                }
+
+            });
+            if (check == 1) {
+                if (confirm("Xóa môn " + del)) {
+                    del.trim().split(" ").forEach(function (element) {
+                        document.getElementById("subjects").value= document.getElementById("subjects").value.replace(element, "");
+                       
+                    });
+                    document.getElementById("newSbj").value = "";
+                }
+            } else {
+                alert("Môn " + newSbj + " không tồn tại trong chuyên ngành!");
+            }
+        }
 
     };
-
-    document.getElementById("delete").onclick = function () {
-        var empObj = {
-           
-            strSpec: document.getElementById("Specialized").value,
-      
-        };
-
-        if (document.getElementById("Library").value == "") {
-            alert("Hãy chọn Thư viện");
-        } 
-        else {
-            $.ajax({
-                url: "GetDeleteSpecialized",
-                data: JSON.stringify(empObj),
-                type: "POST",
-                contentType: "application/json;charset=utf-8",
-                dataType: "json",
-                success: function (result) {
-
-
-                    alert(result);
-                    location.reload();
-                },
-                error: function () {
-                }
-            });
-
+    document.getElementById("refesh").onclick = function () {
+        if (confirm("Bạn có chắc muốn đặt lại?")) {
+            document.getElementById("newSbj").value = "";
+            document.getElementById("Library").value = "";
+            document.getElementById("Specialized").value = "0";
+            document.getElementById("subjects").value = "";
         }
 
     };
 </script>
+
 
 
 

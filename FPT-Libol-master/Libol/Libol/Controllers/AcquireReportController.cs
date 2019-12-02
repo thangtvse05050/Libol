@@ -3290,11 +3290,6 @@ namespace Libol.Controllers
 		[HttpPost]
 		public JsonResult GetDeleteSpecialized( string strSpec)
 		{
-			
-			
-
-
-
 			le.ExcuteSQL("DELETE FROM FPT_SP_SPECIALIZED_STORE WHERE ID='" + strSpec + "'");
 			ViewBag.message = "Xóa chuyên ngành thành công!!";
 
@@ -3316,7 +3311,7 @@ namespace Libol.Controllers
 		[HttpPost]
 		public JsonResult GetAddSubjectToSpecialized(string strSpec, string strNewSbj)
 		{
-			
+			strNewSbj = strNewSbj.Trim();
 				le.ExcuteSQL("UPDATE FPT_SP_SPECIALIZED_STORE SET Subjects=N'" + strNewSbj + "'" + " WHERE ID='" + strSpec + "'");
 				ViewBag.message = "Cập nhật chuyên ngành thành công!!";
 
