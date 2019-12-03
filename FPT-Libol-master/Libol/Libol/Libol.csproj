@@ -210,6 +210,7 @@
     <Compile Include="Controllers\CheckOutController.cs" />
     <Compile Include="Controllers\ErrorController.cs" />
     <Compile Include="Controllers\ManagementController.cs" />
+    <Compile Include="Controllers\OrderBorrowedController.cs" />
     <Compile Include="Controllers\OverdueEmailNoticeController.cs" />
     <Compile Include="Controllers\OverdueListController.cs" />
     <Compile Include="Controllers\PatronController.cs" />
@@ -220,6 +221,7 @@
     <Compile Include="Controllers\RenewController.cs" />
     <Compile Include="Controllers\ShelfController.cs" />
     <Compile Include="EntityResult\DUPLICATE_INVENTORY.cs" />
+    <Compile Include="EntityResult\FPT_CIR_HOLDING_SEARCH_result.cs" />
     <Compile Include="EntityResult\FPT_CIR_SP_STAT_TOP20_Result.cs" />
     <Compile Include="EntityResult\FPT_COUNT_COPYNUMBER_BY_ITEMID_Result.cs" />
     <Compile Include="EntityResult\FPT_COUNT_COPYNUMBER_ONLOAN_Result.cs" />
@@ -252,6 +254,9 @@
       <DependentUpon>Libol.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\FPT_CHECK_DATA_EXCEL_NULL_Result.cs">
+      <DependentUpon>Libol.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\FPT_CIR_HOLDING_GET_ALL_Result.cs">
       <DependentUpon>Libol.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\FPT_GET_CODE_FAIL_Result.cs">
@@ -2429,6 +2434,7 @@
     <Content Include="ApplicationInsights.config">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Content Include="MailContent\OrderBookMailForm.xml" />
     <Content Include="Models\FLibContext.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>FLibContext.cs</LastGenOutput>
@@ -2491,6 +2497,11 @@
     <None Include="Properties\PublishProfiles\flib30 - Web Deploy.pubxml" />
     <None Include="Properties\PublishProfiles\flib30 - Web Deploy1.pubxml" />
     <None Include="Properties\PublishProfiles\flib30 - Web Deploy2.pubxml" />
+    <None Include="Properties\PublishProfiles\flib40 - Web Deploy.pubxml" />
+    <None Include="Properties\PublishProfiles\flib40 - Web Deploy1.pubxml" />
+    <None Include="Properties\PublishProfiles\flib40 - Web Deploy2.pubxml" />
+    <None Include="Properties\PublishProfiles\flib40 - Web Deploy3.pubxml" />
+    <None Include="Properties\PublishProfiles\flib50 - Web Deploy.pubxml" />
     <None Include="Properties\PublishProfiles\Libol - FTP.pubxml" />
     <None Include="Properties\PublishProfiles\Libol - Web Deploy.pubxml" />
     <None Include="log4net.config">
@@ -2664,6 +2675,8 @@
     <Content Include="Views\AcquireReport\AddSubjectToSpecialized.cshtml" />
     <Content Include="Views\AcquireReport\DeleteSubjectFromSpecialzed.cshtml" />
     <Content Include="Views\Patron\Edit.cshtml" />
+    <Content Include="Views\OrderBorrowed\OrderBorrowed.cshtml" />
+    <Content Include="Views\OrderBorrowed\GetOrderBorrowed.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\Patron\SearchPatronFilter.cshtml" />

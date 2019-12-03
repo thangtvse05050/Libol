@@ -9476,3 +9476,69 @@ AS
 		)
 		SET @intRetVal = @intCurrID
 	END
+	go
+	-------------OrderBorrowed----------------
+	--tuannd 3/12/19
+Create PROC [dbo].[FPT_CIR_HOLDING_GET_ALL]
+AS
+BEGIN
+SELECT DISTINCT A.ID AS ID,CONCAT(B.FirstName,' ',B.MiddleName,' ',B.LastName) AS FULLNAME,B.Code AS ROLLNUMBER,
+			 (SELECT Content FROM FIELD200S WHERE FieldCode='245' AND ItemID=A.ItemID) AS BOOKNAME,
+			 I.Code AS BOOKCODE,A.CreatedDate AS CREATEDATE,A.TimeOutDate AS TIMEOUTDATE,A.CheckMail,A.InTurn,'' AS ORDER_STATUS
+FROM CIR_HOLDING A,CIR_PATRON B,FIELD200S F,ITEM I WHERE A.PatronCode=B.Code AND F.ItemID=I.ID AND A.ItemID=F.ItemID
+END
+----
+go
+CREATE PROCEDURE [dbo].[FPT_CIR_HOLDING_SEARCH]
+	@strCheckOrder bit,
+	@strOrderCancel bit,
+	@strDateFrom  varchar(500),
+	@strDateTo varchar(500),
+	@strTitleCheck bit,
+	@strPatronCheck bit,
+	@strSearchContent varchar(500)
+AS
+DECLARE @strSql varchar(MAX)
+
+BEGIN	
+	SET @strSql='SELECT DISTINCT A.ID AS ID,CONCAT(B.FirstName,'' '',B.MiddleName,'' '',B.LastName) AS FULLNAME,B.Code AS ROLLNUMBER,
+			 (SELECT Content FROM FIELD200S WHERE FieldCode=''245'' AND ItemID=A.ItemID) AS BOOKNAME,
+			 I.Code AS BOOKCODE,A.CreatedDate AS CREATEDATE,A.TimeOutDate AS TIMEOUTDATE,A.CheckMail,A.InTurn,'''' AS ORDER_STATUS
+				FROM CIR_HOLDING A,CIR_PATRON B,FIELD200S F,ITEM I WHERE A.PatronCode=B.Code AND F.ItemID=I.ID AND A.ItemID=F.ItemID '
+ IF @strCheckOrder=1 AND @strOrderCancel=0
+ BEGIN
+	SET @strSql=@strSql+' AND ((A.CheckMail=1 AND A.InTurn=1 ) OR (A.CheckMail=0 AND A.InTurn=0)) '
+ END
+ ELSE IF @strOrderCancel=1 AND @strCheckOrder=0
+ BEGIN
+	SET @strSql=@strSql+' AND (A.CheckMail=1 AND A.InTurn=0 ) '
+ END
+ ELSE IF @strOrderCancel=1 AND @strCheckOrder=1
+ BEGIN
+	SET @strSql=@strSql+' AND ((A.CheckMail=1 AND A.InTurn=0 ) OR (A.CheckMail=1 AND A.InTurn=1 ) OR (A.CheckMail=0 AND A.InTurn=0))'
+ END
+  
+ IF @strDateFrom <> ''
+ BEGIN
+	SET @strSql=@strSql+' AND A.CreatedDate >= '''+@strDateFrom+''' '
+ END
+  IF @strDateTo <> ''
+ BEGIN
+	SET @strSql=@strSql+' AND A.CreatedDate <= '''+@strDateTo+''' '
+ END
+
+   IF @strTitleCheck=1 AND @strPatronCheck=0
+ BEGIN
+	SET @strSql=@strSql+' AND F.Content LIKE '''+'%$a'+@strSearchContent+'%'''
+ END
+   ELSE IF @strPatronCheck=1 AND @strTitleCheck=0
+ BEGIN
+	SET @strSql=@strSql+' AND A.PatronCode = '''+@strSearchContent+''''
+ END
+  ELSE IF @strPatronCheck=1 AND @strTitleCheck=1
+ BEGIN
+	SET @strSql=@strSql+' AND ((A.PatronCode LIKE  ''%'+@strSearchContent+'%'')'+'OR ( F.Content LIKE '''+'%$a'+@strSearchContent+'%''))'
+ END
+ EXEC(@strSql)
+PRINT (@strSql)
+END

@@ -101,6 +101,20 @@ namespace Libol.Controllers
                     sessionpcode = patroncode;
                 }
                 Getpatrondetail(patroncode);
+				HOLDING holding=db.HOLDINGs.Where(a => a.CopyNumber == CopyNumber).First();
+				
+
+				if (db.CIR_HOLDING.Where(a => a.ItemID == holding.ItemID).Count() != 0)
+				{
+					
+					if(db.CIR_HOLDING.Where(a => (a.ItemID == holding.ItemID) && (a.InTurn == false) && (a.CheckMail == false)).Count() != 0)
+					{
+						CIR_HOLDING cIR_HOLDING = db.CIR_HOLDING.Where(a => (a.ItemID == holding.ItemID) && (a.InTurn == false) && (a.CheckMail == false)).OrderByDescending(x=>x.CreatedDate).First();
+						CIR_PATRON cIR_PATRON = db.CIR_PATRON.Where(a => a.Code == cIR_HOLDING.PatronCode).First();
+						ViewBag.message = "Bạn đọc " + cIR_PATRON.FirstName + " " + cIR_PATRON.MiddleName + " " + cIR_PATRON.LastName + " .Mã SV:" + cIR_PATRON.Code + " đang đợi mượn cuốn này!";
+					}
+					
+				}
 				if (db.CIR_PATRON_LOCK.Where(a => a.PatronCode == patroncode).Count() == 0)
 				{
 					ViewBag.active = 1;
@@ -173,6 +187,23 @@ namespace Libol.Controllers
 					CheckInDate = db.CIR_LOAN_HISTORY.Where(a => a.ID == lastid).First().CheckInDate.ToString("dd/MM/yyyy"),
 					OverdueFine = db.CIR_LOAN_HISTORY.Where(a => a.ID == lastid).First().OverdueFine.ToString()
 				};
+				string messageOrder = "";
+				foreach(string item in strCopyNumbers)
+				{
+					HOLDING holding = db.HOLDINGs.Where(a => a.CopyNumber == item).First();
+					//check this book is on exist in table order
+					if (db.CIR_HOLDING.Where(a => a.ItemID == holding.ItemID).Count() != 0)
+					{
+						if (db.CIR_HOLDING.Where(a => (a.ItemID == holding.ItemID) && (a.InTurn == false) && (a.CheckMail == false)).Count() != 0)
+						{
+							CIR_HOLDING cIR_HOLDING = db.CIR_HOLDING.Where(a => (a.ItemID == holding.ItemID) && (a.InTurn == false) && (a.CheckMail == false)).OrderByDescending(x => x.CreatedDate).First();
+							CIR_PATRON cIR_PATRON = db.CIR_PATRON.Where(a => a.Code == cIR_HOLDING.PatronCode).First();
+							ITEM temp = db.ITEMs.Where(a => a.ID == cIR_HOLDING.ItemID).First();
+							messageOrder = messageOrder +"Mã SV:" + cIR_PATRON.Code + " đang đợi mượn tài liệu "+temp.Code+"\n" ;
+						}
+					}
+				}
+				ViewBag.message = messageOrder;
 			}
             return PartialView("_checkinByDKCB");
         }
