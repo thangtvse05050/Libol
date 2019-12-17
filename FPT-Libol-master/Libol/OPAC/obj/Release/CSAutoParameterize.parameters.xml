@@ -1,0 +1,6 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<parameters>
+  <parameter name="OpacEntities-Web.config Connection String" description="OpacEntities Connection String used in web.config by the application to access the database." defaultValue="metadata=res://*/Models.Opac.csdl|res://*/Models.Opac.ssdl|res://*/Models.Opac.msl;provider=System.Data.SqlClient;provider connection string=&quot;data source=DESKTOP-J01SHC3\MSSQLSERVER1;initial catalog=Libol;integrated security=True;MultipleActiveResultSets=True;App=EntityFramework&quot;" tags="SqlConnectionString">
+    <parameterEntry kind="XmlFile" scope="E:\\Capstone\ Project\\New\ OPAC\\GIT\\Libol\\FPT-Libol-master\\Libol\\OPAC\\obj\\Release\\Package\\PackageTmp\\Web\.config$" match="/configuration/connectionStrings/add[@name='OpacEntities']/@connectionString" />
+  </parameter>
+</parameters>
