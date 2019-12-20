@@ -172,8 +172,8 @@
                                 {
                                     count++;
                                     <tr>
-                                        <td class="fornews">@count</td>
-                                        <td class="fornews">
+                                        <td class="info-book">@count</td>
+                                        <td class="info-book">
                                             <a href="@Url.Action("DetailBook", "SearchBook", new {itemID = item.ItemID})"
                                                class="information-book-borrowing-truncate" title="@item.Title">
                                                 <b>@item.Title.Trim()</b>
@@ -188,15 +188,15 @@
                                                 checkInDate = "";
                                             }
                                         }
-                                        <td class="fornews" style="text-align: center">@checkOutDate</td>
-                                        <td class="fornews" style="text-align: center">@checkInDate</td>
+                                        <td class="info-book" style="text-align: center">@checkOutDate</td>
+                                        <td class="info-book" style="text-align: center">@checkInDate</td>
                                         @if (item.StatusId == 1 || item.StatusId == 2)
                                         {
-                                            <td class="fornews" style="text-align: center; color: red"><b>@item.Status</b></td>
+                                            <td class="info-book" style="text-align: center; color: red"><b>@item.Status</b></td>
                                         }
                                         else
                                         {
-                                            <td class="fornews" style="text-align: center; color: green"><b>@item.Status</b></td>
+                                            <td class="info-book" style="text-align: center; color: green"><b>@item.Status</b></td>
                                         }
                                     </tr>
                                 }

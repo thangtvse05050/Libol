@@ -19326,8 +19326,9 @@ th.searching {
 }
 
 td.detail {
-  padding: 4px;
-  width: 250px;
+    vertical-align: top;
+    padding: 4px;
+    width: 250px;
 }
 
 td.marc1 {
@@ -19410,6 +19411,8 @@ td.fordata {
 }
 
 td.fornews {
+    vertical-align: top;
+    width: 10px;
 	padding: 8px;
 }
 
@@ -19511,7 +19514,7 @@ table#infor {
 
 table#person-infor {
   margin: 0 auto;
-  width: 300px;
+  width: 380px;
 }
 
 a.more {
