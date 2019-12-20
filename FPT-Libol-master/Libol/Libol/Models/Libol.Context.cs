@@ -17651,7 +17651,7 @@ namespace Libol.Models
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SP_OPAC_GET_MAXID_BY_TOPNUM", lngTopNumParameter, strParamParameter, intFreeParameter);
         }
     
-        public virtual ObjectResult<SP_OPAC_GET_NEW_ITEMS_Result> SP_OPAC_GET_NEW_ITEMS(Nullable<bool> bitSECUREDOPAC, Nullable<int> intAccessLevel, Nullable<int> intTOP, Nullable<int> intNumberDay)
+        public virtual ObjectResult<SP_OPAC_GET_NEW_ITEMS_Result> SP_OPAC_GET_NEW_ITEMS(Nullable<bool> bitSECUREDOPAC, Nullable<int> intAccessLevel, Nullable<int> intTOP, Nullable<int> intLibID)
         {
             var bitSECUREDOPACParameter = bitSECUREDOPAC.HasValue ?
                 new ObjectParameter("bitSECUREDOPAC", bitSECUREDOPAC) :
@@ -17665,11 +17665,11 @@ namespace Libol.Models
                 new ObjectParameter("intTOP", intTOP) :
                 new ObjectParameter("intTOP", typeof(int));
     
-            var intNumberDayParameter = intNumberDay.HasValue ?
-                new ObjectParameter("intNumberDay", intNumberDay) :
-                new ObjectParameter("intNumberDay", typeof(int));
+            var intLibIDParameter = intLibID.HasValue ?
+                new ObjectParameter("intLibID", intLibID) :
+                new ObjectParameter("intLibID", typeof(int));
     
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<SP_OPAC_GET_NEW_ITEMS_Result>("SP_OPAC_GET_NEW_ITEMS", bitSECUREDOPACParameter, intAccessLevelParameter, intTOPParameter, intNumberDayParameter);
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<SP_OPAC_GET_NEW_ITEMS_Result>("SP_OPAC_GET_NEW_ITEMS", bitSECUREDOPACParameter, intAccessLevelParameter, intTOPParameter, intLibIDParameter);
         }
     
         public virtual int SP_OPAC_GET_NEW_REQUEST_GROUP_ID(ObjectParameter intNewRequestGroupID)
@@ -23407,24 +23407,6 @@ namespace Libol.Models
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Nullable<int>>("FPT_SPECIALIZED_REPORT_TOTAL_ITEM", intLibIDParameter, strItemIDsParameter, intTypeParameter, intUserIDParameter);
         }
     
-        public virtual ObjectResult<string> FPT_GET_DATE_SUGGEST_CHECKOUT(string term)
-        {
-            var termParameter = term != null ?
-                new ObjectParameter("term", term) :
-                new ObjectParameter("term", typeof(string));
-    
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<string>("FPT_GET_DATE_SUGGEST_CHECKOUT", termParameter);
-        }
-    
-        public virtual ObjectResult<string> FPT_GET_DATE_SUGGEST_RENEW(string term)
-        {
-            var termParameter = term != null ?
-                new ObjectParameter("term", term) :
-                new ObjectParameter("term", typeof(string));
-    
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<string>("FPT_GET_DATE_SUGGEST_RENEW", termParameter);
-        }
-    
         public virtual ObjectResult<SP_HOLDING_LIBLOCUSER_SEL2_Result> SP_HOLDING_LIBLOCUSER_SEL2(Nullable<int> intUserID, Nullable<int> intLibID)
         {
             var intUserIDParameter = intUserID.HasValue ?
@@ -24008,6 +23990,54 @@ namespace Libol.Models
                 new ObjectParameter("City", typeof(string));
     
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("FPT_ADD_CITY", intCityIDParameter, cityParameter);
+        }
+    
+        public virtual int FPT_ADD_COLLEGE(Nullable<int> intCollegeID, string college)
+        {
+            var intCollegeIDParameter = intCollegeID.HasValue ?
+                new ObjectParameter("intCollegeID", intCollegeID) :
+                new ObjectParameter("intCollegeID", typeof(int));
+    
+            var collegeParameter = college != null ?
+                new ObjectParameter("College", college) :
+                new ObjectParameter("College", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("FPT_ADD_COLLEGE", intCollegeIDParameter, collegeParameter);
+        }
+    
+        public virtual int FPT_ADD_FACULTY(Nullable<int> intFacultyID, string faculty, Nullable<int> intCollegeID)
+        {
+            var intFacultyIDParameter = intFacultyID.HasValue ?
+                new ObjectParameter("intFacultyID", intFacultyID) :
+                new ObjectParameter("intFacultyID", typeof(int));
+    
+            var facultyParameter = faculty != null ?
+                new ObjectParameter("Faculty", faculty) :
+                new ObjectParameter("Faculty", typeof(string));
+    
+            var intCollegeIDParameter = intCollegeID.HasValue ?
+                new ObjectParameter("intCollegeID", intCollegeID) :
+                new ObjectParameter("intCollegeID", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("FPT_ADD_FACULTY", intFacultyIDParameter, facultyParameter, intCollegeIDParameter);
+        }
+    
+        public virtual ObjectResult<string> FPT_GET_DATE_SUGGEST_CHECKOUT(string term)
+        {
+            var termParameter = term != null ?
+                new ObjectParameter("term", term) :
+                new ObjectParameter("term", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<string>("FPT_GET_DATE_SUGGEST_CHECKOUT", termParameter);
+        }
+    
+        public virtual ObjectResult<string> FPT_GET_DATE_SUGGEST_RENEW(string term)
+        {
+            var termParameter = term != null ?
+                new ObjectParameter("term", term) :
+                new ObjectParameter("term", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<string>("FPT_GET_DATE_SUGGEST_RENEW", termParameter);
         }
     }
 }

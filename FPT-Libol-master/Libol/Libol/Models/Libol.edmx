@@ -5466,6 +5466,15 @@ warning 6002: The table/view 'Libol.dbo.MARC_BIB_WS_DETAIL' does not have a prim
           <Parameter Name="intCityID" Type="int" Mode="In" />
           <Parameter Name="City" Type="nvarchar" Mode="In" />
         </Function>
+        <Function Name="FPT_ADD_COLLEGE" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="intCollegeID" Type="int" Mode="In" />
+          <Parameter Name="College" Type="nvarchar" Mode="In" />
+        </Function>
+        <Function Name="FPT_ADD_FACULTY" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="intFacultyID" Type="int" Mode="In" />
+          <Parameter Name="Faculty" Type="nvarchar" Mode="In" />
+          <Parameter Name="intCollegeID" Type="int" Mode="In" />
+        </Function>
         <Function Name="FPT_ADD_REASON" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="intReasonID" Type="int" Mode="In" />
           <Parameter Name="Reason" Type="nvarchar" Mode="In" />
@@ -11098,7 +11107,7 @@ warning 6002: The table/view 'Libol.dbo.MARC_BIB_WS_DETAIL' does not have a prim
           <Parameter Name="bitSECUREDOPAC" Type="bit" Mode="In" />
           <Parameter Name="intAccessLevel" Type="int" Mode="In" />
           <Parameter Name="intTOP" Type="int" Mode="In" />
-          <Parameter Name="intNumberDay" Type="int" Mode="In" />
+          <Parameter Name="intLibID" Type="int" Mode="In" />
         </Function>
         <Function Name="SP_OPAC_GET_NEW_REQUEST_GROUP_ID" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="intNewRequestGroupID" Type="int" Mode="InOut" />
@@ -24699,7 +24708,7 @@ warning 6002: The table/view 'Libol.dbo.MARC_BIB_WS_DETAIL' does not have a prim
             <Parameter Name="bitSECUREDOPAC" Mode="In" Type="Boolean" />
             <Parameter Name="intAccessLevel" Mode="In" Type="Int32" />
             <Parameter Name="intTOP" Mode="In" Type="Int32" />
-            <Parameter Name="intNumberDay" Mode="In" Type="Int32" />
+            <Parameter Name="intLibID" Mode="In" Type="Int32" />
           </FunctionImport>
           <FunctionImport Name="SP_OPAC_GET_NEW_REQUEST_GROUP_ID">
           <Parameter Name="intNewRequestGroupID" Mode="InOut" Type="Int32" />
@@ -26431,12 +26440,6 @@ warning 6002: The table/view 'Libol.dbo.MARC_BIB_WS_DETAIL' does not have a prim
             <Parameter Name="intType" Mode="In" Type="Int32" />
             <Parameter Name="intUserID" Mode="In" Type="Int32" />
           </FunctionImport>
-          <FunctionImport Name="FPT_GET_DATE_SUGGEST_CHECKOUT" ReturnType="Collection(String)">
-          <Parameter Name="term" Mode="In" Type="String" />
-          </FunctionImport>
-          <FunctionImport Name="FPT_GET_DATE_SUGGEST_RENEW" ReturnType="Collection(String)">
-          <Parameter Name="term" Mode="In" Type="String" />
-          </FunctionImport>
           <FunctionImport Name="SP_HOLDING_LIBLOCUSER_SEL2" ReturnType="Collection(LibolModel.SP_HOLDING_LIBLOCUSER_SEL2_Result)">
             <Parameter Name="intUserID" Mode="In" Type="Int32" />
             <Parameter Name="intLibID" Mode="In" Type="Int32" />
@@ -26597,6 +26600,21 @@ warning 6002: The table/view 'Libol.dbo.MARC_BIB_WS_DETAIL' does not have a prim
           <FunctionImport Name="FPT_ADD_CITY">
             <Parameter Name="intCityID" Mode="In" Type="Int32" />
             <Parameter Name="City" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="FPT_ADD_COLLEGE">
+            <Parameter Name="intCollegeID" Mode="In" Type="Int32" />
+            <Parameter Name="College" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="FPT_ADD_FACULTY">
+            <Parameter Name="intFacultyID" Mode="In" Type="Int32" />
+            <Parameter Name="Faculty" Mode="In" Type="String" />
+            <Parameter Name="intCollegeID" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="FPT_GET_DATE_SUGGEST_CHECKOUT" ReturnType="Collection(String)">
+            <Parameter Name="term" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="FPT_GET_DATE_SUGGEST_RENEW" ReturnType="Collection(String)">
+            <Parameter Name="term" Mode="In" Type="String" />
           </FunctionImport>
         </EntityContainer>
         <ComplexType Name="CAT_DIC_LIST_SEL_Result">
@@ -42361,8 +42379,6 @@ warning 6002: The table/view 'Libol.dbo.MARC_BIB_WS_DETAIL' does not have a prim
             </ResultMapping>
           </FunctionImportMapping>
           <FunctionImportMapping FunctionImportName="FPT_SPECIALIZED_REPORT_TOTAL_ITEM" FunctionName="LibolModel.Store.FPT_SPECIALIZED_REPORT_TOTAL_ITEM" />
-          <FunctionImportMapping FunctionImportName="FPT_GET_DATE_SUGGEST_CHECKOUT" FunctionName="LibolModel.Store.FPT_GET_DATE_SUGGEST_CHECKOUT" />
-          <FunctionImportMapping FunctionImportName="FPT_GET_DATE_SUGGEST_RENEW" FunctionName="LibolModel.Store.FPT_GET_DATE_SUGGEST_RENEW" />
           <FunctionImportMapping FunctionImportName="SP_HOLDING_LIBLOCUSER_SEL2" FunctionName="LibolModel.Store.SP_HOLDING_LIBLOCUSER_SEL2">
             <ResultMapping>
               <ComplexTypeMapping TypeName="LibolModel.SP_HOLDING_LIBLOCUSER_SEL2_Result">
@@ -42554,6 +42570,10 @@ warning 6002: The table/view 'Libol.dbo.MARC_BIB_WS_DETAIL' does not have a prim
             </ResultMapping>
           </FunctionImportMapping>
           <FunctionImportMapping FunctionImportName="FPT_ADD_CITY" FunctionName="LibolModel.Store.FPT_ADD_CITY" />
+          <FunctionImportMapping FunctionImportName="FPT_ADD_COLLEGE" FunctionName="LibolModel.Store.FPT_ADD_COLLEGE" />
+          <FunctionImportMapping FunctionImportName="FPT_ADD_FACULTY" FunctionName="LibolModel.Store.FPT_ADD_FACULTY" />
+          <FunctionImportMapping FunctionImportName="FPT_GET_DATE_SUGGEST_CHECKOUT" FunctionName="LibolModel.Store.FPT_GET_DATE_SUGGEST_CHECKOUT" />
+          <FunctionImportMapping FunctionImportName="FPT_GET_DATE_SUGGEST_RENEW" FunctionName="LibolModel.Store.FPT_GET_DATE_SUGGEST_RENEW" />
           </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>
