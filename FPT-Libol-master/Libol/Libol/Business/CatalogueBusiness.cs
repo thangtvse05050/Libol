@@ -1193,6 +1193,7 @@ namespace Libol.Models
                 contenstOfItems.Ind = "";
                 list.Add(contenstOfItems);
             }
+
             if (catalogue.ChiSoPhanLoaiCucBo != null || catalogue.ChiSoCutterCucBo != null)
             {
                 contenstOfItems = new FPT_SP_CATA_GET_CONTENTS_OF_ITEMS_Result();
@@ -1200,7 +1201,11 @@ namespace Libol.Models
                 if (catalogue.ChiSoPhanLoaiCucBo != null)
                 {
                     content += "$a" + catalogue.ChiSoPhanLoaiCucBo;
+                } else
+                {
+                    content += "$a" + catalogue.ChiSoPhanLoai;
                 }
+
                 if (catalogue.ChiSoCutterCucBo != null)
                 {
                     content += "$b" + catalogue.ChiSoCutterCucBo;
@@ -1212,6 +1217,15 @@ namespace Libol.Models
                 contenstOfItems.Ind = "";
                 list.Add(contenstOfItems);
             }
+            else
+            {
+                contenstOfItems = new FPT_SP_CATA_GET_CONTENTS_OF_ITEMS_Result();
+                contenstOfItems.Content = "$a" + catalogue.ChiSoPhanLoai;
+                contenstOfItems.IDSort = "090";
+                contenstOfItems.Ind = "";
+                list.Add(contenstOfItems);
+            }
+
             if (catalogue.HoTenRieng != null)
             {
                 contenstOfItems = new FPT_SP_CATA_GET_CONTENTS_OF_ITEMS_Result();

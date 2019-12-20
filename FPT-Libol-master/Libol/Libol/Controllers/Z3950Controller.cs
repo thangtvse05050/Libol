@@ -407,7 +407,7 @@ namespace Libol.Controllers
                                         {
                                             if (subField.Attributes["code"].Value.Equals("a"))
                                             {
-                                                cat.ThuatNguChuDiem = subField.InnerText;
+                                                cat.ThuatNguChuDiem = subField.InnerText.Replace(",", "::");
                                             }
                                         }
                                     }
@@ -421,7 +421,7 @@ namespace Libol.Controllers
                                         {
                                             if (subField.Attributes["code"].Value.Equals("a"))
                                             {
-                                                cat.ThuatNguKhongKiemSoat = subField.InnerText;
+                                                cat.ThuatNguKhongKiemSoat = subField.InnerText.Replace(",", "::");
                                             }
                                         }
                                     }

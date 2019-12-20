@@ -33,17 +33,19 @@ else if (ViewBag.catalog.Count >= 1)
             <form action="/Z3950/SendCatalogue" method="post" target="_blank">
                 <table class="table table-bordered table-striped" style="border-collapse: collapse" , border="1">
                     <tr>
-                        <th style="text-align:center">Nhan đề</th>
+                        <th style="text-align:center">Nhan đề</th> 
+                        <th style="text-align:center">ISBN</th>
                         <th style="text-align:center">Tác giả</th>
                         <th style="text-align:center">Nhà xuất bản</th>
                         <th style="text-align:center">Nơi xuất bản</th>
-                        <th style="text-align:center">Ngày xuất bản</th>
-                        <th style="text-align:center">Chi tiết</th>
+                        <th style="text-align:center">Năm xuất bản</th>
+                        <th style="text-align:center">Biên mục</th>
                     </tr>
                     @foreach (var item in ViewBag.catalog)
                     {
                         <tr>
-                            <td>@item.NhanDeChinh</td>
+                            <td>@item.NhanDeChinh</td>       
+                            <td>@item.ChiSoISBN</td>
                             <td>@item.HoTenRieng</td>
                             <td>@item.NhaXuatBan</td>
                             <td>@item.NoiXuatBan</td>
