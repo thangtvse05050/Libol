@@ -86,7 +86,8 @@ namespace OPAC.Controllers
 
             var isExisted = _dbContext.NOTICE_STORE.ToList().Any(t => t.TypeID == data.TypeID);
 
-            if (data.TypeID == 3 || data.TypeID == 4 || data.TypeID == 5 || data.TypeID == 6 && isExisted)
+            if (isExisted && data.TypeID == 3 || isExisted && data.TypeID == 4 || isExisted && data.TypeID == 5 || 
+                isExisted && data.TypeID == 6)
             {
                 TempData["ErrorMessage"] = "Mục " + HomeDao.GetTypeNotice(data.TypeID) + " chỉ được đăng 1 bài viết!";
             
@@ -160,8 +161,6 @@ namespace OPAC.Controllers
                     noticeList.Add(notification);
                 }
             }
-
-            noticeList = noticeList.OrderByDescending(t => t.CreateTime).ToList();
 
             foreach (var item in noticeList)
             {
@@ -434,7 +433,7 @@ namespace OPAC.Controllers
             int noticeId = Convert.ToInt32(typeId);
             var isExisted = _dbContext.NOTICE_STORE.ToList().Any(t => t.TypeID == noticeId);
 
-            if (noticeId == 3 || noticeId == 4 || noticeId == 5 || noticeId == 6 && isExisted)
+            if (isExisted && noticeId == 3 || isExisted && noticeId == 4 || isExisted && noticeId == 5 || isExisted && noticeId == 6)
             {
                 return Json(new { Message = "Mục này đã có và chỉ được đăng 1 bài viết!" }, JsonRequestBehavior.AllowGet);
             }

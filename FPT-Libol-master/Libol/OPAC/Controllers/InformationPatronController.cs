@@ -3,9 +3,12 @@ using OPAC.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
+using System.Net.Mail;
 using System.Text;
 using System.Web;
 using System.Web.Mvc;
+using System.Xml;
 
 namespace OPAC.Controllers
 {
@@ -27,6 +30,13 @@ namespace OPAC.Controllers
         [HttpPost]
         public ActionResult PatronAfterLoginPage(string username, string password)
         {
+            if (string.IsNullOrWhiteSpace(username) || string.IsNullOrWhiteSpace(password))
+            {
+                TempData["LoginFail1"] = "Vui lòng nhập tên đăng nhập hoặc mật khẩu!";
+
+                return View();
+            }
+
             var checkUser = dbContext.SP_OPAC_CHECK_PATRON_CARD(username, password).FirstOrDefault();
 
             if (checkUser != null)
@@ -93,6 +103,13 @@ namespace OPAC.Controllers
         [HttpPost]
         public ActionResult BookBorrowingPage(string username, string password)
         {
+            if (string.IsNullOrWhiteSpace(username) || string.IsNullOrWhiteSpace(password))
+            {
+                TempData["LoginFail2"] = "Vui lòng nhập tên đăng nhập hoặc mật khẩu!";
+
+                return View();
+            }
+
             var checkUser = dbContext.SP_OPAC_CHECK_PATRON_CARD(username, password).FirstOrDefault();
 
             if (checkUser != null)
@@ -137,6 +154,13 @@ namespace OPAC.Controllers
         [HttpPost]
         public ActionResult RegisterToBorrowBookPage(string username, string password)
         {
+            if (string.IsNullOrWhiteSpace(username) || string.IsNullOrWhiteSpace(password))
+            {
+                TempData["LoginFail3"] = "Vui lòng nhập tên đăng nhập hoặc mật khẩu!";
+
+                return View();
+            }
+
             var checkUser = dbContext.SP_OPAC_CHECK_PATRON_CARD(username, password).FirstOrDefault();
 
             if (checkUser != null)
@@ -176,6 +200,13 @@ namespace OPAC.Controllers
         [HttpPost]
         public ActionResult ViewHistoryPage(string username, string password)
         {
+            if (string.IsNullOrWhiteSpace(username) || string.IsNullOrWhiteSpace(password))
+            {
+                TempData["LoginFail4"] = "Vui lòng nhập tên đăng nhập hoặc mật khẩu!";
+
+                return View();
+            }
+
             var checkUser = dbContext.SP_OPAC_CHECK_PATRON_CARD(username, password).FirstOrDefault();
 
             if (checkUser != null)
@@ -191,6 +222,121 @@ namespace OPAC.Controllers
             TempData["LoginFail4"] = "Tên đăng nhập/mật khẩu không đúng!";
 
             return View();
+        }
+
+        [HttpPost]
+        public ActionResult ForgetPassword(string studentCode, string email, int page) 
+        {
+            try
+            {
+                if (string.IsNullOrWhiteSpace(email) || string.IsNullOrWhiteSpace(studentCode))
+                {
+                    TempData["Error"] = "Email hoặc mã sinh viên không được để trống!";
+
+                    switch (page)
+                    {
+                        case 1:
+                            return RedirectToAction("PatronAfterLoginPage");
+                        case 2:
+                            return RedirectToAction("BookBorrowingPage");
+                        case 3:
+                            return RedirectToAction("RegisterToBorrowBookPage");
+                        case 4:
+                            return RedirectToAction("ViewHistoryPage");
+                    }
+                }
+
+                string newPassword = dao.RandomPassword();
+                if (dao.UpdatePasswordByEmail(newPassword, email, studentCode) == 1)
+                {
+                    var fromAddress = new MailAddress("santintt197@gmail.com", "FPT Library");
+                    var toAddress = new MailAddress(email, "To Name");
+                    string subject = "";
+                    string content = "";
+                    const string fromPassword = "trongthang197";
+                    string filePath = Server.MapPath("~/MailContent/ChangePasswordAccount.xml");
+                    XmlDocument doc = new XmlDocument();
+                    doc.Load(filePath);
+                    foreach (XmlNode node in doc.DocumentElement.ChildNodes)
+                    {
+                        if (node.Name.Equals("subject"))
+                        {
+                            subject = node.InnerText;
+                        }
+                        if (node.Name.Equals("content"))
+                        {
+                            content = node.InnerText;
+                        }
+                    }
+
+                    //Thay thế từ trong file xml thành data load từ database
+                    content = content.Replace("pass", newPassword);
+
+                    var smtp = new SmtpClient
+                    {
+                        Host = "smtp.gmail.com",
+                        Port = 587,
+                        EnableSsl = true,
+                        DeliveryMethod = SmtpDeliveryMethod.Network,
+                        UseDefaultCredentials = false,
+                        Credentials = new NetworkCredential(fromAddress.Address, fromPassword)
+                    };
+                    using (var message = new MailMessage(fromAddress, toAddress)
+                    {
+                        Subject = subject,
+                        Body = content,
+                    })
+                    {
+                        message.IsBodyHtml = true;
+                        smtp.Send(message);
+                    }
+
+                    TempData["ForgetPassword"] = "Mật khẩu mới đã được đặt lại!";
+
+                    switch (page)
+                    {
+                        case 1:
+                            return RedirectToAction("PatronAfterLoginPage");
+                        case 2:
+                            return RedirectToAction("BookBorrowingPage");
+                        case 3:
+                            return RedirectToAction("RegisterToBorrowBookPage");
+                        case 4:
+                            return RedirectToAction("ViewHistoryPage");
+                    }
+                }
+
+            }
+            catch (FormatException)
+            {
+                TempData["Error"] = "Địa chỉ email hoặc mã sinh viên không đúng!";
+
+                switch (page)
+                {
+                    case 1:
+                        return RedirectToAction("PatronAfterLoginPage");
+                    case 2:
+                        return RedirectToAction("BookBorrowingPage");
+                    case 3:
+                        return RedirectToAction("RegisterToBorrowBookPage");
+                    case 4:
+                        return RedirectToAction("ViewHistoryPage");
+                }
+            }
+
+            TempData["Error"] = "Mã sinh viên hoặc email không đúng!";
+
+            switch (page)
+            {
+                case 1:
+                    return RedirectToAction("PatronAfterLoginPage");
+                case 2:
+                    return RedirectToAction("BookBorrowingPage");
+                case 3:
+                    return RedirectToAction("RegisterToBorrowBookPage");
+            }
+
+            return RedirectToAction("ViewHistoryPage");
         }
     }
 }

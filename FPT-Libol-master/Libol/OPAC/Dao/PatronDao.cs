@@ -87,7 +87,7 @@ namespace OPAC.Dao
         /// </summary>
         /// <param name="newDate"></param>
         /// <param name="countRenew"></param>
-        /// <param name="itemID"></param>
+        /// <param name="ID"></param>
         public void ExtendDate(string newDate, int countRenew, int ID)
         {
             using (var dbContext = new OpacEntities())
@@ -110,17 +110,32 @@ namespace OPAC.Dao
         /// <summary>
         /// Get number day for extend date
         /// </summary>
-        /// <param name="cirID"></param>
-        /// <param name="loanTypeID"></param>
+        /// <param name="itemID"></param>
+        /// <param name="copyNumber"></param>
         /// <returns></returns>
-        public static int GetRenewalPeriod(int cirID, int loanTypeID)
+        public static int GetRenewalPeriod(int itemID, string copyNumber)
         {
             using (var dbContext = new OpacEntities())
             {
-                var renewalPeriod = (from t in dbContext.CIR_LOAN_TYPE
-                    join q in dbContext.CIR_LOAN on t.ID equals q.LoanTypeID
-                    where q.LoanTypeID == loanTypeID && q.ID == cirID
-                    select t.RenewalPeriod).FirstOrDefault();
+                //Renew day for Textbooks are 1 week, Reference books with "Eng" language is 2 weeks, "Vie" is 1 week
+                var renewalPeriod = 7;
+                var bookType = dbContext.HOLDINGs.Where(t => t.ItemID == itemID).Select(t => t.CopyNumber).FirstOrDefault();
+
+                if (bookType != null)
+                {
+                    bookType = bookType.Substring(0, 2);
+
+                    if (bookType.ToLower().Equals("tk"))
+                    {
+                        var book = dbContext.FPT_SP_GET_LANGUAGE_CODE_ITEM(itemID).FirstOrDefault();
+
+                        if (book != null && !book.ToLower().Trim().Equals("vie"))
+                        {
+                            renewalPeriod = 14;
+                        }
+                    }
+
+                }
 
                 return renewalPeriod;
             }

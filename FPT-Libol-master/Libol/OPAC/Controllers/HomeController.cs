@@ -84,10 +84,10 @@ namespace OPAC.Controllers
             ViewBag.Total = counter.GetTotal();
 
             //TypeID = 1 : News, 2 : Notification
-            ViewBag.News = _dbContext.NOTICE_STORE.Where(t => t.TypeID == 1).OrderByDescending(t => t.CreateTime).Take(5).ToList();
+            ViewBag.News = _dbContext.NOTICE_STORE.Where(t => t.TypeID == 1).OrderByDescending(t => t.CreateTime).Take(4).ToList();
             ViewBag.FullNews = _dbContext.NOTICE_STORE.Where(t => t.TypeID == 1).OrderByDescending(t => t.CreateTime).ToList();
             ViewBag.Notification = _dbContext.NOTICE_STORE.Where(t => t.TypeID == 2).OrderByDescending(t => t.CreateTime)
-                .Take(5).ToList();
+                .Take(4).ToList();
             ViewBag.FullNotification = _dbContext.NOTICE_STORE.Where(t => t.TypeID == 2).OrderByDescending(t => t.CreateTime).ToList();
 
             //Pass date for counter to view
@@ -123,7 +123,8 @@ namespace OPAC.Controllers
         private string RemoveSpecialCharacter(string input)
         {
             return input.Replace("$a", "").Replace("$b", " ")
-                .Replace("$c", " ").Replace("$e", " ").Replace("$n", " ");
+                .Replace("$c", " ").Replace("$e", " ").Replace("$n", " ")
+                .Replace("$p", " ");
         }
 
         //Get data of counter visitor
