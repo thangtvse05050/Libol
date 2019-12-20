@@ -166,20 +166,20 @@
                                 {
                                     count++;
                                     <tr>
-                                        <td class="fornews">@count</td>
-                                        <td class="fornews">
+                                        <td class="info-book">@count</td>
+                                        <td class="info-book">
                                             <a href="@Url.Action("DetailBook", "SearchBook", new { itemID = item.ItemID })"
                                                class="history-book-borrowing-truncate" title="@item.Title">
                                                 <b>@item.Title.Trim()</b>
                                             </a>
                                         </td>
-                                        <td class="fornews" style="text-align: center">@item.CopyNumber</td>
+                                        <td class="info-book" style="text-align: center">@item.CopyNumber</td>
                                         @{
                                             string checkOutDate = item.CheckOutdate.ToString("dd/MM/yyyy");
                                             string checkInDate = item.CheckInDate.ToString("dd/MM/yyyy");
                                         }
-                                        <td class="fornews" style="text-align: center">@checkOutDate</td>
-                                        <td class="fornews" style="text-align: center">@checkInDate</td>
+                                        <td class="info-book" style="text-align: center">@checkOutDate</td>
+                                        <td class="info-book" style="text-align: center">@checkInDate</td>
                                     </tr>
                                 }
                             }
