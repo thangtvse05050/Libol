@@ -273,6 +273,20 @@ namespace OPAC.Dao
             return DateTime.Now.Date >= expiredDateTime.Date.AddDays(-3) && DateTime.Now.Date <= expiredDateTime.Date;
         }
 
+        /// <summary>
+        /// Get content of lock reason patron's account
+        /// </summary>
+        /// <param name="patronCode"></param>
+        /// <returns></returns>
+        public static string GetLockReason(string patronCode)
+        {
+            using (var dbContext = new OpacEntities())
+            {
+                return dbContext.CIR_PATRON_LOCK.Where(t => t.PatronCode.ToLower().Equals(patronCode.ToLower()))
+                    .Select(t => t.Note).FirstOrDefault();
+            }
+        }
+
         public static DateTime ConvertStringToDateTime(string datetime)
         {
             var splitTime = datetime.Split('/');
