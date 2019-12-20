@@ -28,7 +28,6 @@
             overflow: auto; /* Enable scroll if needed */
             background-color: rgb(0,0,0); /* Fallback color */
             background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
-            
         }
 
         /* Modal Content */
@@ -85,7 +84,7 @@
     <div class="form-horizontal">
         <br />
 
-
+        <div class="col-3"><button class="btn btn-success" id="btnThemCity">Thêm Thành phố</button>&nbsp<button class="btn btn-success" id="btnThemCollege">Thêm Trường</button>&nbsp<button class="btn btn-success" id="btnThemFaculty">Thêm Chuyên ngành</button>@*&nbsp<button class="btn btn-success" id="btnThemPatronGroup">Thêm Nhóm bạn đọc</button>*@</div>
         @Html.HiddenFor(model => model.ID)
 
         <div class="form-group">
@@ -189,7 +188,7 @@
                 @Html.EditorFor(model => model.College, new { htmlAttributes = new { @class = "form-control", @id = "txtCollege" } })
                 @Html.ValidationMessageFor(model => model.College, "", new { @class = "text-danger" })
             </div>
-            <div class="col-md-2">
+            <div class="col-md-1">
                 <select class="form-control" id="select3" onchange="changeCollege()">
                     <option value="-1">----- Chọn -----</option>
                     @foreach (var item in ViewBag.listCollegeDB)
@@ -209,7 +208,7 @@
                 @if (ViewBag.failMessage.Contains("faculty"))
                 {<p style="color:red">Chuyên ngành sai</p>}
             </div>
-            <div class="col-md-2">
+            <div class="col-md-1">
                 <select class="form-control" id="select4" onchange="changeFaculty()">
                     <option value="-1">----- Chọn -----</option>
 
@@ -242,7 +241,7 @@
                 @Html.EditorFor(model => model.City, new { htmlAttributes = new { @class = "form-control", @id = "txtCity" } })
                 @Html.ValidationMessageFor(model => model.City, "", new { @class = "text-danger" })
             </div>
-            <div class="col-md-2">
+            <div class="col-md-1">
                 <select class="form-control" id="select2" onchange="changeCity()">
                     <option value="-1">----- Chọn -----</option>
                     @foreach (var item in ViewBag.listCityDB)
@@ -251,7 +250,7 @@
                     }
                 </select>
             </div>
-            //<div class="col-3"><button type="button" class="btn btn-primary" onclick="ShowSearchCodeForm2()">Thêm</button></div>
+
         </div>
 
         <div class="form-group">
@@ -268,7 +267,7 @@
                 @Html.EditorFor(model => model.PatronGroup, new { htmlAttributes = new { @class = "form-control", @id = "txtPatronGroup" } })
                 @Html.ValidationMessageFor(model => model.PatronGroup, "", new { @class = "text-danger" })
             </div>
-            <div class="col-md-2">
+            <div class="col-md-1">
                 <select class="form-control" id="select1" onchange="changePatronGroup()">
                     <option value="-1">----- Chọn -----</option>
                     @foreach (var item in ViewBag.listPatronGroup)
@@ -286,56 +285,148 @@
         </div>
 
     </div>
-   @*<div id="AddCity" class="modal" >
-        
+    //thêm city
+    <div id="AddCity" class="modal">
+
         <div class="modal-content">
             <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
 
-                </button>
                 <h4 style="text-align: center">Thêm Thành phố</h4>
             </div>
-               
+
+            <div class="modal2-body">
+
+                <table style="width: 100%">
+                    <tr>
+                        <td style="width: 38%;text-align: right"><label for="txtAddCity">Thành phố:</label></td>
+                        <td style=""><input type="text" class="form-control" id="txtAddCity" style="width: 300px;margin-left: 20px;"></td>
+                    </tr>
+
+                </table>
+
+            </div>
+            <div style="text-align: center; border-top: 1px solid rgb(222, 226, 230);border-bottom: 2px solid black;padding:10px 0 10px 0;margin:10px 0 10px 0">
+                <button class="btn btn-danger" id="btnAddCity">Thêm</button>
+
+                <button class="btn btn-danger" id="btnCloseCity">Đóng</button>
+            </div>
+        </div>
+    </div>
+    //thêm trường
+    <div id="AddCollege" class="modal">
+
+        <div class="modal-content">
+            <div class="modal-header">
+
+                <h4 style="text-align: center">Thêm Trường</h4>
+            </div>
+
+            <div class="modal2-body">
+
+                <table style="width: 100%">
+                    <tr>
+                        <td style="width: 38%;text-align: right"><label for="txtAddCollege">Trường:</label></td>
+                        <td style=""><input type="text" class="form-control" id="txtAddCollege" style="width: 300px;margin-left: 20px;"></td>
+                    </tr>
+
+                </table>
+
+            </div>
+            <div style="text-align: center; border-top: 1px solid rgb(222, 226, 230);border-bottom: 2px solid black;padding:10px 0 10px 0;margin:10px 0 10px 0">
+                <button class="btn btn-danger" id="btnAddCollege">Thêm</button>
+
+                <button class="btn btn-danger" id="btnCloseCollege">Đóng</button>
+            </div>
+        </div>
+    </div>
+    //thêm chuyên ngành
+    <div id="AddFaculty" class="modal">
+
+        <div class="modal-content">
+            <div class="modal-header">
+
+                <h4 style="text-align: center">Thêm Chuyên ngành</h4>
+            </div>
+
+            <div class="modal2-body">
+
+
+
+                <table style="width: 100%">
+                    <tr>
+                        <td style="width: 38%;text-align: right"><label>Chọn Trường:</label></td>
+                        <td style="">
+                            <select class="form-control" style="width: 300px;margin-left: 20px;" id="selectCollege">
+                                <option value="-1">----- Chọn -----</option>
+                                @foreach (var item in ViewBag.listCollegeDB)
+                                {
+                                    <option value="@item.ID">@item.College</option>
+                                }
+                            </select>
+                        </td>
+                    </tr>
+                    <tr>
+
+                        <td style="width: 38%;text-align: right"><label for="txtAddFaculty">Chuyên ngành:</label></td>
+                        <td style=""><input type="text" class="form-control" id="txtAddFaculty" style="width: 300px;margin-left: 20px;"></td>
+                    </tr>
+
+                </table>
+
+            </div>
+            <div style="text-align: center; border-top: 1px solid rgb(222, 226, 230);border-bottom: 2px solid black;padding:10px 0 10px 0;margin:10px 0 10px 0">
+                <button class="btn btn-danger" id="btnAddFaculty">Thêm</button>
+
+                <button class="btn btn-danger" id="btnCloseFaculty">Đóng</button>
+            </div>
+        </div>
+    </div>
+    @*//thêm nhóm bạn đọc
+        <div id="AddPatronGroup" class="modal">
+
+            <div class="modal-content">
+                <div class="modal-header">
+
+                    <h4 style="text-align: center">Thêm Nhóm bạn đọc</h4>
+                </div>
+
                 <div class="modal2-body">
 
                     <table style="width: 100%">
                         <tr>
-                            <td style="width: 38%;text-align: right"><label for="txtAddCity">Thành phố:</label></td>
-                            <td style=""><input type="text" class="form-control" id="txtAddCity" style="width: 300px;margin-left: 20px;"></td>
+                            <td style="width: 38%;text-align: right"><label for="txtAddPatronGroup">Nhóm bạn đọc:</label></td>
+                            <td style=""><input type="text" class="form-control" id="txtAddPatronGroup" style="width: 300px;margin-left: 20px;"></td>
                         </tr>
 
                     </table>
 
                 </div>
                 <div style="text-align: center; border-top: 1px solid rgb(222, 226, 230);border-bottom: 2px solid black;padding:10px 0 10px 0;margin:10px 0 10px 0">
-                    <button class="btn btn-danger" id="btnAdd">Thêm</button>
-                   
-                    <button class="btn btn-danger" id="btnClose">Đóng</button>
+                    <button class="btn btn-danger" id="btnAddPatronGroup">Thêm</button>
+
+                    <button class="btn btn-danger" id="btnClosePatronGroup">Đóng</button>
                 </div>
             </div>
         </div>*@
-
-
-        <script type="text/javascript">
-          function changePatronGroup() {
-                    var result = document.getElementById("select1").value;
-                    document.getElementById("txtPatronGroup").value = result;
-                }
-                function changeCity() {
-                    var result = document.getElementById("select2").value;
-                    document.getElementById("txtCity").value = result;
-                }
-                function changeCollege() {
-                    var collegeChange = document.getElementById("select3").value;
-                    document.getElementById("txtCollege").value = collegeChange;
-                    var e = document.getElementById("select3");
-                    var college = e.options[e.selectedIndex].value;
-                    var empObj = {
+    <script type="text/javascript">
+        function changePatronGroup() {
+            var result = document.getElementById("select1").value;
+            document.getElementById("txtPatronGroup").value = result;
+        }
+        function changeCity() {
+            var result = document.getElementById("select2").value;
+            document.getElementById("txtCity").value = result;
+        }
+        function changeCollege() {
+            var collegeChange = document.getElementById("select3").value;
+            document.getElementById("txtCollege").value = collegeChange;
+            var e = document.getElementById("select3");
+            var college = e.options[e.selectedIndex].value;
+            var empObj = {
                 College: college
             };
             $.ajax({
-            url: "/Patron/changeCollege",
+                url: "/Patron/changeCollege",
                 data: JSON.stringify(empObj),
                 type: "POST",
                 contentType: "application/json;charset=utf-8",
@@ -362,24 +453,24 @@
                 FacultyID: result2
             };
             $.ajax({
-        url: "/Patron/displayFaculty",
+                url: "/Patron/displayFaculty",
                 data: JSON.stringify(empObj),
                 type: "POST",
                 contentType: "application/json;charset=utf-8",
                 dataType: "json",
                 success: function (result) {
-                document.getElementById("txtFaculty").value = result;
+                    document.getElementById("txtFaculty").value = result;
 
-            },
+                },
                 error: function (errormessage) {
 
-            }
-        });
+                }
+            });
         }
         //function ShowSearchCodeForm2() {
-        //   document.getElementById("AddCity").style.display = "block";
+        //    document.getElementById("AddCity").style.display = "block";
         //    //$('#AddCity').show();
-            
+
         //}
 
         //function CloseSearchCodeForm2() {
@@ -388,25 +479,54 @@
         //    //$("#AddCity").close();
 
         //    $('#AddCity').hide();
-            
+
         //}
-        @*$('#btnClose').on('click',function (e) {
+        $('#btnCloseCity').on('click', function (e) {
             document.getElementById("AddCity").style.display = "none";
             e.preventDefault();
         });
-        $('#btnAdd').on('click', function (e) {
+        $('#btnThemCity').on('click', function (e) {
+            document.getElementById("AddCity").style.display = "block";
+            e.preventDefault();
+        });
+        $('#btnCloseCollege').on('click', function (e) {
+            document.getElementById("AddCollege").style.display = "none";
+            e.preventDefault();
+        });
+        $('#btnThemCollege').on('click', function (e) {
+            document.getElementById("AddCollege").style.display = "block";
+            e.preventDefault();
+        });
+        $('#btnCloseFaculty').on('click', function (e) {
+            document.getElementById("AddFaculty").style.display = "none";
+            e.preventDefault();
+        });
+        $('#btnThemFaculty').on('click', function (e) {
+            document.getElementById("AddFaculty").style.display = "block";
+            e.preventDefault();
+        });
+        $('#btnClosePatronGroup').on('click', function (e) {
+            document.getElementById("AddPatronGroup").style.display = "none";
+            e.preventDefault();
+        });
+        $('#btnThemPatronGroup').on('click', function (e) {
+            document.getElementById("AddPatronGroup").style.display = "block";
+            e.preventDefault();
+        });
+        $('#btnAddCity').on('click', function (e) {
 
             var city = document.getElementById("txtAddCity").value;
-            var data= @Model;
+
             $.ajax({
-                url: "/Patron/AddCity2",
-                data: JSON.stringify({ city,data }),
+                url: "/Patron/AddCity",
+                data: JSON.stringify({ city }),
                 type: "POST",
                 contentType: "application/json;charset=utf-8",
                 dataType: "json",
-                success: function (result) {
+
+                success: function () {
                     //alert('Bạn đã thanh lý sản phẩm thành công');
-                    if (result != "") {
+                    
 
                         $.alert({
                             title: 'Thông Báo !',
@@ -416,7 +536,7 @@
 
                         //window.location.preventDefault();
                         //
-                    }
+                    
                     window.location.reload();
                 },
                 error: function () {
@@ -424,9 +544,79 @@
                 }
 
             });
-           // e.preventDefault();
+            // e.preventDefault();
 
-        });*@
+        });
+        $('#btnAddCollege').on('click', function (e) {
+
+            var college = document.getElementById("txtAddCollege").value;
+
+            $.ajax({
+                url: "/Patron/AddCollege",
+                data: JSON.stringify({ college }),
+                type: "POST",
+                contentType: "application/json;charset=utf-8",
+                dataType: "json",
+
+                success: function () {
+                    //alert('Bạn đã thanh lý sản phẩm thành công');
+                   
+
+                        $.alert({
+                            title: 'Thông Báo !',
+                            content: 'Thêm thành công!',
+
+                        });
+
+                        //window.location.preventDefault();
+                        //
+                    
+                    window.location.reload();
+                },
+                error: function () {
+                    alert('Thêm không thành công');
+                }
+
+            });
+            // e.preventDefault();
+
+        });
+        $('#btnAddFaculty').on('click', function (e) {
+
+            var faculty = document.getElementById("txtAddFaculty").value;
+            var collegeId = document.getElementById("selectCollege").value;
+
+            $.ajax({
+                url: "/Patron/AddFaculty",
+                data: JSON.stringify({ faculty, collegeId }),
+                type: "POST",
+                contentType: "application/json;charset=utf-8",
+                dataType: "json",
+
+                success: function () {
+                    //alert('Bạn đã thanh lý sản phẩm thành công');
+                  
+
+                        $.alert({
+                            title: 'Thông Báo !',
+                            content: 'Thêm thành công!',
+
+                        });
+
+                        //window.location.preventDefault();
+                       //
+                    
+                    window.location.reload();
+                },
+                error: function () {
+                    alert('Thêm không thành công');
+                }
+
+            });
+            // e.preventDefault();
+
+        });
+  
     </script>
 }
 

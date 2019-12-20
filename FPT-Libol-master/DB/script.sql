@@ -8002,7 +8002,7 @@ CREATE        PROCEDURE [dbo].[FPT_GET_DATE_SUGGEST_CHECKOUT]
 	BEGIN
 	SELECT CONVERT(VARCHAR, DueDate, 103) as DueDate
 	FROM CIR_LOAN
-	WHERE DueDate> GETDATE() AND CONVERT(VARCHAR, DueDate, 103) LIKE @term +'%'
+	WHERE DueDate> GETDATE() AND CONVERT(VARCHAR, DueDate, 103) LIKE @term +'%' and CONVERT(VARCHAR, CheckOutDate, 103)= CONVERT(VARCHAR, GetDATE(), 103)
 	ORDER BY ID DESC
 	END
 /****** Object:  StoredProcedure [dbo].[FPT_GET_DATE_SUGGEST_RENEW]    Script Date: 10/6/2019 8:45:37 PM ******/
@@ -8019,7 +8019,7 @@ CREATE        PROCEDURE [dbo].[FPT_GET_DATE_SUGGEST_RENEW]
 	BEGIN
 	SELECT CONVERT(VARCHAR, OverDueDateNew, 103) as OverDueDateNew
 	FROM CIR_RENEW
-	WHERE OverDueDateNew> GETDATE() AND CONVERT(VARCHAR, OverDueDateNew, 103) LIKE @term +'%'
+	WHERE CONVERT(VARCHAR, RenewDate, 103)=CONVERT(VARCHAR, GETDATE(), 103) AND OverDueDateNew> GETDATE() AND CONVERT(VARCHAR, OverDueDateNew, 103) LIKE @term +'%' 
 	ORDER BY ID DESC
 	END
 	
@@ -9868,7 +9868,7 @@ DECLARE @lngID 	INT
 		--  END  
 	 --END
 	 GO
-/****** Object:  StoredProcedure [dbo].[FPT_ADD_REASON]    Script Date: 12/16/2019 10:32:24 PM ******/
+/****** Object:  StoredProcedure [dbo].[FPT_ADD_CITY]    Script Date: 12/16/2019 10:32:24 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -9878,25 +9878,26 @@ ALTER PROCEDURE  [dbo].[FPT_ADD_CITY]
 
 AS
 
-/*
-----------------------------------------------------------------------------
--- Object Name: dbo.spINSERT_dbo_Customer
--- Project: Sample code
--- Business Process: Sample code
--- Purpose: Insert a record into a table
--- Detailed Description: Insert a record into the dbo.Customer table
--- Database: Test
--- Dependent Objects: None
--- Called By: Ad-hoc
--- Upstream Systems: N\A
--- Downstream Systems: N\A
--- 
---------------------------------------------------------------------------------------
--- Rev | CMR | Date Modified | Developer  | Change Summary
---------------------------------------------------------------------------------------
--- 001 | N\A | 09.15.2011 | JKadlec | Original code
---
-*/
+
+
+SET NOCOUNT ON
+
+
+INSERT INTO CIR_DIC_PROVINCE(ID,Province)
+     VALUES
+           (@intCityID
+           ,@City)
+		    GO
+/****** Object:  StoredProcedure [dbo].[FPT_ADD_COLLEGE]    Script Date: 12/16/2019 10:32:24 PM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE PROCEDURE  [dbo].[FPT_ADD_COLLEGE]
+@intCollegeID int, @College nvarchar(200)
+
+AS
+
 
 SET NOCOUNT ON
 
@@ -9905,7 +9906,30 @@ SET NOCOUNT ON
 -- 2 - Initialize variables
 
 -- 3 - Execute INSERT command
-INSERT INTO CIR_DIC_PROVINCE(ID,Province)
+INSERT INTO CIR_DIC_COLLEGE(ID,College)
      VALUES
-           (@intCityID
-           ,@City)
+           (@intCollegeID
+           ,@College)
+		    GO
+/****** Object:  StoredProcedure [dbo].[[FPT_ADD_FACULTY]]    Script Date: 12/16/2019 10:32:24 PM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE PROCEDURE  [dbo].[FPT_ADD_FACULTY]
+(@intFacultyID int, @Faculty nvarchar(200),@intCollegeID int)
+
+AS
+
+
+SET NOCOUNT ON
+
+-- 1 - Declare variables
+
+-- 2 - Initialize variables
+
+-- 3 - Execute INSERT command
+INSERT INTO CIR_DIC_FACULTY(ID,Faculty,CollegeID)
+     VALUES
+           (@intFacultyID
+           ,@Faculty,@intCollegeID)
