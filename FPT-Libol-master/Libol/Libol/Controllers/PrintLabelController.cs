@@ -116,9 +116,18 @@ namespace Libol.Controllers
                     if (Count < CurrentItemInPage.Length)
                     {
                         // HARDCODE , MAYBE NEED CHANGE LATER
-                        string CallNumber = CurrentItemInPage[Count].CallNumber;
-                        string a = CallNumber.Split(' ')[0];
-                        string b = CallNumber.Split(' ')[1];
+                        //string CallNumber = CurrentItemInPage[Count].CallNumber;
+                        //string a = CallNumber.Split(' ')[0];
+                        //string b = CallNumber.Split(' ')[1];
+                        int itemID = CurrentItemInPage[Count].ItemID;
+                        var fiel = db.FIELD000S.Where(x => x.ItemID == itemID && x.FieldCode == "090").SingleOrDefault();
+                        string callNumber = fiel.Content;
+                        int index1 = callNumber.IndexOf("$b");
+                        int index2 = callNumber.Length - index1;
+                        string a = callNumber.Substring(0, index1);
+                        string b = callNumber.Substring(index1, index2);
+                        a = a.Replace("$a", "");
+                        b = b.Replace("$b", "");
                         Data += "<td>";
                         Data += Template.Replace("<$090$a$>", a).Replace("<$090$b$>", b);
                         Data += "</td>";
