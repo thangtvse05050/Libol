@@ -1,4 +1,6 @@
-﻿@{
+﻿@model System.Web.Mvc.HandleErrorInfo
+
+@{
     Layout = null;
 }
 <!DOCTYPE html>
@@ -23,20 +25,52 @@
     <!-- Stylesheet -->
     <link href="~/AllContent/css/style.css" rel="stylesheet" type="text/css" />
     <link href="~/AllContent/css/borrow-book-popup.css" rel="stylesheet" type="text/css" />
-
 </head>
 <body class="layout-v3">
     <div class="container">
-        <br/><br/>
+        <br /><br />
         <h1 style="color: black; font-family: Arial" class="text-center">404 ERROR</h1>
         <p class="text-center">
             <b>Đã có lỗi xảy ra, trang này không hoạt động hoặc đang cập nhật, vui lòng truy cập lại sau!!</b>
-            <br/>
+            <br />
             <a href="@Url.Action("Home", "Home")" style="color: blue"><b>Về trang chủ</b></a>
         </p>
         <p class="text-center">
-            <img src="~/AllContent/images/404error_image.jpg" alt="error"/>
+            <img src="~/AllContent/images/404error_image.jpg" alt="error" />
         </p>
     </div>
+
+    <input type="hidden" id="path" value="~/@($"{Model.ControllerName}/{Model.ActionName}")" />
+    <input type="hidden" id="error" value="@Model.Exception.GetType().Name" />
+    <input type="hidden" id="message" value="@Model.Exception.Message" />
+    <input type="hidden" id="track" value="@Model.Exception.StackTrace" />
+
+    <script src="https://code.jquery.com/jquery-3.4.1.js"
+            integrity="sha256-WpOohJOqMqqyKL9FccASB9O0KwACQJpFTUBLTYOVvVU="
+            crossorigin="anonymous"></script>
+    <script>
+        $(document).ready(function () {
+            var empObj = {
+                Path: document.getElementById("path").value,
+                Error: document.getElementById("error").value,
+                Message: document.getElementById("message").value,
+                Track: document.getElementById("track").value
+            };
+            $.ajax({
+                url: "/ErrorLog/Log",
+                data: JSON.stringify(empObj),
+                type: "POST",
+                contentType: "application/json;charset=utf-8",
+                dataType: "json",
+                success: function (result) {
+
+
+                },
+                error: function (errorMessage) {
+
+                }
+            });
+        });
+    </script>
 </body>
 </html>
