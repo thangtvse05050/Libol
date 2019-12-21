@@ -121,7 +121,7 @@ namespace Libol.Controllers
 								int temp = Int32.Parse(item.ItemID.ToString());
 								//check old or new book
 								string check = "";
-								foreach (var items in le.FPT_CHECK_ITEMID_AND_ACQUIREDATE(LocID, item.NgayBoSung.Value, temp).ToList())
+								foreach (var items in le.FPT_CHECK_ITEMID_AND_ACQUIREDATE(LibID,LocID, item.NgayBoSung.Value, temp).ToList())
 								{
 
 									check = items.ToString();
@@ -165,7 +165,7 @@ namespace Libol.Controllers
 							{
 								int temp = Int32.Parse(item.ItemID.ToString());
 								string check = "";
-								foreach (var items in le.FPT_CHECK_ITEMID_AND_ACQUIREDATE(LocID, item.NgayBoSung.Value, temp).ToList())
+								foreach (var items in le.FPT_CHECK_ITEMID_AND_ACQUIREDATE(LibID, LocID, item.NgayBoSung.Value, temp).ToList())
 								{
 
 									check = items.ToString();
@@ -205,7 +205,7 @@ namespace Libol.Controllers
 							{
 								int temp = Int32.Parse(item.ItemID.ToString());
 								string check = "";
-								foreach (var items in le.FPT_CHECK_ITEMID_AND_ACQUIREDATE(LocID, item.NgayBoSung.Value, temp).ToList())
+								foreach (var items in le.FPT_CHECK_ITEMID_AND_ACQUIREDATE(LibID, LocID, item.NgayBoSung.Value, temp).ToList())
 								{
 
 									check = items.ToString();
@@ -242,7 +242,7 @@ namespace Libol.Controllers
 							{
 								int temp = Int32.Parse(item.ItemID.ToString());
 								string check = "";
-								foreach (var items in le.FPT_CHECK_ITEMID_AND_ACQUIREDATE(LocID, item.NgayBoSung.Value, temp).ToList())
+								foreach (var items in le.FPT_CHECK_ITEMID_AND_ACQUIREDATE(LibID, LocID, item.NgayBoSung.Value, temp).ToList())
 								{
 
 									check = items.ToString();
@@ -286,7 +286,7 @@ namespace Libol.Controllers
 							{
 								int temp = Int32.Parse(item.ItemID.ToString());
 								string check = "";
-								foreach (var items in le.FPT_CHECK_ITEMID_AND_ACQUIREDATE(LocID, item.NgayBoSung.Value, temp).ToList())
+								foreach (var items in le.FPT_CHECK_ITEMID_AND_ACQUIREDATE(LibID, LocID, item.NgayBoSung.Value, temp).ToList())
 								{
 
 									check = items.ToString();
@@ -329,7 +329,7 @@ namespace Libol.Controllers
 							{
 								int temp = Int32.Parse(item.ItemID.ToString());
 								string check = "";
-								foreach (var items in le.FPT_CHECK_ITEMID_AND_ACQUIREDATE(LocID, item.NgayBoSung.Value, temp).ToList())
+								foreach (var items in le.FPT_CHECK_ITEMID_AND_ACQUIREDATE(LibID, LocID, item.NgayBoSung.Value, temp).ToList())
 								{
 
 									check = items.ToString();
@@ -372,7 +372,7 @@ namespace Libol.Controllers
 							{
 								int temp = Int32.Parse(item.ItemID.ToString());
 								string check = "";
-								foreach (var items in le.FPT_CHECK_ITEMID_AND_ACQUIREDATE(LocID, item.NgayBoSung.Value, temp).ToList())
+								foreach (var items in le.FPT_CHECK_ITEMID_AND_ACQUIREDATE(LibID, LocID, item.NgayBoSung.Value, temp).ToList())
 								{
 
 									check = items.ToString();
@@ -416,7 +416,7 @@ namespace Libol.Controllers
 							{
 								int temp = Int32.Parse(item.ItemID.ToString());
 								string check = "";
-								foreach (var items in le.FPT_CHECK_ITEMID_AND_ACQUIREDATE(LocID, item.NgayBoSung.Value, temp).ToList())
+								foreach (var items in le.FPT_CHECK_ITEMID_AND_ACQUIREDATE(LibID, LocID, item.NgayBoSung.Value, temp).ToList())
 								{
 
 									check = items.ToString();
