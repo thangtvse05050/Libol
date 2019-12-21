@@ -414,18 +414,7 @@ SELECT COUNT(COPYNUMBER) FROM HOLDING WHERE ITEMID = @itemID AND PRICE = @price 
 END
 
 
-go
-/******/
-Create PROCEDURE [dbo].[FPT_CHECK_ITEMID_AND_ACQUIREDATE](@LocID int, @CDate date, @itemId int)
-	-- Add the parameters for the stored procedure here
-	
-AS
-BEGIN
-	-- SET NOCOUNT ON added to prevent extra result sets from
-	-- interfering with SELECT statements.
-	select ItemID  from Holding 
-where AcquiredDate < CONVERT (varchar(10), @CDate, 21) and ItemID = @itemId and LocationID = @LocID
-END
+
 
 go
 /******/
@@ -9933,3 +9922,27 @@ INSERT INTO CIR_DIC_FACULTY(ID,Faculty,CollegeID)
      VALUES
            (@intFacultyID
            ,@Faculty,@intCollegeID)
+		   GO
+/****** Object:  StoredProcedure [dbo].[FPT_CHECK_ITEMID_AND_ACQUIREDATE]  22/12/2019 thangtv updated  Script Date: 12/22/2019 2:22:46 AM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+ALTER PROCEDURE [dbo].[FPT_CHECK_ITEMID_AND_ACQUIREDATE](@LibID int,@LocID int, @CDate date, @itemId int)
+	-- Add the parameters for the stored procedure here
+	
+AS
+if(@LocID= 0)
+BEGIN
+	-- SET NOCOUNT ON added to prevent extra result sets from
+	-- interfering with SELECT statements.
+	select ItemID  from Holding 
+where AcquiredDate < CONVERT (varchar(10), @CDate, 120) and ItemID = @itemId  and LibID=@LibID
+end
+ELSE
+BEGIN
+	-- SET NOCOUNT ON added to prevent extra result sets from
+	-- interfering with SELECT statements.
+	select ItemID  from Holding 
+where AcquiredDate < CONVERT (varchar(10), @CDate, 120) and ItemID = @itemId  and LocationID=@LocID
+end
