@@ -210,7 +210,7 @@ namespace OPAC.Controllers
             return (input >= startDate && input <= endDate);
         }
 
-        //Get statistic number of visitors
+        //Save statistic number of visitors into database
         private void CountVisitors()
         {
             //Count 1 for each time user accessing to website
