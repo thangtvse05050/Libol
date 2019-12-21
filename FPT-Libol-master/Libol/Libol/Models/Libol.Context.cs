@@ -104,7 +104,6 @@ namespace Libol.Models
         public virtual DbSet<DICTIONARY41> DICTIONARY41 { get; set; }
         public virtual DbSet<DICTIONARY42> DICTIONARY42 { get; set; }
         public virtual DbSet<DICTIONARY43> DICTIONARY43 { get; set; }
-        public virtual DbSet<dtproperty> dtproperties { get; set; }
         public virtual DbSet<EDELIV_FILE> EDELIV_FILE { get; set; }
         public virtual DbSet<EDELIV_PAYMENT> EDELIV_PAYMENT { get; set; }
         public virtual DbSet<EDELIV_REQUEST> EDELIV_REQUEST { get; set; }
@@ -204,7 +203,6 @@ namespace Libol.Models
         public virtual DbSet<SYS_USER_RIGHT> SYS_USER_RIGHT { get; set; }
         public virtual DbSet<SYS_USER_RIGHT_DETAIL> SYS_USER_RIGHT_DETAIL { get; set; }
         public virtual DbSet<SYS_VIEW> SYS_VIEW { get; set; }
-        public virtual DbSet<sysdiagram> sysdiagrams { get; set; }
         public virtual DbSet<test> tests { get; set; }
         public virtual DbSet<usertest> usertests { get; set; }
         public virtual DbSet<ACQ_PO_STATUS> ACQ_PO_STATUS { get; set; }
@@ -21580,23 +21578,6 @@ namespace Libol.Models
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Nullable<int>>("FPT_BORROWNUMBER", itemIDParameter, priceParameter, acqdateParameter);
         }
     
-        public virtual ObjectResult<Nullable<int>> FPT_CHECK_ITEMID_AND_ACQUIREDATE(Nullable<int> locID, Nullable<System.DateTime> cDate, Nullable<int> itemId)
-        {
-            var locIDParameter = locID.HasValue ?
-                new ObjectParameter("LocID", locID) :
-                new ObjectParameter("LocID", typeof(int));
-    
-            var cDateParameter = cDate.HasValue ?
-                new ObjectParameter("CDate", cDate) :
-                new ObjectParameter("CDate", typeof(System.DateTime));
-    
-            var itemIdParameter = itemId.HasValue ?
-                new ObjectParameter("itemId", itemId) :
-                new ObjectParameter("itemId", typeof(int));
-    
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Nullable<int>>("FPT_CHECK_ITEMID_AND_ACQUIREDATE", locIDParameter, cDateParameter, itemIdParameter);
-        }
-    
         public virtual ObjectResult<FPT_CIR_GET_LOCFULLNAME_LIBUSER_SEL_Result> FPT_CIR_GET_LOCFULLNAME_LIBUSER_SEL(Nullable<int> intUserID, Nullable<int> intLibID, string strLocPrefix)
         {
             var intUserIDParameter = intUserID.HasValue ?
@@ -24038,6 +24019,27 @@ namespace Libol.Models
                 new ObjectParameter("term", typeof(string));
     
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<string>("FPT_GET_DATE_SUGGEST_RENEW", termParameter);
+        }
+    
+        public virtual ObjectResult<Nullable<int>> FPT_CHECK_ITEMID_AND_ACQUIREDATE(Nullable<int> libID, Nullable<int> locID, Nullable<System.DateTime> cDate, Nullable<int> itemId)
+        {
+            var libIDParameter = libID.HasValue ?
+                new ObjectParameter("LibID", libID) :
+                new ObjectParameter("LibID", typeof(int));
+    
+            var locIDParameter = locID.HasValue ?
+                new ObjectParameter("LocID", locID) :
+                new ObjectParameter("LocID", typeof(int));
+    
+            var cDateParameter = cDate.HasValue ?
+                new ObjectParameter("CDate", cDate) :
+                new ObjectParameter("CDate", typeof(System.DateTime));
+    
+            var itemIdParameter = itemId.HasValue ?
+                new ObjectParameter("itemId", itemId) :
+                new ObjectParameter("itemId", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Nullable<int>>("FPT_CHECK_ITEMID_AND_ACQUIREDATE", libIDParameter, locIDParameter, cDateParameter, itemIdParameter);
         }
     }
 }
