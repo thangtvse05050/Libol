@@ -1247,7 +1247,52 @@ namespace Libol.Controllers
 
 							}
 
-							display1.Add(temp1);
+
+							Temper check = checkDup(display1, temp1);
+							if (check == null)
+							{
+								display1.Add(temp1);
+							}
+							else
+							{
+								
+								var year = check.NamXuatBan.Split(' ');
+								bool checkYear = false;
+								foreach(string tmp in year)
+								{
+									if(tmp == temp1.NamXuatBan)
+									{
+										checkYear = true;
+									}
+								}
+								if (checkYear == false)
+								{
+									temp1.NamXuatBan += " " + check.NamXuatBan;
+								}
+								else
+								{
+									temp1.NamXuatBan = check.NamXuatBan;
+								}
+								var publisher = check.NhaXuatBan.Split(';');
+								bool checkPublisher = false;
+								foreach (string tmp in publisher)
+								{
+									if (tmp == temp1.NhaXuatBan)
+									{
+										checkPublisher = true;
+									}
+								}
+								if (checkPublisher == false)
+								{
+									temp1.NhaXuatBan += ";" + check.NhaXuatBan;
+								}
+								else
+								{
+									temp1.NhaXuatBan = check.NhaXuatBan;
+								}
+								display1.Remove(check);
+								display1.Add(temp1);
+							}
 						}
 						if (st == "YEN")
 						{
@@ -1266,7 +1311,52 @@ namespace Libol.Controllers
 								temp2 = new Temper(item.POID, item.SoChungTu, item.NhanDe, item.ISBN, item.NgayChungTu.ToString(), item.DKCB, ngaybosug, item.NhaXuatBan, item.NamXuatBan, item.DonGia, item.DonViTienTe, item.TinhTrangSach, item.ItemID, item.SLN, item.ThanhTien);
 
 							}
-							display2.Add(temp2);
+							
+							Temper check = checkDup(display2, temp2);
+							if (check == null)
+							{
+								display2.Add(temp2);
+							}
+							else
+							{
+
+								var year = check.NamXuatBan.Split(' ');
+								bool checkYear = false;
+								foreach (string tmp in year)
+								{
+									if (tmp == temp1.NamXuatBan)
+									{
+										checkYear = true;
+									}
+								}
+								if (checkYear == false)
+								{
+									temp2.NamXuatBan += " " + check.NamXuatBan;
+								}
+								else
+								{
+									temp2.NamXuatBan = check.NamXuatBan;
+								}
+								var publisher = check.NhaXuatBan.Split(';');
+								bool checkPublisher = false;
+								foreach (string tmp in publisher)
+								{
+									if (tmp == temp2.NhaXuatBan)
+									{
+										checkPublisher = true;
+									}
+								}
+								if (checkPublisher == false)
+								{
+									temp2.NhaXuatBan += ";" + check.NhaXuatBan;
+								}
+								else
+								{
+									temp2.NhaXuatBan = check.NhaXuatBan;
+								}
+								display2.Remove(check);
+								display2.Add(temp2);
+							}
 							// display2.Add(new Temper(item.POID, item.SoChungTu, item.NhanDe, item.ISBN, item.NgayChungTu.ToString(), item.DKCB, item.NgayBoSung.ToString(), item.NhaXuatBan, item.NamXuatBan, item.DonGia, item.DonViTienTe, item.TinhTrangSach, item.ItemID, item.SLN, item.ThanhTien));
 						}
 						if (st == "USD")
@@ -1286,7 +1376,52 @@ namespace Libol.Controllers
 								temp3 = new Temper(item.POID, item.SoChungTu, item.NhanDe, item.ISBN, item.NgayChungTu.ToString(), item.DKCB, ngaybosug, item.NhaXuatBan, item.NamXuatBan, item.DonGia, item.DonViTienTe, item.TinhTrangSach, item.ItemID, item.SLN, item.ThanhTien);
 
 							}
-							display3.Add(temp3);
+							
+							Temper check = checkDup(display3, temp3);
+							if (check == null)
+							{
+								display3.Add(temp3);
+							}
+							else
+							{
+
+								var year = check.NamXuatBan.Split(' ');
+								bool checkYear = false;
+								foreach (string tmp in year)
+								{
+									if (tmp == temp3.NamXuatBan)
+									{
+										checkYear = true;
+									}
+								}
+								if (checkYear == false)
+								{
+									temp3.NamXuatBan += " " + check.NamXuatBan;
+								}
+								else
+								{
+									temp3.NamXuatBan = check.NamXuatBan;
+								}
+								var publisher = check.NhaXuatBan.Split(';');
+								bool checkPublisher = false;
+								foreach (string tmp in publisher)
+								{
+									if (tmp == temp3.NhaXuatBan)
+									{
+										checkPublisher = true;
+									}
+								}
+								if (checkPublisher == false)
+								{
+									temp3.NhaXuatBan += ";" + check.NhaXuatBan;
+								}
+								else
+								{
+									temp3.NhaXuatBan = check.NhaXuatBan;
+								}
+								display3.Remove(check);
+								display3.Add(temp3);
+							}
 							// display3.Add(new Temper(item.POID, item.SoChungTu, item.NhanDe, item.ISBN, item.NgayChungTu.ToString(), item.DKCB, item.NgayBoSung.ToString(), item.NhaXuatBan, item.NamXuatBan, item.DonGia, item.DonViTienTe, item.TinhTrangSach, item.ItemID, item.SLN, item.ThanhTien));
 						}
 						if (st == "B?NGANH")
@@ -1306,7 +1441,52 @@ namespace Libol.Controllers
 								temp4 = new Temper(item.POID, item.SoChungTu, item.NhanDe, item.ISBN, item.NgayChungTu.ToString(), item.DKCB, ngaybosug, item.NhaXuatBan, item.NamXuatBan, item.DonGia, item.DonViTienTe, item.TinhTrangSach, item.ItemID, item.SLN, item.ThanhTien);
 
 							}
-							display4.Add(temp4);
+							
+							Temper check = checkDup(display4, temp4);
+							if (check == null)
+							{
+								display4.Add(temp4);
+							}
+							else
+							{
+
+								var year = check.NamXuatBan.Split(' ');
+								bool checkYear = false;
+								foreach (string tmp in year)
+								{
+									if (tmp == temp4.NamXuatBan)
+									{
+										checkYear = true;
+									}
+								}
+								if (checkYear == false)
+								{
+									temp4.NamXuatBan += " " + check.NamXuatBan;
+								}
+								else
+								{
+									temp4.NamXuatBan = check.NamXuatBan;
+								}
+								var publisher = check.NhaXuatBan.Split(';');
+								bool checkPublisher = false;
+								foreach (string tmp in publisher)
+								{
+									if (tmp == temp4.NhaXuatBan)
+									{
+										checkPublisher = true;
+									}
+								}
+								if (checkPublisher == false)
+								{
+									temp4.NhaXuatBan += ";" + check.NhaXuatBan;
+								}
+								else
+								{
+									temp4.NhaXuatBan = check.NhaXuatBan;
+								}
+								display4.Remove(check);
+								display4.Add(temp4);
+							}
 							//  display4.Add(new Temper(item.POID, item.SoChungTu, item.NhanDe, item.ISBN, item.NgayChungTu.ToString(), item.DKCB, item.NgayBoSung.ToString(), item.NhaXuatBan, item.NamXuatBan, item.DonGia, item.DonViTienTe, item.TinhTrangSach, item.ItemID, item.SLN, item.ThanhTien));
 						}
 						if (st == "CENT")
@@ -1326,7 +1506,52 @@ namespace Libol.Controllers
 								temp5 = new Temper(item.POID, item.SoChungTu, item.NhanDe, item.ISBN, item.NgayChungTu.ToString(), item.DKCB, ngaybosug, item.NhaXuatBan, item.NamXuatBan, item.DonGia, item.DonViTienTe, item.TinhTrangSach, item.ItemID, item.SLN, item.ThanhTien);
 
 							}
-							display5.Add(temp5);
+							
+							Temper check = checkDup(display5, temp5);
+							if (check == null)
+							{
+								display5.Add(temp5);
+							}
+							else
+							{
+
+								var year = check.NamXuatBan.Split(' ');
+								bool checkYear = false;
+								foreach (string tmp in year)
+								{
+									if (tmp == temp5.NamXuatBan)
+									{
+										checkYear = true;
+									}
+								}
+								if (checkYear == false)
+								{
+									temp5.NamXuatBan += " " + check.NamXuatBan;
+								}
+								else
+								{
+									temp5.NamXuatBan = check.NamXuatBan;
+								}
+								var publisher = check.NhaXuatBan.Split(';');
+								bool checkPublisher = false;
+								foreach (string tmp in publisher)
+								{
+									if (tmp == temp5.NhaXuatBan)
+									{
+										checkPublisher = true;
+									}
+								}
+								if (checkPublisher == false)
+								{
+									temp5.NhaXuatBan += ";" + check.NhaXuatBan;
+								}
+								else
+								{
+									temp5.NhaXuatBan = check.NhaXuatBan;
+								}
+								display5.Remove(check);
+								display5.Add(temp5);
+							}
 							// display5.Add(new Temper(item.POID, item.SoChungTu, item.NhanDe, item.ISBN, item.NgayChungTu.ToString(), item.DKCB, item.NgayBoSung.ToString(), item.NhaXuatBan, item.NamXuatBan, item.DonGia, item.DonViTienTe, item.TinhTrangSach, item.ItemID, item.SLN, item.ThanhTien));
 						}
 						if (st == "EUR")
@@ -1346,7 +1571,52 @@ namespace Libol.Controllers
 								temp6 = new Temper(item.POID, item.SoChungTu, item.NhanDe, item.ISBN, item.NgayChungTu.ToString(), item.DKCB, ngaybosug, item.NhaXuatBan, item.NamXuatBan, item.DonGia, item.DonViTienTe, item.TinhTrangSach, item.ItemID, item.SLN, item.ThanhTien);
 
 							}
-							display6.Add(temp6);
+							Temper check = checkDup(display6, temp6);
+							if (check == null)
+							{
+								display6.Add(temp6);
+							}
+							else
+							{
+
+								var year = check.NamXuatBan.Split(' ');
+								bool checkYear = false;
+								foreach (string tmp in year)
+								{
+									if (tmp == temp6.NamXuatBan)
+									{
+										checkYear = true;
+									}
+								}
+								if (checkYear == false)
+								{
+									temp6.NamXuatBan += " " + check.NamXuatBan;
+								}
+								else
+								{
+									temp6.NamXuatBan = check.NamXuatBan;
+								}
+								var publisher = check.NhaXuatBan.Split(';');
+								bool checkPublisher = false;
+								foreach (string tmp in publisher)
+								{
+									if (tmp == temp6.NhaXuatBan)
+									{
+										checkPublisher = true;
+									}
+								}
+								if (checkPublisher == false)
+								{
+									temp6.NhaXuatBan += ";" + check.NhaXuatBan;
+								}
+								else
+								{
+									temp6.NhaXuatBan = check.NhaXuatBan;
+								}
+								display6.Remove(check);
+								display6.Add(temp6);
+							}
+							
 							//display6.Add(new Temper(item.POID, item.SoChungTu, item.NhanDe, item.ISBN, item.NgayChungTu.ToString(), item.DKCB, item.NgayBoSung.ToString(), item.NhaXuatBan, item.NamXuatBan, item.DonGia, item.DonViTienTe, item.TinhTrangSach, item.ItemID, item.SLN, item.ThanhTien));
 						}
 
@@ -2296,6 +2566,8 @@ namespace Libol.Controllers
 							DateLastUsed = item.DateLastUsed
 						};
 						display1.Add(obj);
+						
+						
 					}
 					if (st == "YEN")
 					{
@@ -2428,6 +2700,7 @@ namespace Libol.Controllers
 			else
 			{
 				ViewBag.DisVND = display1.ToList();
+				
 
 			}
 			//check null
@@ -2480,7 +2753,18 @@ namespace Libol.Controllers
 
 			return View();
 		}
-
+		public Temper checkDup(List<Temper> lst, Temper obj)
+		{
+			Temper temp = null;
+			foreach(var item in lst)
+			{
+				if (item.DKCB==obj.DKCB)
+				{
+					temp = item;
+				}
+			}
+			return temp;
+		}
 		[AuthAttribute(ModuleID = 4, RightID = "28")]
 		public ActionResult StatisticTop20()
 		{
