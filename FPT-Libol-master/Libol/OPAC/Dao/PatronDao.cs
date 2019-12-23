@@ -125,11 +125,11 @@ namespace OPAC.Dao
                 {
                     bookType = bookType.Substring(0, 2);
 
-                    if (bookType.ToLower().Equals("tk"))
+                    if (bookType.ToLower().Contains("tk"))
                     {
                         var book = dbContext.FPT_SP_GET_LANGUAGE_CODE_ITEM(itemID).FirstOrDefault();
 
-                        if (book != null && !book.ToLower().Trim().Equals("vie"))
+                        if (book != null && !book.ToLower().Trim().Contains("vie"))
                         {
                             renewalPeriod = 14;
                         }

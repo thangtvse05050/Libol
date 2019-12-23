@@ -1097,19 +1097,6 @@ warning 6002: The table/view 'Libol.dbo.CIR_SERIAL_COUNT' does not have a primar
           <Property Name="AccessEntry" Type="nvarchar" MaxLength="500" />
           <Property Name="Dictionary" Type="nvarchar" MaxLength="500" />
         </EntityType>
-        <EntityType Name="dtproperties">
-          <Key>
-            <PropertyRef Name="id" />
-            <PropertyRef Name="property" />
-          </Key>
-          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="objectid" Type="int" />
-          <Property Name="property" Type="varchar" MaxLength="64" Nullable="false" />
-          <Property Name="value" Type="varchar" MaxLength="255" />
-          <Property Name="uvalue" Type="nvarchar" MaxLength="255" />
-          <Property Name="lvalue" Type="image" />
-          <Property Name="version" Type="int" Nullable="false" />
-        </EntityType>
         <EntityType Name="EDELIV_FILE">
           <Key>
             <PropertyRef Name="ID" />
@@ -2906,16 +2893,6 @@ warning 6002: The table/view 'Libol.dbo.MARC_BIB_WS_DETAIL' does not have a prim
           <Property Name="CreatedDate" Type="datetime" Nullable="false" />
           <Property Name="ViewCode" Type="varchar" MaxLength="50" Nullable="false" />
         </EntityType>
-        <EntityType Name="sysdiagrams">
-          <Key>
-            <PropertyRef Name="diagram_id" />
-          </Key>
-          <Property Name="name" Type="nvarchar" MaxLength="128" Nullable="false" />
-          <Property Name="principal_id" Type="int" Nullable="false" />
-          <Property Name="diagram_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="version" Type="int" />
-          <Property Name="definition" Type="varbinary(max)" />
-        </EntityType>
         <EntityType Name="test">
           <Key>
             <PropertyRef Name="ID" />
@@ -2967,7 +2944,7 @@ warning 6002: The table/view 'Libol.dbo.MARC_BIB_WS_DETAIL' does not have a prim
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__FPT_CATA___ItemI__0A5A099A">
+        <Association Name="FK__FPT_CATA___ItemI__226AFDCB">
           <End Role="ITEM" Type="Self.ITEM" Multiplicity="1" />
           <End Role="FPT_CATA_FILE_NEW" Type="Self.FPT_CATA_FILE_NEW" Multiplicity="*" />
           <ReferentialConstraint>
@@ -2979,7 +2956,7 @@ warning 6002: The table/view 'Libol.dbo.MARC_BIB_WS_DETAIL' does not have a prim
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__FPT_SP_SP__LibID__3173D6BB">
+        <Association Name="FK__FPT_SP_SP__LibID__25476A76">
           <End Role="HOLDING_LIBRARY" Type="Self.HOLDING_LIBRARY" Multiplicity="1" />
           <End Role="FPT_SP_SPECIALIZED_STORE" Type="Self.FPT_SP_SPECIALIZED_STORE" Multiplicity="*" />
           <ReferentialConstraint>
@@ -2991,7 +2968,7 @@ warning 6002: The table/view 'Libol.dbo.MARC_BIB_WS_DETAIL' does not have a prim
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__FPT_SYS_U__Right__2FC09873">
+        <Association Name="FK__FPT_SYS_U__Right__263B8EAF">
           <End Role="FPT_SYS_USER_RIGHT" Type="Self.FPT_SYS_USER_RIGHT" Multiplicity="1" />
           <End Role="FPT_SYS_USER_RIGHT_DETAIL" Type="Self.FPT_SYS_USER_RIGHT_DETAIL" Multiplicity="*" />
           <ReferentialConstraint>
@@ -5215,163 +5192,12 @@ warning 6002: The table/view 'Libol.dbo.MARC_BIB_WS_DETAIL' does not have a prim
         <Function Name="CutVietnameseAccent" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="true" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" ReturnType="nvarchar">
           <Parameter Name="strInput" Type="nvarchar" Mode="In" />
         </Function>
-        <Function Name="dt_addtosourcecontrol" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
-          <Parameter Name="vchSourceSafeINI" Type="varchar" Mode="In" />
-          <Parameter Name="vchProjectName" Type="varchar" Mode="In" />
-          <Parameter Name="vchComment" Type="varchar" Mode="In" />
-          <Parameter Name="vchLoginName" Type="varchar" Mode="In" />
-          <Parameter Name="vchPassword" Type="varchar" Mode="In" />
-        </Function>
-        <Function Name="dt_addtosourcecontrol_u" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
-          <Parameter Name="vchSourceSafeINI" Type="nvarchar" Mode="In" />
-          <Parameter Name="vchProjectName" Type="nvarchar" Mode="In" />
-          <Parameter Name="vchComment" Type="nvarchar" Mode="In" />
-          <Parameter Name="vchLoginName" Type="nvarchar" Mode="In" />
-          <Parameter Name="vchPassword" Type="nvarchar" Mode="In" />
-        </Function>
-        <Function Name="dt_adduserobject" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
-        <Function Name="dt_adduserobject_vcs" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
-          <Parameter Name="vchProperty" Type="varchar" Mode="In" />
-        </Function>
-        <Function Name="dt_checkinobject" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
-          <Parameter Name="chObjectType" Type="char" Mode="In" />
-          <Parameter Name="vchObjectName" Type="varchar" Mode="In" />
-          <Parameter Name="vchComment" Type="varchar" Mode="In" />
-          <Parameter Name="vchLoginName" Type="varchar" Mode="In" />
-          <Parameter Name="vchPassword" Type="varchar" Mode="In" />
-          <Parameter Name="iVCSFlags" Type="int" Mode="In" />
-          <Parameter Name="iActionFlag" Type="int" Mode="In" />
-          <Parameter Name="txStream1" Type="text" Mode="In" />
-          <Parameter Name="txStream2" Type="text" Mode="In" />
-          <Parameter Name="txStream3" Type="text" Mode="In" />
-        </Function>
-        <Function Name="dt_checkinobject_u" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
-          <Parameter Name="chObjectType" Type="char" Mode="In" />
-          <Parameter Name="vchObjectName" Type="nvarchar" Mode="In" />
-          <Parameter Name="vchComment" Type="nvarchar" Mode="In" />
-          <Parameter Name="vchLoginName" Type="nvarchar" Mode="In" />
-          <Parameter Name="vchPassword" Type="nvarchar" Mode="In" />
-          <Parameter Name="iVCSFlags" Type="int" Mode="In" />
-          <Parameter Name="iActionFlag" Type="int" Mode="In" />
-          <Parameter Name="txStream1" Type="text" Mode="In" />
-          <Parameter Name="txStream2" Type="text" Mode="In" />
-          <Parameter Name="txStream3" Type="text" Mode="In" />
-        </Function>
-        <Function Name="dt_checkoutobject" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
-          <Parameter Name="chObjectType" Type="char" Mode="In" />
-          <Parameter Name="vchObjectName" Type="varchar" Mode="In" />
-          <Parameter Name="vchComment" Type="varchar" Mode="In" />
-          <Parameter Name="vchLoginName" Type="varchar" Mode="In" />
-          <Parameter Name="vchPassword" Type="varchar" Mode="In" />
-          <Parameter Name="iVCSFlags" Type="int" Mode="In" />
-          <Parameter Name="iActionFlag" Type="int" Mode="In" />
-        </Function>
-        <Function Name="dt_checkoutobject_u" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
-          <Parameter Name="chObjectType" Type="char" Mode="In" />
-          <Parameter Name="vchObjectName" Type="nvarchar" Mode="In" />
-          <Parameter Name="vchComment" Type="nvarchar" Mode="In" />
-          <Parameter Name="vchLoginName" Type="nvarchar" Mode="In" />
-          <Parameter Name="vchPassword" Type="nvarchar" Mode="In" />
-          <Parameter Name="iVCSFlags" Type="int" Mode="In" />
-          <Parameter Name="iActionFlag" Type="int" Mode="In" />
-        </Function>
-        <Function Name="dt_displayoaerror" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
-          <Parameter Name="iObject" Type="int" Mode="In" />
-          <Parameter Name="iresult" Type="int" Mode="In" />
-        </Function>
-        <Function Name="dt_displayoaerror_u" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
-          <Parameter Name="iObject" Type="int" Mode="In" />
-          <Parameter Name="iresult" Type="int" Mode="In" />
-        </Function>
-        <Function Name="dt_droppropertiesbyid" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
-          <Parameter Name="id" Type="int" Mode="In" />
-          <Parameter Name="property" Type="varchar" Mode="In" />
-        </Function>
-        <Function Name="dt_dropuserobjectbyid" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
-          <Parameter Name="id" Type="int" Mode="In" />
-        </Function>
-        <Function Name="dt_generateansiname" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
-          <Parameter Name="name" Type="varchar" Mode="InOut" />
-        </Function>
-        <Function Name="dt_getobjwithprop" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
-          <Parameter Name="property" Type="varchar" Mode="In" />
-          <Parameter Name="value" Type="varchar" Mode="In" />
-        </Function>
-        <Function Name="dt_getobjwithprop_u" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
-          <Parameter Name="property" Type="varchar" Mode="In" />
-          <Parameter Name="uvalue" Type="nvarchar" Mode="In" />
-        </Function>
-        <Function Name="dt_getpropertiesbyid" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
-          <Parameter Name="id" Type="int" Mode="In" />
-          <Parameter Name="property" Type="varchar" Mode="In" />
-        </Function>
-        <Function Name="dt_getpropertiesbyid_u" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
-          <Parameter Name="id" Type="int" Mode="In" />
-          <Parameter Name="property" Type="varchar" Mode="In" />
-        </Function>
-        <Function Name="dt_getpropertiesbyid_vcs" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
-          <Parameter Name="id" Type="int" Mode="In" />
-          <Parameter Name="property" Type="varchar" Mode="In" />
-          <Parameter Name="value" Type="varchar" Mode="InOut" />
-        </Function>
-        <Function Name="dt_getpropertiesbyid_vcs_u" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
-          <Parameter Name="id" Type="int" Mode="In" />
-          <Parameter Name="property" Type="varchar" Mode="In" />
-          <Parameter Name="value" Type="nvarchar" Mode="InOut" />
-        </Function>
-        <Function Name="dt_isundersourcecontrol" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
-          <Parameter Name="vchLoginName" Type="varchar" Mode="In" />
-          <Parameter Name="vchPassword" Type="varchar" Mode="In" />
-          <Parameter Name="iWhoToo" Type="int" Mode="In" />
-        </Function>
-        <Function Name="dt_isundersourcecontrol_u" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
-          <Parameter Name="vchLoginName" Type="nvarchar" Mode="In" />
-          <Parameter Name="vchPassword" Type="nvarchar" Mode="In" />
-          <Parameter Name="iWhoToo" Type="int" Mode="In" />
-        </Function>
-        <Function Name="dt_removefromsourcecontrol" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
-        <Function Name="dt_setpropertybyid" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
-          <Parameter Name="id" Type="int" Mode="In" />
-          <Parameter Name="property" Type="varchar" Mode="In" />
-          <Parameter Name="value" Type="varchar" Mode="In" />
-          <Parameter Name="lvalue" Type="image" Mode="In" />
-        </Function>
-        <Function Name="dt_setpropertybyid_u" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
-          <Parameter Name="id" Type="int" Mode="In" />
-          <Parameter Name="property" Type="varchar" Mode="In" />
-          <Parameter Name="uvalue" Type="nvarchar" Mode="In" />
-          <Parameter Name="lvalue" Type="image" Mode="In" />
-        </Function>
-        <Function Name="dt_validateloginparams" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
-          <Parameter Name="vchLoginName" Type="varchar" Mode="In" />
-          <Parameter Name="vchPassword" Type="varchar" Mode="In" />
-        </Function>
-        <Function Name="dt_validateloginparams_u" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
-          <Parameter Name="vchLoginName" Type="nvarchar" Mode="In" />
-          <Parameter Name="vchPassword" Type="nvarchar" Mode="In" />
-        </Function>
-        <Function Name="dt_vcsenabled" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
-        <Function Name="dt_verstamp006" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
-        <Function Name="dt_verstamp007" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
-        <Function Name="dt_whocheckedout" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
-          <Parameter Name="chObjectType" Type="char" Mode="In" />
-          <Parameter Name="vchObjectName" Type="varchar" Mode="In" />
-          <Parameter Name="vchLoginName" Type="varchar" Mode="In" />
-          <Parameter Name="vchPassword" Type="varchar" Mode="In" />
-        </Function>
-        <Function Name="dt_whocheckedout_u" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
-          <Parameter Name="chObjectType" Type="char" Mode="In" />
-          <Parameter Name="vchObjectName" Type="nvarchar" Mode="In" />
-          <Parameter Name="vchLoginName" Type="nvarchar" Mode="In" />
-          <Parameter Name="vchPassword" Type="nvarchar" Mode="In" />
-        </Function>
         <Function Name="ExcuteSQL" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="strSQL" Type="nvarchar" Mode="In" />
         </Function>
         <Function Name="First_Middle_Char" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="true" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" ReturnType="nvarchar">
           <Parameter Name="strInput" Type="nvarchar" Mode="In" />
         </Function>
-        <Function Name="fn_diagramobjects" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="true" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" ReturnType="int" />
         <Function Name="FPT_ACQ_LANGUAGE_DETAILS_STATISTIC" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="strTypeSelect" Type="varchar" Mode="In" />
           <Parameter Name="intLibraryID" Type="int" Mode="In" />
@@ -5515,6 +5341,7 @@ warning 6002: The table/view 'Libol.dbo.MARC_BIB_WS_DETAIL' does not have a prim
           <Parameter Name="intLibID" Type="int" Mode="In" />
         </Function>
         <Function Name="FPT_CHECK_ITEMID_AND_ACQUIREDATE" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="LibID" Type="int" Mode="In" />
           <Parameter Name="LocID" Type="int" Mode="In" />
           <Parameter Name="CDate" Type="date" Mode="In" />
           <Parameter Name="itemId" Type="int" Mode="In" />
@@ -5533,6 +5360,15 @@ warning 6002: The table/view 'Libol.dbo.MARC_BIB_WS_DETAIL' does not have a prim
           <Parameter Name="intLibID" Type="int" Mode="In" />
         </Function>
         <Function Name="FPT_CIR_HOLDING_GET_ALL" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
+        <Function Name="FPT_CIR_HOLDING_SEARCH" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="strCheckOrder" Type="bit" Mode="In" />
+          <Parameter Name="strOrderCancel" Type="bit" Mode="In" />
+          <Parameter Name="strDateFrom" Type="varchar" Mode="In" />
+          <Parameter Name="strDateTo" Type="varchar" Mode="In" />
+          <Parameter Name="strTitleCheck" Type="bit" Mode="In" />
+          <Parameter Name="strPatronCheck" Type="bit" Mode="In" />
+          <Parameter Name="strSearchContent" Type="varchar" Mode="In" />
+        </Function>
         <Function Name="FPT_CIR_MONTH_STATISTIC" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="intLibraryID" Type="int" Mode="In" />
           <Parameter Name="strLocPrefix" Type="varchar" Mode="In" />
@@ -7385,12 +7221,6 @@ warning 6002: The table/view 'Libol.dbo.MARC_BIB_WS_DETAIL' does not have a prim
           <Parameter Name="intOutVal" Type="int" Mode="InOut" />
         </Function>
         <Function Name="SP_ALL" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
-        <Function Name="sp_alterdiagram" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
-          <Parameter Name="diagramname" Type="nvarchar" Mode="In" />
-          <Parameter Name="owner_id" Type="int" Mode="In" />
-          <Parameter Name="version" Type="int" Mode="In" />
-          <Parameter Name="definition" Type="varbinary(max)" Mode="In" />
-        </Function>
         <Function Name="SP_AUTO_REGISTER_ISSUE" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="lngItemID" Type="int" Mode="In" />
           <Parameter Name="intStartIssueNo" Type="int" Mode="In" />
@@ -8488,12 +8318,6 @@ warning 6002: The table/view 'Libol.dbo.MARC_BIB_WS_DETAIL' does not have a prim
           <Parameter Name="strTableName" Type="varchar" Mode="In" />
           <Parameter Name="strFieldID" Type="varchar" Mode="In" />
         </Function>
-        <Function Name="sp_creatediagram" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
-          <Parameter Name="diagramname" Type="nvarchar" Mode="In" />
-          <Parameter Name="owner_id" Type="int" Mode="In" />
-          <Parameter Name="version" Type="int" Mode="In" />
-          <Parameter Name="definition" Type="varbinary(max)" Mode="In" />
-        </Function>
         <Function Name="SP_CREATELOANTYPE" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="monFee" Type="money" Mode="In" />
           <Parameter Name="intFixedFee" Type="tinyint" Mode="In" />
@@ -8545,10 +8369,6 @@ warning 6002: The table/view 'Libol.dbo.MARC_BIB_WS_DETAIL' does not have a prim
         </Function>
         <Function Name="SP_DICINFOR_SEL" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="strSQL" Type="varchar" Mode="In" />
-        </Function>
-        <Function Name="sp_dropdiagram" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
-          <Parameter Name="diagramname" Type="nvarchar" Mode="In" />
-          <Parameter Name="owner_id" Type="int" Mode="In" />
         </Function>
         <Function Name="SP_EDATA_CHANGE_ITEM_TYPE" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="intType" Type="int" Mode="In" />
@@ -9423,14 +9243,6 @@ warning 6002: The table/view 'Libol.dbo.MARC_BIB_WS_DETAIL' does not have a prim
           <Parameter Name="strHelpTitle" Type="nvarchar" Mode="In" />
           <Parameter Name="strAccessContent" Type="nvarchar" Mode="In" />
           <Parameter Name="blnType" Type="bit" Mode="In" />
-        </Function>
-        <Function Name="sp_helpdiagramdefinition" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
-          <Parameter Name="diagramname" Type="nvarchar" Mode="In" />
-          <Parameter Name="owner_id" Type="int" Mode="In" />
-        </Function>
-        <Function Name="sp_helpdiagrams" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
-          <Parameter Name="diagramname" Type="nvarchar" Mode="In" />
-          <Parameter Name="owner_id" Type="int" Mode="In" />
         </Function>
         <Function Name="SP_HOLDING_COPY_INS" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="intItemID" Type="int" Mode="In" />
@@ -11568,11 +11380,6 @@ warning 6002: The table/view 'Libol.dbo.MARC_BIB_WS_DETAIL' does not have a prim
           <Parameter Name="intNewFieldSize" Type="int" Mode="In" />
           <Parameter Name="intRET" Type="int" Mode="InOut" />
         </Function>
-        <Function Name="sp_renamediagram" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
-          <Parameter Name="diagramname" Type="nvarchar" Mode="In" />
-          <Parameter Name="owner_id" Type="int" Mode="In" />
-          <Parameter Name="new_diagramname" Type="nvarchar" Mode="In" />
-        </Function>
         <Function Name="SP_RENEW_ITEM" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="intLoanID" Type="int" Mode="In" />
           <Parameter Name="intAddTime" Type="smallint" Mode="In" />
@@ -12178,7 +11985,6 @@ warning 6002: The table/view 'Libol.dbo.MARC_BIB_WS_DETAIL' does not have a prim
           <Parameter Name="strTimeOutDate" Type="varchar" Mode="In" />
           <Parameter Name="lngItemID" Type="int" Mode="In" />
         </Function>
-        <Function Name="sp_upgraddiagrams" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
         <Function Name="SP_UPPDATE_ITEM_REVIEWER" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="strReviewer" Type="nvarchar" Mode="In" />
           <Parameter Name="strIDs" Type="varchar" Mode="In" />
@@ -12307,7 +12113,6 @@ warning 6002: The table/view 'Libol.dbo.MARC_BIB_WS_DETAIL' does not have a prim
           <EntitySet Name="DICTIONARY41" EntityType="Self.DICTIONARY41" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="DICTIONARY42" EntityType="Self.DICTIONARY42" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="DICTIONARY43" EntityType="Self.DICTIONARY43" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="dtproperties" EntityType="Self.dtproperties" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="EDELIV_FILE" EntityType="Self.EDELIV_FILE" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="EDELIV_PAYMENT" EntityType="Self.EDELIV_PAYMENT" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="EDELIV_REQUEST" EntityType="Self.EDELIV_REQUEST" Schema="dbo" store:Type="Tables" />
@@ -12421,7 +12226,6 @@ warning 6002: The table/view 'Libol.dbo.MARC_BIB_WS_DETAIL' does not have a prim
           <EntitySet Name="SYS_USER_RIGHT_DETAIL" EntityType="Self.SYS_USER_RIGHT_DETAIL" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="SYS_USER_SER_LOCATION" EntityType="Self.SYS_USER_SER_LOCATION" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="SYS_VIEW" EntityType="Self.SYS_VIEW" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="test" EntityType="Self.test" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="usertest" EntityType="Self.usertest" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="ACQ_PO_STATUS" EntityType="Self.ACQ_PO_STATUS" store:Type="Tables" store:Schema="dbo">
@@ -12703,15 +12507,15 @@ warning 6002: The table/view 'Libol.dbo.MARC_BIB_WS_DETAIL' does not have a prim
             <End Role="CAT_DIC_MEDIUM" EntitySet="CAT_DIC_MEDIUM" />
             <End Role="ITEM" EntitySet="ITEM" />
           </AssociationSet>
-          <AssociationSet Name="FK__FPT_CATA___ItemI__0A5A099A" Association="Self.FK__FPT_CATA___ItemI__0A5A099A">
+          <AssociationSet Name="FK__FPT_CATA___ItemI__226AFDCB" Association="Self.FK__FPT_CATA___ItemI__226AFDCB">
             <End Role="ITEM" EntitySet="ITEM" />
             <End Role="FPT_CATA_FILE_NEW" EntitySet="FPT_CATA_FILE_NEW" />
           </AssociationSet>
-          <AssociationSet Name="FK__FPT_SP_SP__LibID__3173D6BB" Association="Self.FK__FPT_SP_SP__LibID__3173D6BB">
+          <AssociationSet Name="FK__FPT_SP_SP__LibID__25476A76" Association="Self.FK__FPT_SP_SP__LibID__25476A76">
             <End Role="HOLDING_LIBRARY" EntitySet="HOLDING_LIBRARY" />
             <End Role="FPT_SP_SPECIALIZED_STORE" EntitySet="FPT_SP_SPECIALIZED_STORE" />
           </AssociationSet>
-          <AssociationSet Name="FK__FPT_SYS_U__Right__2FC09873" Association="Self.FK__FPT_SYS_U__Right__2FC09873">
+          <AssociationSet Name="FK__FPT_SYS_U__Right__263B8EAF" Association="Self.FK__FPT_SYS_U__Right__263B8EAF">
             <End Role="FPT_SYS_USER_RIGHT" EntitySet="FPT_SYS_USER_RIGHT" />
             <End Role="FPT_SYS_USER_RIGHT_DETAIL" EntitySet="FPT_SYS_USER_RIGHT_DETAIL" />
           </AssociationSet>
@@ -14533,19 +14337,6 @@ warning 6002: The table/view 'Libol.dbo.MARC_BIB_WS_DETAIL' does not have a prim
           <Property Name="AccessEntry" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
           <Property Name="Dictionary" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
         </EntityType>
-        <EntityType Name="dtproperty">
-          <Key>
-            <PropertyRef Name="id" />
-            <PropertyRef Name="property" />
-          </Key>
-          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="objectid" Type="Int32" />
-          <Property Name="property" Type="String" MaxLength="64" FixedLength="false" Unicode="false" Nullable="false" />
-          <Property Name="value" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
-          <Property Name="uvalue" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
-          <Property Name="lvalue" Type="Binary" MaxLength="Max" FixedLength="false" />
-          <Property Name="version" Type="Int32" Nullable="false" />
-        </EntityType>
         <EntityType Name="EDELIV_FILE">
           <Key>
             <PropertyRef Name="ID" />
@@ -16095,16 +15886,6 @@ warning 6002: The table/view 'Libol.dbo.MARC_BIB_WS_DETAIL' does not have a prim
           <Property Name="Username" Type="String" MaxLength="20" FixedLength="false" Unicode="false" Nullable="false" />
           <Property Name="CreatedDate" Type="DateTime" Nullable="false" Precision="3" />
           <Property Name="ViewCode" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
-        </EntityType>
-        <EntityType Name="sysdiagram">
-          <Key>
-            <PropertyRef Name="diagram_id" />
-          </Key>
-          <Property Name="name" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="principal_id" Type="Int32" Nullable="false" />
-          <Property Name="diagram_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="version" Type="Int32" />
-          <Property Name="definition" Type="Binary" MaxLength="Max" FixedLength="false" />
         </EntityType>
         <EntityType Name="test">
           <Key>
@@ -18685,7 +18466,6 @@ warning 6002: The table/view 'Libol.dbo.MARC_BIB_WS_DETAIL' does not have a prim
           <EntitySet Name="DICTIONARY41" EntityType="Self.DICTIONARY41" />
           <EntitySet Name="DICTIONARY42" EntityType="Self.DICTIONARY42" />
           <EntitySet Name="DICTIONARY43" EntityType="Self.DICTIONARY43" />
-          <EntitySet Name="dtproperties" EntityType="Self.dtproperty" />
           <EntitySet Name="EDELIV_FILE" EntityType="Self.EDELIV_FILE" />
           <EntitySet Name="EDELIV_PAYMENT" EntityType="Self.EDELIV_PAYMENT" />
           <EntitySet Name="EDELIV_REQUEST" EntityType="Self.EDELIV_REQUEST" />
@@ -18785,7 +18565,6 @@ warning 6002: The table/view 'Libol.dbo.MARC_BIB_WS_DETAIL' does not have a prim
           <EntitySet Name="SYS_USER_RIGHT" EntityType="Self.SYS_USER_RIGHT" />
           <EntitySet Name="SYS_USER_RIGHT_DETAIL" EntityType="Self.SYS_USER_RIGHT_DETAIL" />
           <EntitySet Name="SYS_VIEW" EntityType="Self.SYS_VIEW" />
-          <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagram" />
           <EntitySet Name="tests" EntityType="Self.test" />
           <EntitySet Name="usertests" EntityType="Self.usertest" />
           <EntitySet Name="ACQ_PO_STATUS" EntityType="Self.ACQ_PO_STATUS" />
@@ -25902,6 +25681,7 @@ warning 6002: The table/view 'Libol.dbo.MARC_BIB_WS_DETAIL' does not have a prim
             <Parameter Name="acqdate" Mode="In" Type="String" />
           </FunctionImport>
           <FunctionImport Name="FPT_CHECK_ITEMID_AND_ACQUIREDATE" ReturnType="Collection(Int32)">
+            <Parameter Name="LibID" Mode="In" Type="Int32" />
             <Parameter Name="LocID" Mode="In" Type="Int32" />
             <Parameter Name="CDate" Mode="In" Type="DateTime" />
             <Parameter Name="itemId" Mode="In" Type="Int32" />
@@ -26601,6 +26381,12 @@ warning 6002: The table/view 'Libol.dbo.MARC_BIB_WS_DETAIL' does not have a prim
             <Parameter Name="intCityID" Mode="In" Type="Int32" />
             <Parameter Name="City" Mode="In" Type="String" />
           </FunctionImport>
+          <FunctionImport Name="FPT_GET_DATE_SUGGEST_CHECKOUT" ReturnType="Collection(String)">
+          <Parameter Name="term" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="FPT_GET_DATE_SUGGEST_RENEW" ReturnType="Collection(String)">
+          <Parameter Name="term" Mode="In" Type="String" />
+          </FunctionImport>
           <FunctionImport Name="FPT_ADD_COLLEGE">
             <Parameter Name="intCollegeID" Mode="In" Type="Int32" />
             <Parameter Name="College" Mode="In" Type="String" />
@@ -26610,11 +26396,14 @@ warning 6002: The table/view 'Libol.dbo.MARC_BIB_WS_DETAIL' does not have a prim
             <Parameter Name="Faculty" Mode="In" Type="String" />
             <Parameter Name="intCollegeID" Mode="In" Type="Int32" />
           </FunctionImport>
-          <FunctionImport Name="FPT_GET_DATE_SUGGEST_CHECKOUT" ReturnType="Collection(String)">
-            <Parameter Name="term" Mode="In" Type="String" />
-          </FunctionImport>
-          <FunctionImport Name="FPT_GET_DATE_SUGGEST_RENEW" ReturnType="Collection(String)">
-            <Parameter Name="term" Mode="In" Type="String" />
+          <FunctionImport Name="FPT_CIR_HOLDING_SEARCH1">
+            <Parameter Name="strCheckOrder" Mode="In" Type="Boolean" />
+            <Parameter Name="strOrderCancel" Mode="In" Type="Boolean" />
+            <Parameter Name="strDateFrom" Mode="In" Type="String" />
+            <Parameter Name="strDateTo" Mode="In" Type="String" />
+            <Parameter Name="strTitleCheck" Mode="In" Type="Boolean" />
+            <Parameter Name="strPatronCheck" Mode="In" Type="Boolean" />
+            <Parameter Name="strSearchContent" Mode="In" Type="String" />
           </FunctionImport>
         </EntityContainer>
         <ComplexType Name="CAT_DIC_LIST_SEL_Result">
@@ -32867,19 +32656,6 @@ warning 6002: The table/view 'Libol.dbo.MARC_BIB_WS_DETAIL' does not have a prim
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="dtproperties">
-            <EntityTypeMapping TypeName="LibolModel.dtproperty">
-              <MappingFragment StoreEntitySet="dtproperties">
-                <ScalarProperty Name="id" ColumnName="id" />
-                <ScalarProperty Name="objectid" ColumnName="objectid" />
-                <ScalarProperty Name="property" ColumnName="property" />
-                <ScalarProperty Name="value" ColumnName="value" />
-                <ScalarProperty Name="uvalue" ColumnName="uvalue" />
-                <ScalarProperty Name="lvalue" ColumnName="lvalue" />
-                <ScalarProperty Name="version" ColumnName="version" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <EntitySetMapping Name="EDELIV_FILE">
             <EntityTypeMapping TypeName="LibolModel.EDELIV_FILE">
               <MappingFragment StoreEntitySet="EDELIV_FILE">
@@ -34324,17 +34100,6 @@ warning 6002: The table/view 'Libol.dbo.MARC_BIB_WS_DETAIL' does not have a prim
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="sysdiagrams">
-            <EntityTypeMapping TypeName="LibolModel.sysdiagram">
-              <MappingFragment StoreEntitySet="sysdiagrams">
-                <ScalarProperty Name="name" ColumnName="name" />
-                <ScalarProperty Name="principal_id" ColumnName="principal_id" />
-                <ScalarProperty Name="diagram_id" ColumnName="diagram_id" />
-                <ScalarProperty Name="version" ColumnName="version" />
-                <ScalarProperty Name="definition" ColumnName="definition" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <EntitySetMapping Name="tests">
             <EntityTypeMapping TypeName="LibolModel.test">
               <MappingFragment StoreEntitySet="test">
@@ -34769,55 +34534,6 @@ warning 6002: The table/view 'Libol.dbo.MARC_BIB_WS_DETAIL' does not have a prim
               </ComplexTypeMapping>
             </ResultMapping>
           </FunctionImportMapping>
-          <FunctionImportMapping FunctionImportName="dt_addtosourcecontrol" FunctionName="LibolModel.Store.dt_addtosourcecontrol" />
-          <FunctionImportMapping FunctionImportName="dt_addtosourcecontrol_u" FunctionName="LibolModel.Store.dt_addtosourcecontrol_u" />
-          <FunctionImportMapping FunctionImportName="dt_adduserobject" FunctionName="LibolModel.Store.dt_adduserobject" />
-          <FunctionImportMapping FunctionImportName="dt_adduserobject_vcs" FunctionName="LibolModel.Store.dt_adduserobject_vcs" />
-          <FunctionImportMapping FunctionImportName="dt_checkinobject" FunctionName="LibolModel.Store.dt_checkinobject" />
-          <FunctionImportMapping FunctionImportName="dt_checkinobject_u" FunctionName="LibolModel.Store.dt_checkinobject_u" />
-          <FunctionImportMapping FunctionImportName="dt_checkoutobject" FunctionName="LibolModel.Store.dt_checkoutobject" />
-          <FunctionImportMapping FunctionImportName="dt_checkoutobject_u" FunctionName="LibolModel.Store.dt_checkoutobject_u" />
-          <FunctionImportMapping FunctionImportName="dt_displayoaerror" FunctionName="LibolModel.Store.dt_displayoaerror" />
-          <FunctionImportMapping FunctionImportName="dt_displayoaerror_u" FunctionName="LibolModel.Store.dt_displayoaerror_u" />
-          <FunctionImportMapping FunctionImportName="dt_droppropertiesbyid" FunctionName="LibolModel.Store.dt_droppropertiesbyid" />
-          <FunctionImportMapping FunctionImportName="dt_dropuserobjectbyid" FunctionName="LibolModel.Store.dt_dropuserobjectbyid" />
-          <FunctionImportMapping FunctionImportName="dt_generateansiname" FunctionName="LibolModel.Store.dt_generateansiname" />
-          <FunctionImportMapping FunctionImportName="dt_getobjwithprop" FunctionName="LibolModel.Store.dt_getobjwithprop" />
-          <FunctionImportMapping FunctionImportName="dt_getobjwithprop_u" FunctionName="LibolModel.Store.dt_getobjwithprop_u" />
-          <FunctionImportMapping FunctionImportName="dt_getpropertiesbyid" FunctionName="LibolModel.Store.dt_getpropertiesbyid">
-            <ResultMapping>
-              <ComplexTypeMapping TypeName="LibolModel.dt_getpropertiesbyid_Result">
-                <ScalarProperty Name="property" ColumnName="property" />
-                <ScalarProperty Name="version" ColumnName="version" />
-                <ScalarProperty Name="value" ColumnName="value" />
-                <ScalarProperty Name="lvalue" ColumnName="lvalue" />
-              </ComplexTypeMapping>
-            </ResultMapping>
-          </FunctionImportMapping>
-          <FunctionImportMapping FunctionImportName="dt_getpropertiesbyid_u" FunctionName="LibolModel.Store.dt_getpropertiesbyid_u">
-            <ResultMapping>
-              <ComplexTypeMapping TypeName="LibolModel.dt_getpropertiesbyid_u_Result">
-                <ScalarProperty Name="property" ColumnName="property" />
-                <ScalarProperty Name="version" ColumnName="version" />
-                <ScalarProperty Name="uvalue" ColumnName="uvalue" />
-                <ScalarProperty Name="lvalue" ColumnName="lvalue" />
-              </ComplexTypeMapping>
-            </ResultMapping>
-          </FunctionImportMapping>
-          <FunctionImportMapping FunctionImportName="dt_getpropertiesbyid_vcs" FunctionName="LibolModel.Store.dt_getpropertiesbyid_vcs" />
-          <FunctionImportMapping FunctionImportName="dt_getpropertiesbyid_vcs_u" FunctionName="LibolModel.Store.dt_getpropertiesbyid_vcs_u" />
-          <FunctionImportMapping FunctionImportName="dt_isundersourcecontrol" FunctionName="LibolModel.Store.dt_isundersourcecontrol" />
-          <FunctionImportMapping FunctionImportName="dt_isundersourcecontrol_u" FunctionName="LibolModel.Store.dt_isundersourcecontrol_u" />
-          <FunctionImportMapping FunctionImportName="dt_removefromsourcecontrol" FunctionName="LibolModel.Store.dt_removefromsourcecontrol" />
-          <FunctionImportMapping FunctionImportName="dt_setpropertybyid" FunctionName="LibolModel.Store.dt_setpropertybyid" />
-          <FunctionImportMapping FunctionImportName="dt_setpropertybyid_u" FunctionName="LibolModel.Store.dt_setpropertybyid_u" />
-          <FunctionImportMapping FunctionImportName="dt_validateloginparams" FunctionName="LibolModel.Store.dt_validateloginparams" />
-          <FunctionImportMapping FunctionImportName="dt_validateloginparams_u" FunctionName="LibolModel.Store.dt_validateloginparams_u" />
-          <FunctionImportMapping FunctionImportName="dt_vcsenabled" FunctionName="LibolModel.Store.dt_vcsenabled" />
-          <FunctionImportMapping FunctionImportName="dt_verstamp006" FunctionName="LibolModel.Store.dt_verstamp006" />
-          <FunctionImportMapping FunctionImportName="dt_verstamp007" FunctionName="LibolModel.Store.dt_verstamp007" />
-          <FunctionImportMapping FunctionImportName="dt_whocheckedout" FunctionName="LibolModel.Store.dt_whocheckedout" />
-          <FunctionImportMapping FunctionImportName="dt_whocheckedout_u" FunctionName="LibolModel.Store.dt_whocheckedout_u" />
           <FunctionImportMapping FunctionImportName="ExcuteSQL" FunctionName="LibolModel.Store.ExcuteSQL" />
           <FunctionImportMapping FunctionImportName="FPT_EDU_ADD_COLLEGE" FunctionName="LibolModel.Store.FPT_EDU_ADD_COLLEGE" />
           <FunctionImportMapping FunctionImportName="FPT_EDU_ADD_EDUCATION" FunctionName="LibolModel.Store.FPT_EDU_ADD_EDUCATION" />
@@ -36230,7 +35946,6 @@ warning 6002: The table/view 'Libol.dbo.MARC_BIB_WS_DETAIL' does not have a prim
               </ComplexTypeMapping>
             </ResultMapping>
           </FunctionImportMapping>
-          <FunctionImportMapping FunctionImportName="sp_alterdiagram" FunctionName="LibolModel.Store.sp_alterdiagram" />
           <FunctionImportMapping FunctionImportName="SP_AUTO_REGISTER_ISSUE" FunctionName="LibolModel.Store.SP_AUTO_REGISTER_ISSUE" />
           <FunctionImportMapping FunctionImportName="SP_CAT_AUTHORITY_SEL" FunctionName="LibolModel.Store.SP_CAT_AUTHORITY_SEL" />
           <FunctionImportMapping FunctionImportName="SP_CAT_AUTHORITYS_SEL" FunctionName="LibolModel.Store.SP_CAT_AUTHORITYS_SEL" />
@@ -37014,7 +36729,6 @@ warning 6002: The table/view 'Libol.dbo.MARC_BIB_WS_DETAIL' does not have a prim
           <FunctionImportMapping FunctionImportName="SP_CREATE_SYS_TEMPLATE" FunctionName="LibolModel.Store.SP_CREATE_SYS_TEMPLATE" />
           <FunctionImportMapping FunctionImportName="SP_CREATE_VOLUME" FunctionName="LibolModel.Store.SP_CREATE_VOLUME" />
           <FunctionImportMapping FunctionImportName="SP_CREATED_ID" FunctionName="LibolModel.Store.SP_CREATED_ID" />
-          <FunctionImportMapping FunctionImportName="sp_creatediagram" FunctionName="LibolModel.Store.sp_creatediagram" />
           <FunctionImportMapping FunctionImportName="SP_CREATELOANTYPE" FunctionName="LibolModel.Store.SP_CREATELOANTYPE" />
           <FunctionImportMapping FunctionImportName="SP_CURRENT_RECEIVE_COPIES" FunctionName="LibolModel.Store.SP_CURRENT_RECEIVE_COPIES">
             <ResultMapping>
@@ -37052,7 +36766,6 @@ warning 6002: The table/view 'Libol.dbo.MARC_BIB_WS_DETAIL' does not have a prim
           <FunctionImportMapping FunctionImportName="SP_DELETE_SCHEDULE" FunctionName="LibolModel.Store.SP_DELETE_SCHEDULE" />
           <FunctionImportMapping FunctionImportName="SP_DELETE_SYS_TEMPLATE" FunctionName="LibolModel.Store.SP_DELETE_SYS_TEMPLATE" />
           <FunctionImportMapping FunctionImportName="SP_DICINFOR_SEL" FunctionName="LibolModel.Store.SP_DICINFOR_SEL" />
-          <FunctionImportMapping FunctionImportName="sp_dropdiagram" FunctionName="LibolModel.Store.sp_dropdiagram" />
           <FunctionImportMapping FunctionImportName="SP_EDATA_CHANGE_ITEM_TYPE" FunctionName="LibolModel.Store.SP_EDATA_CHANGE_ITEM_TYPE" />
           <FunctionImportMapping FunctionImportName="SP_EDATA_COLLECTION_CREATE" FunctionName="LibolModel.Store.SP_EDATA_COLLECTION_CREATE" />
           <FunctionImportMapping FunctionImportName="SP_EDATA_COLLECTION_DELETE" FunctionName="LibolModel.Store.SP_EDATA_COLLECTION_DELETE" />
@@ -38884,25 +38597,6 @@ warning 6002: The table/view 'Libol.dbo.MARC_BIB_WS_DETAIL' does not have a prim
             </ResultMapping>
           </FunctionImportMapping>
           <FunctionImportMapping FunctionImportName="SP_HELP_SEARCH" FunctionName="LibolModel.Store.SP_HELP_SEARCH" />
-          <FunctionImportMapping FunctionImportName="sp_helpdiagramdefinition" FunctionName="LibolModel.Store.sp_helpdiagramdefinition">
-            <ResultMapping>
-              <ComplexTypeMapping TypeName="LibolModel.sp_helpdiagramdefinition_Result">
-                <ScalarProperty Name="version" ColumnName="version" />
-                <ScalarProperty Name="definition" ColumnName="definition" />
-              </ComplexTypeMapping>
-            </ResultMapping>
-          </FunctionImportMapping>
-          <FunctionImportMapping FunctionImportName="sp_helpdiagrams" FunctionName="LibolModel.Store.sp_helpdiagrams">
-            <ResultMapping>
-              <ComplexTypeMapping TypeName="LibolModel.sp_helpdiagrams_Result">
-                <ScalarProperty Name="Database" ColumnName="Database" />
-                <ScalarProperty Name="Name" ColumnName="Name" />
-                <ScalarProperty Name="ID" ColumnName="ID" />
-                <ScalarProperty Name="Owner" ColumnName="Owner" />
-                <ScalarProperty Name="OwnerID" ColumnName="OwnerID" />
-              </ComplexTypeMapping>
-            </ResultMapping>
-          </FunctionImportMapping>
           <FunctionImportMapping FunctionImportName="SP_HOLDING_COPY_INS" FunctionName="LibolModel.Store.SP_HOLDING_COPY_INS" />
           <FunctionImportMapping FunctionImportName="SP_HOLDING_COPY_SEL" FunctionName="LibolModel.Store.SP_HOLDING_COPY_SEL" />
           <FunctionImportMapping FunctionImportName="SP_HOLDING_COPY_UPD" FunctionName="LibolModel.Store.SP_HOLDING_COPY_UPD" />
@@ -41108,7 +40802,6 @@ warning 6002: The table/view 'Libol.dbo.MARC_BIB_WS_DETAIL' does not have a prim
           <FunctionImportMapping FunctionImportName="SP_REMOVE_ROUTING" FunctionName="LibolModel.Store.SP_REMOVE_ROUTING" />
           <FunctionImportMapping FunctionImportName="SP_REMOVE_ROUTING_RECORD" FunctionName="LibolModel.Store.SP_REMOVE_ROUTING_RECORD" />
           <FunctionImportMapping FunctionImportName="SP_RENAME_DICTIONARY" FunctionName="LibolModel.Store.SP_RENAME_DICTIONARY" />
-          <FunctionImportMapping FunctionImportName="sp_renamediagram" FunctionName="LibolModel.Store.sp_renamediagram" />
           <FunctionImportMapping FunctionImportName="SP_RENEW_ITEM" FunctionName="LibolModel.Store.SP_RENEW_ITEM" />
           <FunctionImportMapping FunctionImportName="SP_RENEW_PATRONCARD" FunctionName="LibolModel.Store.SP_RENEW_PATRONCARD" />
           <FunctionImportMapping FunctionImportName="SP_REPORT_DETAIL_ITEMS" FunctionName="LibolModel.Store.SP_REPORT_DETAIL_ITEMS" />
@@ -41593,7 +41286,6 @@ warning 6002: The table/view 'Libol.dbo.MARC_BIB_WS_DETAIL' does not have a prim
           <FunctionImportMapping FunctionImportName="SP_UPDATE_WORKINGTIME" FunctionName="LibolModel.Store.SP_UPDATE_WORKINGTIME" />
           <FunctionImportMapping FunctionImportName="SP_UPDATELOANTYPE" FunctionName="LibolModel.Store.SP_UPDATELOANTYPE" />
           <FunctionImportMapping FunctionImportName="SP_UPDATEPATRONHOLD" FunctionName="LibolModel.Store.SP_UPDATEPATRONHOLD" />
-          <FunctionImportMapping FunctionImportName="sp_upgraddiagrams" FunctionName="LibolModel.Store.sp_upgraddiagrams" />
           <FunctionImportMapping FunctionImportName="SP_UPPDATE_ITEM_REVIEWER" FunctionName="LibolModel.Store.SP_UPPDATE_ITEM_REVIEWER" />
           <FunctionImportMapping FunctionImportName="SP_WAP_CANCEL_RESEVED" FunctionName="LibolModel.Store.SP_WAP_CANCEL_RESEVED" />
           <FunctionImportMapping FunctionImportName="SP_WAP_GET_ILLREQUEST" FunctionName="LibolModel.Store.SP_WAP_GET_ILLREQUEST">
@@ -42570,10 +42262,11 @@ warning 6002: The table/view 'Libol.dbo.MARC_BIB_WS_DETAIL' does not have a prim
             </ResultMapping>
           </FunctionImportMapping>
           <FunctionImportMapping FunctionImportName="FPT_ADD_CITY" FunctionName="LibolModel.Store.FPT_ADD_CITY" />
-          <FunctionImportMapping FunctionImportName="FPT_ADD_COLLEGE" FunctionName="LibolModel.Store.FPT_ADD_COLLEGE" />
-          <FunctionImportMapping FunctionImportName="FPT_ADD_FACULTY" FunctionName="LibolModel.Store.FPT_ADD_FACULTY" />
           <FunctionImportMapping FunctionImportName="FPT_GET_DATE_SUGGEST_CHECKOUT" FunctionName="LibolModel.Store.FPT_GET_DATE_SUGGEST_CHECKOUT" />
           <FunctionImportMapping FunctionImportName="FPT_GET_DATE_SUGGEST_RENEW" FunctionName="LibolModel.Store.FPT_GET_DATE_SUGGEST_RENEW" />
+          <FunctionImportMapping FunctionImportName="FPT_ADD_COLLEGE" FunctionName="LibolModel.Store.FPT_ADD_COLLEGE" />
+          <FunctionImportMapping FunctionImportName="FPT_ADD_FACULTY" FunctionName="LibolModel.Store.FPT_ADD_FACULTY" />
+          <FunctionImportMapping FunctionImportName="FPT_CIR_HOLDING_SEARCH1" FunctionName="LibolModel.Store.FPT_CIR_HOLDING_SEARCH" />
           </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>

@@ -21578,6 +21578,27 @@ namespace Libol.Models
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Nullable<int>>("FPT_BORROWNUMBER", itemIDParameter, priceParameter, acqdateParameter);
         }
     
+        public virtual ObjectResult<Nullable<int>> FPT_CHECK_ITEMID_AND_ACQUIREDATE(Nullable<int> libID, Nullable<int> locID, Nullable<System.DateTime> cDate, Nullable<int> itemId)
+        {
+            var libIDParameter = libID.HasValue ?
+                new ObjectParameter("LibID", libID) :
+                new ObjectParameter("LibID", typeof(int));
+    
+            var locIDParameter = locID.HasValue ?
+                new ObjectParameter("LocID", locID) :
+                new ObjectParameter("LocID", typeof(int));
+    
+            var cDateParameter = cDate.HasValue ?
+                new ObjectParameter("CDate", cDate) :
+                new ObjectParameter("CDate", typeof(System.DateTime));
+    
+            var itemIdParameter = itemId.HasValue ?
+                new ObjectParameter("itemId", itemId) :
+                new ObjectParameter("itemId", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Nullable<int>>("FPT_CHECK_ITEMID_AND_ACQUIREDATE", libIDParameter, locIDParameter, cDateParameter, itemIdParameter);
+        }
+    
         public virtual ObjectResult<FPT_CIR_GET_LOCFULLNAME_LIBUSER_SEL_Result> FPT_CIR_GET_LOCFULLNAME_LIBUSER_SEL(Nullable<int> intUserID, Nullable<int> intLibID, string strLocPrefix)
         {
             var intUserIDParameter = intUserID.HasValue ?
@@ -23973,6 +23994,24 @@ namespace Libol.Models
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("FPT_ADD_CITY", intCityIDParameter, cityParameter);
         }
     
+        public virtual ObjectResult<string> FPT_GET_DATE_SUGGEST_CHECKOUT(string term)
+        {
+            var termParameter = term != null ?
+                new ObjectParameter("term", term) :
+                new ObjectParameter("term", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<string>("FPT_GET_DATE_SUGGEST_CHECKOUT", termParameter);
+        }
+    
+        public virtual ObjectResult<string> FPT_GET_DATE_SUGGEST_RENEW(string term)
+        {
+            var termParameter = term != null ?
+                new ObjectParameter("term", term) :
+                new ObjectParameter("term", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<string>("FPT_GET_DATE_SUGGEST_RENEW", termParameter);
+        }
+    
         public virtual int FPT_ADD_COLLEGE(Nullable<int> intCollegeID, string college)
         {
             var intCollegeIDParameter = intCollegeID.HasValue ?
@@ -24003,43 +24042,37 @@ namespace Libol.Models
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("FPT_ADD_FACULTY", intFacultyIDParameter, facultyParameter, intCollegeIDParameter);
         }
     
-        public virtual ObjectResult<string> FPT_GET_DATE_SUGGEST_CHECKOUT(string term)
+        public virtual int FPT_CIR_HOLDING_SEARCH1(Nullable<bool> strCheckOrder, Nullable<bool> strOrderCancel, string strDateFrom, string strDateTo, Nullable<bool> strTitleCheck, Nullable<bool> strPatronCheck, string strSearchContent)
         {
-            var termParameter = term != null ?
-                new ObjectParameter("term", term) :
-                new ObjectParameter("term", typeof(string));
+            var strCheckOrderParameter = strCheckOrder.HasValue ?
+                new ObjectParameter("strCheckOrder", strCheckOrder) :
+                new ObjectParameter("strCheckOrder", typeof(bool));
     
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<string>("FPT_GET_DATE_SUGGEST_CHECKOUT", termParameter);
-        }
+            var strOrderCancelParameter = strOrderCancel.HasValue ?
+                new ObjectParameter("strOrderCancel", strOrderCancel) :
+                new ObjectParameter("strOrderCancel", typeof(bool));
     
-        public virtual ObjectResult<string> FPT_GET_DATE_SUGGEST_RENEW(string term)
-        {
-            var termParameter = term != null ?
-                new ObjectParameter("term", term) :
-                new ObjectParameter("term", typeof(string));
+            var strDateFromParameter = strDateFrom != null ?
+                new ObjectParameter("strDateFrom", strDateFrom) :
+                new ObjectParameter("strDateFrom", typeof(string));
     
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<string>("FPT_GET_DATE_SUGGEST_RENEW", termParameter);
-        }
+            var strDateToParameter = strDateTo != null ?
+                new ObjectParameter("strDateTo", strDateTo) :
+                new ObjectParameter("strDateTo", typeof(string));
     
-        public virtual ObjectResult<Nullable<int>> FPT_CHECK_ITEMID_AND_ACQUIREDATE(Nullable<int> libID, Nullable<int> locID, Nullable<System.DateTime> cDate, Nullable<int> itemId)
-        {
-            var libIDParameter = libID.HasValue ?
-                new ObjectParameter("LibID", libID) :
-                new ObjectParameter("LibID", typeof(int));
+            var strTitleCheckParameter = strTitleCheck.HasValue ?
+                new ObjectParameter("strTitleCheck", strTitleCheck) :
+                new ObjectParameter("strTitleCheck", typeof(bool));
     
-            var locIDParameter = locID.HasValue ?
-                new ObjectParameter("LocID", locID) :
-                new ObjectParameter("LocID", typeof(int));
+            var strPatronCheckParameter = strPatronCheck.HasValue ?
+                new ObjectParameter("strPatronCheck", strPatronCheck) :
+                new ObjectParameter("strPatronCheck", typeof(bool));
     
-            var cDateParameter = cDate.HasValue ?
-                new ObjectParameter("CDate", cDate) :
-                new ObjectParameter("CDate", typeof(System.DateTime));
+            var strSearchContentParameter = strSearchContent != null ?
+                new ObjectParameter("strSearchContent", strSearchContent) :
+                new ObjectParameter("strSearchContent", typeof(string));
     
-            var itemIdParameter = itemId.HasValue ?
-                new ObjectParameter("itemId", itemId) :
-                new ObjectParameter("itemId", typeof(int));
-    
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Nullable<int>>("FPT_CHECK_ITEMID_AND_ACQUIREDATE", libIDParameter, locIDParameter, cDateParameter, itemIdParameter);
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("FPT_CIR_HOLDING_SEARCH1", strCheckOrderParameter, strOrderCancelParameter, strDateFromParameter, strDateToParameter, strTitleCheckParameter, strPatronCheckParameter, strSearchContentParameter);
         }
     }
 }

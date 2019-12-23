@@ -82,7 +82,6 @@
         <EntityTypeShape EntityType="LibolModel.DICTIONARY41" Width="1.5" PointX="17.75" PointY="16.75" IsExpanded="true" />
         <EntityTypeShape EntityType="LibolModel.DICTIONARY42" Width="1.5" PointX="18.75" PointY="0.75" IsExpanded="true" />
         <EntityTypeShape EntityType="LibolModel.DICTIONARY43" Width="1.5" PointX="0.75" PointY="18.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="LibolModel.dtproperty" Width="1.5" PointX="2.75" PointY="18.75" IsExpanded="true" />
         <EntityTypeShape EntityType="LibolModel.EDELIV_FILE" Width="1.5" PointX="19.5" PointY="104.75" IsExpanded="true" />
         <EntityTypeShape EntityType="LibolModel.EDELIV_PAYMENT" Width="1.5" PointX="27" PointY="114.75" IsExpanded="true" />
         <EntityTypeShape EntityType="LibolModel.EDELIV_REQUEST" Width="1.5" PointX="24.75" PointY="114.125" IsExpanded="true" />
@@ -182,7 +181,6 @@
         <EntityTypeShape EntityType="LibolModel.SYS_USER_RIGHT" Width="1.5" PointX="14.25" PointY="145.375" IsExpanded="true" />
         <EntityTypeShape EntityType="LibolModel.SYS_USER_RIGHT_DETAIL" Width="1.5" PointX="16.5" PointY="120.5" IsExpanded="true" />
         <EntityTypeShape EntityType="LibolModel.SYS_VIEW" Width="1.5" PointX="24.75" PointY="23.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="LibolModel.sysdiagram" Width="1.5" PointX="2.75" PointY="25.75" IsExpanded="true" />
         <EntityTypeShape EntityType="LibolModel.test" Width="1.5" PointX="25.75" PointY="3.75" IsExpanded="true" />
         <EntityTypeShape EntityType="LibolModel.usertest" Width="1.5" PointX="25.75" PointY="6.75" IsExpanded="true" />
         <EntityTypeShape EntityType="LibolModel.ACQ_PO_STATUS" Width="1.5" PointX="8.25" PointY="100.25" IsExpanded="true" />
